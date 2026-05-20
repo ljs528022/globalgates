@@ -1,7 +1,6 @@
 package com.app.globalgates.service;
 
 import com.app.globalgates.aop.annotation.LogStatus;
-import com.app.globalgates.aop.annotation.LogStatusWithReturn;
 import com.app.globalgates.common.enumeration.FileContentType;
 import com.app.globalgates.common.pagination.Criteria;
 import com.app.globalgates.domain.CommunityVO;
@@ -20,7 +19,6 @@ import org.springframework.transaction.support.TransactionSynchronization;
 import org.springframework.transaction.support.TransactionSynchronizationManager;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.reactive.function.client.WebClient;
-import reactor.core.publisher.Mono;
 
 import java.io.IOException;
 import java.time.Duration;
@@ -45,7 +43,6 @@ public class CommunityService {
     private final PostHashtagDAO postHashtagDAO;
     private final ReplyProductRelDAO replyProductRelDAO;
     private final CommunityFeaturesMapper communityFeaturesMapper;
-    private final WebClient ragWebClient;
 
     // reload 호출 합치기(coalesce) — 짧은 시간에 여러 번 트리거되어도 "진행 중 1건 + 대기 1건"
     // 으로 압축. 진행 중일 때 들어온 모든 추가 트리거는 pending 으로 모이고, 진행이 끝난 직후
@@ -56,8 +53,6 @@ public class CommunityService {
     // ──────────────────────────────────────
     // 커뮤니티 CRUD
     // ──────────────────────────────────────
-
-
     @CacheEvict(value = "community:list", allEntries = true)
     @LogStatus
     public void createCommunity(CommunityDTO dto, MultipartFile coverImage) throws IOException {
@@ -543,23 +538,6 @@ public class CommunityService {
             reloadPending.set(true);
             return;
         }
-        // WebClient subscribe 는 reactor-netty EventLoop 가 처리 — boundedElastic 으로 따로
-        // 넘길 필요 없음 (blocking 작업이 아님). disposable 은 fire-and-forget 이라 보관하지 않는다.
-        ragWebClient.post()
-                .uri("/api/community/reload")
-                .retrieve()
-                .bodyToMono(Void.class)
-                .timeout(Duration.ofSeconds(3))
-                .doOnError(e -> log.warn("[추천 reload 실패] cause={}", e.getMessage()))
-                .onErrorResume(e -> Mono.empty())
-                .doFinally(signal -> {
-                    reloadInFlight.set(false);
-                    // 진행 중에 새로 들어온 트리거가 있었다면 한 번만 추가 호출 — 최신 DB 반영.
-                    if (reloadPending.compareAndSet(true, false)) {
-                        triggerRecommendReload();
-                    }
-                })
-                .subscribe();
     }
 
     private void saveCoverImage(Long communityId, MultipartFile coverImage) throws IOException {
