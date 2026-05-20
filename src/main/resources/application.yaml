@@ -99,7 +99,7 @@ kakao:
 # LiveKit 영상통화 서버
 livekit:
   server:
-    url: https://${EC2_HOST}:${LIVEKIT_PORT}/token
+    url: https://${LIVEKIT_HOST}:${LIVEKIT_PORT}/token
 
 # WebSocket(STOMP) 허용 origin (콤마 구분, 포트는 와일드카드).
 websocket:
