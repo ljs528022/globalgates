@@ -139,9 +139,7 @@ RUN chmod +x ./gradlew
 COPY src ./src
 
 # Gradle 캐시는 이미지 레이어가 아니라 BuildKit 캐시에만 둔다.
-RUN --mount=type=cache,target=/root/.gradle \
-    --mount=type=cache,target=/app/.gradle \
-    ./gradlew --no-daemon build
+RUN chmod +x ./gradlew && ./gradlew build
 
 # 실행만 담당하는 jre 환경으로 설정한다.
 FROM eclipse-temurin:17-jre
