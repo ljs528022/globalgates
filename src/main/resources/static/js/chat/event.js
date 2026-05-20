@@ -99,7 +99,7 @@ window.onload = () => {
     let pendingVideoRoomName = null;
     let loginedMemberId = null;
 
-    // 1-9. LiveKit 서버 URL — body data-livekit-server-url 에서 주입 (서버에서 ${EC2_HOST}:${LIVEKIT_PORT} 조립)
+    // 1-9. LiveKit 서버 URL — body data-livekit-server-url 에서 주입 (서버에서 ${LIVEKIT_HOST}:${LIVEKIT_PORT} 조립)
     function configureLiveKitUrl() {
         if (!LIVEKIT_SERVER_URL) {
             LIVEKIT_SERVER_URL = document.body?.dataset?.livekitServerUrl || "";
@@ -2455,7 +2455,7 @@ window.onload = () => {
     }
 
     async function requestLiveKitToken(roomName, participantName) {
-        const response = await fetch(LIVEKIT_SERVER_URL + "/token", {
+        const response = await fetch(LIVEKIT_SERVER_URL, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ roomName, participantName })
