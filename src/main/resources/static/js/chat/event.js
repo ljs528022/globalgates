@@ -2454,30 +2454,16 @@ window.onload = () => {
         }
     }
 
-    // [임시 - 로컬 테스트용 프록시]
-    // 배포 시 아래 함수를 주석 해제된 원본으로 교체
-    async function requestLiveKitToken(roomName) {
-        const response = await fetch("/api/v1/video-chat/token", {
+    async function requestLiveKitToken(roomName, participantName) {
+        const response = await fetch(LIVEKIT_SERVER_URL + "/token", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ roomName })
+            body: JSON.stringify({ roomName, participantName })
         });
         if (!response.ok) throw new Error("토큰 발급 실패: " + response.status);
         const data = await response.json();
         return data.token;
     }
-
-    // [원본 - 배포 시 위 함수를 아래로 교체 + VideoChatTokenProxyController.java 삭제]
-    // async function requestLiveKitToken(roomName, participantName) {
-    //     const response = await fetch(LIVEKIT_SERVER_URL + "/token", {
-    //         method: "POST",
-    //         headers: { "Content-Type": "application/json" },
-    //         body: JSON.stringify({ roomName, participantName })
-    //     });
-    //     if (!response.ok) throw new Error("토큰 발급 실패: " + response.status);
-    //     const data = await response.json();
-    //     return data.token;
-    // }
 
     // 화상통화 STOMP 이벤트 구독
     async function subscribeVideoCallEvents() {
