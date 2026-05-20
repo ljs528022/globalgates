@@ -1,0 +1,244 @@
+.join-profile-modal-shell {
+  --modal-bg: #ffffff;
+  --text-main: #111418;
+  --text-sub: #6b7a89;
+  --border: #cfd6de;
+  --avatar-bg: #8e949b;
+  --avatar-inner: #596470;
+  --avatar-icon-bg: #2f3943;
+  --avatar-face: #3f4a55;
+  --avatar-icon: #e9edf2;
+  position: fixed;
+  inset: 0;
+  /* join-flow-modal(1000), 모바일 join-panel(1100) 보다 위에 떠야 가려지지 않는다. */
+  z-index: 1200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 28px;
+}
+
+.join-profile-modal-shell * {
+  box-sizing: border-box;
+}
+
+.join-profile-modal-shell .modal-mask {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4);
+}
+
+.join-profile-modal-shell .profile-modal {
+  position: relative;
+  z-index: 1;
+  width: min(590px, 87vw);
+  max-height: calc(100vh - 56px);
+  overflow-y: auto;
+  background: var(--modal-bg);
+  border-radius: 16px;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.25);
+}
+
+.join-profile-modal-shell .profile-modal__frame {
+  padding: 40px 30px 45px;
+}
+
+.join-profile-modal-shell .profile-modal__header-bar {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  margin-top: 6px;
+}
+
+.join-profile-modal-shell .icon-button {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  color: #111418;
+}
+
+.join-profile-modal-shell .icon-button--close svg {
+  width: 22px;
+  height: 22px;
+}
+
+.join-profile-modal-shell .profile-modal__title {
+  text-align: left;
+  margin-top: 12px;
+}
+
+.join-profile-modal-shell .profile-modal__title h1 {
+  margin: 0 0 6px;
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--text-main);
+}
+
+.join-profile-modal-shell .profile-modal__subtitle {
+  margin: 0;
+  font-size: 14px;
+  color: var(--text-sub);
+  line-height: 1.5;
+}
+
+.join-profile-modal-shell .profile-modal__section {
+  margin-top: 22px;
+}
+
+.join-profile-modal-shell .avatar-picker {
+  display: grid;
+  place-items: center;
+  padding: 18px 0 6px;
+}
+
+.join-profile-modal-shell .avatar-frame {
+  position: relative;
+  width: 170px;
+  height: 170px;
+  border-radius: 50%;
+  background: var(--avatar-bg);
+  overflow: hidden;
+}
+
+.join-profile-modal-shell .avatar-frame::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  width: 66px;
+  height: 96px;
+  margin: auto;
+  border-radius: 36px;
+  background: var(--avatar-inner);
+}
+
+.join-profile-modal-shell .avatar-face {
+  position: absolute;
+  left: 0;
+  bottom: -23%;
+  width: 100%;
+  height: 43%;
+  background: var(--avatar-face);
+  border-radius: 50%;
+}
+
+.join-profile-modal-shell .avatar-preview {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.join-profile-modal-shell .avatar-camera,
+.join-profile-modal-shell .avatar-remove {
+  position: absolute;
+  top: 50%;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: var(--avatar-icon-bg);
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  border: none;
+  padding: 0;
+}
+
+.join-profile-modal-shell .avatar-camera {
+  left: 50%;
+  transform: translate(-50%, -46%);
+}
+
+.join-profile-modal-shell .avatar-camera svg {
+  width: 22px;
+  height: 22px;
+  fill: var(--avatar-icon);
+}
+
+.join-profile-modal-shell .avatar-remove {
+  opacity: 0;
+  pointer-events: none;
+  color: var(--avatar-icon);
+}
+
+.join-profile-modal-shell .avatar-remove svg {
+  width: 22px;
+  height: 22px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2.2;
+  stroke-linecap: round;
+}
+
+.join-profile-modal-shell .avatar-frame.has-image .avatar-preview {
+  opacity: 1;
+}
+
+.join-profile-modal-shell .avatar-frame.has-image::before,
+.join-profile-modal-shell .avatar-frame.has-image .avatar-face {
+  opacity: 0;
+}
+
+.join-profile-modal-shell .avatar-frame.has-image .avatar-camera {
+  left: 50%;
+  transform: translate(-120%, -46%);
+}
+
+.join-profile-modal-shell .avatar-frame.has-image .avatar-remove {
+  opacity: 1;
+  pointer-events: auto;
+  left: 50%;
+  transform: translate(20%, -46%);
+}
+
+.join-profile-modal-shell .avatar-upload {
+  display: none;
+}
+
+.join-profile-modal-shell .profile-modal__section--actions {
+  display: grid;
+  place-items: center;
+  margin-top: 28px;
+}
+
+.join-profile-modal-shell .ghost-button {
+  min-width: 260px;
+  padding: 10px 24px;
+  border: 1px solid var(--border);
+  border-radius: 24px;
+  background: #fff;
+  color: #111418;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.join-profile-modal-shell .ghost-button--primary {
+  background: #111418;
+  color: #ffffff;
+  border-color: #111418;
+}
+
+@media (max-width: 400px) {
+  .join-profile-modal-shell {
+    padding: 0;
+  }
+
+  .join-profile-modal-shell .profile-modal {
+    width: 100%;
+    max-height: 100vh;
+    min-height: 100vh;
+    border-radius: 0;
+  }
+
+  .join-profile-modal-shell .profile-modal__frame {
+    padding: 32px 24px 36px;
+  }
+
+  .join-profile-modal-shell .ghost-button {
+    min-width: 100%;
+  }
+}

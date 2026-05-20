@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.app.globalgates.mapper.NotificationMapper">
+
+    <sql id="notificationColumns">
+        n.id,
+        n.recipient_id,
+        n.sender_id,
+        n.notification_type,
+        n.title,
+        n.content,
+        n.target_id,
+        n.target_type,
+        n.is_read,
+        n.created_datetime,
+        m.member_name       as sender_name,
+        m.member_handle     as sender_handle,
+        f.file_path          as sender_profile_image,
+        p.content            as post_content
+    </sql>
+
+    <sql id="notificationJoins">
+        from tbl_notification n
+        left join tbl_member m on n.sender_id = m.id
+        left join tbl_member_profile_file pf on m.id = pf.member_id and pf.profile_image_type = 'profile'
+        left join tbl_file f on pf.id = f.id
+        left join tbl_post p on n.target_id = p.id and n.target_type = 'post'
+    </sql>
+
+    <select id="selectAll" resultType="notificationDTO">
+        select
+        <include refid="notificationColumns"/>
+        <include refid="notificationJoins"/>
+        where n.recipient_id = #{recipientId}
+        order by n.created_datetime desc
+    </select>
+
+    <select id="selectByType" resultType="notificationDTO">
+        select
+        <include refid="notificationColumns"/>
+        <include refid="notificationJoins"/>
+        where n.recipient_id = #{recipientId}
+          and n.notification_type = #{notificationType}::notification_type
+        order by n.created_datetime desc
+    </select>
+
+    <select id="selectById" resultType="notificationDTO">
+        select
+        <include refid="notificationColumns"/>
+        <include refid="notificationJoins"/>
+        where n.id = #{id}
+    </select>
+
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+        insert into tbl_notification (recipient_id, sender_id, notification_type, title, content, target_id, target_type)
+        values (#{recipientId}, #{senderId}, #{notificationType}::notification_type, #{title}, #{content}, #{targetId}, #{targetType})
+    </insert>
+
+    <update id="updateReadStatus">
+        update tbl_notification
+        set is_read = true
+        where id = #{id}
+    </update>
+
+    <update id="updateAllReadStatus">
+        update tbl_notification
+        set is_read = true
+        where recipient_id = #{recipientId}
+          and is_read = false
+    </update>
+
+    <delete id="delete">
+        delete from tbl_notification
+        where id = #{id}
+    </delete>
+
+    <delete id="deleteAllByRecipientId">
+        delete from tbl_notification
+        where recipient_id = #{recipientId}
+    </delete>
+
+    <select id="selectUnreadCount" resultType="int">
+        select count(*)
+        from tbl_notification
+        where recipient_id = #{recipientId}
+          and is_read = false
+    </select>
+
+</mapper>

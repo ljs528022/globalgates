@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.app.globalgates.mapper.AdminNewsMapper">
+
+    <select id="selectAdminNews" resultType="com.app.globalgates.dto.NewsDTO">
+        select id,
+               admin_id as "adminId",
+               post_id as "postId",
+               news_title as "newsTitle",
+               news_content as "newsContent",
+               news_source_url as "newsSourceUrl",
+               news_category as "newsCategory",
+               news_type as "newsType",
+               to_char(published_at, 'YYYY-MM-DD HH24:MI:SS') as "publishedAt",
+               to_char(created_datetime, 'YYYY-MM-DD HH24:MI:SS') as "createdDatetime",
+               to_char(updated_datetime, 'YYYY-MM-DD HH24:MI:SS') as "updatedDatetime"
+        from tbl_news
+        order by created_datetime desc
+    </select>
+
+    <select id="selectPostIdById" resultType="java.lang.Long">
+        select post_id from tbl_news where id = #{id}
+    </select>
+
+    <insert id="insertAdminNews">
+        insert into tbl_news (
+            admin_id,
+            post_id,
+            news_title,
+            news_content,
+            news_source_url,
+            news_category,
+            news_type,
+            published_at
+        ) values (
+            #{adminId},
+            #{postId},
+            #{newsTitle},
+            #{newsContent},
+            #{newsSourceUrl},
+            #{newsCategory}::news_category_type,
+            #{newsType}::news_type,
+            now()
+        )
+    </insert>
+
+    <update id="updateAdminNews">
+        update tbl_news
+           set news_title = #{newsTitle},
+               news_content = #{newsContent},
+               news_source_url = #{newsSourceUrl},
+               news_category = #{newsCategory}::news_category_type,
+               news_type = #{newsType}::news_type,
+               updated_datetime = now()
+         where id = #{id}
+    </update>
+
+    <delete id="deleteAdminNews">
+        delete from tbl_news
+         where id = #{id}
+    </delete>
+
+</mapper>

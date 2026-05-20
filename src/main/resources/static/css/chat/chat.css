@@ -1,0 +1,3122 @@
+@keyframes slideRight {
+  0%   { transform: translateX(0); }
+  40%  { transform: translateX(20px); }
+  100% { transform: translateX(0); }
+}
+
+@keyframes slideLeft {
+  0%   { transform: translateX(0); }
+  40%  { transform: translateX(-20px); }
+  100% { transform: translateX(0); }
+}
+
+body {
+    margin: 0;
+    padding: 0;
+}
+
+.Chat-Main {
+    display: flex;
+    position: relative;
+    justify-content: center;
+    list-style: none;
+    text-decoration: none;
+    margin: 0;
+    padding: 0px;
+    min-height: 0px;
+    min-width: 0px;
+    align-items: flex-start;
+    background-color: rgba(0, 0, 0, 0);
+    border: 0 solid black;
+    z-index: 0;
+}
+
+.Chat-Layout {
+    margin: 0 auto;
+    box-sizing: border-box;
+    max-width: 100%;
+    flex-shrink: 1;
+    flex-grow: 1;
+    align-items: stretch;
+}
+
+.Chat-Wrapper {
+    backface-visibility: hidden;
+}
+
+.Chat-Container {
+    width: 100%;
+    min-height: 100%;
+    flex-direction: row;
+    flex-grow: 1;
+    justify-content: space-between;
+    align-items: stretch;
+    background-color: rgba(0, 0, 0, 0);
+    border-left: 1px;
+    border-right: 1px;
+    border-color: rgb(239, 243, 244);
+    border-style: solid;
+    background-color: white;
+}
+
+.Chat-Contents-Wrapper {
+    width: 100%;
+}
+
+.Chat-Contents-Container {
+    display: flex;
+    width: 100%;
+    height: 100vh;
+    border-color: hsl(197 16% 91%);
+    container-type: inline-size;
+}
+
+.Chat-UserList-Wrapper {
+    display: block;
+    width: 35%;
+    max-width: 36rem;
+    min-width: 400px;
+    flex-shrink: 0;
+}
+
+.Chat-UserList-Container {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    padding-bottom: 0px;
+    width: 100%;
+    height: 100%;
+    border-inline-end-width: 1px;
+}
+
+.UserList-Header {
+    display: flex;
+    flex-direction: column;
+}
+
+.UserList-Header-Upper {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px 16px;
+    height: 64px;
+}
+
+.Header-Upper-Content {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.Header-Upper-Text {
+    max-width: 100%;
+    font-size: 20px;
+    font-weight: 700;
+    line-height: 24px;
+    word-wrap: break-word;
+    word-break: break-word;
+}
+
+.Header-Upper-Button {
+    display: flex;
+    align-items: center;
+}
+
+.Header-Each-Button {
+    display: inline-flex;
+    font-size: 15px;
+    line-height: 20px;
+    color: hsl(210 25% 8%);
+    outline-color: hsl(210 25% 8%);
+    padding-left: 0px;
+    padding-right: 0px;
+    background-color: transparent;
+    border-width: 1px;
+    border-style: solid;
+    border-color: transparent;
+    border-radius: 9999px;
+
+    min-width: 36px;
+    height: 36px;
+    align-items: center;
+    justify-content: center;
+
+    cursor: pointer;
+
+    transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter, -webkit-backdrop-filter;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-duration: 150ms;
+}
+
+.Header-Each-Button:hover {
+    background-color: #0f141a1a;
+}
+
+.Header-Each-Button svg {
+    width: 20px;
+    height: 20px;
+}
+
+.UserList-Header-Bottom {
+    padding: 4px 16px;
+    user-select: none;
+}
+
+.Header-SearchBar {
+    display: flex;
+    padding: 8px;
+    padding-inline-start: 12px;
+    padding-inline-end: 12px;
+    background-color: hsl(180 14% 97%);
+    border: 1px solid hsl(192 19% 95%);
+    border-radius: 9999px;
+    overflow: hidden;
+    gap: 8px;
+    align-items: center;
+    justify-content: center;
+    cursor: text;
+}
+
+.Header-SearchBar svg {
+    width: 20px;
+    height: 20px;
+    flex-shrink: 0;
+    color: #52636f;
+}
+
+.Header-SearchBar-Text {
+    color: #52636f;
+    height: 24px;
+}
+
+.Input {
+    border: 1px solid #1e9cf1;
+    background-color: white;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 8px;
+}
+
+.Search-Conversation-Input {
+    width: 100%;
+    border: none;
+    outline: none;
+    line-height: 20px;
+}
+
+/* 검색 결과 패널 */
+.Search-Conversation {
+    flex: 1;
+    overflow-y: auto;
+    padding: 12px 0 0;
+    display: flex;
+    flex-direction: column;
+}
+
+.Search-Conversation.off {
+    display: none;
+}
+
+/* 지우기 버튼 */
+.Search-Clear-Btn {
+    flex-shrink: 0;
+    background: none;
+    border: none;
+    color: #52636f;
+    font-size: 14px;
+    cursor: pointer;
+    padding: 0 4px;
+    white-space: nowrap;
+}
+.Search-Clear-Btn:hover {
+    color: #0f141a;
+}
+.Search-Clear-Btn.off {
+    display: none;
+}
+
+.Search-Conv-Section {
+    display: flex;
+    flex-direction: column;
+    padding: 0 16px;
+    gap: 16px;
+}
+
+/* 검색값 없을 때 영역 */
+.Search-Conv-Empty {
+    display: flex;
+    flex-direction: column;
+    padding: 0 16px;
+    gap: 16px;
+}
+
+.Search-Conv-Results {
+    display: flex;
+    flex-direction: column;
+    padding: 0 16px;
+    gap: 12px;
+}
+
+.Search-Conv-Results.off {
+    display: none;
+}
+
+.Search-Conv-Label {
+    font-size: 17px;
+    font-weight: 700;
+    color: #0f141a;
+    line-height: 24px;
+}
+
+/* 4열 그리드 (검색값 없을 때) */
+.Search-Conv-Grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 16px 12px;
+    padding-bottom: 24px;
+}
+
+.Search-Conv-Item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    text-align: center;
+    padding: 12px 8px;
+    border-radius: 12px;
+    transition: background-color 0.15s ease;
+}
+
+.Search-Conv-Item:hover {
+    background-color: #f0f4f5;
+}
+
+.Search-Conv-Item .Avatar-Image {
+    width: 56px;
+    height: 56px;
+    min-width: 56px;
+    min-height: 56px;
+    border-radius: 9999px;
+    overflow: hidden;
+    background-color: #e4eaec;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.Search-Conv-Avatar {
+    width: 56px;
+    height: 56px;
+    min-width: 56px;
+    border-radius: 9999px;
+    overflow: hidden;
+    flex-shrink: 0;
+}
+
+.Search-Conv-Avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.Search-Conv-Avatar-Fallback {
+    width: 56px;
+    height: 56px;
+    min-width: 56px;
+    border-radius: 9999px;
+    background-color: #e0185e;
+    color: white;
+    font-size: 22px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.Search-Conv-Name {
+    font-size: 15px;
+    font-weight: 700;
+    color: #0f141a;
+    line-height: 20px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 100%;
+}
+
+.Search-Conv-Handle {
+    font-size: 13px;
+    color: #52636f;
+    line-height: 18px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 100%;
+}
+
+/* 리스트형 (검색값 있을 때) */
+.Search-Conv-List {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+.Search-Conv-Row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 0;
+    border-bottom: 1px solid #f0f4f5;
+    cursor: pointer;
+}
+
+.Search-Conv-Row:last-child {
+    border-bottom: none;
+}
+
+.Search-Conv-Row:hover {
+    background-color: #f6f8f8;
+}
+
+/* 리스트형 아바타는 작게 */
+.Search-Conv-Row .Search-Conv-Avatar-Fallback,
+.Search-Conv-Row .Search-Conv-Avatar {
+    width: 44px;
+    height: 44px;
+    min-width: 44px;
+    font-size: 18px;
+    flex-shrink: 0;
+}
+
+.Search-Conv-Row-Info {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    gap: 2px;
+    overflow: hidden;
+}
+
+.Search-Conv-Row-Upper {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 8px;
+}
+
+.Search-Conv-Row-Upper .Search-Conv-Name {
+    font-size: 15px;
+}
+
+.Search-Conv-Time {
+    font-size: 13px;
+    color: #52636f;
+    flex-shrink: 0;
+}
+
+.Search-Conv-Row-Preview {
+    font-size: 14px;
+    color: #52636f;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.Search-Conv-Preview-You {
+    color: #0f141a;
+    font-weight: 500;
+}
+
+.UserList-Wrapper {
+    margin-top: 20px;
+    padding-bottom: 4px;
+    border-top-width: 1px;
+    border-color: transparent;
+
+    scrollbar-width: thin;
+    scrollbar-color: #9ca3af80;
+    height: 100% !important;
+
+    transition-property: color, background-color, border-color, text-decoration-color, fill, stroke;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-duration: 150ms;
+}
+
+.UserList-Container {
+    position: relative;
+    overflow-anchor: none;
+    width: 100%;
+    min-height: 160px;
+    height: auto;
+    visibility: visible;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.UserList-EachUser {
+    list-style: none;
+    width: 100%;
+    left: 0px;
+    top: 0px;
+    visibility: visible;
+    background-color: white;
+}
+
+.UserList-EachUser:hover {
+    background-color: #f6f8f8;
+}
+
+.UserList-Empty {
+    list-style: none;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 48px 24px;
+    gap: 12px;
+    color: #5f6b76;
+}
+
+.UserList-Empty-Icon {
+    display: flex;
+    width: 64px;
+    height: 64px;
+    font-size: 32px;
+    align-items: center;
+    justify-content: center;
+    border-radius: 9999px;
+    background-color: #f6f8f8;
+    color: #0f141a;
+}
+
+.UserList-Empty-Title {
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 22px;
+    color: #0f141a;
+}
+
+.UserList-Empty-Subtitle {
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 20px;
+    color: #5f6b76;
+}
+
+.current {
+    background-color: #f6f8f8;
+}
+
+.EachUser-UserInfo {
+    display: flex;
+    flex-direction: row;
+    align-items: stretch;
+    padding-left: 16px;
+    padding-right: 16px;
+    gap: 16px;
+    cursor: pointer;
+}
+
+.UserInfo-Avatar {
+    padding-top: 12px;
+    padding-bottom: 12px;
+}
+
+.Avatar-Image {
+    display: flex;
+
+    background-color: #bacbd4;
+    border-radius: 9999px;
+
+    overflow: hidden;
+    width: 56px;
+    height: 56px;
+    min-width: 56px;
+    min-height: 56px;
+
+    transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter, -webkit-backdrop-filter;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-duration: 200ms;
+    animation-duration: 200ms;
+}
+
+.Avatar-Image:hover {
+    filter: brightness(.9);
+}
+
+.Avatar-Image img {
+    display: block;
+    max-width: 100%;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    dynamic-range-limit: standard;
+}
+
+.UserInfo-Info {
+    display: flex;
+    flex: 1 1 0%;
+    flex-direction: column;
+    justify-content: center;
+    gap: 4px;
+    border-bottom-width: 1px;
+    border-color: #f0f4f5;
+}
+
+.Info-Upper {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 15px;
+    font-weight: 500;
+    line-height: 20px;
+}
+
+.Info-UserName {
+    display: flex;
+    flex-direction: row;
+}
+
+.UserName-Container {
+    display: flex;
+    gap: 2px;
+    align-items: center;
+    max-width: 100%;
+    cursor: pointer;
+}
+
+.UserName-Text {
+    font-size: 15px;
+    font-weight: 700;
+    line-height: 20px;
+    color: #0f141a;
+}
+
+.UserName-Id {
+    font-size: 15px;
+    font-weight: 400;
+    line-height: 20px;
+    color: #829aab; 
+}
+
+.UserName-Badge {
+    flex-shrink: 0;
+}
+
+.Badge-Wrapper {
+    max-width: 100%;
+    font-size: 15px;
+    font-weight: 400;
+    line-height: 20px;
+    word-wrap: break-word;
+    word-break: break-word;
+    color: #0f141a;
+}
+
+.Badge-Svg {
+    display: flex;
+    gap: 4px;
+}
+
+.Badge-Svg svg {
+    display: block;
+    fill: #1e9cf1;
+}
+
+.Lastest-ChatTime {
+    display: flex;
+    gap: 6px;
+    color: #52636f;
+    font-weight: 400;
+    flex-shrink: 0;
+    align-items: center;
+}
+
+.Lastest-ChatTime-Text {
+    max-width: 100%;
+    font-size: 15px;
+    line-height: 20px;
+    color: inherit;
+}
+
+.Info-Bottom {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+}
+
+.Talk-Wrapper {
+    display: flex;
+    flex: 1 1 0%;
+    flex-direction: row;
+    font-weight: 400;
+    color: #52636f;
+    gap: 4px;
+    overflow: hidden;
+    align-items: center;
+    min-width: 0px;
+}
+
+.Talk-Container {
+    display: -webkit-box;
+    overflow: hidden;
+    font-size: 15px;
+    line-height: 20px;
+    word-break: break-all;
+    max-width: 100%;
+    color: inherit;
+}
+
+.Talk-Content {
+    word-wrap: break-word;
+    word-break: break-word;
+    color: inherit;
+    font-size: inherit;
+    max-width: 100%;
+}
+
+.Room-UnreadCount {
+    display: flex;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+}
+
+.UnreadCount-Badge {
+    display: inline-flex;
+    min-width: 20px;
+    height: 20px;
+    padding: 0 6px;
+    border-radius: 9999px;
+    align-items: center;
+    justify-content: center;
+    background-color: #1d9bf0;
+    color: #ffffff;
+    font-size: 12px;
+    font-weight: 700;
+    line-height: 1;
+}
+
+.Chat-ChatContent {
+    display: block;
+    width: 100%;
+}
+
+.ChatContent-Wrapper {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border-left: 1px solid #e4eaec; 
+    gap: 24px;
+}
+
+.ChatContent-Icon {
+    display: flex;
+    width: 96px;
+    height: 96px;
+    font-size: 48px;
+    align-items: center;
+    justify-content: center;
+    border-radius: 9999px;
+    background-color: #f6f8f8;
+}
+
+.ChatContent-Texts {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+}
+
+.Upper-Text {
+    max-width: 100%;
+    text-align: center;
+    font-size: 20px;
+    font-weight: 700;
+    line-height: 24px;
+    word-wrap: break-word;
+    word-break: break-word;
+}
+
+.Bottom-Text {
+    max-width: 100%;
+    text-align: center;
+    font-size: 15px;
+    font-weight: 400;
+    line-height: 24px;
+    word-wrap: break-word;
+    word-break: break-word;
+    color: #52636f;
+}
+
+.ChatContent-Button {
+    display: inline-flex;
+    border: 1px solid transparent;
+    padding-left: 16px;
+    padding-right: 16px;
+    font-size: 15px;
+    line-height: 20px;
+    outline-color: #0f141a;
+    background-color: #0f141a;    
+    border-radius: 9999px;
+    align-items: center;
+    justify-content: center;
+    height: 36px;
+    min-width: 36px;
+    gap: 4px;
+
+    transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter, -webkit-backdrop-filter;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-duration: 150ms;
+
+    cursor: pointer;
+}
+
+.ChatContent-Button-Text {
+    display: -webkit-box;
+    overflow: hidden;
+    max-width: 100%;
+    color: white;
+    font-weight: 700;
+    font-size: inherit;
+    word-wrap: break-word;
+    word-break: break-word;
+}
+
+.ChatPage-Layout {
+    display: block;
+    width: 100%;
+}
+
+.mob-nav-item {
+    position: relative;
+}
+
+.mob-nav-badge {
+    display: inline-flex;
+    position: absolute;
+    top: -2px;
+    right: -6px;
+    min-width: 18px;
+    height: 18px;
+    padding: 0 5px;
+    border-radius: 9999px;
+    align-items: center;
+    justify-content: center;
+    background-color: #1d9bf0;
+    color: #ffffff;
+    font-size: 11px;
+    font-weight: 700;
+    line-height: 1;
+}
+
+.ChatPage-Wrapper {
+    display: flex;
+    position: relative;
+    height: 100%;
+    border-left: 1px solid #e4eaec;
+}
+
+.ChatPage-Container {
+    display: flex;
+    position: relative;
+    flex-direction: column;
+    flex-grow: 1;
+    height: 100%;
+    min-width: 0;
+}
+
+.ChatPage-Header {
+    display: flex;
+    position: absolute;
+    flex-direction: row;
+    left: 0;
+    right: 0;
+    top: 0;
+    z-index: 10;
+    background-color: rgba(255, 255, 255);
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 16px;
+}
+
+.ChatPage-UserInfo {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+}
+
+.ChatPage-Buttons {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.ChatPage-Button {
+    display: inline-flex;
+    width: 48px;
+    min-width: 40px;
+    height: 48px;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    border-radius: 9999px;
+    border: 1px solid transparent;
+    background-color: #f6f8f8;
+    font-size: 15px;
+    line-height: 20px;
+    color: #0f141a;
+
+    transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter, -webkit-backdrop-filter;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-duration: 150ms;
+
+    cursor: pointer;
+}
+
+.ChatPage-Button:hover {
+    background-color: #f0f4f5;
+}
+
+.ChatPage-Button svg {
+    display: block;
+    width: 22px;
+    height: 22px;
+}
+
+.ChatPage-Main {
+    flex: 1 1 0%;
+    isolation: isolate;
+    overflow: hidden;
+}
+
+.ChatPage-Main-Wrapper {
+    position: relative;
+    height: 100%;
+}
+
+.ChatPage-Main-Container {
+    height: 100% !important;
+    overflow: hidden auto;
+    overflow-anchor: none;
+    width: 100%;
+    box-sizing: border-box;
+    padding-bottom: 72px;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(156, 163, 175, 0.5) transparent;
+    display: flex;
+    flex-direction: column;
+}
+
+.ChatPage-Main-Content {
+    position: relative;
+    overflow-anchor: none;
+    margin: 0;
+    padding: 0;
+    height: auto;
+    box-sizing: border-box;
+}
+
+.Each-Main-Content {
+    display: flex;
+    position: relative;
+    flex-direction: column;
+    margin-bottom: 16px;
+    left: 0;
+    align-items: center;
+    justify-content: center;
+    visibility: visible;
+    list-style: none;
+}
+
+.Each-Main-Content.has-reaction {
+    margin-bottom: 32px;
+}
+
+.UserProfile {
+    padding: 32px 16px;
+    margin-top: 88px;
+}
+
+.User-Id-Text {
+    max-width: 100%;
+    font-size: 15px;
+    list-style: 20px;
+    font-weight: 400;
+    color: #52636f;
+}
+
+.User-JoinDate {
+    max-width: 100%;
+    font-size: 15px;
+    list-style: 20px;
+    font-weight: 400;
+    color: #52636f;
+}
+
+.User-Profile-Btn {
+    display: inline-flex;
+    gap: 4px;
+    align-items: center;
+    justify-content: center;
+    margin-top: 24px;
+    min-width: 36px;
+    height: 36px;
+    font-size: 15px;
+    line-height: 20px;
+    padding: 0px 16px;
+    color: white;
+    background-color: #0f141a;
+    text-decoration: none;
+    border: 1px solid transparent;
+    border-radius: 9999px;
+
+    transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter, -webkit-backdrop-filter;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-duration: 150ms;
+
+    cursor: pointer;
+}
+
+.User-Profile-Btn:hover {
+    background-color: #272c30;
+}
+
+.User-Profile-Text {
+    display: -webkit-box;
+    overflow: hidden;
+    max-width: 100%;
+    font-size: inherit;
+    font-weight: 700;
+}
+
+.Date-Wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 16px;
+    margin-bottom: 8px;
+}
+
+.Date-Text {
+    max-width: 100%;
+    text-align: center;
+    font-size: 13px;
+    list-style: 16px;
+    font-weight: 500;
+    color: #6b7f8e;
+}
+
+.Left{
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.Right {
+    flex-direction: column-reverse;
+    align-items: flex-end;
+}
+
+.Chat-Left {
+    display: flex;
+    justify-content: flex-start;
+    padding: 0px 16px;
+}
+
+.Chat-Right {
+    display: flex;
+    justify-content: flex-end;
+    padding: 0px 16px;
+}
+
+.Chat-Message-Wrapper {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-end;
+    gap: 4px;
+    max-width: 535px;
+    margin-inline-start: -8px;
+}
+
+.Chat-Message {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 4px;
+    grid-area: content;
+}
+
+.Message-Wrapper {
+    position: relative;
+    display: flex;
+    padding: 8px 16px;
+    align-items: end;
+    justify-content: flex-end;
+    border-radius: 1rem;
+    background-color: #f0f4f5;
+}
+
+.Message-Wrapper svg {
+    display: block;
+    width: 12px;
+    height: 12px;
+}
+
+.Message-Container {
+    display: inline-flex;
+    position: relative;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    color: #0f141a;
+    gap: 8px;
+    overflow: hidden;
+}
+
+.Message-Content {
+    font-size: 15px;
+    list-style: 20px;
+    font-weight: 400;
+    color: inherit;
+}
+
+.opponent {
+    border: none;
+    background-color: #f0f4f5;
+}
+
+.Message-SendTime {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    margin-left: auto;
+    padding-left: 5px;
+    padding-top: 5px;
+    gap: 4px;
+}
+
+.Message-SendTime span {
+    color: inherit;
+    font-size: 11px;
+    list-style: 12px;
+    font-weight: 400;
+}
+
+.Message-Reactions {
+    position: absolute;
+    bottom: -20px;
+    display: flex;
+    gap: 4px;
+    z-index: 100;
+}
+
+.Reaction-Badge {
+    display: flex;
+    align-items: center;
+    gap: 3px;
+    background: #f0f0f0;
+    border: 1px solid #e0e0e0;
+    border-radius: 999px;
+    padding: 2px 8px;
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: background 0.15s ease;
+    user-select: none;
+}
+
+.Reaction-Badge:hover {
+    background: #e0e0e0;
+}
+
+.Reaction-Badge.my-reaction {
+    background: #dbeafe;
+    border-color: #93c5fd;
+}
+
+.Each-Main-Content.Left .Message-Reactions {
+    left: 8px;
+}
+
+.Each-Main-Content.Right .Message-Reactions {
+    right: 8px;
+}
+
+.Message-Buttons {
+    display: inline-flex;
+    min-height: 32px;
+    flex-direction: row;
+    justify-content: inherit;
+    align-items: center;
+    gap: 4px;
+}
+
+.Message-Button-Wrapper {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.Message-Button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    border-radius: 9999px;
+    border: 1px solid  transparent;
+    background-color: transparent;
+    font-size: 14px;
+    line-height: 16px;
+    outline-color: #0f141a;
+    color: #0f141a;
+    min-width: 32px;
+    height: 32px;
+    cursor: pointer;
+
+    transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter, -webkit-backdrop-filter;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-duration: 150ms;
+}
+
+.Message-Button svg {
+    width: 20px;
+    height: 20px;
+}
+
+.Message-Button:hover {
+    background-color: #f0f4f5;
+}
+
+.CallEnd-Wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 16px;
+    margin-bottom: 8px;
+}
+
+.CallEnd-Container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    color: #52636f;
+}
+
+.CallEnd-Container svg {
+    width: 20px;
+    height: 20px;
+}
+
+.CallEnd-Text {
+    font-size: 13px;
+    line-height: 16px;
+    font-weight: 500;
+    color: inherit;
+}
+
+.ChatPage-Footer {
+    position: absolute;
+    width: 100%;
+    bottom: 0px;
+    left: 0;
+    right: 0;
+    isolation: isolate;
+    background-color: rgba(255, 255, 255, 0.8);
+    z-index: 10;
+    padding: 16px;
+    box-sizing: border-box;
+    transform: none;
+}
+
+.ChatPage-Input-Wrapper {
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+    position: relative;
+    gap: 8px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.ChatPage-Input-Container {
+    display: flex;
+    width: 100%;
+    align-items: flex-end;
+    gap: 8px;
+}
+
+.ChatPage-Input {
+    position: relative;
+    flex: 1 1 0%;
+}
+
+.Input-Area-Wrapper {
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+    align-items: center;
+    overflow: hidden;
+    border-radius: 24px;
+    background-color: #f0f4f5;
+    padding: 0px;
+    font-size: 15px;
+    line-height: 1.5rem;
+}
+
+.Input-Image-Container {
+    display: flex;
+    flex-direction: column;
+    overflow: auto;
+    width: 95%;
+    max-height: 200px;
+    padding: 8px;
+    gap: 8px;
+    border-bottom: 1px solid #ced9de;
+}
+
+.Input-Image-Card {
+    position: relative;
+    max-width: 100%;
+    align-self: flex-start;
+}
+
+.Input-Image-Card img {
+    max-width: 100%;
+    max-height: 180px;
+    border: 1px solid #ced9de;
+    border-radius: 0.5rem;
+    background-color: transparent;
+    object-fit: contain;
+}
+
+.remove-image {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+}
+
+.Remove-Image-Button {
+    display: inline-flex;
+    height: 24px;
+    min-width: 24px;
+    align-items: center;
+    justify-content: center;
+    padding-left: 0px;
+    padding-right: 0px;
+    gap: 4px;
+    border: 1px solid transparent;
+    border-radius: 9999px;
+    background-color: rgba(0, 0, 0, 0.8);
+    font-size: 14px;
+    line-height: 16px;
+
+    transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter, -webkit-backdrop-filter;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-duration: 150ms;
+
+    cursor: pointer;
+}
+
+.Remove-Image-Button svg {
+    padding: 0;
+    width: 16px;
+    height: 16px;
+    fill: white;
+}
+
+.Input-TextArea-Container {
+    display: flex;
+    width: 100%;
+    min-height: 48px;
+    padding: 0px 10px;
+    align-items: center;
+    justify-self: flex-end;
+}
+
+.Input-TextArea-Container textarea {
+    position: relative;
+    margin: 0px;
+    box-sizing: border-box;
+    flex: 1 1 0%;
+    resize: none;
+    background-color: transparent;
+    color: #0f141a;
+    border: none;
+    outline: none;
+    
+    max-height: 160px;      
+    min-height: 24px;        
+    padding: 4px 20px;       
+    font-size: 15px;         
+    font-weight: 400;
+    line-height: 1.5;        
+
+    scrollbar-width: thin;
+    scrollbar-color: rgba(156, 163, 175, 0.5) transparent;
+}
+
+.Submit-Button-Wrapper {
+    display: flex;
+    height: 32px;
+    align-items: flex-end;
+    transform: none;
+    padding-right: 10px;
+}
+
+.Message-ReadStatus {
+    display: inline-flex;
+    align-items: center;
+}
+
+.Submit-Button {
+    display: flex;
+    width: 32px;
+    height: 32px;
+    min-width: 32px;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    border: 1px none transparent;
+    border-radius: 9999px;
+    background-color: #1e9cf1;
+    font-size: 14px;
+    line-height: 16px;
+
+    transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter, -webkit-backdrop-filter;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-duration: 150ms;
+
+    cursor: pointer;
+}
+
+.Submit-Button svg {
+    width: 1.125rem;
+    height: 1.125rem;
+    fill: white;
+}
+
+/* 모달 부분 ------------------------- */
+
+.Modal-BackDrop {
+    position: fixed;
+    inset: 0px;
+    z-index: 50;
+    background-color: rgba(0, 0, 0, 0.8);
+}
+
+/* z-index 계층:
+   50   = 백드롭 (기본)
+   51   = Big-Modal / Search-Modal
+   53   = 백드롭 (Small-Modal 열릴 때 JS로 올림 → Big-Modal을 가림)
+   54   = Small-Modal (올라간 백드롭 위)
+*/
+
+.Search-Modal {
+    display: grid;
+    position: fixed;
+    max-width: 28rem;
+    width: 100%;
+    left: 50%;
+    top: 50%;
+    padding: 24px;
+    padding-bottom: 0px;
+    gap: 16px;
+    transform: translate(-50%, -50%);
+    border-radius: 0.75rem;
+    border-width: 1px;
+    border-color: #e4eaec;
+    background-color: white;
+    z-index: 51; /* 백드롭(50) 위 */
+}
+
+.Search-Modal-Header {
+    display: flex;
+    text-align: left;
+}
+
+.Modal-Header-Wrapper {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+}
+
+.Modal-Header-Text {
+    display: flex;
+    flex-direction: column;
+}
+
+.Header-Text {
+    margin: 0;
+    font-size: 23px;
+    line-height: 28px;
+    font-weight: 500;
+    letter-spacing: -0.025em;
+    color: #0f141a;
+}
+
+.Modal-Header-Button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: 36px;
+    gap: 4px;
+    color: #0f141a;
+    outline-color: #0f141a;
+    font-size: 15px;
+    line-height: 20px;
+
+    padding-left: 0px;
+    padding-right: 0px;
+
+    border-width: 1px;
+    border-style: solid;
+    border-color: transparent;
+    background-color: transparent;
+    border-radius: 9999px;
+    min-width: 36px;
+    cursor: pointer;
+
+    transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter, -webkit-backdrop-filter;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-duration: 150ms;
+}
+
+.Modal-Header-Button:hover {
+    background-color: #0f141a1a;
+}
+
+.Modal-Header-Button svg {
+    display: block;
+    width: 20px;
+    height: 20px;
+}
+
+.Search-Modal-SearchBar {
+    display: flex;
+    height: 29px;
+    padding-inline-start: 12px;
+    padding-inline-end: 16px;
+    padding: 8px;
+    gap: 8px;
+    align-items: center;
+    overflow: hidden;
+    border-radius: 0.75rem;
+    border: 1px solid #1e9cf1;
+    background-color: white;
+}
+
+.Search-Modal-SearchBar svg {
+    width: 21px;
+    height: 21px;
+    color: #52636f;
+}
+
+.Search-Modal-SearchBar input {
+    width: 100%;
+    margin: 0;
+    background-color: transparent;
+    font-weight: 400;
+    color: #0f141a;
+    border: none;
+    outline: none;
+}
+
+.Search-Modal-ExpertList {
+    max-height: 24rem;
+    width: 100%;
+    height: 100vh;
+    overflow: hidden auto;
+    overflow-anchor: none;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(156, 163, 175, 0.5) transparent;
+}
+
+.Modal-ExpertList {
+    position: relative;
+    visibility: visible;
+    overflow-anchor: none;
+    width: 100%;
+    min-height: 280px;
+    height: auto;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.Each-Expert {
+    position: relative;
+    width: 100%;
+    left: 0px;
+    top: 0px;
+    visibility: visible;
+}
+
+.Each-Expert-Wrapper {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 12px;
+    border-radius: 0.5rem;
+    padding: 8px;
+
+    width: 100%;
+    user-select: none;
+    cursor: pointer;
+}
+
+.Each-Expert-Wrapper:hover {
+    background-color: #f0f4f5;
+}
+
+.Expert-Image-Wrapper {
+    isolation: isolate;
+    position: relative;
+}
+
+.Expert-Image {
+    display: flex;
+    width: 40px;
+    height: 40px;
+    min-height: 40px;
+    min-width: 40px;
+    overflow: hidden;
+    border-radius: 9999px;
+    background-color: #bacbd4;
+
+    transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter, -webkit-backdrop-filter;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-duration: 200ms;
+    animation-duration: 200ms;
+}
+
+.Expert-Image-Fallback {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    align-items: center;
+    justify-content: center;
+    background-color: #e0185e;
+    color: white;
+    font-size: 16px;
+    line-height: 20px;
+    font-weight: 700;
+}
+
+.Expert-Image img {
+    max-width: 100%;
+    width: 100%;
+    height: 100%;
+    dynamic-range-limit: standard;
+    filter: brightness(1);
+}
+
+.Expert-Image img:hover {
+    filter: brightness(.9);
+}
+
+.Expert-Info {
+    flex: 1 1 0%;
+}
+
+.Expert-Info-Wrapper {
+    overflow: hidden;
+    align-items: flex-start;
+}
+
+.Expert-Name-Wrapper {
+    display: flex;
+    max-width: 100%;
+    align-items: center;
+    gap: 4px;
+}
+
+.Expert-Name {
+    display: -webkit-box;
+    overflow: hidden;
+    max-width: 100%;
+    font-size: 15px;
+    line-height: 20px;
+    font-weight: 700;
+    color: #0f141a;
+    word-break: break-all;
+    font-feature-settings: 'ss01';
+}
+
+.Expert-Badge-Wrapper {
+    flex-shrink: 0;
+}
+
+.Expert-Badge {
+    max-width: 100%;
+    font-size: 15px;
+    line-height: 20px;
+    font-weight: 400;
+    color: #0f141a;
+    word-wrap: break-word;
+    word-break: break-word;
+}
+
+.Expert-Badge svg {
+    fill: #1e9cf1;
+}
+
+.Each-Expert.Empty .Each-Expert-Wrapper {
+    cursor: default;
+}
+
+.Expert-Id-Wrapper {
+    display: flex;
+    min-width: 0px;
+    align-items: center;
+    gap: 8px;
+}
+
+.Expert-Id {
+    display: -webkit-box;
+    overflow: hidden;
+    max-width: 100%;
+    font-size: 15px;
+    font-weight: 400;
+    word-wrap: break-word;
+    word-break: break-word;
+    font-feature-settings: 'ss01';
+    line-height: 20px;
+}
+
+.Big-Modal {
+    display: flex;
+    position: fixed;
+    flex-direction: column;
+    width: 480px;
+    height: 772px;
+    max-width: 640px;
+    max-height: 85vh;
+    left: 50%;
+    top: 50%;
+    padding: 0px;
+    padding-bottom: 0px;
+    gap: 0px;
+    overflow: hidden;
+    border-radius: 1.5rem;
+    border-width: 1px;
+    border-color: #f0f4f5;
+    background-color: #f6f8f8;
+    z-index: 51; /* 백드롭(50) 위 */
+
+    pointer-events: auto;
+
+    visibility: hidden;
+    opacity: 0;
+    transform: translate(calc(-50% + 60px), -50%); /* 초기: 오른쪽 밖 */
+    transition: transform 0.5s ease;
+}
+
+.Big-Modal.off {
+    opacity: 0;
+    transform: translate(calc(-50% + 60px), -50%); /* 오른쪽 밖 */
+    pointer-events: none;
+    visibility: hidden;
+}
+
+.Big-Modal.on {
+    opacity: 1;
+    transform: translate(-50%, -50%); /* 중앙 */
+    visibility: visible;
+    pointer-events: auto;
+}
+
+.Big-Modal-Wrapper {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    inset: 0;
+}
+
+.Big-Modal-Container {
+    display: flex;
+    position: relative;
+    width: 100%;
+    height: 100%;
+    flex-direction: column;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(156, 163, 175, 0.5) transparent;
+}
+
+.Big-Modal-Header {
+    display: flex;
+    position: static;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    height: 64px;
+    padding: 8px 16px;
+    top: 0px;
+    z-index: 10;
+}
+
+.Big-Modal-Text {
+    flex: 1 1 0%;
+}
+
+.PostChat-Search-User {
+    display: flex;
+    margin-bottom: 8px;
+    flex-shrink: 0;
+    align-items: center;
+    overflow: hidden;
+    border-radius: 9999px;
+    border: 1px solid #ced9de;
+    padding: 0px 8px;
+    padding-inline-start: 12px;
+    padding-inline-end: 16px;
+    height: 40px;
+    gap: 8px;
+}
+
+.PostChat-Search-User svg {
+    width: 20px;
+    height: 20px;
+    color: #52636f;
+}
+
+.Search-User {
+    margin: 0px;
+    background-color: transparent;
+    font-weight: 400;
+    border: 1px solid transparent;
+    color: #0f141a;
+    outline: 2px solid transparent;
+    outline-offset: 2px;
+}
+
+.PostChat-Search-Result {
+    width: 100%;
+    overflow: hidden auto;
+    overflow-anchor: none;
+    scrollbar-width: none;
+}
+
+.Result-UserList {
+    display: flex;
+    position: relative;
+    flex-direction: column;
+    height: 260px;
+    overflow: scroll;
+    scrollbar-width: none;
+    margin: 0;
+    padding: 0;
+}
+
+.Result-Each-User {
+    display: flex;
+    align-items: center;
+    list-style: none;
+    border-radius: 0.75rem;
+}
+
+.Result-UserList-Wrapper {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    margin: 0;
+    padding: 8px;
+    border-radius: 0.5rem;
+    align-items: center;
+    gap: 12px;
+    user-select: none;
+    cursor: pointer;
+}
+
+.Result-Each-User:hover {
+    background-color: #f0f4f5;
+}
+
+.UserList-Image {
+    position: relative;
+    isolation: isolate;
+}
+
+.Image-Wrapper {
+    display: flex;
+    width: 40px;
+    height: 40px;
+    min-width: 40px;
+    min-height: 40px;
+    overflow: hidden;
+    border-radius: 9999px;
+    background-color: #bacbd4;
+
+    transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter, -webkit-backdrop-filter;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-duration: 200ms;
+    animation-duration: 200ms;
+}
+
+.Image-Wrapper:hover {
+    filter: brightness(.9);
+}
+
+.UserList-UserName {
+    flex: 1 1 0%;
+}
+
+.UserName-Wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.UserList-CheckIcon {
+    justify-self: end;
+}
+
+.UserList-CheckIcon svg {
+    width: 20px;
+    height: 20px;
+    color: #0f141a;
+}
+
+.Modal-HeaderText {
+    font-size: 17px;
+    font-weight: 700;
+    line-height: 20px;
+    color: #0f141a;
+    text-align: center;
+}
+
+.Big-Modal-Button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: 36px;
+    gap: 4px;
+    color: #0f141a;
+    outline-color: #0f141a;
+    font-size: 15px;
+    line-height: 20px;
+
+    padding-left: 0px;
+    padding-right: 0px;
+
+    border-width: 1px;
+    border-style: solid;
+    border-color: transparent;
+    background-color: transparent;
+    border-radius: 9999px;
+    min-width: 36px;
+    cursor: pointer;
+
+    transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter, -webkit-backdrop-filter;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-duration: 150ms;
+}
+
+.Save {
+    padding: 0px 16px;
+    opacity: 1;
+    background-color: #1e9cf1;
+}
+
+.Save-Button-Text {
+    font-size: inherit;
+    font-weight: 700;
+    color: white;
+}
+
+.Big-Modal-Button:hover {
+    opacity: 1;
+    background-color: #bacbd4;
+}
+
+.Big-Modal-Button.Save:hover {
+    background-color: #1a8cd8;
+}
+
+.Big-Modal-Button svg {
+    width: 20px;
+    height: 20px;
+    font-size: 24px;
+}
+
+.Big-Change-Alias {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 4px;
+}
+
+.Big-Modal-Info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 24px;
+    padding-bottom: 24px;
+}
+
+.Modal-Info-Image {
+    width: 96px;
+    height: 96px;
+}
+
+.Image-Link {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    border-radius: 9999px;
+    background-color: #bacbd4;
+
+    transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter, -webkit-backdrop-filter;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-duration: 200ms;
+    animation-duration: 200ms;
+}
+
+.Image-Link img {
+    max-width: 100%;
+    width: 100%;
+    height: 100%;
+    dynamic-range-limit: standard;
+    filter: brightness(1);
+}
+
+.Image-Link img:hover {
+    filter: brightness(.9);
+}
+
+.Info-Text-Name {
+    display: flex;
+    max-width: 100%;
+    align-items: center;
+    gap: 2px;
+    cursor: pointer;
+}
+
+.Text-Name {
+    display: -webkit-box;
+    overflow: hidden;
+    font-size: 20px;
+    line-height: 24px;
+    font-weight: 700;
+    color: #0f141a;
+}
+
+.Info-Text-Id {
+    font-size: 17px;
+    line-height: 20px;
+    font-weight: 400;
+    color: #52636f;
+}
+
+.Modal-Setting-Wrapper {
+    display: flex;
+    position: relative;
+    flex-direction: column;
+    padding: 16px;
+    gap: 24px;
+}
+
+.Modal-Setting-Container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 48px;
+}
+
+.Modal-Upper-Contents {
+    display: flex;
+    width: 100%;
+    justify-content: center;
+    gap: 48px;
+}
+
+.Modal-Upper-Button {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+}
+
+/* More 버튼은 메뉴바의 기준점 */
+.Modal-Upper-Button.More {
+    position: relative;
+}
+
+/* 메뉴바 */
+.Extend-Menu-Wrapper {
+    position: absolute;
+    top: calc(100% + 4px); /* 버튼 텍스트 포함 전체 높이 바로 아래 */
+    left: 50%;
+    transform: translateX(-50%);
+    min-width: max-content;
+    z-index: 50;
+    border-radius: 0.75rem;;
+    box-shadow: rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0.1) 0px 4px 6px -1px, rgba(0, 0, 0, 0.1) 0px 2px 4px -2px;
+}
+
+.Button-Content {
+    display: flex;
+    width: 64px;
+    height: 64px;
+    border: none;
+    align-items: center;
+    justify-content: center;
+    border-radius: 9999px;
+    padding: 16px;
+    background-color: #f0f4f5;
+    cursor: pointer;
+}
+
+.Button-Content:hover {
+    background-color: #ced9de;
+}
+
+.Button-Content svg {
+    width: 24px;
+    height: 24px;
+}
+
+.Button-Text {
+    font-size: 15px;
+    line-height: 20px;
+    font-weight: 400;
+    color: #0f141a;
+}
+
+.Modal-Bottom-Contents {
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+}
+
+.Modal-Bottom-Setting {
+    display: flex;
+    flex-direction: row;
+    border-radius: 0px;
+    margin: 0px 16px;
+    padding: 0px 16px;
+    height: 56px;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #f0f4f5;
+
+    gap: 16px;
+    cursor: pointer;
+}
+
+.RemovedMsg {
+    border-top-left-radius: 1.5rem;
+    border-top-right-radius: 1.5rem;
+}
+
+.BanUser {
+    color: red;
+    border-bottom-left-radius: 1.5rem;
+    border-bottom-right-radius: 1.5rem;
+}
+.BanUser.banned {
+    color: inherit;
+}
+
+.Modal-Bottom-Setting:hover {
+    background-color: #e4eaec;
+}
+
+.Modal-Bottom-Setting svg {
+    width: 24px;
+    height: 24px;
+}
+
+.Bottom-Setting-Text {
+    display: flex;
+    flex: 1 1 0%;
+    align-items: center;
+}
+
+.Setting-Text {
+    font-size: 15px;
+    line-height: 20px;
+    font-weight: 400;
+    color: inherit;   
+}
+
+.Bottom-Setting-Arrow {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    color: #52636f;
+}
+
+.Bottom-Setting-Arrow svg {
+    width: 18px;
+    height: 18px;
+}
+
+.Setting-Arrow {
+    font-size: 15px;
+    line-height: 20px;
+    font-weight: 400;
+    color: inherit;
+}
+
+.RemovedMsg-Setting-Area {
+    flex: 1 1 0%;
+    overflow-y: auto;
+    padding: 24px 16px;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(156, 163, 175, 0.5) transparent;
+
+}
+
+.ChangeAlias-Setting-Area {
+    flex: 1 1 0%;
+    overflow-y: auto;
+    padding: 24px 16px;
+}
+
+.ChangeAlias-Area-Container {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.ChangeAlias-Alert {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    border-radius: 0.75rem;
+    padding: 16px;
+    background-color: #f0f4f5;
+}
+
+.ChangeAlias-Alert svg {
+    width: 20px;
+    height: 20px;
+    color: #6b7f8e;
+}
+
+.Alert-Text {
+    font-size: 13px;
+    font-weight: 400;
+    line-height: 16px;
+    color: #52636f;
+}
+
+.ChangeAlias-Input-Area {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.Input-Area-Header {
+    font-size: 13px;
+    font-weight: 500;
+    line-height: 16px;
+    color: #52636f;
+}
+
+.Input-Area {
+    display: flex;
+    /* width: 100%;  */
+    align-items: center;
+    gap: 8px;
+    overflow: hidden;
+    border-radius: 9999px;
+    border: 1px solid #ced9de;
+    padding: 8px;
+    padding-inline-start: 16px;
+    padding-inline-end: 16px;
+}
+
+.Input-Area input {
+    width: 100%;
+    color: #0f141a;
+    font-weight: 400;
+    outline: none;
+    border: 1px solid transparent;
+    background-color: transparent;
+}
+
+.Input-Area input:focus > .Input-Area {
+    border: 1px solid #1e9cf1;
+}
+
+.Setting-Area-Header {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+.Area-Header-Text {
+    font-size: 15px;
+    font-weight: 400;
+    line-height: 20px;
+    color: #0f141a;
+}
+
+.Setting-Area-Content {
+    display: flex;
+    flex-direction: column;
+}
+
+.Set-Remove-Time {
+    display: flex;
+    position: relative;
+    width: 100%;
+    height: 48px;
+    border-radius: 0px;
+    margin-top: 0px;
+    margin-bottom: 0px;
+    padding: 0px 16px;
+    border: none;
+    background-color: #f0f4f5;
+    align-items: center;
+    justify-content: space-between;
+    cursor: pointer;
+}
+
+.Set-Remove-Time:hover {
+    filter: brightness(.9);
+}
+
+.Set-Remove-Time svg {
+    fill: #1e9cf1;
+}
+
+.Top {
+    border-top-left-radius: 0.75rem;
+    border-top-right-radius: 0.75rem;
+}
+
+.Bottom {
+    border-bottom-left-radius: 0.75rem;
+    border-bottom-right-radius: 0.75rem;
+}
+
+.Setting-Area-Footer {
+    flex-shrink: 0;
+    padding: 0px 16px 16px 16px;
+}
+
+.Remove-All-Button {
+    display: inline-flex;
+    width: 100%;
+    height: 40px;
+    min-width: 40px;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    cursor: pointer;
+    border: 1px solid transparent;
+    border-radius: 9999px;
+    padding: 0px 24px;
+    font-size: 15px;
+    line-height: 20px;
+
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-duration: 150ms;
+}
+
+.Remove-All-Button:hover {
+    filter: brightness(.9);
+}
+
+.Remove-All-Button-Text {
+    font-size: inherit;
+    font-weight: 700;
+    color: inherit;
+}
+
+.Set-Toggle-Wrapper {
+    flex: 1 1 0%;
+    overflow-y: auto;
+    padding: 24px 16px;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(156, 163, 175, 0.5) transparent;
+}
+
+.Set-Toggle-Container {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.Set-Toggle-Content {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.Toggle-Setting-Area {
+    border-radius: 0.75rem;
+    padding: 16px;
+    background-color: #f0f4f5;
+}
+
+.Setting-Area {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.Setting-Area-Text {
+    font-size: 15px;
+    font-weight: 500;
+    line-height: 20px;
+    color: #0f141a;
+}
+
+.Toggle-Button {
+    display: inline-flex;
+    position: relative;
+    padding: 0;
+    width: 44px;
+    height: 24px;
+    flex-shrink: 0;
+    border-radius: 9999px;
+    align-items: center;
+    border: 1px solid transparent;
+    background-color: #829aab;
+
+    transition-property: color, background-color, border-color, text-decoration-color, fill, stroke;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-duration: 150ms;
+
+    cursor: pointer;
+}
+
+/* span: 지름 20px, 버튼 height 24px → 상하 중앙 = (24-20)/2 = 2px */
+/* off 상태: 왼쪽 끝 left=2px / on 상태: 오른쪽 끝 left=calc(100% - 22px) */
+.Toggle-Switch {
+    position: absolute;
+    left: 2px;
+    width: 20px;
+    height: 20px;
+    border-radius: 9999px;
+    pointer-events: none;
+    background-color: #f0f4f5;
+    box-shadow: rgb(255, 255, 255) 0px 0px 0px 0px, rgba(30, 156, 241, 0.5) 0px 0px 0px 0px, rgba(0, 0, 0, 0.1) 0px 4px 6px -1px, rgba(0, 0, 0, 0.1) 0px 2px 4px -2px;
+
+    transition: left 0.25s ease-in-out;
+}
+
+.clicked {
+    background-color: #1e9cf1;
+}
+
+.moved {
+    left: calc(100% - 22px); /* 버튼 오른쪽 끝: 44 - 20 - 2 = 22 */
+}
+
+/* Extend-Menu-Wrapper 스타일은 .Modal-Upper-Button.More 블록에서 정의 */
+
+.Extend-Menu-Container {
+    display: flex;
+    flex-direction: column;
+    background-color: #f0f4f5;
+    border: 1px #e4eaec;
+    border-radius: 0.75rem;
+}
+
+.Menu-Content {
+    display: flex;
+    height: 48px;
+    width: 100%;
+    cursor: pointer;
+    align-items: center;
+    gap: 12px;
+    border-radius: 0px;
+    background-color: #f0f4f5;
+    padding-left: 16px;
+    padding-right: 16px;
+
+    transition-property: color, background-color, border-color, text-decoration-color, fill, stroke;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-duration: 150ms;
+}
+
+.Menu-Content svg {
+    width: 20px;
+    height: 20px;
+}
+
+.Menu-Text {
+    font-size: 15px;
+    line-height: 20px;
+    font-weight: 400;
+    color: inherit;
+}
+
+.Mute {
+    border-top-left-radius: 0.75rem;
+    border-top-right-radius: 0.75rem;
+}
+
+.Delete {
+    border-bottom-left-radius: 0.75rem;
+    border-bottom-right-radius: 0.75rem;
+    color: red;
+}
+
+.Menu-Icon {
+    display: flex;
+    width: 100%;
+    height: 48px;
+    padding: 0px 16px;
+    align-items: center;
+    gap: 12px;
+    background-color: #f0f4f5;
+    border: none;
+    cursor: pointer;
+
+    transition-property: color, background-color, border-color, text-decoration-color, fill, stroke;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-duration: 150ms;
+}
+
+.Menu-Icon:hover {
+    background-color: #ced9de;
+}
+
+.Menu-Icon svg {
+    width: 20px;
+    height: 20px;
+}
+
+/* 사라진 메세지 */
+.ChaUser-RemovedMsg-Modal {
+    display: flex;
+    position: fixed;
+    flex-direction: column;
+    width: 100%;
+    height: 772px;
+    max-width: 640px;
+    max-height: 85vh;
+    left: 50%;
+    top: 50%;
+    padding: 0px;
+    padding-bottom: 0px;
+    gap: 0px;
+    overflow: hidden;
+    border-radius: 1.5rem;
+    border-width: 1px;
+    border-color: #f0f4f5;
+    background-color: #f6f8f8;
+    z-index: 51; /* 백드롭(50) 위 */
+
+    pointer-events: auto;
+
+    transform: translate(-50%, -50%);
+    transition-duration: 200ms;
+    animation-duration: 200ms;
+    box-shadow: var(0 0 #0000, 0 0 #0000), var(0 0 #0000, 0 0 #0000), var(0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1));
+}
+
+/* 공용 작은 모달 */
+.Small-Modal {
+    display: grid;
+    position: fixed;
+    max-width: 19.5rem;
+    width: 100%;
+    min-height: 238px;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    padding: 24px;
+    gap: 12px;
+    border-radius: 0.75rem;
+    border-width: 1px;
+    border-color: #e4eaec;
+    background-color: white;
+    z-index: 54; /* 올라간 백드롭(53) 위 */
+}
+
+.Small-Header {
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+}
+
+.Small-Header h2 {
+    margin: 0;
+    font-size: 23px;
+    line-height: 28px;
+    font-weight: 500;
+    letter-spacing: -0.025em;
+    color: #0f141a;
+}
+
+.Small-Message {
+    margin: 0;
+    color: #52636f;
+}
+
+.Small-Buttons {
+    display: flex;
+    gap: 16px;
+    flex-direction: column;
+    justify-content: flex-end;
+}
+
+.Small-Button {
+    display: inline-flex;
+    min-width: 36px;
+    height: 36px;
+    padding: 0px 16px;
+    font-size: 15px;
+    line-height: 20px;
+    border-radius: 9999px;
+    margin-left: 0px !important;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    border: 1px none transparent;
+    outline: none;
+    cursor: pointer;
+}
+
+.Ban {
+    background-color: #f41f2d;
+    color: white;
+}
+
+.Cancel {
+    background-color: #e4eaec;
+    color: #0f141a;
+}
+
+.Small-Button:hover {
+    filter: brightness(.9);
+}
+
+.Close-Button {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    border-radius: 0.25rem;
+    opacity: 0.7;
+    cursor: pointer;
+    text-transform: none;
+    background-color: transparent;
+    border: 1px none transparent;
+
+    transition-property: opacity;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-duration: 150ms;
+}
+
+.Close-Button svg {
+    width: 16px;
+    height: 16px;
+}
+
+.Close-Button:hover {
+    opacity: 1;
+}
+
+/* 채팅 추가 메뉴 */
+.Chat-Extend-Menu {
+    display: none;
+    position: fixed;
+    left: 0px;
+    top: 0px;
+    min-width: max-content;
+    z-index: 100;
+}
+
+.Chat-Extend-Menu.on {
+    display: block;
+}
+
+.Chat-Extend-Menu-Wrapper {
+    overflow: hidden;
+    background-color: transparent;
+    border-radius: 1.5rem;
+    box-shadow: rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0.1) 0px 4px 6px -1px, rgba(0, 0, 0, 0.1) 0px 2px 4px -2px;
+}
+
+.Chat-Extend-Menu-Container {
+    display: flex;
+    flex-direction: column;
+    border-radius: 1.5rem !important;
+    padding: 8px;
+    background-color: white;
+    border-width: 1px;
+    border-color: #e4eaec;
+}
+
+.Extend-Menu-Button {
+    display: flex;
+    width: 100%;
+    min-width: 40px;
+    height: auto;
+    padding: 12px 16px;
+    background-color: transparent;
+    border-color: transparent;
+    border-radius: 1rem;
+    cursor: pointer;
+}
+
+.Extend-Menu-Button:hover {
+    background-color: #f6f8f8;
+}
+
+.Menu-Button {
+    display: flex;
+    width: 100%;
+    gap: 12px;
+}
+
+.Menu-Button-Text {
+    font-size: 15px;
+    font-weight: 700;
+    line-height: 20px;
+    color: inherit;
+}
+
+button[name="delete"] {
+    color: red;
+}
+
+.Menu-Button svg {
+    width: 20px;
+    height: 20px;
+}
+
+/* Emoji div */
+.Chat-Emoji-Picker {
+    position: fixed;
+    z-index: 9999;
+    background: #ffffff;
+    border-radius: 999px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.15);
+    padding: 6px 10px;
+}
+
+.Emoji-Picker-Wrapper {
+    display: flex;
+    gap: 4px;
+}
+
+.Emoji-Button {
+    font-size: 1.4rem;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 4px;
+    border-radius: 50%;
+    transition: transform 0.15s ease, background 0.15s ease;
+}
+
+.Emoji-Button:hover {
+    transform: scale(1.3);
+    background: #f0f0f0;
+}
+
+/* Toast css */
+.Clipboard-Toast {
+    position: fixed;
+    left: 50%;
+    bottom: -100px;
+    transform: translate(-50%);
+    z-index: 200;
+    width: auto !important;
+    color: white !important;
+    font-size: 15px !important;
+    line-height: 20px !important;
+    background-color: #1e9cf1 !important;
+    border-style: none !important;
+    padding: 18px 15px;
+    border-radius: 0.5rem;
+    box-shadow: rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0.1) 0px 4px 6px -1px, rgba(0, 0, 0, 0.1) 0px 2px 4px -2px;
+    transition: bottom 0.4s ease;
+}
+
+/* 토글용 css */
+.off {
+    display: none;
+}
+
+.disabled {
+    opacity: 0.5;
+    pointer-events: none;
+}
+
+.show {
+    bottom: 30px;
+}
+
+/* 애니메이션 */
+.chat-pop-right {
+  animation: slideRight 0.5s ease;
+}
+
+.chat-pop-left {
+  animation: slideLeft 0.5s ease;
+}
+
+
+/* ----------------- 반응형 ----------------- */
+
+/* 모바일 뒤로가기 버튼: 기본(데스크탑)에서는 숨김 */
+.ChatPage-Button.BackBtn {
+    display: none;
+}
+
+/* 헤더 프로필 이미지: 기본(데스크탑)에서는 숨김 */
+.Header-My-Profile {
+    display: none;
+}
+
+@media (max-width: 600px) {
+    .Chat-Wrapper {
+        padding: 0px;
+    }
+
+    /* 전체 컨테이너를 relative로 만들어 absolute 자식 기준점 확보 */
+    .Chat-Contents-Container {
+        position: relative;
+        overflow: hidden;
+    }
+
+    /* 유저 목록: 전체 너비로, 채팅방이 열리면 JS에서 off 추가 */
+    .Chat-UserList-Wrapper {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        min-width: unset;
+        max-width: unset;
+        z-index: 1;
+        background-color: white;
+        transition: transform 0.3s ease;
+    }
+
+    /* 채팅방 시작 화면 (상담 시작 안내) */
+    .Chat-ChatContent {
+        position: absolute;
+        inset: 0;
+    }
+
+    /* 채팅방: 전체 화면을 덮도록 absolute */
+    .ChatPage-Layout {
+        position: absolute;
+        inset: 0;
+        z-index: 2;
+        background-color: white;
+    }
+
+    /* 채팅방이 off일 때 숨기기 (off 클래스 재정의) */
+    .ChatPage-Layout.off {
+        display: none;
+    }
+
+    /* 유저 목록이 off일 때 숨기기 */
+    .Chat-UserList-Wrapper.off {
+        display: none;
+    }
+
+    /* 채팅방 헤더: 뒤로가기 버튼 노출 */
+    .ChatPage-Button.BackBtn {
+        display: inline-flex;
+    }
+
+    /* 헤더 프로필 이미지 모바일에서 표시 */
+    .Header-My-Profile {
+        display: flex;
+        align-items: center;
+    }
+
+    /* 푸터 너비를 화면에 맞게 */
+    .ChatPage-Footer {
+        width: 100%;
+        padding: 8px;
+        left: 0;
+        transform: none;
+        box-sizing: border-box;
+    }
+
+    /* 메시지 최대 너비 확대 */
+    .Chat-Message-Wrapper {
+        max-width: 85vw;
+    }
+
+    /* Big-Modal 전체 화면 */
+    .Big-Modal {
+        width: 100%;
+        height: 100%;
+        max-width: 100%;
+        max-height: 100%;
+        border-radius: 0;
+        /* 슬라이드 방향도 보정 */
+        transform: translate(calc(-50% + 30px), -50%);
+    }
+
+    .Big-Modal.off {
+        transform: translate(calc(-50% + 30px), -50%);
+    }
+
+    .Big-Modal.on {
+        transform: translate(-50%, -50%);
+    }
+
+    /* Small-Modal 너비 */
+    .Small-Modal {
+        width: calc(100% - 32px);
+        max-width: 100%;
+    }
+
+    /* 전문가 검색 모달 너비 */
+    .Search-Modal {
+        width: calc(100% - 32px);
+        max-width: 100%;
+    }
+
+    /* 채팅 메뉴 익스텐드 메뉴 너비 */
+    .Chat-Extend-Menu {
+        max-width: calc(100vw - 16px);
+    }
+
+    .Chat-Extend-Menu.on {
+        display: block;
+    }
+
+    /* UserList-Header 패딩 보정 */
+    .UserList-Header-Upper {
+        padding: 8px 12px;
+    }
+
+    /* 채팅방 헤더 패딩 */
+    .ChatPage-Header {
+        padding: 8px 12px;
+        gap: 8px;
+    }
+}
+
+@media (max-width: 480px) {
+
+    /* 헤더 버튼 크기 축소 */
+    .ChatPage-Button {
+        width: 36px;
+        height: 36px;
+        min-width: 36px;
+    }
+
+    /* 뒤로가기 버튼 크기 명시 */
+    .ChatPage-Button.BackBtn {
+        width: 36px;
+        height: 36px;
+        min-width: 36px;
+    }
+
+    /* 채팅방 상단 유저 이름 폰트 */
+    .ChatPage-UserInfo .UserName-Text {
+        font-size: 14px;
+    }
+
+    /* 모달 상단 버튼 간격 */
+    .Modal-Upper-Contents {
+        gap: 24px;
+    }
+
+    /* 모달 상단 버튼 크기 축소 */
+    .Button-Content {
+        width: 52px;
+        height: 52px;
+        padding: 12px;
+    }
+
+    /* 유저 아바타 크기 축소 */
+    .Avatar-Image {
+        width: 44px;
+        height: 44px;
+        min-width: 44px;
+        min-height: 44px;
+    }
+
+    /* 유저 목록 아이템 패딩 */
+    .EachUser-UserInfo {
+        padding-left: 12px;
+        padding-right: 12px;
+        gap: 12px;
+    }
+
+    /* 채팅 입력란 폰트 */
+    .Input-TextArea-Container textarea {
+        font-size: 14px;
+    }
+
+    /* 날짜 텍스트 */
+    .Date-Text {
+        font-size: 11px;
+    }
+
+    /* 메세지 폰트 */
+    .Message-Content {
+        font-size: 14px;
+    }
+
+    /* 채팅 메뉴 버튼 크기 */
+    .Chat-Extend-Menu-Container {
+        padding: 4px;
+    }
+
+    .Extend-Menu-Button {
+        padding: 8px 12px;
+    }
+
+    /* Small-Modal 헤더 폰트 */
+    .Small-Header h2 {
+        font-size: 19px;
+    }
+
+    /* 유저 목록 헤더 텍스트 */
+    .Header-Upper-Text {
+        font-size: 17px;
+    }
+
+    /* 이모지 버튼 크기 */
+    .Emoji-Button {
+        font-size: 1.2rem;
+    }
+
+    /* 채팅 하단 버튼들 */
+    .ChatPage-Button.AddImage,
+    .ChatPage-Button.AddEmote {
+        width: 36px;
+        height: 36px;
+        min-width: 36px;
+    }
+}
+
+/* 첨부파일 */
+.Chat-Message-Content-Wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+.Right .Chat-Message-Content-Wrapper {
+    align-items: flex-end;
+}
+.Left .Chat-Message-Content-Wrapper {
+    align-items: flex-start;
+}
+.Message-File {
+    margin-bottom: 0;
+}
+.Message-File-Image .Chat-Image {
+    max-width: 240px;
+    max-height: 400px;
+    border-radius: 16px;
+    cursor: pointer;
+    object-fit: contain;
+    border: 1px solid rgba(0,0,0,0.08);
+}
+.Message-Image-Wrapper {
+    position: relative;
+    display: inline-block;
+}
+.Message-Reactions-Image {
+    position: absolute;
+    bottom: -10px;
+    right: 8px;
+}
+.Message-Reactions-Image:not(:empty) ~ .Message-Time-Only,
+.Message-Image-Wrapper:has(.Message-Reactions-Image:not(:empty)) {
+    margin-bottom: 10px;
+}
+.Message-Time-Only {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    padding: 0 4px;
+}
+.Message-File-Doc {
+    display: flex;
+    align-items: center;
+    padding: 8px 12px;
+    background: rgba(0,0,0,0.05);
+    border-radius: 8px;
+    cursor: pointer;
+    gap: 8px;
+}
+.Message-File-Doc svg {
+    flex-shrink: 0;
+    color: #6b7280;
+}
+.File-Info {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+.File-Detail {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+.File-Name {
+    font-size: 13px;
+    font-weight: 500;
+    word-break: break-all;
+}
+.File-Size {
+    font-size: 11px;
+    color: #9ca3af;
+}
+
+/* 스크린샷 차단 ON: 본문 선택/드래그/우클릭 차단 (이미지 다운로드·텍스트 복사 방지) */
+.ChatPage-Layout.screen-blocked .ChatPage-Main-Container,
+.ChatPage-Layout.screen-blocked .ChatPage-Header,
+.ChatPage-Layout.screen-blocked .ChatPage-Bottom {
+    user-select: none;
+    -webkit-user-select: none;
+    -webkit-touch-callout: none;
+}
+.ChatPage-Layout.screen-blocked img {
+    -webkit-user-drag: none;
+    user-drag: none;
+}
+
+/* 모바일 nav는 /css/common/mobile-nav.css가 담당. 채팅 전용 보정만 유지. */
+@media (max-width: 600px) {
+    /* 사용자 목록 마지막 항목이 하단 nav에 가려지지 않게 */
+    .UserList-Wrapper {
+        padding-bottom: 53px;
+    }
+}
+
+/* 사라진 메시지 윈도우 만료 마커 — 다른 방에 있을 때 알림용 */
+.UserList-EachUser.disappear-expired {
+    position: relative;
+}
+.UserList-EachUser.disappear-expired::after {
+    content: "";
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #ef4444;
+    box-shadow: 0 0 0 2px #fff;
+}
+

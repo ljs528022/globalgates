@@ -1,0 +1,1213 @@
+/* ============================================================
+   Notification.css — 알림 페이지 스타일
+   ============================================================ */
+
+/* ── 클릭 가능한 알림 항목 ── */
+[data-href] {
+    cursor: pointer;
+}
+
+/* ── 페이지 레이아웃 ──────────────────────────────────────── */
+.notif-page {
+    width: 100%;
+    max-width: 600px;
+    min-height: 100vh;
+    border-left: 1px solid #eff3f4;
+    border-right: 1px solid #eff3f4;
+    background: #ffffff;
+}
+
+.notif-layout {
+    display: flex;
+    width: 48%;
+    flex-direction: column;
+}
+
+.notif-col {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-width: 600px;
+    min-height: 100vh;
+    background: #ffffff;
+    border-left: 1px solid #eff3f4;
+    border-right: 1px solid #eff3f4;
+}
+
+/* ── 상단 고정 헤더 ─────────────────────────────────────── */
+.notif-header {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background-color: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid #eff3f4;
+}
+
+.notif-header__inner {
+    padding: 0 16px;
+}
+
+.notif-header__title-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    min-height: 53px;
+    padding: 8px 0;
+}
+
+.notif-header__title-wrap {
+    display: flex;
+    align-items: center;
+    flex: 1;
+}
+
+.notif-header__title {
+    font-size: 20px;
+    font-weight: 800;
+    line-height: 24px;
+    color: #0f1419;
+    letter-spacing: -0.5px;
+}
+
+.notif-header__actions {
+    display: flex;
+    align-items: center;
+}
+
+.notif-header__settings-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    color: #0f1419;
+    text-decoration: none;
+    transition: background-color 0.2s;
+    margin-right: -8px;
+}
+
+.notif-header__settings-link:hover {
+    background-color: rgba(15, 20, 25, 0.1);
+}
+
+.notif-header__settings-icon {
+    width: 20px;
+    height: 20px;
+    fill: currentColor;
+}
+
+/* ── 탭 네비게이션 ─────────────────────────────────────── */
+.notif-tabnav {
+    overflow: hidden;
+}
+
+.notif-tabnav__inner {
+    display: flex;
+    align-items: center;
+}
+
+.notif-tabnav__list {
+    display: flex;
+    flex: 1;
+    overflow-x: auto;
+    scrollbar-width: none;
+}
+
+.notif-tabnav__list::-webkit-scrollbar {
+    display: none;
+}
+
+.notif-tabnav__item {
+    flex: 1;
+    min-width: 56px;
+}
+
+.notif-tab {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 53px;
+    padding: 0 16px;
+    text-decoration: none;
+    color: #536471;
+    font-size: 15px;
+    font-weight: 500;
+    transition: background-color 0.2s;
+    position: relative;
+    white-space: nowrap;
+}
+
+.notif-tab:hover {
+    background-color: rgba(15, 20, 25, 0.07);
+    color: #0f1419;
+}
+
+.notif-tab--active {
+    color: #0f1419;
+    font-weight: 700;
+}
+
+.notif-tab__label {
+    position: relative;
+    z-index: 1;
+}
+
+.notif-tab__indicator {
+    display: block;
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
+    max-width: 56px;
+    height: 4px;
+    border-radius: 4px;
+    background-color: #1d9bf0;
+    opacity: 0;
+    transition: opacity 0.15s ease;
+}
+
+.notif-tab--active .notif-tab__indicator {
+    opacity: 1;
+}
+
+/* ── 새 게시물 버튼 ─────────────────────────────────────── */
+.notif-new-posts-wrapper {
+    display: flex;
+    justify-content: center;
+    padding: 16px;
+    pointer-events: none;
+}
+
+.notif-new-posts-btn {
+    display: none;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 20px;
+    background-color: #1d9bf0;
+    color: #fff;
+    border: none;
+    border-radius: 9999px;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    pointer-events: all;
+    transition: background-color 0.2s;
+}
+
+.notif-new-posts-btn:hover {
+    background-color: #1a8cd8;
+}
+
+.notif-new-posts-btn__icon {
+    width: 18px;
+    height: 18px;
+    fill: #fff;
+}
+
+/* ── 알림 타임라인 섹션 ─────────────────────────────────── */
+.notif-timeline {
+    flex: 1;
+}
+
+.notif-timeline__title {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+}
+
+.notif-list {
+    display: flex;
+    flex-direction: column;
+}
+
+/* ── 알림 아이템 ────────────────────────────────────────── */
+.notif-item,
+.notif-tweet-item {
+    display: block;
+    border-bottom: 1px solid #eff3f4;
+    cursor: pointer;
+    text-decoration: none;
+    color: inherit;
+    transition: background-color 0.2s;
+    outline: none;
+}
+
+.notif-item:hover,
+.notif-tweet-item:hover {
+    background-color: rgba(0, 0, 0, 0.03);
+}
+
+.notif-item:focus-visible,
+.notif-tweet-item:focus-visible {
+    outline: 2px solid #1d9bf0;
+    outline-offset: -2px;
+}
+
+/* 핵심 레이아웃 버그 수정: flex-direction: row 명시 */
+.notif-item__inner {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    padding: 12px 16px;
+    gap: 12px;
+}
+
+/* ── 아이콘 칼럼 ────────────────────────────────────────── */
+.notif-item__icon-col {
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-end;
+    width: 42px;
+    flex-shrink: 0;
+    padding-top: 2px;
+}
+
+/* ── 아이콘 SVG ─────────────────────────────────────────── */
+.notif-icon {
+    width: 26px;
+    height: 26px;
+}
+
+.notif-icon--follow {
+    fill: #1d9bf0;
+}
+
+.notif-icon--bell {
+    fill: #1d9bf0;
+}
+
+.notif-icon--x-logo {
+    fill: #0f1419;
+}
+
+.notif-icon--lock {
+    fill: #0f1419;
+}
+
+.notif-icon--verified-badge {
+    fill: #1d9bf0;
+}
+
+/* ── 본문 영역 ──────────────────────────────────────────── */
+.notif-item__body {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    min-width: 0;
+    gap: 4px;
+}
+
+/* ── 아바타 목록 ────────────────────────────────────────── */
+.notif-avatar-list {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 4px;
+    list-style: none;
+    margin-bottom: 4px;
+}
+
+.notif-avatar-item {
+    display: flex;
+}
+
+.notif-avatar-link {
+    display: block;
+    text-decoration: none;
+}
+
+.notif-avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #fff;
+    transition: opacity 0.15s;
+}
+
+.notif-avatar-link:hover .notif-avatar {
+    opacity: 0.85;
+}
+
+/* ── 알림 콘텐츠 ────────────────────────────────────────── */
+.notif-content {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.notif-message {
+    font-size: 15px;
+    line-height: 20px;
+    color: #0f1419;
+    word-break: break-word;
+}
+
+.notif-username {
+    font-weight: 700;
+    color: #0f1419;
+    text-decoration: none;
+    display: inline;
+}
+
+.notif-username:hover {
+    text-decoration: underline;
+}
+
+.notif-verified-icon {
+    display: inline-block;
+    vertical-align: middle;
+    width: 16px;
+    height: 16px;
+    fill: #1d9bf0;
+    margin-left: 1px;
+    margin-bottom: 1px;
+}
+
+.notif-sep {
+    color: #536471;
+    margin: 0 4px;
+}
+
+.notif-time {
+    color: #536471;
+    font-size: 15px;
+}
+
+.notif-tweet-preview {
+    font-size: 15px;
+    line-height: 20px;
+    color: #536471;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.notif-description {
+    font-size: 15px;
+    line-height: 20px;
+    color: #536471;
+}
+
+/* ── 배너 포함 알림 ─────────────────────────────────────── */
+.notif-item__banner {
+    padding: 8px 16px 0 16px;
+    font-size: 13px;
+    color: #536471;
+    font-weight: 500;
+}
+
+/* ── 트윗 카드 ──────────────────────────────────────────── */
+.notif-tweet-item .notif-item__inner {
+    padding: 12px 16px;
+}
+
+.tweet-body {
+    flex: 1;
+    min-width: 0;
+}
+
+.tweet-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 4px;
+}
+
+.tweet-avatar-link {
+    display: block;
+    text-decoration: none;
+    flex-shrink: 0;
+}
+
+.tweet-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.tweet-meta {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 3px;
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+}
+
+.tweet-displayname {
+    font-size: 15px;
+    font-weight: 700;
+    color: #0f1419;
+    text-decoration: none;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.tweet-displayname:hover {
+    text-decoration: underline;
+}
+
+.tweet-handle {
+    font-size: 15px;
+    color: #536471;
+    text-decoration: none;
+    white-space: nowrap;
+}
+
+.tweet-badge {
+    font-size: 13px;
+    color: #536471;
+    white-space: nowrap;
+}
+
+.tweet-sep {
+    color: #536471;
+    font-size: 15px;
+}
+
+.tweet-time {
+    font-size: 15px;
+    color: #536471;
+    white-space: nowrap;
+}
+
+.tweet-actions-top {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    margin-left: auto;
+    flex-shrink: 0;
+}
+
+.tweet-more-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 34px;
+    height: 34px;
+    border: none;
+    background: none;
+    border-radius: 50%;
+    cursor: pointer;
+    color: #536471;
+    transition: background-color 0.2s, color 0.2s;
+}
+
+.tweet-more-btn:hover {
+    background-color: rgba(29, 155, 240, 0.1);
+    color: #1d9bf0;
+}
+
+.tweet-more-icon {
+    width: 18px;
+    height: 18px;
+    fill: currentColor;
+}
+
+/* ── 드롭다운 마운트 레이어 (#layers) ─────────────────────
+   HTML의 #layers 에 event.js 가 공유/더보기 드롭다운을 append/remove 한다. */
+#layers {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 1;
+    pointer-events: none;
+}
+
+/* ================================================
+   #layers 내부 드롭다운 메뉴
+   event.js 의 openShareDropdown()/openNotificationDropdown() 이 생성하는 구조
+   ================================================ */
+.dropdown-menu {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    background-color: #ffffff;
+    border-radius: 12px;
+    box-shadow: rgba(101, 119, 134, 0.2) 0px 0px 15px 0px,
+    rgba(101, 119, 134, 0.15) 0px 0px 3px 1px;
+    overflow: hidden;
+    max-width: 400px;
+    width: max-content;
+    pointer-events: auto;
+}
+
+.dropdown-inner {
+    display: flex;
+    flex-direction: column;
+}
+
+.menu-item {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 12px;
+    padding: 11px 14px;
+    color: rgb(15, 20, 25);
+    font-size: 15px;
+    font-weight: 400;
+    line-height: 20px;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    text-decoration: none;
+    cursor: pointer;
+    background-color: transparent;
+    border: none;
+    outline: none;
+    box-sizing: border-box;
+    width: 100%;
+    transition: background-color 0.1s ease;
+}
+
+.menu-item:hover,
+.menu-item:focus {
+    background-color: rgba(0, 0, 0, 0.03);
+    outline: none;
+}
+
+.menu-item:active {
+    background-color: rgba(0, 0, 0, 0.03);
+}
+
+a.menu-item {
+    color: rgb(15, 20, 25);
+}
+
+a.menu-item:visited {
+    color: rgb(15, 20, 25);
+}
+
+.menu-item__icon {
+    display: flex;
+    align-items: stretch;
+    justify-content: flex-start;
+    width: fit-content;
+    min-width: 0;
+    flex-shrink: 0;
+    margin-right: 0;
+}
+
+.menu-item__icon svg {
+    width: 18.75px;
+    height: 18.75px;
+    fill: currentColor;
+    color: rgb(15, 20, 25);
+    flex-shrink: 0;
+    user-select: none;
+}
+
+.menu-item__label {
+    display: inline-flex;
+    align-items: center;
+    margin-left: 0;
+    color: rgb(15, 20, 25);
+    font-size: 15px;
+    font-weight: 400;
+    line-height: 20px;
+    white-space: nowrap;
+}
+
+.menu-item__text {
+    display: flex;
+    flex-direction: column;
+    flex: 1 1 0%;
+    min-width: 0;
+}
+
+.menu-item__text-inner {
+    color: rgb(15, 20, 25);
+    font-size: 15px;
+    font-weight: 400;
+    line-height: 20px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.menu-item__text-inner span {
+    color: inherit;
+    font-size: inherit;
+    font-weight: inherit;
+    line-height: inherit;
+}
+
+.share-menu-item {
+    justify-content: flex-start;
+    gap: 12px;
+}
+
+.share-menu-item__icon {
+    display: inline-flex;
+    width: fit-content;
+    min-width: 0;
+}
+
+.share-menu-item__icon svg {
+    width: 18.75px;
+    height: 18.75px;
+    fill: currentColor;
+    color: rgb(15, 20, 25);
+}
+
+/* event.js 가 #layers 아래에 만드는 임시 래퍼 */
+.layers-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0);
+    pointer-events: none;
+    z-index: 0;
+}
+
+.layers-dropdown-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 0;
+    pointer-events: none;
+    z-index: 0;
+}
+
+.layers-dropdown-inner {
+    position: relative;
+    pointer-events: auto;
+}
+
+/* ── body 동적 토스트/모달 ─────────────────────────────────
+   event.js 가 body 에 직접 추가하는 알림 토스트/차단/신고 모달 */
+.notification-toast {
+    position: fixed;
+    left: 50%;
+    bottom: 84px;
+    transform: translateX(-50%);
+    z-index: 1200;
+    padding: 12px 18px;
+    border-radius: 999px;
+    background: #1d9bf0;
+    color: #ffffff;
+    font-size: 14px;
+    font-weight: 700;
+    box-shadow: 0 8px 24px rgba(15, 20, 25, 0.2);
+    animation: notification-toast-in 0.15s ease-out;
+}
+
+@keyframes notification-toast-in {
+    from {
+        opacity: 0;
+        transform: translateX(-50%) translateY(8px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateX(-50%) translateY(0);
+    }
+}
+
+.notification-dialog {
+    position: fixed;
+    inset: 0;
+    z-index: 1300;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.notification-dialog__backdrop {
+    position: absolute;
+    inset: 0;
+    background: rgba(15, 20, 25, 0.45);
+}
+
+.notification-dialog__card {
+    position: relative;
+    z-index: 1;
+    width: min(600px, calc(100vw - 32px));
+    max-height: calc(100vh - 48px);
+    overflow: auto;
+    border-radius: 16px;
+    background: #ffffff;
+    box-shadow: rgba(101, 119, 134, 0.2) 0px 0px 15px 0px,
+    rgba(101, 119, 134, 0.15) 0px 0px 3px 1px;
+}
+
+.notification-dialog__card--small {
+    width: min(320px, calc(100vw - 32px));
+    padding: 32px;
+}
+
+.notification-dialog__card--report {
+    width: min(600px, calc(100vw - 32px));
+}
+
+.notification-dialog__header {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 8px;
+    padding: 8px 16px;
+    border-bottom: 1px solid #eff3f4;
+}
+
+.notification-dialog__icon-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border: none;
+    border-radius: 999px;
+    background: transparent;
+    color: #0f1419;
+    cursor: pointer;
+}
+
+.notification-dialog__icon-btn:hover {
+    background: rgba(15, 20, 25, 0.08);
+}
+
+.notification-dialog__icon-btn svg {
+    width: 20px;
+    height: 20px;
+    fill: currentColor;
+}
+
+.notification-dialog__title {
+    margin: 0;
+    color: #0f1419;
+    font-size: 20px;
+    font-weight: 700;
+    line-height: 1.3;
+}
+
+.notification-dialog__danger,
+.notification-dialog__secondary {
+    border: none;
+    border-radius: 999px;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.notification-dialog__body {
+    padding: 20px 0 0;
+}
+
+.notification-dialog__description,
+.notification-dialog__help {
+    margin: 0;
+    color: #536471;
+    font-size: 15px;
+    line-height: 1.5;
+}
+
+.notification-dialog__actions {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-top: 24px;
+}
+
+.notification-dialog__danger {
+    width: 100%;
+    padding: 12px 16px;
+    background: #f4212e;
+    color: #ffffff;
+}
+
+.notification-dialog__secondary {
+    width: 100%;
+    padding: 12px 16px;
+    background: #ffffff;
+    color: #0f1419;
+    border: 1px solid #cfd9de;
+}
+
+.notification-dialog__question {
+    margin: 0;
+    padding: 0 16px 16px;
+    color: #0f1419;
+    font-size: 20px;
+    font-weight: 700;
+    line-height: 1.4;
+}
+
+.notification-report__list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    border-top: 1px solid #eff3f4;
+}
+
+.notification-report__item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    padding: 16px;
+    border: none;
+    border-bottom: 1px solid #eff3f4;
+    background: #ffffff;
+    color: #0f1419;
+    font-size: 15px;
+    text-align: left;
+    cursor: pointer;
+    box-sizing: border-box;
+}
+
+.notification-report__item:hover {
+    background: rgba(15, 20, 25, 0.04);
+}
+
+.notification-report__item svg {
+    width: 18px;
+    height: 18px;
+    fill: #536471;
+    flex-shrink: 0;
+}
+
+.tweet-reply-to {
+    font-size: 15px;
+    color: #536471;
+    margin-bottom: 4px;
+    line-height: 20px;
+}
+
+.tweet-mention {
+    color: #1d9bf0;
+    text-decoration: none;
+}
+
+.tweet-mention:hover {
+    text-decoration: underline;
+}
+
+.tweet-text {
+    font-size: 15px;
+    line-height: 20px;
+    color: #0f1419;
+    word-break: break-word;
+    margin-bottom: 8px;
+}
+
+/* ── 트윗 액션 바 ────────────────────────────────────────── */
+.tweet-action-bar {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 4px;
+    width: 100%;
+}
+
+.tweet-action-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 0 6px;
+    height: 34px;
+    border: none;
+    background: none;
+    border-radius: 9999px;
+    cursor: pointer;
+    color: #536471;
+    font-size: 13px;
+    transition: background-color 0.2s, color 0.2s;
+}
+
+.tweet-action-btn:hover {
+    background-color: rgba(29, 155, 240, 0.1);
+    color: #1d9bf0;
+}
+
+
+.tweet-action-btn--like:hover {
+    background-color: rgba(249, 24, 128, 0.1);
+    color: #f91880;
+}
+
+.tweet-action-icon {
+    width: 18px;
+    height: 18px;
+    fill: currentColor;
+}
+
+.tweet-action-count {
+    font-size: 13px;
+}
+
+.tweet-action-spacer {
+    flex: 1;
+}
+
+.tweet-action-right {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    margin-left: auto;
+}
+
+/* ── 빈 아이콘 컬럼 (트윗 알림에서 숨김) ──────────────────── */
+.notif-item__icon-col--empty {
+    display: none;
+}
+
+/* ── 반응형 ─────────────────────────────────────────────── */
+
+@media (max-width: 600px) {
+    .notif-layout {
+        max-width: 100%;
+    }
+
+    .notif-col {
+        border-left: none;
+        border-right: none;
+    }
+
+    .notif-item__inner {
+        padding: 10px 12px;
+        gap: 10px;
+    }
+
+    .notif-header__inner {
+        padding: 0 12px;
+    }
+
+    .notif-item__icon-col {
+        width: 36px;
+    }
+
+    .notif-icon {
+        width: 22px;
+        height: 22px;
+    }
+
+    .notif-avatar {
+        width: 28px;
+        height: 28px;
+    }
+
+    .notif-message,
+    .notif-tweet-preview,
+    .notif-description {
+        font-size: 14px;
+    }
+
+    .notif-header__title {
+        font-size: 18px;
+    }
+}
+
+@media (max-width: 480px) {
+    .notif-item__inner {
+        padding: 8px 10px;
+        gap: 8px;
+    }
+
+    .notif-item__icon-col {
+        width: 30px;
+    }
+
+    .notif-avatar {
+        width: 24px;
+        height: 24px;
+    }
+
+    .tweet-avatar {
+        width: 32px;
+        height: 32px;
+    }
+}
+
+/* ── 모바일 하단 네비게이션 (BottomBar) ──────────────────── */
+.bottombar-fixed {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 100;
+}
+
+.bottombar-slide {
+    transition: transform 200ms ease-out;
+    transform: translateY(0);
+}
+
+.bottombar {
+    background-color: #ffffff;
+    border-top: 1px solid #eff3f4;
+    padding-bottom: env(safe-area-inset-bottom);
+    transition: opacity 170ms cubic-bezier(0, 0, 1, 1);
+    opacity: 1;
+}
+
+.bottombar-nav {
+    display: flex;
+    flex-direction: row;
+    height: 3.5rem;
+    max-height: 16vh;
+    margin: 0 auto;
+}
+
+.tab-link {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    outline: none;
+    text-decoration: none;
+    color: rgb(15, 20, 25);
+}
+
+.tab-icon-wrap {
+    position: relative;
+    border-radius: 9999px;
+    padding: 7px;
+    margin: -7px;
+    margin-top: -6px;
+    transition: background-color 0.2s, box-shadow 0.2s;
+}
+
+.tab-link:hover .tab-icon-wrap {
+    background-color: rgba(15, 20, 25, 0.1);
+}
+
+.tab-link.tab-link--active:hover .tab-icon-wrap {
+    background-color: transparent;
+}
+
+.tab-icon {
+    display: inline-block;
+    width: 1.75rem;
+    height: 1.75rem;
+    fill: currentColor;
+    color: rgb(15, 20, 25);
+    vertical-align: text-bottom;
+    opacity: 0.5;
+}
+
+.tab-link.tab-link--active .tab-icon {
+    opacity: 1;
+}
+
+.unread-badge {
+    position: absolute;
+    top: -4px;
+    right: 1px;
+    width: 6px;
+    height: 6px;
+    border-radius: 9999px;
+    background-color: rgb(29, 155, 240);
+    border: 0;
+    display: none;
+}
+
+@media (min-width: 688px) {
+    .bottombar-fixed {
+        display: none;
+    }
+}
+
+@media (max-width: 687px) {
+    .notif-col {
+        padding-bottom: 56px;
+    }
+}
+
+/* ── 하트 활성화 (pink) ──────────────────────────────────── */
+.tweet-action-btn--like.active {
+    color: #f91880;
+}
+
+.tweet-action-btn--like.active:hover {
+    background-color: rgba(249, 24, 128, 0.1);
+}
+
+/* ── 북마크 활성화 (blue) ────────────────────────────────── */
+.tweet-action-btn--bookmark.active {
+    color: #1d9bf0;
+}
+
+.tweet-action-btn--bookmark.active:hover {
+    background-color: rgba(29, 155, 240, 0.1);
+}
+
+/* ── 답글 모달 오버레이 ([data-reply-modal]) ────────────────
+   HTML에 미리 있는 답글 모달을 event.js 가 hidden 토글로 재사용한다. */
+body.modal-open {
+    overflow: hidden;
+}
+
+.selected-product__card {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 12px;
+    border: 1px solid #e1e8ed;
+    border-radius: 12px;
+    background: #ffffff;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08), 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+.selected-product__image {
+    width: 44px;
+    height: 44px;
+    border-radius: 8px;
+    object-fit: cover;
+    flex-shrink: 0;
+}
+
+.selected-product__info {
+    flex: 1;
+    min-width: 0;
+}
+
+.selected-product__name {
+    display: block;
+    font-size: 14px;
+    font-weight: 700;
+    color: #0f1419;
+}
+
+.selected-product__price {
+    font-size: 13px;
+    color: #536471;
+}
+
+.selected-product__remove {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    border: none;
+    background: none;
+    border-radius: 50%;
+    cursor: pointer;
+    color: #536471;
+    flex-shrink: 0;
+}
+
+.selected-product__remove:hover {
+    background: rgba(15, 20, 25, 0.1);
+    color: #0f1419;
+}

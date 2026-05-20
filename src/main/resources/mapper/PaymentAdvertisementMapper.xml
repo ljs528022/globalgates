@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.app.globalgates.mapper.PaymentAdvertisementMapper">
+    <insert id="save" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO tbl_payment_advertisement (ad_id, member_id, amount, payment_method, receipt_id, paid_at)
+        VALUES (#{adId}, #{memberId}, #{amount}, #{paymentMethod}, #{receiptId}, #{paidAt}::timestamp)
+    </insert>
+
+    <select id="selectById">
+        SELECT id, ad_id, member_id, amount, payment_status, payment_method, receipt_id, paid_at, created_datetime
+        FROM tbl_payment_advertisement
+        WHERE id = #{id}
+    </select>
+
+    <select id="selectByReceiptId">
+        SELECT id, ad_id, member_id, amount, payment_status, payment_method, receipt_id, paid_at, created_datetime
+        FROM tbl_payment_advertisement
+        WHERE receipt_id = #{receiptId}
+    </select>
+
+    <update id="updateStatus">
+        UPDATE tbl_payment_advertisement
+        SET payment_status = #{paymentStatus},
+            paid_at        = #{paidAt}::timestamp
+        WHERE receipt_id = #{receiptId}
+    </update>
+</mapper>

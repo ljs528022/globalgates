@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.app.globalgates.mapper.FileMapper">
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+        insert into tbl_file (original_name, file_name, file_path, file_size, content_type)
+        values (#{originalName}, #{fileName}, #{filePath}, #{fileSize}, #{contentType})
+    </insert>
+
+    <select id="selectById">
+        select id, original_name, file_name, file_path, file_size, content_type, created_datetime
+        from tbl_file
+        where id = #{id}
+    </select>
+    
+    <delete id="delete">
+        delete from tbl_file
+        where id = #{id};
+    </delete>
+</mapper>

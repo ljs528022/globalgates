@@ -1,0 +1,5552 @@
+.off {
+    display: none !important;
+}
+
+/* 기본 리셋과 공통 토큰: 브라우저 기본 차이를 줄이고 전체 홈 화면이 같은 시각 언어를 쓰게 만든다. */
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+html {
+    margin: 0;
+    min-height: 100%;
+    scrollbar-gutter: stable;
+}
+
+body {
+    margin: 0;
+    min-height: 100%;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    background: #ffffff;
+    color: #0f1419;
+    line-height: 1.4;
+}
+
+:root {
+    --sidebar-card-bg: #f5f7f8;
+    --sidebar-card-border: #e3e8ec;
+    --sidebar-card-hover: #ebeff2;
+    --sidebar-link-color: #1d9bf0;
+    --sidebar-search-bg: #f5f7f8;
+    --sidebar-search-border: #dbe3e8;
+}
+
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
+button,
+input,
+textarea {
+    font: inherit;
+}
+
+button {
+    border: 0;
+    background: none;
+    cursor: pointer;
+}
+
+textarea {
+    font: inherit;
+    resize: vertical;
+}
+
+.hiddenText {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+/* 3단 레이아웃 기본 골격: 좌측 내비게이션, 중앙 타임라인, 우측 보조 패널의 큰 프레임을 담당한다. */
+
+
+.Page-Layout {
+    display: flex;
+    justify-content: center;
+    max-width: 1280px;
+    margin: 0 auto;
+    min-height: 100vh;
+}
+
+.navigationSidebar,
+.sidebar-left,
+.trendSidebar {
+    display: none;
+}
+
+.trendSidebar {
+    overflow: visible;
+}
+
+/* 사이드바 위치 고정 전략:
+   - .sidebar-left 자체를 position: sticky 로 두어 viewport 상단에 고정.
+   - .sidebar-inner 는 부모 안에서 normal flow 로 두고 100% 높이를 채운다.
+   이전엔 .sidebar-inner 만 fixed/sticky 였는데, 페이지마다 컨테이너 폭/콘텐츠 길이가 다르면
+   부모(.sidebar-left)가 stretch 되는 정도가 달라져 사이드바가 좌우/상하로 어긋나 보였다. */
+.sidebar-left {
+    position: sticky;
+    top: 0;
+    align-self: flex-start;
+    height: 100vh;
+}
+
+.sidebar-inner {
+    height: 100%;
+    overflow-y: auto;
+    padding: 8px 16px;
+}
+
+.navigationSidebar,
+.sidebar-left {
+    width: 275px;
+}
+
+.sidebar-inner {
+    width: 275px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.nav-logo {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: fit-content;
+    height: fit-content;
+    border-radius: 9999px;
+    align-self: center;
+    cursor: pointer;
+}
+
+.nav-logo img {
+    width: 48px;
+    height: 48px;
+}
+
+.nav-logo:hover {
+    background: #eff3f4;
+}
+
+.logo-icon {
+    width: 28px;
+    height: 28px;
+    fill: #0f1419;
+}
+
+.navigationMenu,
+.nav-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.nav-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 18px;
+    width: fit-content;
+    min-height: 48px;
+    padding: 10px 14px;
+    border-radius: 9999px;
+    font-size: 19px;
+    align-self: center;
+}
+
+.nav-item:hover {
+    background: #eff3f4;
+}
+
+.nav-item.active {
+    font-weight: 700;
+}
+
+.nav-icon {
+    width: 24px;
+    height: 24px;
+    flex-shrink: 0;
+    fill: #0f1419;
+}
+
+.nav-icon-wrap {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.nav-badge {
+    position: absolute;
+    top: -5px;
+    right: -8px;
+    min-width: 18px;
+    height: 18px;
+    padding: 0 5px;
+    border-radius: 9999px;
+    background: #1d9bf0;
+    color: #ffffff;
+    font-size: 11px;
+    font-weight: 700;
+    line-height: 18px;
+    text-align: center;
+}
+
+.nav-icon-grok {
+    width: 26px;
+    height: 26px;
+}
+
+.nav-item.active .nav-icon {
+    transform: scale(1.04);
+}
+
+.nav-item > span:not(.nav-icon-wrap):not(.nav-badge) {
+    font-size: 20px;
+    color: #0F1419;
+}
+
+.nav-item.active > span:not(.nav-icon-wrap):not(.nav-badge) {
+    font-weight: 700;
+}
+
+/* nav-item 활성/비활성 아이콘 스왑.
+   - 비활성: nav-icon-line(outline path) 표시 — 안쪽이 비어 보인다.
+   - 활성:   nav-icon-fill(solid path) 표시 — 안쪽이 검정으로 채워진다.
+   x.com 화이트 모드 sidebar 와 동일한 거동이며, 동일 좌표계의 path 부분집합으로 활성 변형을 만들었다. */
+.nav-icon .nav-icon-fill { display: none; }
+.nav-icon .nav-icon-line { display: inline; }
+.nav-item.active .nav-icon .nav-icon-line { display: none; }
+.nav-item.active .nav-icon .nav-icon-fill { display: inline; }
+
+/* 좌측 `더 보기` 팝오버: 버튼 주변에 뜨는 오버레이, 메뉴 박스, 메뉴 아이템 톤을 정의한다. */
+.nav-more-layer {
+    position: fixed;
+    inset: 0;
+    z-index: 1300;
+}
+
+.nav-more-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0);
+}
+
+.nav-more-popover {
+    position: fixed;
+    width: min(318px, calc(100vw - 32px));
+    z-index: 1;
+}
+
+.nav-more-dropdown {
+    width: 100%;
+}
+
+.nav-more-menu {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-height: min(562px, calc(100vh - 32px));
+    overflow: hidden auto;
+    background: #ffffff;
+    border-radius: 12px;
+    box-shadow:
+            rgba(101, 119, 134, 0.2) 0 0 15px 0,
+            rgba(101, 119, 134, 0.15) 0 0 3px 1px;
+    padding: 8px 0;
+}
+
+.nav-more-item {
+    display: flex;
+    align-items: stretch;
+    min-height: 50px;
+}
+
+.nav-more-item:hover {
+    background: rgba(15, 20, 25, 0.04);
+}
+
+.nav-more-itemInner {
+    display: flex;
+    align-items: center;
+    gap: 22px;
+    width: 100%;
+    padding: 14px 20px;
+}
+
+.nav-more-itemIcon {
+    width: 22px;
+    height: 22px;
+    fill: #0f1419;
+    color: #0f1419;
+    flex-shrink: 0;
+}
+
+.nav-more-itemLabel {
+    color: #0f1419;
+    font-size: 18px;
+    font-weight: 700;
+    line-height: 22px;
+}
+
+.nav-item.isOpen {
+    background: #eff3f4;
+}
+
+.modal-open {
+    overflow: hidden;
+}
+
+.dropdown-menu {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    background-color: #ffffff;
+    border-radius: 12px;
+    box-shadow: rgba(101, 119, 134, 0.2) 0 0 15px 0, rgba(101, 119, 134, 0.15) 0 0 3px 1px;
+    overflow: hidden;
+    max-width: 400px;
+    width: max-content;
+    pointer-events: auto;
+}
+
+.dropdown-inner {
+    display: flex;
+    flex-direction: column;
+}
+
+.menu-item {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+    padding: 11px 14px;
+    border: none;
+    outline: none;
+    color: #0f1419;
+    font-size: 15px;
+    font-weight: 400;
+    line-height: 20px;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    text-decoration: none;
+    cursor: pointer;
+    background-color: transparent;
+    transition: background-color 0.1s ease;
+}
+
+.menu-item:hover,
+.menu-item:focus,
+.menu-item:active {
+    background-color: rgba(0, 0, 0, 0.03);
+}
+
+.notification-toast {
+    position: fixed;
+    left: 50%;
+    bottom: 88px;
+    transform: translateX(-50%);
+    z-index: 1200;
+    padding: 12px 20px;
+    border-radius: 999px;
+    background: #1d9bf0;
+    color: #ffffff;
+    font-size: 15px;
+    font-weight: 600;
+    box-shadow: 0 8px 24px rgba(15, 20, 25, 0.2);
+    animation: notification-toast-in 0.15s ease-out;
+}
+
+@keyframes notification-toast-in {
+    from {
+        opacity: 0;
+        transform: translateX(-50%) translateY(8px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateX(-50%) translateY(0);
+    }
+}
+
+.notification-dialog {
+    position: fixed;
+    inset: 0;
+    z-index: 1300;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.notification-dialog__backdrop {
+    position: absolute;
+    inset: 0;
+    background: rgba(15, 20, 25, 0.45);
+}
+
+.notification-dialog__card {
+    position: relative;
+    z-index: 1;
+    width: min(600px, calc(100vw - 32px));
+    max-height: calc(100vh - 48px);
+    overflow: auto;
+    border-radius: 16px;
+    background: #ffffff;
+    box-shadow:
+            rgba(101, 119, 134, 0.2) 0 0 15px 0,
+            rgba(101, 119, 134, 0.15) 0 0 3px 1px;
+}
+
+.notification-dialog__card--small {
+    width: min(320px, calc(100vw - 32px));
+    padding: 32px;
+}
+
+.notification-dialog__card--report {
+    width: min(600px, calc(100vw - 32px));
+}
+
+.notification-dialog__header {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 8px;
+    padding: 8px 16px;
+    border-bottom: 1px solid #eff3f4;
+}
+
+.notification-dialog__icon-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border: none;
+    border-radius: 999px;
+    background: transparent;
+    color: #0f1419;
+    cursor: pointer;
+}
+
+.notification-dialog__icon-btn:hover {
+    background: rgba(15, 20, 25, 0.08);
+}
+
+.notification-dialog__icon-btn svg {
+    width: 20px;
+    height: 20px;
+    fill: currentColor;
+}
+
+.notification-dialog__title {
+    margin: 0;
+    color: #0f1419;
+    font-size: 20px;
+    font-weight: 700;
+    line-height: 1.3;
+}
+
+.notification-dialog__danger,
+.notification-dialog__secondary {
+    border: none;
+    border-radius: 999px;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.notification-dialog__body {
+    padding: 20px 0 0;
+}
+
+.notification-dialog__description {
+    margin: 0;
+    color: #536471;
+    font-size: 15px;
+    line-height: 1.5;
+}
+
+.notification-dialog__actions {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-top: 24px;
+}
+
+.notification-dialog__danger {
+    width: 100%;
+    padding: 12px 16px;
+    background: #f4212e;
+    color: #ffffff;
+}
+
+.notification-dialog__secondary {
+    width: 100%;
+    padding: 12px 16px;
+    background: #ffffff;
+    color: #0f1419;
+    border: 1px solid #cfd9de;
+}
+
+.notification-dialog__question {
+    margin: 0;
+    padding: 0 16px 16px;
+    color: #0f1419;
+    font-size: 20px;
+    font-weight: 700;
+    line-height: 1.4;
+}
+
+.notification-report__list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    border-top: 1px solid #eff3f4;
+}
+
+.notification-report__item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    padding: 16px;
+    border: none;
+    border-bottom: 1px solid #eff3f4;
+    background: #ffffff;
+    color: #0f1419;
+    font-size: 15px;
+    text-align: left;
+    cursor: pointer;
+    box-sizing: border-box;
+}
+
+.notification-report__item:hover {
+    background: rgba(15, 20, 25, 0.04);
+}
+
+.notification-report__item svg {
+    width: 18px;
+    height: 18px;
+    fill: #536471;
+    flex-shrink: 0;
+}
+
+a.menu-item,
+a.menu-item:visited {
+    color: #0f1419;
+}
+
+.menu-item__icon {
+    display: flex;
+    align-items: stretch;
+    justify-content: flex-start;
+    width: fit-content;
+    flex-shrink: 0;
+}
+
+.menu-item__icon svg {
+    width: 18.75px;
+    height: 18.75px;
+    fill: currentColor;
+    color: #0f1419;
+    flex-shrink: 0;
+    user-select: none;
+}
+
+.menu-item__label {
+    display: inline-flex;
+    align-items: center;
+    color: #0f1419;
+    font-size: 15px;
+    font-weight: 400;
+    line-height: 20px;
+    white-space: nowrap;
+}
+
+.share-menu-item {
+    justify-content: flex-start;
+    gap: 12px;
+}
+
+.share-menu-item__icon {
+    display: inline-flex;
+    width: fit-content;
+}
+
+.share-menu-item__icon svg {
+    width: 18.75px;
+    height: 18.75px;
+    fill: currentColor;
+    color: #0f1419;
+}
+
+.layers-overlay {
+    position: fixed;
+    inset: 0;
+    background-color: rgba(0, 0, 0, 0);
+    pointer-events: none;
+    z-index: 0;
+}
+
+.layers-dropdown-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 0;
+    pointer-events: none;
+    z-index: 0;
+}
+
+.layers-dropdown-inner {
+    position: relative;
+    pointer-events: auto;
+}
+
+.share-toast {
+    position: fixed;
+    left: 50%;
+    bottom: 84px;
+    transform: translateX(-50%);
+    z-index: 1300;
+    padding: 12px 18px;
+    border-radius: 999px;
+    background: #1d9bf0;
+    color: #ffffff;
+    font-size: 14px;
+    font-weight: 700;
+    box-shadow: 0 8px 24px rgba(15, 20, 25, 0.2);
+    white-space: nowrap;
+    pointer-events: none;
+}
+
+.share-sheet {
+    position: fixed;
+    inset: 0;
+    z-index: 1200;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.share-sheet__backdrop {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.4);
+}
+
+.share-sheet__card {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    width: min(600px, calc(100vw - 32px));
+    max-height: min(650px, calc(100vh - 32px));
+    min-height: 400px;
+    overflow: hidden;
+    border-radius: 16px;
+    background: #ffffff;
+    box-shadow:
+            rgba(101, 119, 134, 0.2) 0 0 15px 0,
+            rgba(101, 119, 134, 0.15) 0 0 3px 1px;
+}
+
+.share-sheet__header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 16px;
+    border-bottom: 1px solid #eff3f4;
+}
+
+.share-sheet__icon-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border: none;
+    border-radius: 999px;
+    background: transparent;
+    color: #0f1419;
+    cursor: pointer;
+}
+
+.share-sheet__icon-btn:hover {
+    background: rgba(15, 20, 25, 0.08);
+}
+
+.share-sheet__icon-btn svg {
+    width: 20px;
+    height: 20px;
+    fill: currentColor;
+}
+
+.share-sheet__title {
+    margin: 0;
+    flex: 1;
+    color: #0f1419;
+    font-size: 20px;
+    font-weight: 700;
+    text-align: center;
+}
+
+.share-sheet__header-spacer {
+    width: 36px;
+    height: 36px;
+}
+
+.share-sheet__search {
+    padding: 12px 16px;
+    border-bottom: 1px solid #eff3f4;
+}
+
+.share-sheet__search-input {
+    width: 100%;
+    padding: 12px 16px;
+    border: 1px solid #cfd9de;
+    border-radius: 999px;
+    outline: none;
+    font: inherit;
+}
+
+.share-sheet__list {
+    display: flex;
+    flex-direction: column;
+    overflow: auto;
+}
+
+.share-sheet__user,
+.share-sheet__folder,
+.share-sheet__create-folder {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    border: none;
+    background: #ffffff;
+    color: #0f1419;
+    text-align: left;
+    cursor: pointer;
+    font: inherit;
+}
+
+.share-sheet__user,
+.share-sheet__folder {
+    gap: 12px;
+    padding: 14px 16px;
+    border-bottom: 1px solid #eff3f4;
+}
+
+.share-sheet__user:hover,
+.share-sheet__folder:hover,
+.share-sheet__create-folder:hover {
+    background: rgba(15, 20, 25, 0.04);
+}
+
+.share-sheet__user-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 999px;
+    overflow: hidden;
+    flex-shrink: 0;
+}
+
+.share-sheet__user-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.share-sheet__user-body {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.share-sheet__user-name {
+    font-size: 15px;
+    font-weight: 700;
+}
+
+.share-sheet__user-handle {
+    color: #536471;
+    font-size: 14px;
+}
+
+.share-sheet__create-folder {
+    padding: 16px;
+    color: #1d9bf0;
+    font-size: 15px;
+    font-weight: 700;
+    border-bottom: 1px solid #eff3f4;
+}
+
+.share-sheet__folder-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    background: #1d9bf0;
+    color: #ffffff;
+    flex-shrink: 0;
+}
+
+.share-sheet__folder-icon svg {
+    width: 22px;
+    height: 22px;
+    fill: currentColor;
+}
+
+.share-sheet__folder-name {
+    flex: 1;
+    font-size: 15px;
+    font-weight: 700;
+}
+
+.share-sheet__folder-check {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 20px;
+    height: 20px;
+    color: transparent;
+}
+
+.share-sheet__folder-check--active {
+    color: #1d9bf0;
+}
+
+.share-sheet__folder-check svg {
+    width: 20px;
+    height: 20px;
+    fill: currentColor;
+}
+
+.share-sheet__empty {
+    padding: 24px 16px;
+    color: #536471;
+    font-size: 15px;
+    text-align: center;
+}
+
+.post-btn {
+    width: 90%;
+    min-height: 48px;
+    border-radius: 9999px;
+    background: #0f1419;
+    color: #ffffff;
+    font-size: 17px;
+    font-weight: 700;
+}
+
+.post-btn:hover {
+    background: #272c30;
+}
+
+.accountMenuWrap {
+    position: relative;
+    overflow: visible;
+    margin-top: auto;
+}
+
+.accountCard,
+.profile-card {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px;
+    border-radius: 9999px;
+}
+
+.accountCard:hover,
+.profile-card:hover {
+    background: #eff3f4;
+}
+
+.profile-card {
+    cursor: pointer;
+}
+
+.profile-more {
+    margin-left: auto;
+    color: #0f1419;
+    font-size: 20px;
+    line-height: 1;
+}
+
+.accountAvatar,
+.composerAvatar,
+.postAvatar,
+.suggestionAvatar,
+.profile-avatar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    border-radius: 50%;
+    background: #cfe8fc;
+    color: #1d9bf0;
+    font-weight: 700;
+}
+
+.accountAvatar,
+.composerAvatar,
+.postAvatar,
+.profile-avatar {
+    width: 40px;
+    height: 40px;
+    background: none;
+}
+
+.suggestionAvatar {
+    width: 32px;
+    height: 32px;
+    font-size: 13px;
+    background: none;
+}
+
+.suggestionAvatarImg {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+}
+
+.profile-info {
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+.accountName,
+.profile-name {
+    font-size: 15px;
+    font-weight: 700;
+}
+
+.accountHandle,
+.profile-handle {
+    color: #536471;
+    font-size: 13px;
+}
+
+.account-menu-popup.off {
+    display: none;
+}
+
+/* 계정 팝업: .accountMenuWrap 기준 절대 위치로, 점세개(profile-more) 바로 위에 정렬한다.
+   px 대신 % 로 좌표를 잡아 어떤 해상도에서도 같은 비율 위치에 뜨도록 한다. */
+.account-menu-popup {
+    position: absolute;
+    z-index: 1200;
+    bottom: 102%;
+    right: 0;
+    width: 90%;
+    max-width: 216px;
+    padding: 6px;
+    border: 1px solid rgba(207, 217, 222, 0.7);
+    border-radius: 14px;
+    background: #ffffff;
+    box-shadow: 0 14px 36px rgba(15, 20, 25, 0.18);
+}
+
+.account-menu-popup::after {
+    content: "";
+    position: absolute;
+    right: 8%;
+    bottom: -7px;
+    width: 14px;
+    height: 14px;
+    border-right: 1px solid rgba(207, 217, 222, 0.7);
+    border-bottom: 1px solid rgba(207, 217, 222, 0.7);
+    background: #ffffff;
+    transform: rotate(45deg);
+}
+
+.account-menu-logout {
+    display: block;
+    width: 100%;
+    padding: 10px 7px;
+    border: none;
+    border-radius: 10px;
+    background: transparent;
+    color: #0f1419;
+    font-size: 12px;
+    font-weight: 500;
+    line-height: 1.25;
+    text-align: left;
+    font-family: inherit;
+    cursor: pointer;
+    transition: color 0.2s ease, background-color 0.2s ease;
+    white-space: nowrap;
+}
+
+.account-menu-logout:hover {
+    color: #f4212e;
+    background: rgba(244, 33, 46, 0.08);
+}
+
+.timelinePanel {
+    width: 100%;
+    max-width: 600px;
+    min-height: 100vh;
+    border-left: 1px solid #eff3f4;
+    border-right: 1px solid #eff3f4;
+    background: #ffffff;
+}
+
+.timelineTabs {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid #eff3f4;
+}
+
+.timelineTab {
+    position: relative;
+    min-height: 53px;
+    color: #536471;
+    font-size: 15px;
+    font-weight: 500;
+}
+
+.timelineTab:hover {
+    background: rgba(15, 20, 25, 0.03);
+}
+
+.timelineTab.isActive {
+    color: #0f1419;
+    font-weight: 700;
+}
+
+.timelineTab.isActive::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    bottom: 0;
+    width: 56px;
+    height: 4px;
+    border-radius: 9999px;
+    background: #1d9bf0;
+    transform: translateX(-50%);
+}
+
+
+.tweet-modal-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 2000;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding: 32px 16px;
+    background: rgba(91, 112, 131, 0.4);
+}
+
+.tweet-modal-overlay.off {
+    display: none;
+}
+
+.tweet-modal {
+    width: 100%;
+    max-width: 600px;
+    max-height: 90vh;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    background-color: #fff;
+    border-radius: 16px;
+    box-shadow: 0 8px 28px rgba(0, 0, 0, 0.28);
+}
+
+.tweet-modal:has(.tweet-modal__draft-view:not(.off)),
+.tweet-modal:has(.tweet-modal__location-view:not(.off)),
+.tweet-modal:has(.tweet-modal__media-view:not(.off)),
+.tweet-modal:has(.tweet-modal__tag-view:not(.off)) {
+    height: 90vh;
+}
+
+/* 원형 글자수 게이지 (main과 동일 스타일) */
+.composerActions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.composerGauge {
+    --gauge-progress: 0deg;
+    position: relative;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: conic-gradient(#1d9bf0 0deg, #d7dfe4 0deg);
+}
+
+.composerGauge::before {
+    content: "";
+    position: absolute;
+    inset: 3px;
+    border-radius: 50%;
+    background: #ffffff;
+}
+
+.composerGaugeText {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 10px;
+    font-weight: 700;
+    color: #536471;
+    z-index: 1;
+}
+
+.tweet-modal__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px 12px 4px;
+}
+
+.tweet-modal__close {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 34px;
+    height: 34px;
+    border: none;
+    background: none;
+    border-radius: 50%;
+    cursor: pointer;
+    color: #0f1419;
+    transition: background-color 0.2s;
+}
+
+.tweet-modal__close:hover {
+    background-color: rgba(15, 20, 25, 0.1);
+}
+
+.tweet-modal__title {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+}
+
+.tweet-modal__body {
+    flex: 0 1 auto;
+    overflow-y: auto;
+    padding: 0 16px;
+}
+
+.tweet-modal__context-button {
+    display: inline-flex;
+    align-items: center;
+    max-width: 100%;
+    margin: 2px 0 8px 48px;
+    border: none;
+    background: transparent;
+    color: #536471;
+    font-size: 15px;
+    line-height: 20px;
+    text-align: left;
+    cursor: pointer;
+    font-family: inherit;
+}
+
+.tweet-modal__source-tweet {
+    display: flex;
+    gap: 12px;
+    padding-bottom: 16px;
+    margin-bottom: 4px;
+    border-bottom: 1px solid #eff3f4;
+}
+
+.tweet-modal__source-avatar,
+.tweet-modal__avatar-image,
+.tweet-modal__source-avatar-wrap,
+.tweet-modal__avatar-wrap {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+    flex-shrink: 0;
+}
+
+.tweet-modal__source-avatar-wrap,
+.tweet-modal__avatar-wrap {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: none;
+    color: #1d9bf0;
+    font-weight: 700;
+    font-size: 16px;
+    overflow: hidden;
+}
+
+.tweet-modal__source-avatar-wrap img,
+.tweet-modal__avatar-wrap img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.tweet-modal__source-body,
+.tweet-modal__input-wrap {
+    min-width: 0;
+    flex: 1;
+}
+
+.tweet-modal__source-meta {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 4px;
+    margin-bottom: 4px;
+    font-size: 15px;
+    line-height: 20px;
+}
+
+.tweet-modal__source-name {
+    font-weight: 700;
+    color: #0f1419;
+}
+
+.tweet-modal__source-handle,
+.tweet-modal__source-time {
+    color: #536471;
+}
+
+.tweet-modal__source-text {
+    font-size: 15px;
+    line-height: 20px;
+    color: #0f1419;
+    word-break: break-word;
+}
+
+.tweet-modal__composer {
+    display: flex;
+    gap: 12px;
+    height: 65px;
+    align-items: flex-start;
+    padding: 6px 0 6px;
+}
+
+.tweet-modal__input-wrap {
+    padding-top: 2px;
+}
+
+.tweet-modal__draft {
+    border: none;
+    background: transparent;
+    color: #1d9bf0;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    padding: 6px 8px;
+    border-radius: 9999px;
+    font-family: inherit;
+}
+
+.tweet-modal__draft:hover {
+    background-color: rgba(29, 155, 240, 0.08);
+}
+
+.tweet-modal__editor {
+    width: 100%;
+    padding-bottom: 8px;
+    min-height: 128px;
+    padding-top: 2px;
+    font-size: 20px;
+    line-height: 1.5;
+    outline: none;
+    color: #0f1419;
+    word-break: break-word;
+    white-space: pre-wrap;
+    font-family: inherit;
+    border-bottom: 1px solid #eff3f4;
+}
+
+.tweet-modal__editor:empty::before {
+    content: attr(data-placeholder);
+    color: #536471;
+    pointer-events: none;
+    display: block;
+}
+
+/* compose view 안의 첨부 미리보기.
+   event.js 가 [data-attachment-preview] 표시를 토글하고 [data-attachment-media] 내용을 채운다. */
+.tweet-modal__attachment {
+    width: min(100%, 320px);
+    margin-top: 12px;
+}
+
+.tweet-modal__attachment.off {
+    display: none;
+}
+
+/* ===========================
+   X (Twitter) 미디어 첨부 컴포넌트
+   4장 이미지 2x2 그리드 레이아웃
+   =========================== */
+.attachments {
+    width: 100%;
+}
+
+.media-grid-wrapper {
+    position: relative;
+    width: 100%;
+}
+
+.media-aspect-ratio {
+    padding-bottom: 56.25%;
+    position: relative;
+    width: 100%;
+}
+
+.media-aspect-ratio--single {
+    padding-bottom: 88.3495%;
+}
+
+.media-absolute-layer {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+}
+
+.media-row {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    height: 100%;
+}
+
+.media-col {
+    display: flex;
+    flex-direction: column;
+    flex: 1 1 0%;
+    height: 100%;
+    gap: 2px;
+}
+
+.media-col:not(:last-child) {
+    margin-right: 2px;
+}
+
+.media-cell {
+    position: relative;
+    flex: 1 1 0%;
+    overflow: hidden;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.media-cell--top-left {
+    border-radius: 16px 4px 4px 4px;
+}
+
+.media-cell--top-right {
+    border-radius: 4px 16px 4px 4px;
+}
+
+.media-cell--bottom-left {
+    border-radius: 4px 4px 4px 16px;
+}
+
+.media-cell--bottom-right {
+    border-radius: 4px 4px 16px 4px;
+}
+
+.media-cell--single {
+    border-radius: 16px;
+    height: 100%;
+}
+
+.media-cell--left {
+    border-radius: 16px 4px 4px 16px;
+}
+
+.media-cell--right {
+    border-radius: 4px 16px 16px 4px;
+}
+
+.media-cell--left-tall {
+    border-radius: 16px 4px 4px 16px;
+}
+
+.media-cell--right-top {
+    border-radius: 4px 16px 4px 4px;
+}
+
+.media-cell--right-bottom {
+    border-radius: 4px 4px 16px 4px;
+}
+
+.media-cell-inner {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+}
+
+.media-img-container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+
+.media-bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    filter: brightness(1);
+}
+
+.media-img,
+.tweet-modal__attachment-video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    user-select: none;
+    -webkit-user-drag: none;
+}
+
+.tweet-modal__attachment-file {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-height: 180px;
+    padding: 20px;
+    border-radius: 16px;
+    background: #eff3f4;
+    color: #0f1419;
+}
+
+.tweet-modal__attachment-file svg {
+    flex-shrink: 0;
+    fill: #536471;
+}
+
+.tweet-modal__attachment-file-name {
+    font-size: 15px;
+    line-height: 20px;
+    font-weight: 700;
+    word-break: break-word;
+}
+
+.media-btn-row {
+    position: absolute;
+    bottom: 8px;
+    left: 8px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 6px;
+    z-index: 1;
+}
+
+.media-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid transparent;
+    border-radius: 9999px;
+    padding: 4px 12px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 700;
+    line-height: 20px;
+    color: #ffffff;
+    background-color: rgba(15, 20, 25, 0.75);
+    backdrop-filter: blur(4px);
+    transition: background-color 0.2s ease;
+    white-space: nowrap;
+    font-family: inherit;
+}
+
+.media-btn:hover {
+    background-color: rgba(15, 20, 25, 0.9);
+}
+
+.media-btn-delete {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+    height: 30px;
+    padding: 0;
+    border: 1px solid transparent;
+    border-radius: 9999px;
+    cursor: pointer;
+    color: #ffffff;
+    background-color: rgba(15, 20, 25, 0.75);
+    backdrop-filter: blur(4px);
+    transition: background-color 0.2s ease;
+    z-index: 1;
+}
+
+.media-btn-delete:hover {
+    background-color: rgba(15, 20, 25, 0.9);
+}
+
+.media-btn-delete svg {
+    width: 18px;
+    height: 18px;
+    fill: #ffffff;
+    color: #ffffff;
+}
+
+.media-actions-bar {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 8px;
+    padding: 0 4px;
+}
+
+.media-action-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    text-decoration: none;
+    color: rgb(83, 100, 113);
+    font-size: 15px;
+    font-weight: 400;
+    line-height: 20px;
+    cursor: pointer;
+    transition: color 0.2s ease;
+    border: none;
+    padding: 0;
+    background: transparent;
+    font-family: inherit;
+}
+
+.media-action-link:hover {
+    color: rgb(29, 155, 240);
+}
+
+.media-action-link svg {
+    width: 20px;
+    height: 20px;
+    fill: currentColor;
+    flex-shrink: 0;
+}
+
+.tweet-modal__attachment-meta-btn.off {
+    display: none;
+}
+
+.media-action-link span {
+    white-space: nowrap;
+}
+
+/* compose view 하단 고정 영역: 위치 메타, 툴바, 이모지 버튼, 답글 버튼 */
+.tweet-modal__footer {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding: 6px 16px 12px;
+}
+
+.tweet-modal__footer-meta {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    width: 100%;
+    padding-bottom: 12px;
+    border-bottom: 1px solid #eff3f4;
+}
+
+.tweet-modal__footer-meta-slot {
+    display: flex;
+    align-items: center;
+    min-width: 0;
+    justify-content: flex-end;
+}
+
+.tweet-modal__footer-bottom {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    width: 100%;
+    position: relative;
+}
+
+.tweet-modal__meta-btn {
+    border: none;
+    background: transparent;
+    color: #1d9bf0;
+    font-size: 13px;
+    font-weight: 700;
+    line-height: 18px;
+    cursor: pointer;
+    font-family: inherit;
+    padding: 0;
+}
+
+.tweet-modal__meta-btn--disabled {
+    opacity: 0.55;
+    cursor: not-allowed;
+}
+
+.tweet-modal__location-display {
+    display: inline-flex;
+    align-items: center;
+    border: none;
+    min-height: 22px;
+    min-width: 22px;
+    padding: 0;
+    border-radius: 9999px;
+    background: rgba(29, 155, 240, 0.1);
+    color: #1d9bf0;
+    font-size: 13px;
+    font-weight: 700;
+    line-height: 18px;
+    cursor: pointer;
+    font-family: inherit;
+    white-space: nowrap;
+    box-shadow: none;
+    outline: none;
+    transition: background-color 0.2s, box-shadow 0.2s;
+}
+
+.tweet-modal__location-display-inner {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    min-height: 22px;
+    padding: 0 11px;
+    color: inherit;
+}
+
+.tweet-modal__location-display-icon {
+    flex-shrink: 0;
+    width: 14px;
+    height: 14px;
+    fill: currentColor;
+}
+
+.tweet-modal__location-display-text-wrap,
+.tweet-modal__location-display-text-outer {
+    display: inline-flex;
+    align-items: center;
+}
+
+.tweet-modal__location-display-text-outer,
+.tweet-modal__location-display-text-inner {
+    color: inherit;
+    font: inherit;
+    line-height: inherit;
+}
+
+input.tweet-modal__location-display-text-inner {
+    border: none;
+    outline: none;
+    background: transparent;
+    padding: 0;
+    width: auto;
+    color: #1d9bf0;
+    cursor: pointer;
+}
+
+.tweet-modal__location-display.off {
+    display: none;
+}
+
+.tweet-modal__location-display:hover,
+.tweet-modal__location-display:focus,
+.tweet-modal__location-display:focus-visible,
+.tweet-modal__location-display:active {
+    background: rgba(29, 155, 240, 0.1);
+    box-shadow: none;
+    outline: none;
+}
+
+.tweet-modal__toolbar {
+    display: flex;
+    gap: 4px;
+    flex-wrap: nowrap;
+    align-items: center;
+    overflow-x: auto;
+    scrollbar-width: none;
+}
+
+.tweet-modal__toolbar::-webkit-scrollbar {
+    display: none;
+}
+
+/* HTML에 남겨둔 커스텀 이모지 fallback 패널.
+   외부 EmojiButton 라이브러리가 있을 때는 별도 DOM 이 reply modal overlay 안에 생성된다. */
+.tweet-modal__emoji-picker {
+    position: fixed;
+    left: 16px;
+    top: 16px;
+    width: min(565px, calc(100vw - 32px));
+    max-height: 560px;
+    overflow: hidden;
+    border: 1px solid #d7dbdf;
+    border-radius: 18px;
+    background-color: #ffffff;
+    box-shadow: 0 10px 32px rgba(15, 20, 25, 0.2);
+    z-index: 5;
+}
+
+.tweet-modal__emoji-picker.off {
+    display: none;
+}
+
+.tweet-modal__location-modal {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.tweet-modal__location-header {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-height: 48px;
+    padding: 10px 14px;
+    background-color: rgba(255, 255, 255, 0.92);
+    backdrop-filter: blur(12px);
+}
+
+.tweet-modal__location-close {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    margin-left: -4px;
+    border: none;
+    border-radius: 9999px;
+    background: transparent;
+    color: #0f1419;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.tweet-modal__location-close:hover {
+    background-color: rgba(15, 20, 25, 0.08);
+}
+
+.tweet-modal__location-close svg {
+    fill: currentColor;
+}
+
+.tweet-modal__location-title {
+    margin: 0;
+    font-size: 20px;
+    font-weight: 800;
+    color: #0f1419;
+    line-height: 24px;
+}
+
+.tweet-modal__location-actions {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.tweet-modal__location-action {
+    min-height: 38px;
+    min-width: 38px;
+    padding: 0 18px;
+    border: 1px solid transparent;
+    border-radius: 9999px;
+    font-size: 17px;
+    font-weight: 700;
+    line-height: 38px;
+    cursor: pointer;
+    font-family: inherit;
+    transition: background-color 0.2s, color 0.2s, opacity 0.2s;
+}
+
+.tweet-modal__location-action--ghost {
+    background: transparent;
+    color: #0f1419;
+    padding: 0;
+    min-width: auto;
+    min-height: auto;
+    border-radius: 0;
+    line-height: 1.2;
+}
+
+.tweet-modal__location-action--ghost:hover {
+    background-color: transparent;
+    text-decoration: underline;
+}
+
+.tweet-modal__location-action--solid {
+    background-color: #0f1419;
+    color: #ffffff;
+}
+
+.tweet-modal__location-action--solid:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+}
+
+/* 모달 위치 검색바 — 컨테이너 + input(둥근 회색) + 검색 버튼(검정 알약) */
+.tweet-modal__location-search {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 16px;
+    border-bottom: 1px solid #eff3f4;
+}
+
+.tweet-modal__location-search-icon {
+    width: 20px;
+    height: 20px;
+    color: #536471;
+    fill: currentColor;
+    flex-shrink: 0;
+}
+
+.tweet-modal__location-search-input {
+    flex: 1;
+    min-width: 0;
+    height: 40px;
+    padding: 0 16px;
+    border: 0;
+    outline: none;
+    border-radius: 9999px;
+    background: #f7f9f9;
+    color: #0f1419;
+    font-family: inherit;
+    font-size: 14px;
+    line-height: 1;
+    caret-color: #1d9bf0;
+}
+
+.tweet-modal__location-search-input::placeholder {
+    color: #536471;
+}
+
+.tweet-modal__location-search-btn {
+    flex-shrink: 0;
+    padding: 8px 16px;
+    background: #0f1419;
+    color: #ffffff;
+    border: 0;
+    border-radius: 9999px;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.tweet-modal__location-search-btn:hover {
+    background: #272c30;
+}
+
+.tweet-modal__location-list {
+    overflow-y: auto;
+    padding-bottom: 12px;
+}
+
+.tweet-modal__location-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    width: 100%;
+    padding: 11px 14px;
+    border: none;
+    background: transparent;
+    color: #0f1419;
+    text-align: left;
+    font-size: 15px;
+    font-weight: 700;
+    line-height: 20px;
+    font-family: inherit;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.tweet-modal__location-item:hover {
+    background-color: transparent;
+}
+
+.tweet-modal__location-item-label {
+    min-width: 0;
+}
+
+.tweet-modal__location-item-check {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 18px;
+    height: 18px;
+    margin-left: 18px;
+    color: #1d9bf0;
+    flex-shrink: 0;
+}
+
+.tweet-modal__location-item-check svg {
+    width: 20px;
+    height: 20px;
+    fill: currentColor;
+}
+
+.tweet-modal__location-empty {
+    margin: 0;
+    padding: 18px 14px 8px;
+    color: #536471;
+    font-size: 15px;
+    line-height: 20px;
+}
+
+.tweet-modal__tag-modal {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    background-color: #ffffff;
+}
+
+.tweet-modal__tag-header {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-height: 48px;
+    padding: 10px 14px;
+    background-color: rgba(255, 255, 255, 0.92);
+    backdrop-filter: blur(12px);
+}
+
+.tweet-modal__tag-close {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    margin-left: -4px;
+    border: none;
+    border-radius: 9999px;
+    background: transparent;
+    color: #0f1419;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.tweet-modal__tag-close:hover {
+    background-color: rgba(15, 20, 25, 0.08);
+}
+
+.tweet-modal__tag-close svg {
+    fill: currentColor;
+}
+
+.tweet-modal__tag-title {
+    margin: 0;
+    font-size: 20px;
+    font-weight: 800;
+    color: #0f1419;
+    line-height: 24px;
+}
+
+.tweet-modal__tag-actions {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+}
+
+.tweet-modal__tag-action {
+    min-height: 32px;
+    padding: 0 16px;
+    border: 1px solid transparent;
+    border-radius: 9999px;
+    background: #0f1419;
+    color: #ffffff;
+    font-size: 14px;
+    font-weight: 700;
+    line-height: 32px;
+    cursor: pointer;
+    font-family: inherit;
+}
+
+.tweet-modal__tag-search {
+    display: flex;
+    flex: 1;
+    min-height: 0;
+}
+
+.tweet-modal__tag-search-form {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    min-height: 0;
+}
+
+.tweet-modal__tag-search-shell {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin: 0 16px 12px;
+    padding: 4px 12px;
+    border-radius: 9999px;
+    background: #e7e9ea;
+    min-height: 44px;
+}
+
+.tweet-modal__tag-search-icon {
+    flex-shrink: 0;
+    color: #536471;
+    fill: currentColor;
+}
+
+.tweet-modal__tag-chip-list {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 6px;
+    min-width: 0;
+}
+
+.tweet-modal__tag-search-input {
+    flex: 1 1 120px;
+    min-width: 120px;
+    min-height: 32px;
+    border: none;
+    outline: none;
+    background: transparent;
+    color: #0f1419;
+    font-size: 15px;
+    line-height: 20px;
+    font-family: inherit;
+    caret-color: #1d9bf0;
+}
+
+.tweet-modal__tag-search-input::placeholder {
+    color: #536471;
+}
+
+.tweet-modal__tag-results {
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto;
+    padding-bottom: 12px;
+}
+
+.tweet-modal__tag-results:empty {
+    padding-bottom: 0;
+}
+
+/* 검색 기록이 아예 없을 때 안내 문구를 따로 보여주고 싶으면 이 블록을 사용한다.
+.tweet-modal__tag-history-empty {
+    margin: 0;
+    padding: 12px 16px;
+    color: #536471;
+    font-size: 14px;
+    line-height: 20px;
+}
+*/
+
+.tweet-modal__tag-option {
+    display: block;
+}
+
+.tweet-modal__tag-checkbox {
+    display: flex;
+    width: 100%;
+    color: #0f1419;
+}
+
+.tweet-modal__tag-user {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+    padding: 12px 16px;
+    border: none;
+    background: transparent;
+    text-align: left;
+    cursor: pointer;
+    font-family: inherit;
+}
+
+.tweet-modal__tag-user:hover:not([disabled]) {
+    background: rgba(15, 20, 25, 0.03);
+}
+
+.tweet-modal__tag-user[disabled] {
+    cursor: default;
+}
+
+.tweet-modal__tag-checkbox[aria-disabled="true"] {
+    opacity: 0.55;
+}
+
+.tweet-modal__tag-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 9999px;
+    overflow: hidden;
+    background: #eff3f4;
+    flex-shrink: 0;
+}
+
+.tweet-modal__tag-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.tweet-modal__tag-user-body {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    min-width: 0;
+}
+
+.tweet-modal__tag-user-name {
+    font-size: 15px;
+    line-height: 20px;
+    font-weight: 700;
+    color: #0f1419;
+}
+
+.tweet-modal__tag-user-handle {
+    font-size: 15px;
+    line-height: 20px;
+    color: #536471;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.tweet-modal__tag-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    min-height: 29px;
+    max-width: 220px;
+    padding: 3px 11px 3px 3px;
+    border: 1px solid #cfd9de;
+    border-radius: 9999px;
+    background: #ffffff;
+    color: #0f1419;
+    cursor: pointer;
+    font-family: inherit;
+}
+
+.tweet-modal__tag-chip:hover {
+    background: rgba(15, 20, 25, 0.06);
+}
+
+.tweet-modal__tag-chip-avatar {
+    width: 20px;
+    height: 20px;
+    border-radius: 9999px;
+    overflow: hidden;
+    background: #eff3f4;
+    flex-shrink: 0;
+}
+
+.tweet-modal__tag-chip-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.tweet-modal__tag-chip-name {
+    min-width: 0;
+    font-size: 14px;
+    line-height: 18px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.tweet-modal__tag-chip-icon {
+    width: 16px;
+    height: 16px;
+    fill: currentColor;
+    flex-shrink: 0;
+}
+
+.tweet-modal__tag-empty {
+    margin: 0;
+    padding: 24px 16px 12px;
+    color: #536471;
+    font-size: 15px;
+    line-height: 20px;
+}
+
+.tweet-modal__media-editor {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    background: #ffffff;
+}
+
+.tweet-modal__media-header {
+    position: sticky;
+    top: 0;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-height: 56px;
+    padding: 10px 14px;
+    background: rgba(255, 255, 255, 0.92);
+    backdrop-filter: blur(12px);
+}
+
+.tweet-modal__media-title {
+    margin: 0;
+    font-size: 18px;
+    font-weight: 700;
+    line-height: 22px;
+    color: #0f1419;
+}
+
+.tweet-modal__media-header-actions {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.tweet-modal__media-header-btn {
+    min-height: 32px;
+    padding: 0 14px;
+    border: 1px solid #cfd9de;
+    border-radius: 9999px;
+    background: #ffffff;
+    color: #0f1419;
+    font-size: 14px;
+    font-weight: 700;
+    line-height: 32px;
+    cursor: pointer;
+    font-family: inherit;
+}
+
+.tweet-modal__media-header-btn[disabled] {
+    opacity: 0.45;
+    cursor: default;
+}
+
+.tweet-modal__media-header-btn--ghost {
+    width: 32px;
+    min-width: 32px;
+    padding: 0;
+    border: none;
+    background: transparent;
+}
+
+.tweet-modal__media-header-btn--ghost svg {
+    fill: currentColor;
+}
+
+.tweet-modal__media-header-btn--solid {
+    border-color: transparent;
+    background: #0f1419;
+    color: #ffffff;
+}
+
+.tweet-modal__media-body {
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto;
+}
+
+.tweet-modal__media-panel {
+    display: none;
+    flex-direction: column;
+    gap: 16px;
+    padding: 16px;
+}
+
+.tweet-modal__media-panel--active {
+    display: flex;
+}
+
+.tweet-modal__media-alt-preview {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 280px;
+    border-radius: 16px;
+    background: #f7f9f9;
+    overflow: hidden;
+}
+
+.tweet-modal__media-preview-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transform-origin: center center;
+}
+
+.tweet-modal__media-preview-image--alt {
+    max-width: 100%;
+    max-height: 320px;
+    object-fit: contain;
+    background: #000000;
+}
+.tweet-modal__media-alt-label {
+    font-size: 14px;
+    font-weight: 700;
+    color: #0f1419;
+}
+
+.tweet-modal__media-alt-field {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 14px;
+    border: 1px solid #cfd9de;
+    border-radius: 16px;
+}
+
+.tweet-modal__media-alt-meta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+}
+
+.tweet-modal__media-alt-count {
+    color: #536471;
+    font-size: 13px;
+    line-height: 18px;
+}
+
+.tweet-modal__media-alt-input {
+    min-height: 160px;
+    border: none;
+    outline: none;
+    resize: vertical;
+    font-size: 15px;
+    line-height: 22px;
+    color: #0f1419;
+    font-family: inherit;
+}
+
+.tweet-modal__emoji-search {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 14px 10px;
+    border-bottom: 1px solid #eff3f4;
+}
+
+.tweet-modal__emoji-search-icon {
+    color: #536471;
+    fill: currentColor;
+    flex-shrink: 0;
+}
+
+.tweet-modal__emoji-search-input {
+    width: 100%;
+    height: 44px;
+    padding: 0 18px;
+    border: 2px solid #1d9bf0;
+    border-radius: 9999px;
+    outline: none;
+    font-size: 15px;
+    font-family: inherit;
+    color: #0f1419;
+}
+
+.tweet-modal__emoji-search-input::placeholder {
+    color: #536471;
+}
+
+.tweet-modal__emoji-tabs {
+    display: grid;
+    grid-template-columns: repeat(9, minmax(0, 1fr));
+    align-items: end;
+    height: 52px;
+    padding: 0 4px;
+    border-bottom: 1px solid #eff3f4;
+    background-color: #ffffff;
+}
+
+.tweet-modal__emoji-tab {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 51px;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    color: #9aa4af;
+    transition: background-color 0.2s, color 0.2s;
+}
+
+.tweet-modal__emoji-tab:hover {
+    background-color: rgba(15, 20, 25, 0.04);
+}
+
+.tweet-modal__emoji-tab--active {
+    color: #1d9bf0;
+}
+
+.tweet-modal__emoji-tab--active::after {
+    content: "";
+    position: absolute;
+    left: 8px;
+    right: 8px;
+    bottom: 0;
+    height: 4px;
+    border-radius: 9999px;
+    background-color: #1d9bf0;
+}
+
+.tweet-modal__emoji-tab-icon {
+    width: 24px;
+    height: 24px;
+    fill: currentColor;
+    color: inherit;
+}
+
+.tweet-modal__emoji-content {
+    max-height: 454px;
+    overflow-y: auto;
+    padding: 0;
+}
+
+.tweet-modal__emoji-content::-webkit-scrollbar {
+    width: 10px;
+}
+
+.tweet-modal__emoji-content::-webkit-scrollbar-thumb {
+    background-color: #c3c9cf;
+    border-radius: 9999px;
+    border: 2px solid #ffffff;
+}
+
+.tweet-modal__emoji-section {
+    padding: 18px 0 10px;
+    border-top: 1px solid #eff3f4;
+}
+
+.tweet-modal__emoji-section:first-child {
+    border-top: none;
+}
+
+.tweet-modal__emoji-section-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 28px;
+    margin-bottom: 18px;
+}
+
+.tweet-modal__emoji-section-title {
+    font-size: 19px;
+    font-weight: 800;
+    color: #0f1419;
+    line-height: 24px;
+}
+
+.tweet-modal__emoji-clear {
+    border: none;
+    background: transparent;
+    color: #1d9bf0;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    font-family: inherit;
+}
+
+.tweet-modal__emoji-grid {
+    display: grid;
+    grid-template-columns: repeat(9, minmax(0, 1fr));
+    gap: 2px 4px;
+    padding: 0 24px 14px;
+}
+
+.tweet-modal__emoji-option {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    margin: 0 auto;
+    border: none;
+    border-radius: 9999px;
+    background: transparent;
+    cursor: pointer;
+    font-size: 28px;
+    transition: background-color 0.2s;
+}
+
+.tweet-modal__emoji-option:hover {
+    background-color: rgba(29, 155, 240, 0.08);
+}
+
+.tweet-modal__emoji-option img,
+.tweet-modal__emoji-option .emoji {
+    width: 28px;
+    height: 28px;
+}
+
+.tweet-modal__emoji-empty {
+    padding: 0 28px 18px;
+    color: #536471;
+    font-size: 15px;
+    line-height: 20px;
+}
+
+.tweet-modal__tool-file {
+    position: relative;
+}
+
+.tweet-modal__tool-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 34px;
+    height: 34px;
+    border: none;
+    background: transparent;
+    border-radius: 50%;
+    cursor: pointer;
+    color: #1d9bf0;
+    fill: currentColor;
+    transition: background-color 0.2s;
+}
+
+.tweet-modal__tool-btn:hover {
+    background-color: rgba(29, 155, 240, 0.1);
+}
+
+.tweet-modal__tool-btn.off {
+    display: none;
+}
+
+.tweet-modal__tool-btn:disabled {
+    opacity: 0.35;
+    pointer-events: none;
+    cursor: default;
+}
+
+.tweet-modal__tool-btn--geo {
+    padding: 0;
+}
+
+.tweet-modal__tool-btn-inner {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 18px;
+    min-height: 18px;
+    color: inherit;
+}
+
+.tweet-modal__tool-btn-icon {
+    display: block;
+    flex-shrink: 0;
+    fill: currentColor;
+}
+
+.tweet-modal__tool-btn-icon--geo {
+    width: 18px;
+    height: 18px;
+}
+
+.tweet-modal__tool-btn-text-wrap {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+
+.tweet-modal__tool-btn--format {
+    color: #1d9bf0;
+}
+
+.tweet-modal__tool-format-icon {
+    display: block;
+    fill: currentColor;
+    border-radius: 4px;
+}
+
+.tweet-modal__tool-btn--active,
+.tweet-modal__tool-btn--bold.active,
+.tweet-modal__tool-btn--italic.active {
+    background-color: #1d9bf0;
+    color: #ffffff;
+}
+
+.tweet-modal__tool-btn--active:hover {
+    background-color: #1a8cd8;
+}
+
+.tweet-modal__file-input {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.tweet-modal__submit {
+    min-width: 74px;
+    padding: 8px 16px;
+    background-color: #0f1419;
+    color: #fff;
+    border: none;
+    border-radius: 9999px;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    font-family: inherit;
+    transition: background-color 0.2s;
+}
+
+.tweet-modal__submit:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.tweet-modal__submit:not(:disabled):hover {
+    background-color: #0f1419;
+}
+
+/* 게시글 작성 모달 셸: 오버레이, 고정 위치, 서브뷰별 높이 확장처럼 모달 외곽 동작을 담당한다. */
+
+/* Modal mode reuses the same composer and only changes its layout. */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* 답글 모달 전용 스타일 */
+
+[data-reply-modal] .tweet-modal {
+    width: min(100%, 600px);
+    max-height: 90vh;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    border-radius: 16px;
+    background: #ffffff;
+    box-shadow: 0 8px 28px rgba(0, 0, 0, 0.28);
+}
+
+[data-reply-modal] .tweet-modal__composer {
+    height: auto;
+    min-height: 65px;
+}
+
+[data-reply-modal] .tweet-modal__header {
+    display: flex;
+}
+
+/*[data-reply-modal] .tweet-modal:has(.tweet-modal__draft-view:not(.off))*/
+/*.tweet-modal__header,*/
+/*[data-reply-modal] .tweet-modal:has(.tweet-modal__location-view:not(.off))*/
+/*.tweet-modal__header,*/
+/*[data-reply-modal] .tweet-modal:has(.tweet-modal__media-view:not(.off))*/
+/*.tweet-modal__header,*/
+/*[data-reply-modal] .tweet-modal:has(.tweet-modal__tag-view:not(.off))*/
+/*.tweet-modal__header {*/
+/*    display: none;*/
+/*}*/
+
+[data-reply-modal] .tweet-modal__progress {
+    height: 3px;
+    background: #eff3f4;
+}
+
+[data-reply-modal] .tweet-modal__progress-bar {
+    height: 100%;
+    width: 0;
+    background: #1d9bf0;
+    transition: width 0.2s linear;
+}
+
+[data-reply-modal] .tweet-modal__body {
+    flex: 0 1 auto;
+    overflow-y: auto;
+    padding: 0 16px;
+}
+
+[data-reply-modal] .tweet-modal__context-button {
+    display: inline-flex;
+    align-items: center;
+    max-width: 100%;
+    margin: 2px 0 8px 48px;
+    border: 0;
+    background: transparent;
+    color: #536471;
+    font-size: 15px;
+    line-height: 20px;
+    text-align: left;
+    cursor: pointer;
+    font-family: inherit;
+}
+
+[data-reply-modal] .tweet-modal__source-avatar,
+[data-reply-modal] .tweet-modal__avatar-image,
+[data-reply-modal] .tweet-modal__source-avatar-wrap,
+[data-reply-modal] .tweet-modal__avatar-wrap {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+    flex-shrink: 0;
+}
+
+[data-reply-modal] .tweet-modal__source-body {
+    min-width: 0;
+    flex: 1;
+}
+
+[data-reply-modal] .tweet-modal__source-meta {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 4px;
+    margin-bottom: 4px;
+    font-size: 15px;
+    line-height: 20px;
+}
+
+[data-reply-modal] .tweet-modal__source-name {
+    color: #0f1419;
+    font-weight: 700;
+}
+
+[data-reply-modal] .tweet-modal__source-handle,
+[data-reply-modal] .tweet-modal__source-time {
+    color: #536471;
+}
+
+[data-reply-modal] .tweet-modal__source-text {
+    margin: 0;
+    color: #0f1419;
+    font-size: 15px;
+    line-height: 20px;
+    word-break: break-word;
+}
+
+[data-reply-modal] .tweet-modal__composer {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    min-height: 65px;
+    padding: 6px 0 12px;
+}
+
+[data-reply-modal] .tweet-modal__editor {
+    width: 100%;
+    min-height: 128px;
+    padding-top: 2px;
+    outline: none;
+    color: #0f1419;
+    font-size: 20px;
+    line-height: 1.5;
+    word-break: break-word;
+    white-space: pre-wrap;
+    font-family: inherit;
+}
+
+[data-reply-modal] .tweet-modal__editor:empty::before {
+    content: attr(data-placeholder);
+    display: block;
+    color: #536471;
+    pointer-events: none;
+}
+
+[data-reply-modal] .tweet-modal__footer {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding: 6px 16px 12px;
+}
+
+[data-reply-modal] .tweet-modal__footer-meta {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    width: 100%;
+    padding-bottom: 12px;
+    border-bottom: 1px solid #eff3f4;
+}
+
+[data-reply-modal] .tweet-modal__footer-bottom {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    width: 100%;
+}
+
+/* Each composer subview owns its own scroll area inside the shared card. */
+.tweet-modal__compose-view.off,
+.tweet-modal__draft-view.off,
+.tweet-modal__tag-view.off,
+.tweet-modal__location-view.off,
+.tweet-modal__media-view.off,
+.tweet-modal__product-view.off {
+    display: none;
+}
+
+.tweet-modal__compose-view,
+.tweet-modal__draft-view,
+.tweet-modal__tag-view,
+.tweet-modal__location-view,
+.tweet-modal__media-view,
+.tweet-modal__product-view {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    min-height: 0;
+    overflow: hidden;
+}
+
+
+.draft-panel__header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-height: 53px;
+    padding: 8px 12px;
+    border-bottom: 1px solid #eff3f4;
+}
+
+.draft-panel__back {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 34px;
+    height: 34px;
+    border: none;
+    border-radius: 50%;
+    background: transparent;
+    color: #0f1419;
+    fill: currentColor;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.draft-panel__back:hover {
+    background-color: rgba(15, 20, 25, 0.1);
+}
+
+.draft-panel__title {
+    flex: 1;
+    color: #0f1419;
+    font-size: 18px;
+    font-weight: 700;
+    line-height: 22px;
+}
+
+.draft-panel__action {
+    min-width: 64px;
+    height: 32px;
+    border: none;
+    border-radius: 9999px;
+    background: transparent;
+    color: #0f1419;
+    font-size: 14px;
+    font-weight: 700;
+    font-family: inherit;
+    cursor: pointer;
+    transition: background-color 0.2s, color 0.2s, opacity 0.2s;
+}
+
+.draft-panel__action:hover:not([disabled]) {
+    background-color: rgba(15, 20, 25, 0.08);
+}
+
+.draft-panel__action[disabled] {
+    opacity: 0;
+    pointer-events: none;
+}
+
+.draft-panel__action--done {
+    background: #0f1419;
+    color: #ffffff;
+}
+
+.draft-panel__action--done:hover {
+    background: #272c30;
+}
+
+.draft-panel__tablist {
+    display: flex;
+    justify-content: center;
+    min-height: 52px;
+    border-bottom: 1px solid #eff3f4;
+}
+
+.draft-panel__tab {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 52px;
+    padding: 0 16px;
+    color: #536471;
+    font-size: 15px;
+    font-weight: 500;
+}
+
+.draft-panel__tab--active {
+    color: #0f1419;
+    font-weight: 700;
+}
+
+.draft-panel__tab--single {
+    flex: 0 1 auto;
+    min-width: 112px;
+}
+
+.draft-panel__content {
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto;
+}
+
+.draft-panel__list {
+    display: flex;
+    flex-direction: column;
+}
+
+.draft-panel__item {
+    display: grid;
+    grid-template-columns: auto 1fr auto auto;
+    gap: 8px;
+    align-items: center;
+    width: 100%;
+    padding: 14px 16px;
+    border: none;
+    border-bottom: 1px solid #eff3f4;
+    background: #ffffff;
+    text-align: left;
+    cursor: pointer;
+    font-family: inherit;
+    transition: background-color 0.2s;
+}
+
+.draft-panel__item-checkbox {
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
+    accent-color: #1d9bf0;
+}
+
+.draft-panel__item-load {
+    display: block;
+    border: none;
+    background: none;
+    padding: 0;
+    text-align: left;
+    cursor: pointer;
+    font-family: inherit;
+    min-width: 0;
+}
+
+.draft-panel__item-delete {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    color: #536471;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+.draft-panel__item-delete:hover {
+    background: rgba(15, 20, 25, 0.1);
+    color: #0f1419;
+}
+
+.draft-panel__item:hover {
+    background: rgba(15, 20, 25, 0.03);
+}
+
+.draft-panel__item--selectable {
+    grid-template-columns: auto auto 1fr;
+}
+
+.draft-panel__item--selected {
+    background: rgba(29, 155, 240, 0.08);
+}
+
+.draft-panel__checkbox {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 20px;
+    height: 20px;
+    margin-top: 10px;
+    border: 2px solid #cfd9de;
+    border-radius: 50%;
+    color: transparent;
+    transition: all 0.2s;
+}
+
+.draft-panel__checkbox svg {
+    width: 12px;
+    height: 12px;
+    fill: currentColor;
+}
+
+.draft-panel__checkbox--checked {
+    border-color: #1d9bf0;
+    background: #1d9bf0;
+    color: #ffffff;
+}
+
+.tweet-modal__selected-product {
+    margin-top: 12px;
+    padding: 0 4px;
+}
+
+.selected-product__card {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 12px;
+    border: 1px solid #e1e8ed;
+    border-radius: 12px;
+    background: #ffffff;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08), 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+.selected-product__image {
+    width: 44px;
+    height: 44px;
+    border-radius: 8px;
+    object-fit: cover;
+    flex-shrink: 0;
+}
+
+.selected-product__info {
+    flex: 1;
+    min-width: 0;
+}
+
+.selected-product__name {
+    display: block;
+    font-size: 14px;
+    font-weight: 700;
+    color: #0f1419;
+}
+
+.selected-product__price {
+    font-size: 13px;
+    color: #536471;
+}
+
+.selected-product__remove {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    border: none;
+    background: none;
+    border-radius: 50%;
+    cursor: pointer;
+    color: #536471;
+    flex-shrink: 0;
+}
+
+.selected-product__remove:hover {
+    background: rgba(15, 20, 25, 0.1);
+    color: #0f1419;
+}
+
+.selected-product__remove svg {
+    width: 16px;
+    height: 16px;
+    fill: currentColor;
+}
+
+.draft-panel__avatar {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: #cfe8fc;
+    color: #1d9bf0;
+    font-size: 16px;
+    font-weight: 700;
+}
+
+.draft-panel__item-body {
+    display: flex;
+    min-width: 0;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.draft-panel__meta {
+    color: #536471;
+    font-size: 13px;
+    line-height: 18px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.draft-panel__text {
+    color: #0f1419;
+    font-size: 15px;
+    line-height: 20px;
+    word-break: break-word;
+}
+
+.draft-panel__date {
+    color: #536471;
+    font-size: 13px;
+    line-height: 18px;
+}
+
+.draft-panel__empty.off,
+.draft-panel__footer.off,
+.draft-panel__confirm-overlay.off {
+    display: none;
+}
+
+.draft-panel__empty {
+    max-width: 360px;
+    margin: 0 auto;
+    padding: 40px 29px 0;
+}
+
+.draft-panel__empty-title {
+    margin-bottom: 7px;
+    color: #0f1419;
+    font-size: 28px;
+    font-weight: 800;
+    line-height: 32px;
+    text-align: center;
+}
+
+.draft-panel__empty-body {
+    color: #536471;
+    font-size: 15px;
+    text-align: center;
+}
+
+.draft-panel__footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 12px 16px;
+    border-top: 1px solid #eff3f4;
+    background: rgba(255, 255, 255, 0.96);
+    backdrop-filter: blur(12px);
+}
+
+.draft-panel__footer-link,
+.draft-panel__footer-delete {
+    border: none;
+    background: transparent;
+    font-size: 15px;
+    font-weight: 700;
+    font-family: inherit;
+    cursor: pointer;
+    transition: color 0.2s, opacity 0.2s;
+}
+
+.draft-panel__footer-link {
+    color: #1d9bf0;
+}
+
+.draft-panel__footer-link:hover {
+    color: #1a8cd8;
+}
+
+.draft-panel__footer-delete {
+    color: #8b98a5;
+}
+
+.draft-panel__footer-delete:enabled {
+    color: #f4212e;
+}
+
+.draft-panel__footer-delete:enabled:hover {
+    color: #dc1f2c;
+}
+
+.draft-panel__footer-delete:disabled {
+    cursor: default;
+}
+
+.draft-panel__confirm-overlay {
+    position: absolute;
+    inset: 0;
+    z-index: 4;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+}
+
+.draft-panel__confirm-backdrop {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.42);
+}
+
+.draft-panel__confirm-card {
+    position: relative;
+    z-index: 1;
+    width: min(100%, 320px);
+    padding: 32px;
+    border-radius: 16px;
+    background: #ffffff;
+    box-shadow: 0 8px 24px rgba(15, 20, 25, 0.18);
+}
+
+.draft-panel__confirm-title {
+    margin: 0 0 8px;
+    color: #0f1419;
+    font-size: 20px;
+    font-weight: 800;
+    line-height: 24px;
+}
+
+.draft-panel__confirm-desc {
+    margin: 0 0 24px;
+    color: #536471;
+    font-size: 15px;
+    line-height: 20px;
+}
+
+.draft-panel__confirm-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.draft-panel__confirm-primary,
+.draft-panel__confirm-secondary {
+    min-height: 52px;
+    border-radius: 9999px;
+    font-size: 17px;
+    font-weight: 700;
+    font-family: inherit;
+    cursor: pointer;
+    transition: background-color 0.2s, border-color 0.2s;
+}
+
+.draft-panel__confirm-primary {
+    border: none;
+    background: #f4212e;
+    color: #ffffff;
+}
+
+.draft-panel__confirm-primary:hover {
+    background: #dc1f2c;
+}
+
+.draft-panel__confirm-secondary {
+    border: 1px solid #cfd9de;
+    background: #ffffff;
+    color: #0f1419;
+}
+
+.draft-panel__confirm-secondary:hover {
+    background: #f7f9f9;
+}
+
+.composerAudience {
+    position: relative;
+    margin-bottom: 4px;
+}
+
+.composerMeta {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 6px;
+    padding: 10px 16px 0px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid #eff3f4;
+}
+
+.composerMetaRow {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 0px 0px 4px;
+}
+
+.replyAudience {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px;
+}
+
+.replyAudience .tweet-modal__location-display {
+    margin-left: auto;
+}
+
+.composerTagLabel {
+    display: inline-flex;
+    align-items: center;
+    align-self: flex-start;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    color: #1d9bf0;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.composerTagLabel:hover {
+    text-decoration: underline;
+}
+
+.composerCategoryBanner {
+    width: 100%;
+}
+
+.composerTagEditor {
+    width: clamp(180px, 44%, 248px);
+    max-width: 100%;
+    min-height: 27px;
+    padding: 0px 10px;
+    border: 1px solid transparent;
+    border-radius: 16px;
+    background: #f7f9f9;
+    box-shadow: inset 0 0 0 1px rgba(15, 20, 25, 0.04);
+    transition: border-color 0.2s, box-shadow 0.2s, background-color 0.2s;
+
+}
+
+.composerTagEditor.off {
+    display: none;
+}
+
+.composerTagEditor:focus-within {
+    border-color: rgba(29, 155, 240, 0.45);
+    background: #ffffff;
+    box-shadow:
+            0 0 0 4px rgba(29, 155, 240, 0.12),
+            inset 0 0 0 1px rgba(29, 155, 240, 0.16);
+}
+
+.composerTagField {
+    min-width: 50px;
+    flex: 1 1 auto;
+    min-height: 25px;
+    padding: 0;
+    border: 0;
+    outline: 0;
+    background: transparent;
+    color: #0f1419;
+    font-size: 14px;
+    font-weight: 500;
+    font-family: inherit;
+}
+
+.composerTagField::placeholder {
+    color: #536471;
+}
+
+.tagDiv {
+    display: inline-flex;
+    align-items: center;
+    height: 28px;
+    padding: 0 12px;
+    border-radius: 9999px;
+    background: rgba(29, 155, 240, 0.12);
+    color: #1d9bf0;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.category-banner {
+    padding-top: 4px;
+}
+
+.category-scroll-wrap {
+    position: relative;
+    overflow: hidden;
+}
+
+.category-scroll {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    width: 100%;
+    padding: 0 0 9px;
+    overflow-x: auto;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+
+.category-scroll::-webkit-scrollbar {
+    display: none;
+}
+
+.cat-chip {
+    flex-shrink: 0;
+    padding: 6px 16px;
+    border: 1px solid #cfd9de;
+    border-radius: 9999px;
+    background: #fff;
+    color: #0f1419;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.15s;
+}
+
+.cat-chip.has-subs {
+    padding-right: 16px;
+}
+
+.cat-chip:hover {
+    background: #f7f9f9;
+    border-color: #b0bec5;
+}
+
+.cat-chip.active,
+.cat-chip.parent-highlight,
+.cat-chip.sub-active {
+    border-color: #1d9bf0;
+    background: #1d9bf0;
+    color: #fff;
+    font-weight: 700;
+}
+
+.category-scroll-arrow {
+    position: absolute;
+    top: 0;
+    bottom: 12px;
+    z-index: 5;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    border: none;
+    color: #0f1419;
+    cursor: pointer;
+}
+
+.category-scroll-arrow.off {
+    display: none;
+}
+
+.category-scroll-left {
+    left: 0;
+    background: linear-gradient(to right, #fff 60%, transparent);
+}
+
+.category-scroll-right {
+    right: 0;
+    background: linear-gradient(to left, #fff 60%, transparent);
+}
+
+.composerAudienceRow {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-width: 0;
+    flex-wrap: wrap;
+}
+
+.composerAudienceTagDock {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-width: 0;
+    flex: 1 1 auto;
+    flex-wrap: wrap;
+}
+
+.tag-input {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.tag-input.off {
+    display: none;
+}
+
+.audienceButton,
+.audienceNotice {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    min-height: 30px;
+    padding: 0 12px;
+    border: 1px solid #cfd9de;
+    border-radius: 9999px;
+    color: #1d9bf0;
+    font-size: 14px;
+    font-weight: 700;
+}
+
+.audienceNotice {
+    border: 0;
+    padding-left: 0;
+    padding-right: 0;
+}
+
+.audienceButton::after {
+    content: "";
+    width: 8px;
+    height: 8px;
+    border-right: 2px solid currentColor;
+    border-bottom: 2px solid currentColor;
+    transform: rotate(45deg) translateY(-1px);
+}
+
+ /* 커뮤니티드롭다운 */
+.boardMenu {
+    position: fixed;
+    top: 16px;
+    left: 16px;
+    z-index: 2100;
+    width: min(320px, calc(100vw - 32px));
+    max-height: min(520px, calc(100vh - 32px));
+    overflow: hidden auto;
+    border-radius: 16px;
+    background: #fff;
+    box-shadow:
+            rgba(101, 119, 134, 0.2) 0 0 15px 0,
+            rgba(101, 119, 134, 0.15) 0 0 3px 1px;
+    scrollbar-width: thin;
+    overscroll-behavior: contain;
+}
+
+.boardMenuHeader {
+    padding: 20px 20px 10px;
+}
+
+.boardMenuTitle {
+    margin: 0;
+    color: #0f1419;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.boardMenuOptions {
+    padding: 0 0 8px;
+}
+
+.boardMenuOption {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    padding: 5px 20px;
+    border: 0;
+    background: transparent;
+    color: #0f1419;
+    cursor: pointer;
+}
+
+.boardMenuOptionInfo {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    min-width: 0;
+}
+
+.boardMenuOptionIcon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border-radius: 999px;
+    color: #1d9bf0;
+    background: rgba(29, 155, 240, 0.14);
+    flex-shrink: 0;
+}
+
+.boardMenuOptionIcon--product {
+    color: #0f1419;
+    background: #e7eef3;
+}
+
+.boardMenuOptionSvg {
+    width: 18px;
+    height: 18px;
+    fill: currentColor;
+}
+
+.boardMenuOption:hover {
+    background: #f7f9f9;
+}
+
+.boardMenuOptionLabel {
+    font-size: 14px;
+    font-weight: 700;
+}
+
+.boardMenuOptionCheck {
+    color:  #536471;
+    font-size: 14px;
+    font-weight: 800;
+    opacity: 0;
+}
+
+.boardMenuOption.isSelected .boardMenuOptionCheck {
+    opacity: 1;
+}
+
+.boardMenuSection {
+    border-top: 1px solid #eff3f4;
+    padding: 8px 0 12px;
+}
+
+.boardMenuSectionTitle {
+    margin: 0;
+    padding: 8px 20px 10px;
+    color: #0f1419;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.communityMenuList {
+    display: flex;
+    flex-direction: column;
+}
+
+.communityMenuEmpty {
+    padding: 16px 20px;
+    color: #71767b;
+    font-size: 14px;
+    text-align: center;
+    margin: 0;
+}
+
+.communityMenuItem {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    width: 100%;
+    padding: 12px 20px;
+    border: 0;
+    background: transparent;
+    color: #0f1419;
+    text-align: left;
+    cursor: pointer;
+}
+
+.communityMenuItem:hover {
+    background: #f7f9f9;
+}
+
+.communityMenuAvatar {
+    width: 52px;
+    height: 52px;
+    border-radius: 16px;
+    object-fit: cover;
+    flex-shrink: 0;
+}
+
+.communityMenuText {
+    display: flex;
+    flex: 1;
+    min-width: 0;
+    flex-direction: column;
+}
+
+.communityMenuName {
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 1.3;
+}
+
+.communityMenuMeta {
+    color: #536471;
+    font-size: 13px;
+    font-weight: 600;
+    line-height: 1.35;
+}
+
+.communityMenuCheck {
+    color:  #536471;
+    font-size: 14px;
+    font-weight: 800;
+    opacity: 0;
+}
+
+.communityMenuItem.isSelected .communityMenuCheck {
+    opacity: 1;
+}
+
+.cat-back-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 33.38px;
+    height: 33.38px;
+    flex-shrink: 0;
+    border: 1px solid #cfd9de;
+    border-radius: 50%;
+    background: #fff;
+    transition: background 0.15s;
+}
+
+.cat-back-btn:hover {
+    background: #f7f9f9;
+}
+
+.cat-back-btn svg {
+    width: 18px;
+    height: 18px;
+    fill: #0f1419;
+}
+
+.locationModal {
+    width: min(100%, 520px);
+    max-height: 80vh;
+    display: flex;
+    flex-direction: column;
+    border-radius: 20px;
+    background: #ffffff;
+    overflow: hidden;
+}
+
+
+
+.feedSection {
+    display: none;
+    flex-direction: column;
+}
+
+.feedSection.isActive {
+    display: flex;
+}
+
+.friendsSection {
+    display: none;
+}
+
+.friendsSection.isActive {
+    display: block;
+}
+
+.friendsSectionInner {
+    display: flex;
+    flex-direction: column;
+}
+
+.friendsList {
+    display: flex;
+    flex-direction: column;
+}
+
+.user-card {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 12px 16px;
+    border-bottom: 1px solid #eff3f4;
+    transition: background 0.15s;
+}
+
+.user-card:hover {
+    background: #f7f9f9;
+}
+
+.user-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    color: #1d9bf0;
+    font-size: 16px;
+}
+
+.user-avatar-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    border-radius: 50%;
+}
+
+.user-info {
+    flex: 1;
+    min-width: 0;
+}
+
+.user-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+}
+
+.user-name-group {
+    min-width: 0;
+}
+
+.user-name {
+    font-weight: 700;
+    font-size: 15px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.verified-badge {
+    width: 18px;
+    height: 18px;
+    fill: #1d9bf0;
+    flex-shrink: 0;
+}
+
+.user-handle {
+    color: #536471;
+    font-size: 15px;
+}
+
+.user-followed-by {
+    color: #536471;
+    font-size: 15px;
+    margin-top: 2px;
+}
+
+.user-bio {
+    font-size: 15px;
+    margin-top: 4px;
+    line-height: 1.4;
+}
+
+.connect-btn {
+    flex-shrink: 0;
+    min-width: 110px;
+    padding: 0 16px;
+    height: 34px;
+    border-radius: 9999px;
+    font-size: 14px;
+    font-weight: 700;
+    transition: all 0.2s;
+    border: 1px solid transparent;
+}
+
+.connect-btn.default {
+    background: #0f1419;
+    color: #fff;
+}
+
+.connect-btn.default:hover {
+    background: #272c30;
+}
+
+.connect-btn.connected {
+    background: transparent;
+    color: #0f1419;
+    border-color: #cfd9de;
+}
+
+.connect-btn.connected:hover {
+    border-color: #f4212e;
+    color: #f4212e;
+    background: rgba(244, 33, 46, 0.1);
+}
+
+/* 피드 카드 본문: 작성자 정보, 텍스트, 미디어, 액션 바가 하나의 카드 안에서 자연스럽게 이어지도록 구성한다. */
+.postCard {
+    display: flex;
+    gap: 12px;
+    padding: 16px;
+    border-bottom: 1px solid #eff3f4;
+    cursor: pointer;
+}
+
+.postCard:hover {
+    background: #f7f9f9;
+}
+
+/* 모든 게시물 카드(메인 피드 / 커뮤니티 / 마이페이지 / 뉴스 / 게시물 상세 등)의
+   본문·미디어·액션바 위치를 통일: 헤더 안의 아바타(40) + 갭(12) = 52px만큼 들여
+   본문 텍스트와 액션 버튼이 항상 아바타 오른쪽 라인부터 시작하도록 한다.
+   - 헤더(.postHeader) 자신은 제외 (아바타가 그 안에 위치)
+   - 뉴스 카드(.postBody.postCard--news)는 아바타 없는 별도 레이아웃이라 제외 */
+.postCard .postBody:not(.postCard--news) > *:not(.postHeader) {
+    padding-left: 52px;
+}
+
+.postAdBadge {
+    font-size: 11px;
+    font-weight: 700;
+    color: #71767b;
+    padding: 0 6px;
+    border-radius: 4px;
+    line-height: 20px;
+    margin-right: 4px;
+}
+
+.postBody {
+    flex: 1;
+    min-width: 0;
+}
+
+.postHeader {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    position: relative;
+}
+
+.postIdentity {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px 8px;
+    align-items: flex-start;
+    min-width: 0;
+    overflow: hidden;
+    flex: 1;
+}
+
+.postIdentity__copy {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    flex: 1;
+}
+
+.postIdentity__nameRow {
+    display: flex;
+    align-items: center;
+    gap: 4px 8px;
+    flex-wrap: wrap;
+}
+
+.postIdentity__metaRow {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    flex-wrap: wrap;
+    color: #536471;
+    font-size: 14px;
+    line-height: 18px;
+}
+
+.postIdentity__sep {
+    color: #536471;
+}
+
+.postName {
+    font-size: 15px;
+}
+
+.postHandle,
+.postTime {
+    color: #536471;
+    font-size: 14px;
+    align-content: center;
+}
+
+.postBadge {
+    width: 18px;
+    height: 18px;
+    vertical-align: -3px;
+    flex-shrink: 0;
+}
+
+/* 메인 피드의 커뮤니티 게시글 카드 — 커뮤니티 페이지와 동일한 헤더 레이아웃을 위한 룰.
+   community.css 와 중복되지만 main.html 은 community.css 를 로드하지 않아 여기서 수용한다. */
+.communityPostMeta {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: 2px;
+    color: #536471;
+    font-size: 13px;
+    font-weight: 700;
+}
+.communityPostMeta__text {
+    color: #1d9bf0;
+    cursor: pointer;
+    text-decoration: none;
+}
+.communityPostMeta__text:hover {
+    text-decoration: underline;
+}
+.communityPostMeta__category {
+    background: #eff3f4;
+    color: #536471;
+    font-size: 12px;
+    padding: 2px 8px;
+    border-radius: 9999px;
+}
+.communityPostHandle {
+    display: block;
+    margin: 0 0 4px;
+    color: #536471;
+    font-size: 13px;
+    line-height: 16px;
+}
+
+.postText {
+    margin: 8px 0 12px;
+    font-size: 15px;
+    line-height: 24px;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.newsHeaderWrap {
+    display: flex;
+    gap: 8px;
+    margin: 6px 0px 6px;
+}
+
+/*.postBody.postCard--news {*/
+/*    margin-left: 40px;*/
+/*}*/
+
+.postNewsTitle {
+    font-size: 20px;
+    font-weight: 700;
+    color: #0f1419;
+    line-height: 28px;
+}
+
+h3.postNewsTitle {
+    margin: 0;
+}
+
+.postNewsText {
+    margin: 8px 0 12px;
+    font-size: 15px;
+    line-height: 24px;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.postCard--news.postMetrics {
+    margin-left: 0;
+}
+
+.postLocation {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 2px 10px;
+    margin-top: 4px;
+    margin-bottom: 4px;
+    border-radius: 9999px;
+    background: rgba(29, 155, 240, 0.1);
+    color: #1d9bf0;
+    font-size: 13px;
+    line-height: 20px;
+}
+
+.postLocation__icon {
+    flex-shrink: 0;
+    fill: #1d9bf0;
+}
+
+.postLocation__text {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 200px;
+}
+
+a.postHashtag {
+    font-size: 13px;
+    font-weight: 700;
+}
+
+div.postHashtags {
+    font-size: 11px;
+    color: #1d9bf0;
+    display: flex;
+    gap: 8px;
+    margin-bottom: 8px;
+}
+
+.postText.expanded {
+    -webkit-line-clamp: unset;
+    overflow: visible;
+}
+
+.postTextToggle {
+    display: inline;
+    margin-bottom: 6px;
+    vertical-align: baseline;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    color: #1d9bf0;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.postTextToggle:hover {
+    text-decoration: underline;
+}
+
+.postMedia {
+    margin-bottom: 12px;
+    position: relative;
+}
+
+.postMetrics {
+    margin-top: 8px;
+}
+
+.postMoreButton {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 34px;
+    height: 34px;
+    padding: 0;
+    border: none;
+    border-radius: 50%;
+    background: none;
+    color: #536471;
+    cursor: pointer;
+    transition: background-color 0.2s, color 0.2s;
+    flex-shrink: 0;
+}
+
+.postMoreButton:hover {
+    background-color: rgba(29, 155, 240, 0.1);
+    color: #1d9bf0;
+}
+
+.postMoreIcon {
+    width: 18px;
+    height: 18px;
+    fill: currentColor;
+}
+
+.post-more-menu.off {
+    display: none;
+}
+
+.post-more-menu {
+    position: absolute;
+    top: calc(100% + 8px);
+    right: 0;
+    z-index: 30;
+    display: flex;
+    flex-direction: column;
+    background-color: #ffffff;
+    border-radius: 12px;
+    box-shadow:
+            rgba(101, 119, 134, 0.2) 0px 0px 15px 0px,
+            rgba(101, 119, 134, 0.15) 0px 0px 3px 1px;
+    overflow: hidden;
+    max-width: 400px;
+    width: max-content;
+    pointer-events: auto;
+}
+
+.post-more-menu__item {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+    padding: 11px 14px;
+    border: none;
+    background-color: transparent;
+    color: rgb(15, 20, 25);
+    text-align: left;
+    font-size: 15px;
+    font-weight: 400;
+    line-height: 20px;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    text-decoration: none;
+    outline: none;
+    box-sizing: border-box;
+    transition: background-color 0.1s ease;
+}
+
+.post-more-menu__item:hover,
+.post-more-menu__item:focus {
+    background-color: rgba(0, 0, 0, 0.03);
+    outline: none;
+}
+
+.post-more-menu__item:active {
+    background-color: rgba(0, 0, 0, 0.03);
+}
+
+.post-more-menu__icon {
+    width: 20px;
+    height: 20px;
+    flex-shrink: 0;
+    fill: currentColor;
+}
+
+.postAvatar--image {
+    overflow: hidden;
+}
+
+.postAvatarImage {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.postMedia--ad {
+    padding: 0;
+    overflow: hidden;
+    background: #e9eef2;
+}
+
+.postMediaGrid {
+    display: grid;
+    gap: 2px;
+    overflow: hidden;
+    border-radius: 16px;
+    background: #e9eef2;
+}
+
+.postMediaGrid--2 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.postMediaGrid--3 {
+    grid-template-columns: 1.15fr 0.85fr;
+    grid-template-rows: repeat(2, minmax(0, 1fr));
+}
+
+.postMediaGrid--3 img:first-child {
+    grid-row: 1 / span 2;
+    min-height: 320px;
+}
+
+.postMediaGrid--4 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-rows: repeat(2, minmax(0, 1fr));
+}
+
+.postMediaImage {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 18px;
+}
+
+img.postMediaImage {
+    cursor: pointer;
+}
+
+.postMediaVideo {
+    display: block;
+    width: 100%;
+    max-height: 508px;
+    object-fit: contain;
+}
+
+.mediaPreviewOverlay {
+    position: fixed;
+    inset: 0;
+    z-index: 1200;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    background: rgba(0, 0, 0, 0.88);
+}
+
+.mediaPreviewDialog {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    max-width: min(92vw, 1200px);
+    max-height: 92vh;
+}
+
+.mediaPreviewImage {
+    display: block;
+    max-width: 100%;
+    max-height: 92vh;
+    border-radius: 20px;
+    object-fit: contain;
+    box-shadow: 0 24px 80px rgba(0, 0, 0, 0.42);
+}
+
+.mediaPreviewClose {
+    position: absolute;
+    top: -10px;
+    right: -10px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border: 0;
+    border-radius: 999px;
+    background: rgba(15, 20, 25, 0.82);
+    color: #fff;
+    cursor: pointer;
+}
+
+.mediaPreviewClose:hover {
+    background: #272c30;
+}
+
+.mediaPreviewCloseIcon {
+    width: 20px;
+    height: 20px;
+    fill: currentColor;
+}
+
+.tweet-action-bar {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    width: 100%;
+}
+
+.tweet-action-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    min-width: 0;
+    height: 34px;
+    padding: 0 6px;
+    border: 0;
+    background: transparent;
+    border-radius: 9999px;
+    color: #536471;
+    font-size: 13px;
+    cursor: pointer;
+    transition: background-color 0.2s, color 0.2s;
+}
+
+.tweet-action-btn:hover {
+    background-color: rgba(29, 155, 240, 0.1);
+    color: #1d9bf0;
+}
+
+.tweet-action-btn--like:hover {
+    background-color: rgba(249, 24, 128, 0.1);
+    color: #f91880;
+}
+
+.tweet-action-btn--bookmark:hover {
+    background-color: rgba(29, 155, 240, 0.1);
+    color: #1d9bf0;
+}
+
+.tweet-action-icon {
+    width: 18px;
+    height: 18px;
+    fill: currentColor;
+    flex-shrink: 0;
+}
+
+.tweet-action-count {
+    font-size: 13px;
+    line-height: 1;
+}
+
+.tweet-action-right {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    margin-left: auto;
+}
+
+.tweet-action-btn--like.active {
+    color: #f91880;
+}
+
+.tweet-action-btn--like.active:hover {
+    background-color: rgba(249, 24, 128, 0.1);
+}
+
+.tweet-action-btn--bookmark.active {
+    color: #1d9bf0;
+}
+
+.trendSidebar {
+    width: 350px;
+}
+
+.trendPanel {
+    width: 100%;
+    max-width: 380px;
+    box-sizing: border-box;
+    position: sticky;
+    top: 0;
+    padding: 12px 16px 36px;
+    display: grid;
+    gap: 16px;
+    background: #ffffff;
+}
+
+.trendPanel::-webkit-scrollbar {
+    display: none;
+}
+
+.trendPanel::-webkit-scrollbar-thumb {
+    border-radius: 9999px;
+    background: rgba(83, 100, 113, 0.35);
+}
+
+.searchForm {
+    padding: 4px 0px 0px;
+}
+
+.search-icon {
+    width: 17px;
+    height: 24px;
+    fill: currentColor;
+}
+
+.searchField {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 16px;
+    border-radius: 9999px;
+    border: 1px solid #dbe3e8;
+    max-height: 40px;
+}
+
+.searchForm.isFocused .searchField {
+    background: #ffffff;
+    border-color: #1d9bf0;
+    box-shadow: 0 0 0 1px #1d9bf0;
+}
+
+.searchIcon {
+    color: #536471;
+    font-size: 30px;
+    line-height: 1;
+}
+
+.searchRecentIcon {
+    width: 18px;
+    height: 18px;
+    fill: #536471;
+    flex-shrink: 0;
+}
+
+.searchForm.isFocused .searchIcon {
+    color: #1d9bf0;
+}
+
+.searchInput {
+    width: 100%;
+    border: 0;
+    outline: 0;
+    background: transparent;
+    color: #0f1419;
+    font-size: 15px;
+    caret-color: #1d9bf0;
+}
+
+.searchInput::placeholder {
+    color: #536471;
+}
+
+.searchPanel {
+    position: absolute;
+    /* left: 0;
+    right: 0; */
+    margin-top: 8px;
+    width: 318px;
+    min-height: 40px;
+    max-height: calc(-53px + 80vh);
+    border-radius: 16px;
+    background: #ffffff;
+    box-shadow: 0 4px 12px rgba(15, 20, 25, 0.15);
+    overflow-y: auto;
+    z-index: 20;
+}
+
+.searchPanelEmpty {
+    padding: 18px 16px;
+}
+
+.searchPanelText {
+    margin: 0;
+    color: #536471;
+    font-size: 15px;
+    font-weight: 400;
+    line-height: 1.25;
+    letter-spacing: -0.02em;
+}
+
+.searchResults {
+    display: flex;
+    flex-direction: column;
+}
+
+.searchResultTopic {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    width: 100%;
+    padding: 18px 16px;
+    border-bottom: 1px solid #eff3f4;
+    text-align: left;
+}
+
+.searchResultTopic:hover,
+.searchResultItem:hover {
+    background: #f7f9f9;
+}
+
+.searchResultIcon {
+    color: #0f1419;
+    font-size: 28px;
+    line-height: 1;
+}
+
+.searchResultLabel {
+    color: #0f1419;
+    font-size: 17px;
+    font-weight: 700;
+}
+
+.searchResultList {
+    display: flex;
+    flex-direction: column;
+}
+
+.searchResultItem {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 16px;
+}
+
+.searchResultAvatar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 48px;
+    height: 48px;
+    border-radius: 9999px;
+    background: linear-gradient(135deg, #d7efff 0%, #b7d8ff 100%);
+    color: #1d9bf0;
+    font-size: 18px;
+    font-weight: 700;
+    flex-shrink: 0;
+}
+
+.searchResultProfile {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+}
+
+.searchResultName {
+    color: #0f1419;
+    font-size: 15px;
+    font-weight: 700;
+}
+
+.searchResultHandle {
+    color: #536471;
+    font-size: 15px;
+}
+
+.sidebarCard {
+    border: 1px solid #e3e8ec;
+    border-radius: 24px;
+    box-shadow: 0 1px 2px rgba(15, 20, 25, 0.04);
+}
+
+.sidebarMoreLink {
+    display: block;
+    padding: 14px 20px 16px;
+    color: #1d9bf0;
+    font-size: 15px;
+    font-weight: 700;
+    text-decoration: none;
+}
+
+.sidebarMoreLink:hover {
+    background: #ebeff2;
+    border-bottom-left-radius: 22px;
+    border-bottom-right-radius: 22px;
+}
+
+.suggestionTitle {
+    margin: 0;
+    padding: 16px 20px 10px;
+    font-size: 20px;
+    font-weight: 800;
+}
+
+.suggestionItem {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 13px 20px;
+    border-top: 1px solid #e8eef1;
+}
+
+.suggestionItem:hover {
+    background: #ebeff2;
+}
+
+.suggestionProfile {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+.suggestionName {
+    font-size: 15px;
+    font-weight: 700;
+}
+
+.sidebar-user-handle {
+    color: #536471;
+    font-size: 13px;
+}
+
+.suggestionLink {
+    display: block;
+    border-top: 1px solid #e8eef1;
+}
+
+.suggestionLink:hover {
+    background: #ebeff2;
+    border-bottom-left-radius: 24px;
+    border-bottom-right-radius: 24px;
+}
+
+/* .exchangeRateFeedCard {
+    height: 300px;
+    overflow-y: auto;
+} */
+
+.exchangeRateFeedCard::-webkit-scrollbar {
+    display: none;
+}
+
+.exchangeRateFeedHeader {
+    padding: 16px 20px 12px;
+}
+
+.exchangeRateFeedTitle {
+    margin: 0;
+    font-size: 20px;
+    font-weight: 800;
+}
+
+.exchangeRateFeedSubtitle {
+    margin: 4px 0 0;
+    color: #536471;
+    font-size: 13px;
+    line-height: 16px;
+}
+
+.exchangeRateFeedContent {
+    display: flex;
+    flex-direction: column;
+}
+
+.exchangeRateFeedState {
+    margin: 0;
+    padding: 16px 20px;
+    color: #536471;
+    font-size: 14px;
+    line-height: 20px;
+}
+
+.exchangeRateRow {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 14px 20px;
+    border-top: 1px solid #e8eef1;
+}
+
+.exchangeRateRow:hover {
+    background: #ebeff2;
+}
+
+.exchangeRateRow:last-child:hover {
+    background: #ebeff2;
+    border-bottom-left-radius: 24px;
+    border-bottom-right-radius: 24px;
+}
+
+.exchangeRateMain {
+    display: flex;
+    min-width: 0;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.exchangeRateCurrencyLine {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 6px;
+    min-width: 0;
+}
+
+.exchangeRateCurrency {
+    color: #0f1419;
+    font-size: 15px;
+    font-weight: 700;
+    line-height: 20px;
+}
+
+.exchangeRateCurrencyName,
+.exchangeRateMeta {
+    color: #536471;
+    font-size: 13px;
+    line-height: 16px;
+}
+
+.exchangeRateValueWrap {
+    flex-shrink: 0;
+    text-align: right;
+}
+
+.exchangeRateValue {
+    color: #0f1419;
+    font-size: 15px;
+    font-weight: 700;
+    line-height: 20px;
+    font-variant-numeric: tabular-nums;
+}
+
+.newsFeedTitle {
+    margin: 0;
+    padding: 16px 20px 10px;
+    font-size: 20px;
+    font-weight: 800;
+}
+
+.newsFeedList {
+    display: flex;
+    flex-direction: column;
+}
+
+.newsFeedItem {
+    padding: 14px 20px;
+    border-top: 1px solid #e8eef1;
+}
+
+.newsFeedItem:hover {
+    background: #ebeff2;
+}
+
+.newsFeedContent {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.newsFeedHeadline {
+    margin: 0;
+    color: #0f1419;
+    font-size: 18px;
+    font-weight: 800;
+    line-height: 1.35;
+}
+
+.newsFeedSummary {
+    margin: 0;
+    color: #536471;
+    font-size: 15px;
+    line-height: 1.45;
+}
+
+.newsFeedLink {
+    border-top: 1px solid #e8eef1;
+    display: block;
+}
+
+.newsFeedLink:hover {
+    background: #ebeff2;
+}
+
+.footerSection {
+    padding: 12px 0;
+}
+
+.footerText {
+    margin: 0;
+    color: #536471;
+    font-size: 13px;
+    line-height: 1.6;
+}
+
+.connect-btn-sm {
+    min-width: 80px;
+    height: 30px;
+    padding: 0 14px;
+    border: 1px solid transparent;
+    border-radius: 9999px;
+    font-size: 13px;
+    font-weight: 700;
+    transition: all 0.2s ease;
+}
+
+.connect-btn-sm.default {
+    background: #0f1419;
+    color: #ffffff;
+}
+
+.connect-btn-sm.default:hover {
+    background: #272c30;
+}
+
+.connect-btn-sm.connected {
+    background: transparent;
+    color: #0f1419;
+    border-color: #cfd9de;
+}
+
+.connect-btn-sm.connected:hover {
+    border-color: #f4212e;
+    color: #f4212e;
+    background: rgba(244, 33, 46, 0.1);
+}
+
+.modalOverlay {
+    position: fixed;
+    inset: 0;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    background: rgba(91, 112, 131, 0.4);
+    z-index: 100;
+}
+
+.modalOverlay.active {
+    display: flex;
+}
+
+.modalPanel {
+    width: min(90vw, 360px);
+    padding: 24px;
+    border-radius: 16px;
+    background: #ffffff;
+    box-shadow: 0 8px 28px rgba(0, 0, 0, 0.12);
+}
+
+.modalTitle {
+    margin: 0 0 8px;
+    font-size: 20px;
+}
+
+.modalText {
+    margin: 0 0 20px;
+    color: #536471;
+    font-size: 14px;
+}
+
+.modalActions {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.modalConfirm,
+.modalCancel {
+    min-height: 44px;
+    border-radius: 9999px;
+    font-weight: 700;
+}
+
+.modalConfirm {
+    background: #0f1419;
+    color: #ffffff;
+}
+
+.modalCancel {
+    border: 1px solid #cfd9de;
+    color: #0f1419;
+}
+
+.mobileBar {
+    position: fixed;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    display: flex;
+    justify-content: space-around;
+    padding: 12px 16px calc(12px + env(safe-area-inset-bottom));
+    border-top: 1px solid #eff3f4;
+    background: #ffffff;
+}
+
+.mobileItem {
+    color: #536471;
+    font-size: 14px;
+    font-weight: 700;
+}
+
+/* 반응형 분기점: 화면 폭에 따라 좌우 패널과 모달 폭을 단계적으로 조정한다. */
+@media (min-width: 500px) {
+    .navigationSidebar,
+    .sidebar-left {
+        display: block;
+    }
+
+    .sidebar-left {
+        width: 88px;
+        flex-shrink: 0;
+    }
+
+    .sidebar-inner {
+        width: 88px;
+        padding: 8px;
+    }
+
+    .nav-list .nav-item {
+        align-self: center;
+        justify-content: center;
+        padding: 12px;
+    }
+
+    .nav-list .nav-item span,
+    .post-btn,
+    .profile-info {
+        display: none;
+    }
+
+    .profile-more {
+        display: none;
+    }
+
+    .profile-card {
+        justify-content: center;
+    }
+
+    .mobileBar {
+        display: none;
+    }
+}
+
+@media (min-width: 1080px) {
+    .sidebar-left {
+        width: 275px;
+    }
+
+    .sidebar-inner {
+        width: 275px;
+        padding: 8px 16px;
+        padding-bottom: 32px;
+    }
+
+    .nav-logo {
+        align-self: flex-start;
+        justify-content: flex-start;
+    }
+
+    .nav-list .nav-item {
+        align-self: flex-start;
+        justify-content: flex-start;
+    }
+
+    .nav-list .nav-item span {
+        display: inline;
+    }
+
+    .nav-more-popover {
+        width: 250px;
+    }
+
+    .post-btn {
+        display: block;
+    }
+
+    .profile-more {
+        display: inline-flex;
+    }
+
+    .profile-info {
+        display: flex;
+    }
+
+    .profile-card {
+        justify-content: flex-start;
+    }
+}
+
+@media (min-width: 1024px) {
+    .trendSidebar {
+        display: block;
+    }
+}
+
+/* share-menu-item--bookmark 클릭 시 나오는 북마크 폴더 모달 */
+
+.bookmark-share-sheet {
+    position: fixed;
+    inset: 0;
+    z-index: 1260;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.bookmark-share-sheet[hidden] {
+    display: none;
+}
+
+.bookmark-share-sheet-backdrop {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.4);
+}
+
+.bookmark-share-sheet-card {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    width: min(600px, calc(100vw - 32px));
+    max-height: min(650px, calc(100vh - 32px));
+    overflow: hidden;
+    border-radius: 16px;
+    background: #ffffff;
+    box-shadow: rgba(101, 119, 134, 0.2) 0 0 15px 0,
+    rgba(101, 119, 134, 0.15) 0 0 3px 1px;
+}
+
+.bookmark-share-sheet-card--bookmark {
+    min-height: 320px;
+}
+
+.bookmark-share-sheet-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 16px;
+    border-bottom: 1px solid #eff3f4;
+}
+
+.bookmark-share-sheet-icon-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border-radius: 999px;
+    color: #0f1419;
+}
+
+.bookmark-share-sheet-icon-btn:hover {
+    background: rgba(15, 20, 25, 0.08);
+}
+
+.bookmark-share-sheet-icon-btn svg {
+    width: 20px;
+    height: 20px;
+    fill: currentColor;
+}
+
+.bookmark-share-sheet-title {
+    margin: 0;
+    flex: 1;
+    font-size: 20px;
+    font-weight: 700;
+    text-align: center;
+}
+
+.bookmark-share-sheet-header-spacer {
+    width: 36px;
+    height: 36px;
+}
+
+.bookmark-share-sheet-search {
+    padding: 12px 16px;
+    border-bottom: 1px solid #eff3f4;
+}
+
+.bookmark-share-sheet-search-input {
+    width: 100%;
+    padding: 12px 16px;
+    border: 1px solid #cfd9de;
+    border-radius: 999px;
+    background: #fff;
+}
+
+.bookmark-share-sheet-list {
+    display: flex;
+    flex-direction: column;
+    overflow: auto;
+}
+
+.bookmark-share-sheet-user,
+.bookmark-share-sheet-folder,
+.bookmark-share-sheet-create-folder {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    border: 0;
+    background: #ffffff;
+    color: #0f1419;
+    text-align: left;
+}
+
+.bookmark-share-sheet-user,
+.bookmark-share-sheet-folder {
+    gap: 12px;
+    padding: 14px 16px;
+    border-bottom: 1px solid #eff3f4;
+}
+
+.bookmark-share-sheet-user:hover,
+.bookmark-share-sheet-folder:hover,
+.bookmark-share-sheet-create-folder:hover {
+    background: rgba(15, 20, 25, 0.04);
+}
+
+.bookmark-share-sheet-user-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 999px;
+    overflow: hidden;
+    flex-shrink: 0;
+}
+
+.bookmark-share-sheet-user-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.bookmark-share-sheet-user-body {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.bookmark-share-sheet-user-name {
+    font-size: 15px;
+    font-weight: 700;
+}
+
+.bookmark-share-sheet-user-handle {
+    color: #536471;
+    font-size: 14px;
+}
+
+.bookmark-share-sheet-create-folder {
+    padding: 16px;
+    color: #1d9bf0;
+    font-size: 15px;
+    font-weight: 700;
+    border-bottom: 1px solid #eff3f4;
+}
+
+.bookmark-share-sheet-folder-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    background: #1d9bf0;
+    color: #ffffff;
+    flex-shrink: 0;
+}
+
+.bookmark-share-sheet-folder-icon svg {
+    width: 22px;
+    height: 22px;
+    fill: currentColor;
+}
+
+.bookmark-share-sheet-folder-name {
+    flex: 1;
+    font-size: 15px;
+    font-weight: 700;
+}
+
+.bookmark-share-sheet-folder-check {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 20px;
+    height: 20px;
+    color: transparent;
+}
+
+.bookmark-share-sheet-folder-check--active {
+    color: #1d9bf0;
+}
+
+.bookmark-share-sheet-folder-check svg {
+    width: 20px;
+    height: 20px;
+    fill: currentColor;
+}
+
+.bookmark-share-sheet-folder-list {
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+.bookmark-share-sheet-folder-count {
+    color: #536471;
+    font-size: 13px;
+    margin-left: auto;
+}
+
+.bookmark-share-sheet-empty {
+    padding: 24px 16px;
+    color: #536471;
+    font-size: 15px;
+    text-align: center;
+}
+
+.bookmark-modal-overlay {
+    position: fixed;
+    inset: 0;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    background: rgba(15, 20, 25, 0.62);
+    z-index: 120;
+}
+
+.bookmark-modal-overlay.is-open {
+    display: flex;
+}
+
+.bookmark-modal {
+    width: min(100%, 704px);
+    border-radius: 16px;
+    background: #ffffff;
+    box-shadow: 0 8px 28px rgba(0, 0, 0, 0.2);
+}
+
+.bookmark-modal-header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 12px 16px;
+}
+
+.bookmark-modal-close {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 34px;
+    height: 34px;
+    border-radius: 999px;
+    color: #0f1419;
+    transition: background-color 0.2s ease;
+}
+
+.bookmark-modal-close:hover {
+    background: #eff3f4;
+}
+
+.bookmark-modal-close svg {
+    width: 20px;
+    height: 20px;
+    fill: currentColor;
+}
+
+.bookmark-modal-title {
+    margin: 0;
+    font-size: 23px;
+    line-height: 1.1;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    color: #0f1419;
+}
+
+.bookmark-modal-submit {
+    margin-left: auto;
+    min-width: 72px;
+    height: 36px;
+    padding: 0 16px;
+    border-radius: 999px;
+    font-size: 15px;
+    font-weight: 700;
+    background: #0f1419;
+    color: #ffffff;
+    opacity: 1;
+    transition: opacity 0.2s ease,
+    background-color 0.2s ease;
+}
+
+.bookmark-modal-submit:disabled {
+    background: #878a8c;
+    color: #ffffff;
+    opacity: 1;
+    cursor: default;
+}
+
+.bookmark-modal-submit:not(:disabled):hover {
+    background: #272c30;
+}
+
+.bookmark-modal-body {
+    padding: 8px 16px 16px;
+}
+
+.bookmark-modal-field {
+    position: relative;
+    display: block;
+    min-height: 66px;
+    border: 2px solid #1d9bf0;
+    border-radius: 6px;
+    background: #ffffff;
+    padding: 10px 14px 8px;
+}
+
+.bookmark-modal-label {
+    display: block;
+    font-size: 13px;
+    line-height: 1;
+    font-weight: 400;
+    color: #1d9bf0;
+}
+
+.bookmark-modal-count {
+    position: absolute;
+    top: 10px;
+    right: 12px;
+    font-size: 13px;
+    line-height: 1;
+    color: #536471;
+}
+
+.bookmark-modal-input {
+    width: 100%;
+    margin-top: 10px;
+    font-size: 17px;
+    line-height: 24px;
+    color: #0f1419;
+}
+
+@media (max-width: 480px) {
+    .bookmark-modal-overlay {
+        padding: 12px;
+    }
+
+    .bookmark-modal-title {
+        font-size: 24px;
+    }
+
+    .bookmark-modal-field {
+        min-height: 64px;
+    }
+}
+
+.Post-Card {
+    display: flex;
+    gap: 12px;
+    padding: 0px 16px;
+    padding-top: 10px;
+    border-bottom: 1px solid #eff3f4;
+    cursor: pointer;
+}
+
+.Post-Body {
+    flex: 1;
+    min-width: 0;
+}
+
+.Post-Header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+}
+
+.Post-Identity {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px 8px;
+    align-items: center;
+    min-width: 0;
+}
+
+.Post-Title {
+    font-size: 18px;
+    font-weight: 700;
+}
+
+.Post-Category {
+    color: #536471;
+    font-size: 13px;
+}
+
+.Post-Product-Info {
+    display: flex;
+    flex-direction: row;
+    margin-top: 10px;
+    gap: 5px;
+}
+
+.Post-Product-Image {
+    width: 100px;
+    height: 100px;
+    border-radius: 0.75rem;
+    border: 0.5px solid #eff3f4;
+}
+
+.Post-Product-Image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.Post-Product-Detail {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+}
+
+.Detail-Category-Tags {
+    display: flex;
+    gap: 5px;
+}
+
+.Detail-Value {
+    font-size: 15px;
+    font-weight: 400;
+    line-height: 20px;
+}
+
+.Post-Text {
+    margin: 8px 0 12px;
+    font-size: 15px;
+    line-height: 20px;
+}
+
+
+/* 광고카드 css */
+
+.adHeadlineWrap {
+    display: flex;
+    align-items: center;
+    width: fit-content;
+    padding: 4px 8px;
+    border: 2px solid transparent;
+    border-radius: 6px;
+    background: rgba(15, 20, 25, 0.85);
+    color: rgb(255, 255, 255);
+    font-size: 12px;
+    font-weight: 700;
+    line-height: 1.2;
+    position: absolute;
+    z-index: 10;
+    bottom: 35px;
+    left: 15px;
+}
+
+.adHeadline {
+    font-size: 12px;
+    line-height: 16px;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    z-index: 10;
+}
+
+button.AdCreativePreviewSourceButton.AdCreativePreviewSource {
+    display: inline-flex;
+    align-items: center;
+    width: fit-content;
+    padding: 2px 4px;
+    border: 2px solid transparent;
+    border-radius: 6px;
+    background: transparent;
+    color: rgb(83, 100, 113);
+    font-size: 14px;
+    line-height: 1.4;
+}

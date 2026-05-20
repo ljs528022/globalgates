@@ -1,0 +1,1260 @@
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+html {
+    scrollbar-gutter: stable;
+}
+
+html,
+body {
+    margin: 0;
+    min-height: 100%;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    background: #ffffff;
+    color: #0f1419;
+    line-height: 1.4;
+}
+
+[hidden] {
+    display: none !important;
+}
+
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
+button,
+input,
+textarea {
+    font: inherit;
+}
+
+button {
+    border: 0;
+    background: none;
+    cursor: pointer;
+}
+
+textarea {
+    resize: vertical;
+}
+
+.hiddenText {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+/* ── 레이아웃 ── */
+.timelinePanel {
+    width: 100%;
+    max-width: 600px;
+    min-height: 100vh;
+    border-left: 1px solid #eff3f4;
+    border-right: 1px solid #eff3f4;
+    background: #ffffff;
+}
+
+/* ── 탭 ── */
+.timelineTabs {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    display: grid;
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid #eff3f4;
+}
+
+.timelineTab {
+    position: relative;
+    min-height: 53px;
+    color: #536471;
+    font-size: 15px;
+    font-weight: 500;
+    border: 0;
+    background: none;
+    cursor: pointer;
+}
+
+.timelineTab:hover {
+    background: rgba(15, 20, 25, 0.03);
+}
+
+.timelineTab.isActive {
+    color: #0f1419;
+    font-weight: 700;
+}
+
+.timelineTab.isActive::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    bottom: 0;
+    width: 56px;
+    height: 4px;
+    border-radius: 9999px;
+    background: #1d9bf0;
+    transform: translateX(-50%);
+}
+
+/* ── 검색바 기반 스타일 ── */
+.searchForm {
+    position: sticky;
+    top: 0;
+    z-index: 30;
+    padding: 4px 0 12px;
+    background: linear-gradient(
+            180deg,
+            #ffffff 0%,
+            #ffffff 82%,
+            rgba(255, 255, 255, 0) 100%
+    );
+}
+
+.search-icon {
+    width: 17px;
+    height: 24px;
+    fill: currentColor;
+}
+
+.searchField {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 16px;
+    border-radius: 9999px;
+    border: 1px solid #dbe3e8;
+    max-height: 40px;
+}
+
+.searchForm.isFocused .searchField {
+    background: #ffffff;
+    border-color: #1d9bf0;
+    box-shadow: 0 0 0 1px #1d9bf0;
+}
+
+.searchIcon {
+    color: #536471;
+    font-size: 30px;
+    line-height: 1;
+}
+
+.searchForm.isFocused .searchIcon {
+    color: #1d9bf0;
+}
+
+.searchInput {
+    width: 100%;
+    border: 0;
+    outline: 0;
+    background: transparent;
+    color: #0f1419;
+    font-size: 15px;
+    caret-color: #1d9bf0;
+}
+
+.searchInput::placeholder {
+    color: #536471;
+}
+
+.searchPanel {
+    position: absolute;
+    margin-top: 2px;
+    min-height: 100px;
+    max-height: calc(-53px + 80vh);
+    border-radius: 16px;
+    background: #ffffff;
+    box-shadow: 0 4px 12px rgba(15, 20, 25, 0.15);
+    overflow-y: auto;
+    z-index: 20;
+}
+
+.searchPanelEmpty {
+    padding: 40px 24px;
+}
+
+.searchPanelText {
+    margin: 0;
+    color: #536471;
+    font-size: 15px;
+    font-weight: 400;
+    line-height: 1.25;
+    letter-spacing: -0.02em;
+}
+
+.searchResults {
+    display: flex;
+    flex-direction: column;
+}
+
+.searchResultTopic {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    width: 100%;
+    padding: 18px 16px;
+    border-bottom: 1px solid #eff3f4;
+    text-align: left;
+}
+
+.searchResultTopic:hover,
+.searchResultItem:hover {
+    background: #f7f9f9;
+}
+
+.searchResultLabel {
+    color: #0f1419;
+    font-size: 17px;
+    font-weight: 700;
+}
+
+.searchResultList {
+    display: flex;
+    flex-direction: column;
+    cursor: pointer;
+}
+
+.searchResultItem {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 8px 16px;
+}
+
+.searchResultAvatar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 48px;
+    height: 48px;
+    border-radius: 9999px;
+    background: linear-gradient(135deg, #d7efff 0%, #b7d8ff 100%);
+    color: #1d9bf0;
+    font-size: 18px;
+    font-weight: 700;
+    flex-shrink: 0;
+}
+
+.searchResultProfile {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+}
+
+.searchResultName {
+    color: #0f1419;
+    font-size: 15px;
+    font-weight: 700;
+}
+
+.searchResultHandle {
+    color: #536471;
+    font-size: 15px;
+}
+
+.pageLayout {
+    display: flex;
+    justify-content: center;
+    max-width: 1280px;
+    margin: 0 auto;
+    min-height: 100vh;
+}
+
+.exploreSticky {
+    position: sticky;
+    top: 0;
+    z-index: 30;
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(12px);
+}
+
+.exploreSticky .searchForm {
+    position: static;
+    padding: 12px 0 0;
+}
+
+.timelineTabs {
+    grid-template-columns: repeat(3, 1fr);
+}
+
+.exploreSticky .timelineTabs {
+    position: static;
+    top: auto;
+    background: transparent;
+    backdrop-filter: none;
+}
+
+/* 래퍼: containing block 역할 + 좌우 여백 */
+#timelinePanel .searchDropdownWrap {
+    position: relative;
+    margin: 0 16px;
+}
+
+.searchField {
+    position: relative;
+}
+
+.searchInput::-webkit-search-cancel-button {
+    -webkit-appearance: none;
+    appearance: none;
+}
+
+.searchInput {
+    padding-right: 32px;
+}
+
+.searchClearBtn {
+    position: absolute;
+    top: 50%;
+    right: 12px;
+    transform: translateY(-50%);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 22px;
+    height: 22px;
+    padding: 0;
+    border: 0;
+    border-radius: 9999px;
+    background: transparent;
+    color: #536471;
+    cursor: pointer;
+    z-index: 1;
+    flex-shrink: 0;
+}
+
+.searchClearBtn:hover {
+    background: rgba(15, 20, 25, 0.08);
+}
+
+.searchClearIcon {
+    width: 18px;
+    height: 18px;
+    fill: currentColor;
+}
+
+/* 포커스 시 검색 */
+#timelinePanel .searchForm.isFocused .searchIcon {
+    color: #536471;
+}
+
+/* 드롭다운 패널: 래퍼 기준으로 left:0/right:0 → form 너비와 동일 */
+#timelinePanel .searchPanel {
+    left: 0;
+    right: 0;
+    min-height: auto;
+}
+
+#timelinePanel .searchPanelEmpty {
+    padding: 16px 20px;
+}
+
+/* 검색 - 최근 검색 */
+.searchRecentHeader {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 16px 4px;
+    font-size: 13px;
+    font-weight: 700;
+    color: #536471;
+    letter-spacing: 0.01em;
+}
+
+.searchRecentClearAll {
+    font-size: 13px;
+    font-weight: 400;
+    color: #1d9bf0;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+}
+
+.searchRecentClearAll:hover {
+    text-decoration: underline;
+}
+
+.searchRecentDeleteBtn {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border-radius: 9999px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #536471;
+    flex-shrink: 0;
+}
+
+.searchRecentDeleteBtn:hover {
+    background: rgba(15, 20, 25, 0.1);
+}
+
+/* 최근 검색 */
+.searchRecentIcon {
+    width: 18px;
+    height: 18px;
+    fill: #536471;
+    flex-shrink: 0;
+}
+
+/* Trending 탭 */
+.trend-list {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    background: #fff;
+}
+
+.cell-inner-div {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+.trend {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    padding: 0 16px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.trend:hover {
+    background-color: rgba(0, 0, 0, 0.03);
+}
+
+.trend-inner {
+    display: flex;
+    flex-direction: column;
+    padding: 12px 0;
+    gap: 4px;
+}
+
+.trend-title-row {
+    display: flex;
+    flex-direction: row;
+    align-items: stretch;
+}
+
+.trend-title-wrap {
+    flex: 1;
+    min-width: 0;
+}
+
+.trend-title {
+    font-size: 17px;
+    font-weight: 700;
+    color: rgb(15, 20, 25);
+    line-height: 22px;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.trend-meta-row {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 8px;
+    margin-top: 4px;
+}
+
+.avatar-group {
+    position: relative;
+    width: 48px;
+    height: 22px;
+    flex-shrink: 0;
+}
+
+.avatar-wrapper {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 22px;
+    height: 22px;
+}
+
+.avatar-img {
+    display: block;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.trend-meta-text {
+    font-size: 13px;
+    font-weight: 400;
+    color: rgb(83, 100, 113);
+    line-height: 18px;
+    white-space: nowrap;
+}
+
+.trend-source-link {
+    display: inline-block;
+    margin-top: 8px;
+    color: #1d9bf0;
+    font-size: 13px;
+    text-decoration: none;
+}
+
+.trend-source-link:hover {
+    text-decoration: underline;
+}
+
+.trend-actions {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 16px;
+    margin-top: 8px;
+}
+
+.trend-actions .tweet-action-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 8px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    color: rgb(83, 100, 113);
+    border-radius: 999px;
+    transition: background-color 0.15s, color 0.15s;
+}
+
+.trend-actions .tweet-action-icon {
+    width: 18px;
+    height: 18px;
+    fill: currentColor;
+}
+
+.trend-actions .tweet-action-count {
+    font-size: 13px;
+    line-height: 16px;
+}
+
+.trend-actions .tweet-action-btn--like:hover {
+    color: #f91880;
+    background-color: rgba(249, 24, 128, 0.1);
+}
+
+.trend-actions .tweet-action-btn--like.active {
+    color: #f91880;
+}
+
+.trend-actions .tweet-action-btn--bookmark:hover {
+    color: #1d9bf0;
+    background-color: rgba(29, 155, 240, 0.1);
+}
+
+.trend-actions .tweet-action-btn--bookmark.active {
+    color: #1d9bf0;
+}
+
+/* ── Trending Section Sub-tabs ── */
+.trending-subtabs {
+    display: flex;
+    border-bottom: 1px solid #eff3f4;
+    overflow-x: auto;
+    scrollbar-width: none;
+}
+
+.trending-subtabs::-webkit-scrollbar {
+    display: none;
+}
+
+.trending-subtab {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: 1 1 0%;
+    height: 53px;
+    padding: 0 16px;
+    text-decoration: none;
+    font-size: 15px;
+    font-weight: 500;
+    color: #536471;
+    white-space: nowrap;
+    position: relative;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.trending-subtab:hover {
+    background-color: rgba(0, 0, 0, 0.03);
+}
+
+.trending-subtab.isActive {
+    font-weight: 700;
+    color: #0f1419;
+}
+
+.trending-subtab.isActive::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    min-width: 56px;
+    height: 4px;
+    background-color: #1d9bf0;
+    border-radius: 9999px;
+}
+
+/* ── Trending List Items ── */
+.trending-item {
+    display: flex;
+    align-items: flex-start;
+    padding: 12px 16px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    border-bottom: 1px solid #eff3f4;
+}
+
+.trending-item:hover {
+    background-color: rgba(0, 0, 0, 0.03);
+}
+
+.trending-body {
+    display: flex;
+    flex-direction: column;
+    flex: 1 1 0%;
+    min-width: 0;
+}
+
+.trending-meta {
+    display: flex;
+    align-items: baseline;
+    gap: 4px;
+    font-size: 13px;
+    color: #536471;
+    line-height: 16px;
+}
+
+.trending-dot {
+    color: #536471;
+}
+
+.trending-title {
+    font-size: 15px;
+    font-weight: 700;
+    color: #0f1419;
+    line-height: 20px;
+    margin-top: 2px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.trending-more-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 34.75px;
+    height: 34.75px;
+    border-radius: 9999px;
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
+    color: #536471;
+    transition: background-color 0.2s;
+    padding: 8px;
+    flex-shrink: 0;
+}
+
+.trending-more-btn:hover {
+    background-color: rgba(29, 155, 240, 0.1);
+    color: #1d9bf0;
+}
+
+/* 트렌딩 더보기 드롭다운 메뉴 */
+.trend-report-menu {
+    position: fixed;
+    width: 284px;
+    background-color: #fff;
+    border-radius: 12px;
+    box-shadow: rgba(101, 119, 134, 0.2) 0px 0px 15px 0px, rgba(101, 119, 134, 0.15) 0px 0px 3px 1px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    z-index: 500;
+}
+
+.more-menu {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 16px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    color: #0f1419;
+}
+
+.more-menu:hover {
+    background-color: rgba(0, 0, 0, 0.03);
+}
+
+.more-menu-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 20px;
+    height: 20px;
+    flex-shrink: 0;
+    color: #0f1419;
+}
+
+.more-menu-icon svg {
+    width: 20px;
+    height: 20px;
+    fill: currentColor;
+}
+
+.more-menu-text {
+    font-size: 15px;
+    font-weight: 400;
+    line-height: 20px;
+}
+
+/* ── Post-Card (mypage와 동일 구조, explore에서 오버라이드) ── */
+.Post-Card {
+    display: flex;
+    gap: 12px;
+    padding: 0 16px;
+    padding-top: 10px;
+    border-bottom: 1px solid #eff3f4;
+    cursor: pointer;
+}
+
+.Post-Card:hover {
+    background: #f7f9f9;
+}
+
+.Post-Avatar-Wrapper {
+    display: flex;
+    position: relative;
+    flex-direction: column;
+}
+
+.Post-Avatar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: #cfe8fc;
+    color: #1d9bf0;
+    font-weight: 700;
+}
+
+.Post-Avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.Post-Body {
+    flex: 1;
+    min-width: 0;
+}
+
+.Post-Header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+}
+
+.Post-Identity {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    min-width: 0;
+}
+
+.Post-Name {
+    font-size: 15px;
+    font-weight: 700;
+}
+
+.Post-Handle, .Post-Time {
+    color: #536471;
+    font-size: 14px;
+}
+
+.Post-More-Button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    padding: 0;
+    border: 0;
+    border-radius: 999px;
+    background: transparent;
+    color: #536471;
+    cursor: pointer;
+}
+
+.Post-More-Button:hover {
+    background: rgba(29, 155, 240, 0.12);
+    color: #1d9bf0;
+}
+
+.Post-More-Icon {
+    width: 18px;
+    height: 18px;
+    fill: currentColor;
+}
+
+.Post-Text {
+    margin: 8px 0 12px;
+    font-size: 15px;
+    line-height: 20px;
+}
+
+.Post-Metrics {
+    margin-top: 8px;
+}
+
+.Post-Action-Bar {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    width: 100%;
+}
+
+.Post-Action-Btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    min-width: 0;
+    height: 34px;
+    padding: 0 6px;
+    border: 0;
+    background: transparent;
+    border-radius: 9999px;
+    color: #536471;
+    font-size: 13px;
+    cursor: pointer;
+    transition: background-color 0.2s, color 0.2s;
+}
+
+.Post-Action-Btn:hover {
+    background-color: rgba(29, 155, 240, 0.1);
+    color: #1d9bf0;
+}
+
+.Post-Action-Btn.Like:hover {
+    background-color: rgba(249, 24, 128, 0.1);
+    color: #f91880;
+}
+
+.Post-Action-Btn.Like.liked {
+    color: #f91880;
+}
+
+.Post-Action-Btn.Like.active {
+    color: #f91880;
+}
+
+.Post-Action-Btn.Like:hover {
+    background-color: rgba(249, 24, 128, 0.1);
+    color: #f91880;
+}
+
+.Post-Action-Btn.Bookmark:hover {
+    background-color: rgba(29, 155, 240, 0.1);
+    color: #1d9bf0;
+}
+
+.Post-Action-Btn.Bookmark.bookmarked {
+    color: #1d9bf0;
+}
+
+.Post-Action-Icon {
+    width: 18px;
+    height: 18px;
+    fill: currentColor;
+    flex-shrink: 0;
+}
+
+.Post-Action-Btn svg.off {
+    display: none;
+}
+
+.Post-Action-Count {
+    font-size: 13px;
+    line-height: 1;
+}
+
+.Post-Action-Right {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    margin-left: auto;
+}
+
+/* 미디어 그리드 */
+.Post-Media-Grid {
+    display: grid;
+    gap: 2px;
+    margin-bottom: 12px;
+    overflow: hidden;
+    border-radius: 16px;
+    background: #e9eef2;
+}
+
+.Post-Media-Aspect-Ratio {
+    width: 100%;
+    padding-bottom: 50%;
+    position: relative;
+}
+
+.Post-Media-Aspect-Ratio--Single {
+    padding-bottom: 56.25%;
+}
+
+.Post-Media-Absolute-Layer {
+    position: absolute;
+    inset: 0;
+}
+
+.Post-Media-Row {
+    display: flex;
+    width: 100%;
+    height: 100%;
+}
+
+.Post-Media-Col {
+    display: flex;
+    flex-direction: column;
+    flex: 1 1 0%;
+    height: 100%;
+    gap: 2px;
+}
+
+.Post-Media-Col:not(:last-child) {
+    margin-right: 2px;
+}
+
+.Post-Media-Cell {
+    position: relative;
+    flex: 1 1 0%;
+    overflow: hidden;
+    cursor: pointer;
+}
+
+.Post-Media-Cell--Single {
+    border-radius: 16px;
+    height: 100%;
+}
+
+.Post-Media-Cell--Left {
+    border-radius: 16px 4px 4px 16px;
+}
+
+.Post-Media-Cell--Right {
+    border-radius: 4px 16px 16px 4px;
+}
+
+.Post-Media-Cell--Left-Tall {
+    border-radius: 16px 4px 4px 16px;
+}
+
+.Post-Media-Cell--Right-Top {
+    border-radius: 4px 16px 4px 4px;
+}
+
+.Post-Media-Cell--Right-Bottom {
+    border-radius: 4px 4px 16px 4px;
+}
+
+.Post-Media-Cell--Top-Left {
+    border-radius: 16px 4px 4px 4px;
+}
+
+.Post-Media-Cell--Top-Right {
+    border-radius: 4px 16px 4px 4px;
+}
+
+.Post-Media-Cell--Bottom-Left {
+    border-radius: 4px 4px 4px 16px;
+}
+
+.Post-Media-Cell--Bottom-Right {
+    border-radius: 4px 4px 16px 4px;
+}
+
+.Post-Media-Cell-Inner {
+    position: absolute;
+    inset: 0;
+}
+
+.Post-Media-Img-Container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+
+.Post-Media-Img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    user-select: none;
+}
+
+/* 파일 첨부 */
+.Post-Attachment-File {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-height: 80px;
+    padding: 16px 20px;
+    border-radius: 16px;
+    background: #eff3f4;
+    color: #0f1419;
+    margin-bottom: 12px;
+}
+
+.Post-Attachment-File svg {
+    flex-shrink: 0;
+    fill: #536471;
+}
+
+.Post-Attachment-File-Name {
+    font-size: 15px;
+    line-height: 20px;
+    font-weight: 700;
+    word-break: break-word;
+}
+
+/* 이미지 프리뷰 오버레이 */
+.Post-Media-Preview-Overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 1200;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    background: rgba(0, 0, 0, 0.88);
+}
+
+.Post-Media-Preview-Overlay.off {
+    display: none;
+}
+
+.Post-Media-Preview-Dialog {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    max-width: min(92vw, 1200px);
+    max-height: 92vh;
+}
+
+.Post-Media-Preview-Image {
+    display: block;
+    max-width: 100%;
+    max-height: 92vh;
+    border-radius: 20px;
+    object-fit: contain;
+}
+
+.Post-Media-Preview-Close {
+    position: absolute;
+    top: -10px;
+    right: -10px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border: 0;
+    border-radius: 999px;
+    background: rgba(15, 20, 25, 0.82);
+    color: #fff;
+    cursor: pointer;
+}
+
+/* 트렌딩 아이템 - 메뉴 선택 후 dismissed 상태 */
+.trend-dismissed {
+    display: flex;
+    padding: 0 16px;
+    overflow: hidden;
+    position: relative;
+}
+
+.trend-dismissed__wrapper {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+.trend-dismissed__spacer {
+    padding-top: 12px;
+}
+
+.trend-dismissed__body {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding-bottom: 12px;
+}
+
+.trend-dismissed__box {
+    display: flex;
+    align-items: center;
+    padding: 12px 16px;
+    background-color: rgb(247, 249, 249);
+    border: 1px solid rgb(239, 243, 244);
+    border-radius: 16px;
+}
+
+.trend-dismissed__text {
+    font-size: 15px;
+    color: rgb(83, 100, 113);
+    line-height: 20px;
+}
+
+/* ── 상품 카드 ── */
+.productsSection .Post-Header {
+    justify-content: flex-start;
+    gap: 8px;
+    margin-bottom: 8px;
+}
+
+.Post-Title {
+    font-size: 18px;
+    font-weight: 700;
+}
+
+.Post-Category {
+    color: #536471;
+    font-size: 13px;
+}
+
+.Post-Product-Info {
+    display: flex;
+    flex-direction: row;
+    margin-top: 10px;
+    gap: 5px;
+}
+
+.Post-Product-Image {
+    width: 100px;
+    height: 100px;
+    border-radius: 0.75rem;
+    border: 0.5px solid #eff3f4;
+}
+
+.Post-Product-Image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.Post-Product-Detail {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+}
+
+.Detail-Category-Tags {
+    display: flex;
+    gap: 5px;
+}
+
+.Category-Tag {
+    display: inline-flex;
+    align-items: center;
+    height: 28px;
+    padding: 0 12px;
+    border-radius: 9999px;
+    background: rgba(29, 155, 240, 0.12);
+    color: #1d9bf0;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.Detail-Value {
+    font-size: 15px;
+    font-weight: 400;
+    line-height: 20px;
+}
+
+/* ── toast ── */
+.toast {
+    position: fixed;
+    left: 50%;
+    bottom: 24px;
+    transform: translateX(-50%);
+    padding: 12px 20px;
+    border-radius: 9999px;
+    background: rgb(29, 155, 240);
+    color: #fff;
+    font-size: 15px;
+    font-weight: 500;
+    white-space: nowrap;
+    pointer-events: none;
+    z-index: 9999;
+    animation: toastFadeIn 0.2s ease;
+}
+
+.toast--like {
+    background: rgb(249, 24, 128);
+}
+
+.emptySection {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 40px 20px;
+}
+
+.emptyMessage {
+    color: #536471;
+    font-size: 15px;
+    text-align: center;
+}
+
+@keyframes toastFadeIn {
+    from {
+        opacity: 0;
+        transform: translateX(-50%) translateY(8px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(-50%) translateY(0);
+    }
+}

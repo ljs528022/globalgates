@@ -1,0 +1,1500 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>회원가입</title>
+    <link rel="icon" type="image/png" href="/images/logo/logo.png">
+    <link rel="stylesheet" href="/css/member/join.css">
+    <link rel="stylesheet" href="/css/member/join-modal-flow.css">
+    <link rel="stylesheet" href="/css/member/join-modal-select.css">
+    <link rel="stylesheet" href="/css/member/join-modal-phone.css">
+    <link rel="stylesheet" href="/css/member/join-modal-profile-img.css">
+    <link rel="stylesheet" href="/css/member/login-modal.css">
+    <link rel="stylesheet" href="/css/member/login-password-modal.css">
+    <link rel="stylesheet" href="/css/member/login-auth-modal.css">
+    <link rel="stylesheet" href="/css/member/login-code-modal.css">
+</head>
+<body>
+    <main class="join-page" role="main">
+        <section class="join-hero" aria-hidden="true">
+            <img class="join-logo" src="/images/main/gg-main.jpg" alt="">
+            <!-- 모바일(<=600px) 전용 히어로 콘텐츠 -->
+            <div class="join-hero-mobile">
+                <div class="join-hero-logo">G</div>
+                <h1 class="join-hero-title">글로벌 연결의<br>새로운 기준</h1>
+                <p class="join-hero-sub">global gates에 오신 것을 환영합니다</p>
+            </div>
+        </section>
+
+        <section class="join-panel" aria-label="회원가입 패널">
+            <h1 class="join-title">글로벌 연결의 새로운 기준</h1>
+            <h2 class="join-subtitle">지금 가입하세요.</h2>
+
+            <div class="join-actions" id="joinActions">
+                <div class="login-block">
+                    <button type="button" id="btn-login" class="secondary-btn">로그인</button>
+                </div>
+
+                <button type="button" id="btn-create" class="primary-btn">계정 만들기</button>
+                <div class="sns-section">
+                    <div class="sns-divider">
+                        <h5>SNS 간편 로그인</h5>
+                    </div>
+                    <div class="sns-buttons">
+                        <button type="button" class="sns-btn sns-btn--kakao kakao-login" title="카카오 로그인" aria-label="카카오 로그인">
+                            <img alt="카카오 로고" src="https://static.cdn.kmong.com/assets/icon/kakao-logo_v2.png?w=24" width="24" height="24" loading="lazy">
+                        </button>
+                        <button type="button" class="sns-btn sns-btn--naver naver-login" title="네이버 로그인" aria-label="네이버 로그인">
+                            <img alt="네이버 로고" src="https://static.cdn.kmong.com/assets/icon/naver-logo_v2.png?w=24" width="24" height="24" loading="lazy">
+                        </button>
+                        <button type="button" id="google-login" class="sns-btn sns-btn--google google-login" title="구글 로그인" aria-label="구글 로그인">
+                            <img alt="구글 로고" src="https://static.cdn.kmong.com/assets/icon/google-logo_v2.png?w=24" width="24" height="24" loading="lazy">
+                        </button>
+                        <button type="button" id="facebook-login" class="sns-btn sns-btn--facebook facebook-login" title="페이스북 로그인" aria-label="페이스북 로그인">
+                            <img alt="페이스북 로고" src="https://static.cdn.kmong.com/assets/icon/facebook-logo_v2.png?w=24" width="24" height="24" loading="lazy">
+                        </button>
+                    </div>
+                </div>
+                <p class="join-terms">가입하시려면 쿠키 사용을 포함해 이용약관과 개인정보 처리방침에 동의해야 합니다.</p>
+            </div>
+        </section>
+    </main>
+
+    <!-- 계정 생성 모달 -->
+    <div id="modal-create" class="join-modal-line1 join-flow-modal join-flow-modal--create" style="display:none">
+        <div class="join-modal-line2">
+            <div class="join-modal-line3">
+                <div class="join-modal-line4">
+                    <div class="join-modal-line5">
+                        <div class="join-modal-line6">
+                            <div tabindex="0" class="join-modal">
+                                <div class="join-modal-all"></div>
+                                <div class="join-modal-box1" aria-modal="true" role="dialog">
+                                    <div class="join-modal-box2">
+                                        <div class="join-modal-box3">
+                                            <div tabindex="0" class="join-modal-in-line-top"></div>
+                                            <div tabindex="0" class="join-modal-in">
+                                                <div class="join-modal-header">
+                                                    <div class="join-modal-header-in1">
+                                                        <div class="join-modal-header-in2">
+                                                            <div class="join-modal-header-in3">
+                                                                <div class="join-modal-header-in4">
+                                                                    <div class="join-modal-header-left">
+                                                                        <button type="button" aria-label="닫기" class="join-modal-header-close-button">
+                                                                            <div class="join-modal-header-close-button-in">
+                                                                                <svg viewBox="0 0 24 24" aria-hidden="true" class="X-img" style="color: rgb(15, 20, 25);">
+                                                                                    <g>
+                                                                                        <path d="M10.59 12L4.54 5.96l1.42-1.42L12 10.59l6.04-6.05 1.42 1.42L13.41 12l6.05 6.04-1.42 1.42L12 13.41l-6.04 6.05-1.42-1.42L10.59 12z"></path>
+                                                                                    </g>
+                                                                                </svg>
+                                                                                <div class="X-img-junk">
+                                                                                    <span class="X-img-junk-css"></span>
+                                                                                </div>
+                                                                            </div>
+                                                                        </button>
+                                                                    </div>
+                                                                    <div class="join-modal-header-right"></div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="join-modal-main">
+                                                    <div class="join-modal-main-middle">
+                                                        <div class="join-modal-main-middle-in">
+                                                            <div class="account-create-wrap">
+                                                                <div class="account-create-wrap-in">
+                                                                    <h1 class="account-create">
+                                                                        <span class="account-create-in">
+                                                                            <span class="account-create-text">계정을 생성하세요</span>
+                                                                        </span>
+                                                                    </h1>
+                                                                </div>
+                                                            </div>
+                                                            <div class="account-create-wrap">
+                                                                <div class="name-placeholder-wrap">
+                                                                    <label class="name-placeholder">
+                                                                        <div class="name-placeholder-in1">
+                                                                            <div class="name-placeholder-in2">
+                                                                                <div class="name-text">
+                                                                                    <span class="name-text-in">이름</span>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="name-placeholder-in3">
+                                                                                <div class="name-placeholder-text">
+                                                                                    <input maxlength="50" name="name" type="text" class="name-input" value="">
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </label>
+                                                                    <div class="name-line">
+                                                                        <div class="name-line-in"></div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="phone-number-placeholder">
+                                                                    <label class="phone-placeholder">
+                                                                        <div class="phone-placeholder-in1">
+                                                                            <div class="phone-placeholder-in2">
+                                                                                <div class="phone-text">
+                                                                                    <span class="phone-text-in">휴대폰</span>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="phone-placeholder-in3">
+                                                                                <div class="phone-placeholder-text">
+                                                                                    <input id="identity-input" maxlength="50" name="phone" type="text" class="phone-input" value="" placeholder="01012345678">
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </label>
+                                                                    <div class="phone-line">
+                                                                        <div class="phone-line-in"></div>
+                                                                    </div>
+                                                                </div>
+                                                                <button type="button" class="change">
+                                                                    <span class="replace-email">대신 이메일 사용하기</span>
+                                                                </button>
+                                                                <div class="birth-date">
+                                                                    <div class="birth-date-text">
+                                                                        <span class="birth-date-text-input">생년월일</span>
+                                                                    </div>
+                                                                    <div class="birth-date-intro">
+                                                                        <span class="birth-date-intro-text">숫자로만 8자리로 쓰시오.(하이픈 제외)</span>
+                                                                    </div>
+                                                                    <div class="birth-date-day">
+                                                                        <div class="birth-date-day-in">
+                                                                            <input type="text" placeholder="생년월일" class="birth-date-input">
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="join-modal-main-under">
+                                                        <div class="join-modal-main-under-wrap">
+                                                            <div class="join-modal-main-under-wrap-in">
+                                                                <div class="next">
+                                                                    <button type="button" class="next-button">
+                                                                        <div class="next-button-wrap">
+                                                                            <div class="next-button-wrap-in">
+                                                                                <span class="next-button-wrap-in-text">
+                                                                                    <span class="next-button-wrap-in-text-next">다음</span>
+                                                                                </span>
+                                                                            </div>
+                                                                        </div>
+                                                                    </button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div tabindex="0" class="join-modal-in-line-bottom"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 휴대폰 인증 overlay -->
+    <div id="overlay-phone" class="overlay join-verify-overlay join-verify-overlay--phone" style="display:none">
+        <div class="phone-verification join-verify-card join-verify-card--phone">
+            <div class="phone-verification-modal-title join-verify-title">휴대폰 인증하기</div>
+            <div class="modal-desc join-verify-desc">
+                입력하신 번호로 인증 코드를 보내 드립니다. 표준 SMS 요금이 부과될 수 있습니다.
+            </div>
+            <button type="button" class="btn btn-confirm join-verify-button join-verify-button--confirm">확인</button>
+            <button type="button" class="btn btn-edit join-verify-button join-verify-button--edit">편집</button>
+        </div>
+    </div>
+
+    <!-- 이메일 인증 overlay -->
+    <div id="overlay-email" class="overlay join-verify-overlay join-verify-overlay--email" style="display:none">
+        <div class="email-verification join-verify-card join-verify-card--email">
+            <div class="email-verification-modal-title join-verify-title">이메일 인증하기</div>
+            <div class="modal-desc join-verify-desc">
+                입력하신 이메일로 인증 코드를 보내 드립니다.
+            </div>
+            <button type="button" class="btn btn-confirm join-verify-button join-verify-button--confirm">확인</button>
+            <button type="button" class="btn btn-edit join-verify-button join-verify-button--edit">편집</button>
+        </div>
+    </div>
+
+    <!-- 코드 모달 -->
+    <div id="modal-code" class="join-modal-line1 join-flow-modal join-flow-modal--code" style="display:none">
+        <div class="join-modal-line2">
+            <div class="join-modal-line3">
+                <div class="join-modal-line4">
+                    <div class="join-modal-line5">
+                        <div class="join-modal-line6">
+                            <div tabindex="0" class="join-modal">
+                                <div class="join-modal-all"></div>
+                                <div class="join-modal-box1" aria-modal="true" role="dialog">
+                                    <div class="join-modal-box2">
+                                        <div class="join-modal-box3">
+                                            <div tabindex="0" class="join-modal-in-line-top"></div>
+                                            <div tabindex="0" class="join-modal-in">
+                                                <div class="join-modal-header">
+                                                    <div class="join-modal-header-in1">
+                                                        <div class="join-modal-header-in2">
+                                                            <div class="join-modal-header-in3">
+                                                                <div class="join-modal-header-in4">
+                                                                    <div class="join-modal-header-left">
+                                                                        <button type="button" aria-label="닫기" class="join-modal-header-close-button">
+                                                                            <div class="join-modal-header-close-button-in">
+                                                                                <svg viewBox="0 0 24 24" aria-hidden="true" class="X-img" style="color: rgb(15, 20, 25);">
+                                                                                    <g>
+                                                                                        <path d="M10.59 12L4.54 5.96l1.42-1.42L12 10.59l6.04-6.05 1.42 1.42L13.41 12l6.05 6.04-1.42 1.42L12 13.41l-6.04 6.05-1.42-1.42L10.59 12z"></path>
+                                                                                    </g>
+                                                                                </svg>
+                                                                                <div class="X-img-junk">
+                                                                                    <span class="X-img-junk-css"></span>
+                                                                                </div>
+                                                                            </div>
+                                                                        </button>
+                                                                    </div>
+                                                                    <div class="join-modal-header-right"></div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="join-modal-main">
+                                                    <div class="join-modal-main-middle">
+                                                        <div class="join-modal-main-middle-in">
+                                                            <div class="account-create-wrap">
+                                                                <div class="account-create-wrap-in">
+                                                                    <h1 class="account-create">
+                                                                        <span class="account-create-in">
+                                                                            <span class="account-create-text">코드를 보내 드렸습니다</span>
+                                                                        </span>
+                                                                    </h1>
+                                                                </div>
+                                                                <div class="account-create-wrap-in">
+                                                                    <h1 class="account-create1">
+                                                                        <span class="account-create-in">
+                                                                            <span class="account-create-text">인증을 위해 아래 코드를 입력하세요</span>
+                                                                        </span>
+                                                                    </h1>
+                                                                </div>
+                                                            </div>
+                                                            <div class="account-create-wrap">
+                                                                <div class="phone-number-placeholder">
+                                                                    <label class="phone-placeholder">
+                                                                        <div class="phone-placeholder-in1">
+                                                                            <div class="phone-placeholder-in2">
+                                                                                <div class="phone-text">
+                                                                                    <span class="phone-text-in">인증 코드</span>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="phone-placeholder-in3">
+                                                                                <div class="phone-placeholder-text">
+                                                                                    <input maxlength="50" name="code" type="text" class="phone-input" value="">
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </label>
+                                                                    <div class="phone-line">
+                                                                        <div class="phone-line-in"></div>
+                                                                    </div>
+                                                                </div>
+                                                                <button type="button" class="change">
+                                                                    <span class="replace-email">코드를 받지 못했나요?</span>
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="join-modal-main-under">
+                                                        <div class="join-modal-main-under-wrap">
+                                                            <div class="join-modal-main-under-wrap-in">
+                                                                <div class="next">
+                                                                    <button type="button" class="next-button">
+                                                                        <div class="next-button-wrap">
+                                                                            <div class="next-button-wrap-in">
+                                                                                <span class="next-button-wrap-in-text">
+                                                                                    <span class="next-button-wrap-in-text-next">다음</span>
+                                                                                </span>
+                                                                            </div>
+                                                                        </div>
+                                                                    </button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div tabindex="0" class="join-modal-in-line-bottom"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 비밀번호 모달 -->
+    <div id="modal-password" class="join-modal-line1 join-flow-modal join-flow-modal--password" style="display:none">
+        <div class="join-modal-line2">
+            <div class="join-modal-line3">
+                <div class="join-modal-line4">
+                    <div class="join-modal-line5">
+                        <div class="join-modal-line6">
+                            <div tabindex="0" class="join-modal">
+                                <div class="join-modal-all"></div>
+                                <div class="join-modal-box1" aria-modal="true" role="dialog">
+                                    <div class="join-modal-box2">
+                                        <div class="join-modal-box3">
+                                            <div tabindex="0" class="join-modal-in-line-top"></div>
+                                            <div tabindex="0" class="join-modal-in">
+                                                <div class="join-modal-header">
+                                                    <div class="join-modal-header-in1">
+                                                        <div class="join-modal-header-in2">
+                                                            <div class="join-modal-header-in3">
+                                                                <div class="join-modal-header-in4">
+                                                                    <div class="join-modal-header-left">
+                                                                        <button type="button" aria-label="닫기" class="join-modal-header-close-button">
+                                                                            <div class="join-modal-header-close-button-in">
+                                                                                <svg viewBox="0 0 24 24" aria-hidden="true" class="X-img" style="color: rgb(15, 20, 25);">
+                                                                                    <g>
+                                                                                        <path d="M10.59 12L4.54 5.96l1.42-1.42L12 10.59l6.04-6.05 1.42 1.42L13.41 12l6.05 6.04-1.42 1.42L12 13.41l-6.04 6.05-1.42-1.42L10.59 12z"></path>
+                                                                                    </g>
+                                                                                </svg>
+                                                                                <div class="X-img-junk">
+                                                                                    <span class="X-img-junk-css"></span>
+                                                                                </div>
+                                                                            </div>
+                                                                        </button>
+                                                                    </div>
+                                                                    <div class="join-modal-header-right"></div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="join-modal-main">
+                                                    <div class="join-modal-main-middle">
+                                                        <div class="join-modal-main-middle-in">
+                                                            <div class="account-create-wrap">
+                                                                <div class="account-create-wrap-in">
+                                                                    <h1 class="account-create">
+                                                                        <span class="account-create-in">
+                                                                            <span class="account-create-text">비밀번호가 필요합니다</span>
+                                                                        </span>
+                                                                    </h1>
+                                                                </div>
+                                                                <div class="account-create-wrap-in">
+                                                                    <h1 class="account-create1">
+                                                                        <span class="account-create-in">
+                                                                            <span class="account-create-text">8자 이상이어야 합니다.</span>
+                                                                        </span>
+                                                                    </h1>
+                                                                </div>
+                                                            </div>
+                                                            <div class="account-create-wrap">
+                                                                <div class="phone-number-placeholder">
+                                                                    <label class="phone-placeholder">
+                                                                        <div class="phone-placeholder-in1">
+                                                                            <div class="phone-placeholder-in2">
+                                                                                <div class="phone-text">
+                                                                                    <span class="phone-text-in">비밀번호</span>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="phone-placeholder-in3">
+                                                                                <div class="phone-placeholder-text">
+                                                                                    <input maxlength="50" name="password" type="password" class="password-input" value="">
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="eye-btn">
+                                                                            <button type="button" class="eye-btn-wrap" aria-label="비밀번호 보기">
+                                                                                <svg class="eye-open" viewBox="0 0 24 24" aria-hidden="true">
+                                                                                    <path d="M2 12s3.5-6 10-6 10 6 10 6-3.5 6-10 6-10-6-10-6z"></path>
+                                                                                    <circle cx="12" cy="12" r="3.2"></circle>
+                                                                                </svg>
+                                                                                <svg class="eye-off is-hidden" viewBox="0 0 24 24" aria-hidden="true">
+                                                                                    <path d="M2 12s3.5-6 10-6 10 6 10 6-3.5 6-10 6-10-6-10-6z"></path>
+                                                                                    <circle cx="12" cy="12" r="3.2"></circle>
+                                                                                    <line x1="4" y1="20" x2="20" y2="4"></line>
+                                                                                </svg>
+                                                                            </button>
+                                                                        </div>
+                                                                    </label>
+                                                                    <div class="phone-line">
+                                                                        <div class="phone-line-in"></div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="terms-of-use">
+                                                        <span class="terms-of-use-in">
+                                                            <span class="term-of-use-content">
+                                                                가입하면 쿠키 사용을 포함해 이용약관 및 개인정보 처리방침에 동의하게 됩니다. X는 계정을 안전하게 보호하고 광고를 포함한 맞춤 서비스를 제공하는 등 X 개인정보 처리방침에 명시된 목적을 위해 이메일 주소 및 전화번호 등의 내 연락처 정보를 사용할 수 있습니다. 자세히 알아보기. 이메일 또는 전화번호를 제공하시면 다른 사람들이 이 정보로 내 계정을 찾을 수 있게 됩니다. 해당 정보를 제공하지 않으시려면 여기에서 변경하세요.
+                                                            </span>
+                                                        </span>
+                                                    </div>
+                                                    <div class="join-modal-main-under">
+                                                        <div class="join-modal-main-under-wrap">
+                                                            <div class="join-modal-main-under-wrap-in">
+                                                                <div class="next">
+                                                                    <button type="button" class="next-button">
+                                                                        <div class="next-button-wrap">
+                                                                            <div class="next-button-wrap-in">
+                                                                                <span class="next-button-wrap-in-text">
+                                                                                    <span class="next-button-wrap-in-text-next">다음</span>
+                                                                                </span>
+                                                                            </div>
+                                                                        </div>
+                                                                    </button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div tabindex="0" class="join-modal-in-line-bottom"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 사용자 아이디 모달 -->
+    <div id="modal-username" class="join-modal-line1 join-flow-modal join-flow-modal--username" style="display:none">
+        <div class="join-modal-line2">
+            <div class="join-modal-line3">
+                <div class="join-modal-line4">
+                    <div class="join-modal-line5">
+                        <div class="join-modal-line6">
+                            <div tabindex="0" class="join-modal">
+                                <div class="join-modal-all"></div>
+                                <div class="join-modal-box1" aria-modal="true" role="dialog">
+                                    <div class="join-modal-box2">
+                                        <div class="join-modal-box3">
+                                            <div tabindex="0" class="join-modal-in-line-top"></div>
+                                            <div tabindex="0" class="join-modal-in">
+                                                <div class="join-modal-header">
+                                                    <div class="join-modal-header-in1">
+                                                        <div class="join-modal-header-in2">
+                                                            <div class="join-modal-header-in3">
+                                                                <div class="join-modal-header-in4">
+                                                                    <div class="join-modal-header-left">
+                                                                        <button type="button" aria-label="닫기" class="join-modal-header-close-button">
+                                                                            <div class="join-modal-header-close-button-in">
+                                                                                <svg viewBox="0 0 24 24" aria-hidden="true" class="X-img" style="color: rgb(15, 20, 25);">
+                                                                                    <g>
+                                                                                        <path d="M10.59 12L4.54 5.96l1.42-1.42L12 10.59l6.04-6.05 1.42 1.42L13.41 12l6.05 6.04-1.42 1.42L12 13.41l-6.04 6.05-1.42-1.42L10.59 12z"></path>
+                                                                                    </g>
+                                                                                </svg>
+                                                                                <div class="X-img-junk">
+                                                                                    <span class="X-img-junk-css"></span>
+                                                                                </div>
+                                                                            </div>
+                                                                        </button>
+                                                                    </div>
+                                                                    <div class="join-modal-header-right"></div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="join-modal-main">
+                                                    <div class="join-modal-main-middle">
+                                                        <div class="join-modal-main-middle-in">
+                                                            <div class="account-create-wrap">
+                                                                <div class="account-create-wrap-in">
+                                                                    <h1 class="account-create">
+                                                                        <span class="account-create-in">
+                                                                            <span class="account-create-text">이름을 가르쳐 주시겠어요?</span>
+                                                                        </span>
+                                                                    </h1>
+                                                                </div>
+                                                                <div class="account-create-wrap-in">
+                                                                    <h1 class="account-create1">
+                                                                        <span class="account-create-in">
+                                                                            <span class="account-create-text">@사용자 아이디는 고유한 나만의 아이디입니다. 나중에 언제든 바꿀 수 있습니다</span>
+                                                                        </span>
+                                                                    </h1>
+                                                                </div>
+                                                            </div>
+                                                            <div class="account-create-wrap">
+                                                                <div class="phone-number-placeholder">
+                                                                    <label class="phone-placeholder">
+                                                                        <div class="phone-placeholder-in1">
+                                                                            <div class="phone-placeholder-in2">
+                                                                                <div class="phone-text">
+                                                                                    <span class="phone-text-in">사용자 아이디</span>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="phone-placeholder-in3">
+                                                                                <div class="phone-placeholder-text">
+                                                                                    <input maxlength="50" name="username" type="text" class="handle-input" value="">
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </label>
+                                                                    <div class="phone-line">
+                                                                        <div class="phone-line-in"></div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="join-modal-main-under">
+                                                        <div class="join-modal-main-under-wrap">
+                                                            <div class="join-modal-main-under-wrap-in">
+                                                                <div class="next">
+                                                                    <button type="button" class="next-button">
+                                                                        <div class="next-button-wrap">
+                                                                            <div class="next-button-wrap-in">
+                                                                                <span class="next-button-wrap-in-text">
+                                                                                    <span class="next-button-wrap-in-text-next">다음</span>
+                                                                                </span>
+                                                                            </div>
+                                                                        </div>
+                                                                    </button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div tabindex="0" class="join-modal-in-line-bottom"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- SNS 생년월일 모달 -->
+    <div id="modal-oauth-birth" class="join-modal-line1 join-flow-modal join-flow-modal--oauth-birth" style="display:none">
+        <div class="join-modal-line2">
+            <div class="join-modal-line3">
+                <div class="join-modal-line4">
+                    <div class="join-modal-line5">
+                        <div class="join-modal-line6">
+                            <div tabindex="0" class="join-modal">
+                                <div class="join-modal-all"></div>
+                                <div class="join-modal-box1" aria-modal="true" role="dialog">
+                                    <div class="join-modal-box2">
+                                        <div class="join-modal-box3">
+                                            <div tabindex="0" class="join-modal-in-line-top"></div>
+                                            <div tabindex="0" class="join-modal-in">
+                                                <div class="join-modal-header">
+                                                    <div class="join-modal-header-in1">
+                                                        <div class="join-modal-header-in2">
+                                                            <div class="join-modal-header-in3">
+                                                                <div class="join-modal-header-in4">
+                                                                    <div class="join-modal-header-left">
+                                                                        <button type="button" aria-label="닫기" class="join-modal-header-close-button">
+                                                                            <div class="join-modal-header-close-button-in">
+                                                                                <svg viewBox="0 0 24 24" aria-hidden="true" class="X-img" style="color: rgb(15, 20, 25);">
+                                                                                    <g>
+                                                                                        <path d="M10.59 12L4.54 5.96l1.42-1.42L12 10.59l6.04-6.05 1.42 1.42L13.41 12l6.05 6.04-1.42 1.42L12 13.41l-6.04 6.05-1.42-1.42L10.59 12z"></path>
+                                                                                    </g>
+                                                                                </svg>
+                                                                                <div class="X-img-junk">
+                                                                                    <span class="X-img-junk-css"></span>
+                                                                                </div>
+                                                                            </div>
+                                                                        </button>
+                                                                    </div>
+                                                                    <div class="join-modal-header-right"></div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="join-modal-main">
+                                                    <div class="join-modal-main-middle">
+                                                        <div class="join-modal-main-middle-in">
+                                                            <div class="account-create-wrap">
+                                                                <div class="account-create-wrap-in">
+                                                                    <h1 class="account-create">
+                                                                        <span class="account-create-in">
+                                                                            <span class="account-create-text">생년월일을 입력하세요</span>
+                                                                        </span>
+                                                                    </h1>
+                                                                </div>
+                                                                <div class="account-create-wrap-in">
+                                                                    <h1 class="account-create1">
+                                                                        <span class="account-create-in">
+                                                                            <span class="account-create-text">SNS 회원가입을 계속하려면 생년월일이 필요합니다.</span>
+                                                                        </span>
+                                                                    </h1>
+                                                                </div>
+                                                            </div>
+                                                            <div class="account-create-wrap">
+                                                                <div class="birth-date">
+                                                                    <div class="birth-date-text">
+                                                                        <span class="birth-date-text-input">생년월일</span>
+                                                                    </div>
+                                                                    <div class="birth-date-intro">
+                                                                        <span class="birth-date-intro-text">숫자로만 8자리로 쓰시오.(하이픈 제외)</span>
+                                                                    </div>
+                                                                    <div class="birth-date-day">
+                                                                        <div class="birth-date-day-in">
+                                                                            <input type="text" placeholder="생년월일" class="birth-date-input oauth-birth-date-input">
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="field-error-message">8자 이상으로 입력하세요</div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="join-modal-main-under">
+                                                        <div class="join-modal-main-under-wrap">
+                                                            <div class="join-modal-main-under-wrap-in">
+                                                                <div class="next">
+                                                                    <button type="button" class="next-button">
+                                                                        <div class="next-button-wrap">
+                                                                            <div class="next-button-wrap-in">
+                                                                                <span class="next-button-wrap-in-text">
+                                                                                    <span class="next-button-wrap-in-text-next">다음</span>
+                                                                                </span>
+                                                                            </div>
+                                                                        </div>
+                                                                    </button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div tabindex="0" class="join-modal-in-line-bottom"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 사업자 등록 모달 -->
+    <div id="modal-business" class="join-modal-line1 join-flow-modal join-flow-modal--business" style="display:none">
+        <div class="join-modal-line2">
+            <div class="join-modal-line3">
+                <div class="join-modal-line4">
+                    <div class="join-modal-line5">
+                        <div class="join-modal-line6">
+                            <div tabindex="0" class="join-modal">
+                                <div class="join-modal-all"></div>
+                                <div class="join-modal-box1" aria-modal="true" role="dialog">
+                                    <div class="join-modal-box2">
+                                        <div class="join-modal-box3">
+                                            <div tabindex="0" class="join-modal-in-line-top"></div>
+                                            <div tabindex="0" class="join-modal-in">
+                                                <div class="join-modal-header">
+                                                    <div class="join-modal-header-in1">
+                                                        <div class="join-modal-header-in2">
+                                                            <div class="join-modal-header-in3">
+                                                                <div class="join-modal-header-in4">
+                                                                    <div class="join-modal-header-left">
+                                                                        <button type="button" aria-label="닫기" class="join-modal-header-close-button">
+                                                                            <div class="join-modal-header-close-button-in">
+                                                                                <svg viewBox="0 0 24 24" aria-hidden="true" class="X-img" style="color: rgb(15, 20, 25);">
+                                                                                    <g>
+                                                                                        <path d="M10.59 12L4.54 5.96l1.42-1.42L12 10.59l6.04-6.05 1.42 1.42L13.41 12l6.05 6.04-1.42 1.42L12 13.41l-6.04 6.05-1.42-1.42L10.59 12z"></path>
+                                                                                    </g>
+                                                                                </svg>
+                                                                                <div class="X-img-junk">
+                                                                                    <span class="X-img-junk-css"></span>
+                                                                                </div>
+                                                                            </div>
+                                                                        </button>
+                                                                    </div>
+                                                                    <div class="join-modal-header-right"></div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="join-modal-main">
+                                                    <div class="join-modal-main-middle">
+                                                        <div class="join-modal-main-middle-in">
+                                                            <div class="account-create-wrap">
+                                                                <div class="account-create-wrap-in">
+                                                                    <h1 class="account-create">
+                                                                        <span class="account-create-in">
+                                                                            <span class="account-create-text">사업자 등록을 하세요</span>
+                                                                        </span>
+                                                                    </h1>
+                                                                </div>
+                                                            </div>
+                                                            <div class="account-create-wrap">
+                                                                <div class="name-placeholder-wrap">
+                                                                    <label class="name-placeholder">
+                                                                        <div class="name-placeholder-in1">
+                                                                            <div class="name-placeholder-in2">
+                                                                                <div class="name-text">
+                                                                                    <span class="name-text-in">업체명(상호명)</span>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="name-placeholder-in3">
+                                                                                <div class="name-placeholder-text">
+                                                                                    <input maxlength="50" name="bizName" type="text" class="company-name-input" value="">
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </label>
+                                                                    <div class="name-line">
+                                                                        <div class="name-line-in"></div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="phone-number-placeholder">
+                                                                    <label class="phone-placeholder">
+                                                                        <div class="phone-placeholder-in1">
+                                                                            <div class="phone-placeholder-in2">
+                                                                                <div class="phone-text">
+                                                                                    <span class="phone-text-in">사업자 등록번호</span>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="phone-placeholder-in3">
+                                                                                <div class="phone-placeholder-text">
+                                                                                    <input maxlength="50" name="bizRegNo" type="text" class="business-number-input" value="">
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </label>
+                                                                    <div class="phone-line">
+                                                                        <div class="phone-line-in"></div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="phone-number-placeholder">
+                                                                    <label class="phone-placeholder">
+                                                                        <div class="phone-placeholder-in1">
+                                                                            <div class="phone-placeholder-in2">
+                                                                                <div class="phone-text">
+                                                                                    <span class="phone-text-in">대표자명</span>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="phone-placeholder-in3">
+                                                                                <div class="phone-placeholder-text">
+                                                                                    <input maxlength="50" name="bizOwner" type="text" class="ceo-name-input" value="">
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </label>
+                                                                    <div class="phone-line">
+                                                                        <div class="phone-line-in"></div>
+                                                                    </div>
+                                                                </div>
+                                                                <!-- 사업장 주소 -->
+                                                                <div class="phone-number-placeholder addr-wrap">
+                                                                    <div class="addr-postcode-row">
+                                                                        <label class="phone-placeholder addr-postcode-label">
+                                                                            <div class="phone-placeholder-in1">
+                                                                                <div class="phone-placeholder-in2">
+                                                                                    <div class="phone-text">
+                                                                                        <span class="phone-text-in">우편번호</span>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="phone-placeholder-in3">
+                                                                                    <div class="phone-placeholder-text">
+                                                                                        <input id="postcode" maxlength="10" name="postcode" type="text" class="post-input" readonly>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </label>
+                                                                        <button type="button" id="addr-search-btn" class="addr-search-btn">주소 검색</button>
+                                                                    </div>
+                                                                    <div class="phone-line"><div class="phone-line-in"></div></div>
+                                                                    <label class="phone-placeholder" style="margin-top: 8px;">
+                                                                        <div class="phone-placeholder-in1">
+                                                                            <div class="phone-placeholder-in2">
+                                                                                <div class="phone-text">
+                                                                                    <span class="phone-text-in">도로명 주소</span>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="phone-placeholder-in3">
+                                                                                <div class="phone-placeholder-text">
+                                                                                    <input id="addr-main" maxlength="100" name="addrMain" type="text" class="phone-input" readonly>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </label>
+                                                                    <div class="phone-line"><div class="phone-line-in"></div></div>
+                                                                    <label class="phone-placeholder" style="margin-top: 8px;">
+                                                                        <div class="phone-placeholder-in1">
+                                                                            <div class="phone-placeholder-in2">
+                                                                                <div class="phone-text">
+                                                                                    <span class="phone-text-in">상세 주소</span>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="phone-placeholder-in3">
+                                                                                <div class="phone-placeholder-text">
+                                                                                    <input id="addr-detail" maxlength="100" name="addrDetail" type="text" class="phone-input">
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </label>
+                                                                    <div class="phone-line"><div class="phone-line-in"></div></div>
+                                                                </div>
+                                                                <div class="phone-number-placeholder">
+                                                                    <label class="phone-placeholder">
+                                                                        <div class="phone-placeholder-in1">
+                                                                            <div class="phone-placeholder-in2">
+                                                                                <div class="phone-text">
+                                                                                    <span class="phone-text-in">업무형태 및 종류</span>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="phone-placeholder-in3">
+                                                                                <div class="phone-placeholder-text">
+                                                                                    <input id="business-type" maxlength="50" name="bizType" type="text" class="phone-input" value="">
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </label>
+                                                                    <div class="phone-line">
+                                                                        <div class="phone-line-in"></div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="join-modal-main-under">
+                                                        <div class="join-modal-main-under-wrap">
+                                                            <div class="join-modal-main-under-wrap-in">
+                                                                <div class="next">
+                                                                    <button type="button" class="next-button">
+                                                                        <div class="next-button-wrap">
+                                                                            <div class="next-button-wrap-in">
+                                                                                <span class="next-button-wrap-in-text">
+                                                                                    <span class="next-button-wrap-in-text-next">다음</span>
+                                                                                </span>
+                                                                            </div>
+                                                                        </div>
+                                                                    </button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div tabindex="0" class="join-modal-in-line-bottom"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 프로필 이미지 모달 -->
+    <div id="modal-profile" role="group" tabindex="0" class="modal-overlay join-profile-modal-shell" style="display:none">
+        <div class="modal-mask" data-testid="mask"></div>
+        <div aria-labelledby="modal-header" aria-modal="true" role="dialog" class="profile-modal">
+            <div class="profile-modal__frame">
+                <div class="profile-modal__header-bar">
+                    <button type="button" class="icon-button icon-button--close" aria-label="Close">
+                        <svg viewBox="0 0 24 24" aria-hidden="true" role="img">
+                            <g>
+                                <path d="M10.59 12L4.54 5.96l1.42-1.42L12 10.59l6.04-6.05 1.42 1.42L13.41 12l6.05 6.04-1.42 1.42L12 13.41l-6.04 6.05-1.42-1.42L10.59 12z"></path>
+                            </g>
+                        </svg>
+                    </button>
+                </div>
+                <div class="profile-modal__title">
+                    <h1 id="modal-header" role="heading" aria-level="1">프로필 사진 선택하기</h1>
+                    <p class="profile-modal__subtitle">마음에 드는 셀카 사진이 있나요? 지금 업로드하세요.</p>
+                </div>
+                <div class="profile-modal__section">
+                    <div class="avatar-picker">
+                        <div class="avatar-frame">
+                            <img class="avatar-preview" alt="프로필 사진 미리보기" />
+                            <div class="avatar-face"></div>
+                            <label class="avatar-camera" aria-label="사진 업로드">
+                                <svg viewBox="0 0 24 24" aria-hidden="true">
+                                    <g>
+                                        <path d="M9.697 3H11v2h-.697l-3 2H5c-.276 0-.5.224-.5.5v11c0 .276.224.5.5.5h14c.276 0 .5-.224.5-.5V10h2v8.5c0 1.381-1.119 2.5-2.5 2.5H5c-1.381 0-2.5-1.119-2.5-2.5v-11C2.5 6.119 3.619 5 5 5h1.697l3-2zM12 10.5c-1.105 0-2 .895-2 2s.895 2 2 2 2-.895 2-2-.895-2-2-2zm-4 2c0-2.209 1.791-4 4-4s4 1.791 4 4-1.791 4-4 4-4-1.791-4-4zM17 2c0 1.657-1.343 3-3 3v1c1.657 0 3 1.343 3 3h1c0-1.657 1.343-3 3-3V5c-1.657 0-3-1.343-3-3h-1z"></path>
+                                    </g>
+                                </svg>
+                                <input class="avatar-upload" type="file" accept="image/*" />
+                            </label>
+                            <button type="button" class="avatar-remove" aria-label="사진 삭제">
+                                <svg viewBox="0 0 24 24" aria-hidden="true">
+                                    <path d="M6 6l12 12M18 6l-12 12"></path>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="profile-modal__section profile-modal__section--actions">
+                    <button type="button" class="ghost-button" data-testid="ocfSelectAvatarSkipForNowButton">
+                        지금은 넘어가기
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 카테고리 모달 -->
+    <div id="modal-category" class="join-modal-line1 join-select-modal join-select-modal--category" style="display:none">
+        <div class="join-modal-line2">
+            <div class="join-modal-line3">
+                <div class="join-modal-line4">
+                    <div class="join-modal-line5">
+                        <div class="join-modal-line6">
+                            <div tabindex="0" class="join-modal">
+                                <div class="join-modal-all"></div>
+                                <div class="join-modal-box1" aria-modal="true" role="dialog">
+                                    <div class="join-modal-box2">
+                                        <div class="join-modal-box3">
+                                            <div tabindex="0" class="join-modal-in-line-top"></div>
+                                            <div tabindex="0" class="join-modal-in">
+                                                <div class="join-modal-header">
+                                                    <div class="join-modal-header-in1">
+                                                        <div class="join-modal-header-in2">
+                                                            <div class="join-modal-header-in3">
+                                                                <div class="join-modal-header-in4">
+                                                                    <div class="join-modal-header-left"></div>
+                                                                    <div class="join-modal-header-middle">
+                                                                        <img src="/images/logo/logo.png" alt="globalgates" class="header-logo">
+                                                                    </div>
+                                                                    <div class="join-modal-header-right"></div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="join-modal-main">
+                                                    <div class="category-head">
+                                                        <h1 class="category-title">globalgates에서 무엇을 찾고 있나요?</h1>
+                                                        <p class="category-desc">관심사를 선택해 주세요. 그러면 globalgates에서 관심 있는 내용을 더 많이 볼 수 있도록 맞춤화해 드립니다.</p>
+                                                    </div>
+                                                    <div class="category-list">
+                                                        <button type="button" class="category-item js-category-item">수출<span class="category-check" aria-hidden="true">✓</span></button>
+                                                        <button type="button" class="category-item js-category-item">수입<span class="category-check" aria-hidden="true">✓</span></button>
+                                                        <button type="button" class="category-item js-category-item">물류<span class="category-check" aria-hidden="true">✓</span></button>
+                                                        <button type="button" class="category-item js-category-item">관세<span class="category-check" aria-hidden="true">✓</span></button>
+                                                        <button type="button" class="category-item js-category-item">금융<span class="category-check" aria-hidden="true">✓</span></button>
+                                                        <button type="button" class="category-item js-category-item">IT<span class="category-check" aria-hidden="true">✓</span></button>
+                                                        <button type="button" class="category-item js-category-item">식품<span class="category-check" aria-hidden="true">✓</span></button>
+                                                        <button type="button" class="category-item js-category-item">화장품<span class="category-check" aria-hidden="true">✓</span></button>
+                                                        <button type="button" class="category-item js-category-item">자동차<span class="category-check" aria-hidden="true">✓</span></button>
+                                                        <button type="button" class="category-item js-category-item">섬유/의류<span class="category-check" aria-hidden="true">✓</span></button>
+                                                        <button type="button" class="category-item js-category-item">기계/장비<span class="category-check" aria-hidden="true">✓</span></button>
+                                                        <button type="button" class="category-item js-category-item">에너지<span class="category-check" aria-hidden="true">✓</span></button>
+                                                    </div>
+                                                </div>
+                                                <div class="join-modal-main-under">
+                                                    <div class="join-modal-main-under-wrap">
+                                                        <div class="join-modal-main-under-wrap-in category-footer">
+                                                            <div class="category-status js-category-status">0 개/1 개 선택됨</div>
+                                                            <button type="button" class="next-button js-next-button" disabled>다음</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div tabindex="0" class="join-modal-in-line-bottom"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 언어 선택 모달 -->
+    <div id="modal-language" class="join-modal-line1 join-select-modal join-select-modal--language" style="display:none">
+        <div class="join-modal-line2">
+            <div class="join-modal-line3">
+                <div class="join-modal-line4">
+                    <div class="join-modal-line5">
+                        <div class="join-modal-line6">
+                            <div tabindex="0" class="join-modal">
+                                <div class="join-modal-all"></div>
+                                <div class="join-modal-box1" aria-modal="true" role="dialog">
+                                    <div class="join-modal-box2">
+                                        <div class="join-modal-box3">
+                                            <div tabindex="0" class="join-modal-in-line-top"></div>
+                                            <div tabindex="0" class="join-modal-in">
+                                                <div class="join-modal-header">
+                                                    <img src="/images/logo/logo.png" alt="globalgates" class="header-logo">
+                                                </div>
+                                                <div class="join-modal-main">
+                                                    <div class="language-head">
+                                                        <h1 class="language-title">언어 선택</h1>
+                                                        <p class="language-desc">원하는 언어를 선택하여 게시물, 사람들, 트렌드를 볼 수 있습니다.</p>
+                                                    </div>
+                                                    <div class="language-list" role="listbox" aria-label="언어 선택 목록" aria-multiselectable="false">
+                                                        <button type="button" class="language-item js-lang-item" data-setting-language-id="en" aria-selected="false"><span class="language-item__label">영어 - English</span><span class="check-box" aria-hidden="true"></span></button>
+                                                        <button type="button" class="language-item js-lang-item" data-setting-language-id="ko" aria-selected="false"><span class="language-item__label">한국어</span><span class="check-box" aria-hidden="true"></span></button>
+                                                        <button type="button" class="language-item js-lang-item" data-setting-language-id="gu" aria-selected="false"><span class="language-item__label">구자라트어 - ગુજરાતી</span><span class="check-box" aria-hidden="true"></span></button>
+                                                        <button type="button" class="language-item js-lang-item" data-setting-language-id="el" aria-selected="false"><span class="language-item__label">그리스어 - Ελληνικά</span><span class="check-box" aria-hidden="true"></span></button>
+                                                        <button type="button" class="language-item js-lang-item" data-setting-language-id="nl" aria-selected="false"><span class="language-item__label">네덜란드어 - Nederlands</span><span class="check-box" aria-hidden="true"></span></button>
+                                                        <button type="button" class="language-item js-lang-item" data-setting-language-id="ne" aria-selected="false"><span class="language-item__label">네팔어 - नेपाली</span><span class="check-box" aria-hidden="true"></span></button>
+                                                        <button type="button" class="language-item js-lang-item" data-setting-language-id="no" aria-selected="false"><span class="language-item__label">노르웨이어 - norsk</span><span class="check-box" aria-hidden="true"></span></button>
+                                                        <button type="button" class="language-item js-lang-item" data-setting-language-id="da" aria-selected="false"><span class="language-item__label">덴마크어 - dansk</span><span class="check-box" aria-hidden="true"></span></button>
+                                                        <button type="button" class="language-item js-lang-item" data-setting-language-id="de" aria-selected="false"><span class="language-item__label">독일어 - Deutsch</span><span class="check-box" aria-hidden="true"></span></button>
+                                                        <button type="button" class="language-item js-lang-item" data-setting-language-id="dv" aria-selected="false"><span class="language-item__label">디베히어 - Divehi</span><span class="check-box" aria-hidden="true"></span></button>
+                                                        <button type="button" class="language-item js-lang-item" data-setting-language-id="lo" aria-selected="false"><span class="language-item__label">라오어 - ລາວ</span><span class="check-box" aria-hidden="true"></span></button>
+                                                        <button type="button" class="language-item js-lang-item" data-setting-language-id="lv" aria-selected="false"><span class="language-item__label">라트비아어 - latviešu</span><span class="check-box" aria-hidden="true"></span></button>
+                                                        <button type="button" class="language-item js-lang-item" data-setting-language-id="ru" aria-selected="false"><span class="language-item__label">러시아어 - русский</span><span class="check-box" aria-hidden="true"></span></button>
+                                                        <button type="button" class="language-item js-lang-item" data-setting-language-id="ro" aria-selected="false"><span class="language-item__label">루마니아어 - română</span><span class="check-box" aria-hidden="true"></span></button>
+                                                        <button type="button" class="language-item js-lang-item" data-setting-language-id="lt" aria-selected="false"><span class="language-item__label">리투아니아어 - lietuvių</span><span class="check-box" aria-hidden="true"></span></button>
+                                                        <button type="button" class="language-item js-lang-item" data-setting-language-id="mr" aria-selected="false"><span class="language-item__label">마라티어 - मराठी</span><span class="check-box" aria-hidden="true"></span></button>
+                                                        <button type="button" class="language-item js-lang-item" data-setting-language-id="ml" aria-selected="false"><span class="language-item__label">말라얄람어 - മലയാളം</span><span class="check-box" aria-hidden="true"></span></button>
+                                                        <button type="button" class="language-item js-lang-item" data-setting-language-id="ms" aria-selected="false"><span class="language-item__label">말레이어 - Melayu</span><span class="check-box" aria-hidden="true"></span></button>
+                                                        <button type="button" class="language-item js-lang-item" data-setting-language-id="eu" aria-selected="false"><span class="language-item__label">바스크어 - euskara</span><span class="check-box" aria-hidden="true"></span></button>
+                                                        <button type="button" class="language-item js-lang-item" data-setting-language-id="my" aria-selected="false"><span class="language-item__label">버마어 - မြန်မာ</span><span class="check-box" aria-hidden="true"></span></button>
+                                                        <button type="button" class="language-item js-lang-item" data-setting-language-id="vi" aria-selected="false"><span class="language-item__label">베트남어 - Tiếng Việt</span><span class="check-box" aria-hidden="true"></span></button>
+                                                        <button type="button" class="language-item js-lang-item" data-setting-language-id="bn" aria-selected="false"><span class="language-item__label">벵골어 - বাংলা</span><span class="check-box" aria-hidden="true"></span></button>
+                                                        <button type="button" class="language-item js-lang-item" data-setting-language-id="bg" aria-selected="false"><span class="language-item__label">불가리아어 - български</span><span class="check-box" aria-hidden="true"></span></button>
+                                                        <button type="button" class="language-item js-lang-item" data-setting-language-id="sr" aria-selected="false"><span class="language-item__label">세르비아어 - српски</span><span class="check-box" aria-hidden="true"></span></button>
+                                                        <button type="button" class="language-item js-lang-item" data-setting-language-id="ckb" aria-selected="false"><span class="language-item__label">소라니 쿠르드어 - کوردیی ناوەندی</span><span class="check-box" aria-hidden="true"></span></button>
+                                                        <button type="button" class="language-item js-lang-item" data-setting-language-id="si" aria-selected="false"><span class="language-item__label">스리랑카어 - සිංහල</span><span class="check-box" aria-hidden="true"></span></button>
+                                                        <button type="button" class="language-item js-lang-item" data-setting-language-id="sv" aria-selected="false"><span class="language-item__label">스웨덴어 - svenska</span><span class="check-box" aria-hidden="true"></span></button>
+                                                        <button type="button" class="language-item js-lang-item" data-setting-language-id="es" aria-selected="false"><span class="language-item__label">스페인어 - español</span><span class="check-box" aria-hidden="true"></span></button>
+                                                        <button type="button" class="language-item js-lang-item" data-setting-language-id="sl" aria-selected="false"><span class="language-item__label">슬로베니아어 - slovenščina</span><span class="check-box" aria-hidden="true"></span></button>
+                                                        <button type="button" class="language-item js-lang-item" data-setting-language-id="sd" aria-selected="false"><span class="language-item__label">신디어 - سنڌي</span><span class="check-box" aria-hidden="true"></span></button>
+                                                        <button type="button" class="language-item js-lang-item" data-setting-language-id="ar" aria-selected="false"><span class="language-item__label">아랍어 - العربية</span><span class="check-box" aria-hidden="true"></span></button>
+                                                        <button type="button" class="language-item js-lang-item" data-setting-language-id="hy" aria-selected="false"><span class="language-item__label">아르메니아어 - հայերեն</span><span class="check-box" aria-hidden="true"></span></button>
+                                                        <button type="button" class="language-item js-lang-item" data-setting-language-id="is" aria-selected="false"><span class="language-item__label">아이슬란드어 - íslenska</span><span class="check-box" aria-hidden="true"></span></button>
+                                                        <button type="button" class="language-item js-lang-item" data-setting-language-id="ht" aria-selected="false"><span class="language-item__label">아이티어 - Haitian Creole</span><span class="check-box" aria-hidden="true"></span></button>
+                                                        <button type="button" class="language-item js-lang-item" data-setting-language-id="am" aria-selected="false"><span class="language-item__label">암하라어 - አማርኛ</span><span class="check-box" aria-hidden="true"></span></button>
+                                                        <button type="button" class="language-item js-lang-item" data-setting-language-id="et" aria-selected="false"><span class="language-item__label">에스토니아어 - eesti</span><span class="check-box" aria-hidden="true"></span></button>
+                                                        <button type="button" class="language-item js-lang-item" data-setting-language-id="eo" aria-selected="false"><span class="language-item__label">에스페란토어 - esperanto</span><span class="check-box" aria-hidden="true"></span></button>
+                                                        <button type="button" class="language-item js-lang-item" data-setting-language-id="or" aria-selected="false"><span class="language-item__label">오리야어 - ଓଡ଼ିଆ</span><span class="check-box" aria-hidden="true"></span></button>
+                                                        <button type="button" class="language-item js-lang-item" data-setting-language-id="ur" aria-selected="false"><span class="language-item__label">우르두어 - اردو</span><span class="check-box" aria-hidden="true"></span></button>
+                                                        <button type="button" class="language-item js-lang-item" data-setting-language-id="uk" aria-selected="false"><span class="language-item__label">우크라이나어 - українська</span><span class="check-box" aria-hidden="true"></span></button>
+                                                        <button type="button" class="language-item js-lang-item" data-setting-language-id="cy" aria-selected="false"><span class="language-item__label">웨일스어 - Cymraeg</span><span class="check-box" aria-hidden="true"></span></button>
+                                                        <button type="button" class="language-item js-lang-item" data-setting-language-id="ug" aria-selected="false"><span class="language-item__label">위구르어 - ئۇيغۇرچە</span><span class="check-box" aria-hidden="true"></span></button>
+                                                        <button type="button" class="language-item js-lang-item" data-setting-language-id="it" aria-selected="false"><span class="language-item__label">이탈리아어 - italiano</span><span class="check-box" aria-hidden="true"></span></button>
+                                                        <button type="button" class="language-item js-lang-item" data-setting-language-id="id" aria-selected="false"><span class="language-item__label">인도네시아어 - Indonesia</span><span class="check-box" aria-hidden="true"></span></button>
+                                                        <button type="button" class="language-item js-lang-item" data-setting-language-id="ja" aria-selected="false"><span class="language-item__label">일본어 - 日本語</span><span class="check-box" aria-hidden="true"></span></button>
+                                                        <button type="button" class="language-item js-lang-item" data-setting-language-id="ka" aria-selected="false"><span class="language-item__label">조지아어 - ქართული</span><span class="check-box" aria-hidden="true"></span></button>
+                                                        <button type="button" class="language-item js-lang-item" data-setting-language-id="zh" aria-selected="false"><span class="language-item__label">중국어 - 中文</span><span class="check-box" aria-hidden="true"></span></button>
+                                                        <button type="button" class="language-item js-lang-item" data-setting-language-id="cs" aria-selected="false"><span class="language-item__label">체코어 - čeština</span><span class="check-box" aria-hidden="true"></span></button>
+                                                        <button type="button" class="language-item js-lang-item" data-setting-language-id="ca" aria-selected="false"><span class="language-item__label">카탈로니아어 - català</span><span class="check-box" aria-hidden="true"></span></button>
+                                                        <button type="button" class="language-item js-lang-item" data-setting-language-id="kn" aria-selected="false"><span class="language-item__label">칸나다어 - ಕನ್ನಡ</span><span class="check-box" aria-hidden="true"></span></button>
+                                                        <button type="button" class="language-item js-lang-item" data-setting-language-id="km" aria-selected="false"><span class="language-item__label">크메르어 - ខ្មែរ</span><span class="check-box" aria-hidden="true"></span></button>
+                                                        <button type="button" class="language-item js-lang-item" data-setting-language-id="tl" aria-selected="false"><span class="language-item__label">타갈로그어 - Tagalog</span><span class="check-box" aria-hidden="true"></span></button>
+                                                        <button type="button" class="language-item js-lang-item" data-setting-language-id="ta" aria-selected="false"><span class="language-item__label">타밀어 - தமிழ்</span><span class="check-box" aria-hidden="true"></span></button>
+                                                        <button type="button" class="language-item js-lang-item" data-setting-language-id="th" aria-selected="false"><span class="language-item__label">태국어 - ไทย</span><span class="check-box" aria-hidden="true"></span></button>
+                                                        <button type="button" class="language-item js-lang-item" data-setting-language-id="tr" aria-selected="false"><span class="language-item__label">터키어 - Türkçe</span><span class="check-box" aria-hidden="true"></span></button>
+                                                        <button type="button" class="language-item js-lang-item" data-setting-language-id="te" aria-selected="false"><span class="language-item__label">텔루구어 - తెలుగు</span><span class="check-box" aria-hidden="true"></span></button>
+                                                        <button type="button" class="language-item js-lang-item" data-setting-language-id="bo" aria-selected="false"><span class="language-item__label">티베트어 - བོད་སྐད་</span><span class="check-box" aria-hidden="true"></span></button>
+                                                        <button type="button" class="language-item js-lang-item" data-setting-language-id="ps" aria-selected="false"><span class="language-item__label">파슈토어 - پښتو</span><span class="check-box" aria-hidden="true"></span></button>
+                                                        <button type="button" class="language-item js-lang-item" data-setting-language-id="pa" aria-selected="false"><span class="language-item__label">펀잡어 - ਪੰਜਾਬੀ</span><span class="check-box" aria-hidden="true"></span></button>
+                                                        <button type="button" class="language-item js-lang-item" data-setting-language-id="fa" aria-selected="false"><span class="language-item__label">페르시아어 - فارسی</span><span class="check-box" aria-hidden="true"></span></button>
+                                                        <button type="button" class="language-item js-lang-item" data-setting-language-id="pt" aria-selected="false"><span class="language-item__label">포르투갈어 - português</span><span class="check-box" aria-hidden="true"></span></button>
+                                                        <button type="button" class="language-item js-lang-item" data-setting-language-id="pl" aria-selected="false"><span class="language-item__label">폴란드어 - polski</span><span class="check-box" aria-hidden="true"></span></button>
+                                                        <button type="button" class="language-item js-lang-item" data-setting-language-id="fr" aria-selected="false"><span class="language-item__label">프랑스어 - français</span><span class="check-box" aria-hidden="true"></span></button>
+                                                        <button type="button" class="language-item js-lang-item" data-setting-language-id="fi" aria-selected="false"><span class="language-item__label">핀란드어 - suomi</span><span class="check-box" aria-hidden="true"></span></button>
+                                                        <button type="button" class="language-item js-lang-item" data-setting-language-id="hu" aria-selected="false"><span class="language-item__label">헝가리어 - magyar</span><span class="check-box" aria-hidden="true"></span></button>
+                                                        <button type="button" class="language-item js-lang-item" data-setting-language-id="he" aria-selected="false"><span class="language-item__label">히브리어 - עברית</span><span class="check-box" aria-hidden="true"></span></button>
+                                                        <button type="button" class="language-item js-lang-item" data-setting-language-id="hi" aria-selected="false"><span class="language-item__label">힌디어 - हिन्दी</span><span class="check-box" aria-hidden="true"></span></button>
+                                                        <button type="button" class="language-item js-lang-item" data-setting-language-id="etc" aria-selected="false"><span class="language-item__label">기타</span><span class="check-box" aria-hidden="true"></span></button>
+                                                    </div>
+                                                </div>
+                                                <div class="join-modal-footer">
+                                                    <button type="button" class="next-button">다음</button>
+                                                </div>
+                                            </div>
+                                            <div tabindex="0" class="join-modal-in-line-bottom"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 알림 모달 -->
+    <div id="modal-notification" class="join-modal-line1 join-select-modal join-select-modal--notification" style="display:none">
+        <div class="join-modal-line2">
+            <div class="join-modal-line3">
+                <div class="join-modal-line4">
+                    <div class="join-modal-line5">
+                        <div class="join-modal-line6">
+                            <div tabindex="0" class="join-modal">
+                                <div class="join-modal-all"></div>
+                                <div class="join-modal-box1" aria-modal="true" role="dialog">
+                                    <div class="join-modal-box2">
+                                        <div class="join-modal-box3">
+                                            <div tabindex="0" class="join-modal-in-line-top"></div>
+                                            <div tabindex="0" class="join-modal-in">
+                                                <div class="join-modal-header">
+                                                    <div class="join-modal-header-in1">
+                                                        <div class="join-modal-header-in2">
+                                                            <div class="join-modal-header-in3">
+                                                                <div class="join-modal-header-in4">
+                                                                    <div class="join-modal-header-left">
+                                                                        <button type="button" aria-label="닫기" class="join-modal-header-close-button">
+                                                                            <div class="join-modal-header-close-button-in">
+                                                                                <svg viewBox="0 0 24 24" aria-hidden="true" class="X-img">
+                                                                                    <g>
+                                                                                        <path d="M10.59 12L4.54 5.96l1.42-1.42L12 10.59l6.04-6.05 1.42 1.42L13.41 12l6.05 6.04-1.42 1.42L12 13.41l-6.04 6.05-1.42-1.42L10.59 12z"></path>
+                                                                                    </g>
+                                                                                </svg>
+                                                                            </div>
+                                                                        </button>
+                                                                    </div>
+                                                                    <div class="join-modal-header-middle"></div>
+                                                                    <div class="join-modal-header-right"></div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="join-modal-main notification-main">
+                                                    <div class="notification-icon-wrap">
+                                                        <svg viewBox="0 0 24 24" aria-hidden="true" class="notification-icon">
+                                                            <g>
+                                                                <path d="M20 16H4l1.6-2.1A7.8 7.8 0 0 0 7 9V8a5 5 0 0 1 10 0v1c0 1.8.5 3.5 1.4 4.9L20 16z"></path>
+                                                                <path d="M9.5 16a2.5 2.5 0 0 0 5 0"></path>
+                                                            </g>
+                                                        </svg>
+                                                    </div>
+                                                    <h1 class="notification-title">알림 켜기</h1>
+                                                    <p class="notification-desc">지금 일어나는 일에 대한 소식을 받고 X를 최대한 활용해 보세요.</p>
+                                                    <div class="notification-actions">
+                                                        <button type="button" class="notification-btn notification-btn-primary js-bounce-btn notification-yes">알림 허용</button>
+                                                        <button type="button" class="notification-btn notification-btn-secondary js-bounce-btn">지금은 넘어가기</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div tabindex="0" class="join-modal-in-line-bottom"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 회원가입 확인 모달 -->
+    <div id="modal-submit" class="join-modal-line1 join-select-modal join-select-modal--submit" style="display:none">
+        <div class="join-modal-line2">
+            <div class="join-modal-line3">
+                <div class="join-modal-line4">
+                    <div class="join-modal-line5">
+                        <div class="join-modal-line6">
+                            <div tabindex="0" class="join-modal">
+                                <div class="join-modal-all"></div>
+                                <div class="join-modal-box1" aria-modal="true" role="dialog">
+                                    <div class="join-modal-box2">
+                                        <div class="join-modal-box3">
+                                            <div tabindex="0" class="join-modal-in-line-top"></div>
+                                            <div tabindex="0" class="join-modal-in">
+                                                <div class="join-modal-header">
+                                                    <div class="join-modal-header-in1">
+                                                        <div class="join-modal-header-in2">
+                                                            <div class="join-modal-header-in3">
+                                                                <div class="join-modal-header-in4">
+                                                                    <div class="join-modal-header-left">
+                                                                        <button type="button" aria-label="닫기" class="join-modal-header-close-button">
+                                                                            <div class="join-modal-header-close-button-in">
+                                                                                <svg viewBox="0 0 24 24" aria-hidden="true" class="X-img">
+                                                                                    <g>
+                                                                                        <path d="M10.59 12L4.54 5.96l1.42-1.42L12 10.59l6.04-6.05 1.42 1.42L13.41 12l6.05 6.04-1.42 1.42L12 13.41l-6.04 6.05-1.42-1.42L10.59 12z"></path>
+                                                                                    </g>
+                                                                                </svg>
+                                                                            </div>
+                                                                        </button>
+                                                                    </div>
+                                                                    <div class="join-modal-header-middle"></div>
+                                                                    <div class="join-modal-header-right"></div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="join-modal-main join-submit-main">
+                                                    <div id="join-submit-form" class="join-submit-form">
+                                                        <p class="join-submit-message">회원가입을 하시겠습니까?</p>
+                                                        <button type="button" class="join-submit-button">확인</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div tabindex="0" class="join-modal-in-line-bottom"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 로그인 모달 -->
+    <div id="login-modal" class="login-overlay" aria-hidden="true" style="display:none">
+        <section class="login-modal" role="dialog" aria-modal="true" aria-labelledby="loginModalTitle">
+            <button type="button" class="login-close" aria-label="닫기">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M10.59 12L4.54 5.96l1.42-1.42L12 10.59l6.04-6.05 1.42 1.42L13.41 12l6.05 6.04-1.42 1.42L12 13.41l-6.04 6.05-1.42-1.42L10.59 12z"></path>
+                </svg>
+            </button>
+
+            <div class="login-inner">
+                <h1 id="loginModalTitle" class="login-title">GlobalGates 로그인하기</h1>
+
+                <label class="input-wrap" for="loginIdentity">
+                    <input id="loginIdentity" type="text" placeholder="휴대폰 번호 또는 이메일 주소" autocomplete="username" value="">
+                </label>
+                <div class="field-error-message">다시입력하시오</div>
+
+                <button type="button" class="btn-primary" id="nextBtn" disabled>다음</button>
+                <div class="sns-section sns-section--modal">
+                    <div class="sns-divider">
+                        <h5>SNS 간편 로그인</h5>
+                    </div>
+                    <div class="sns-buttons">
+                        <button type="button" class="sns-btn sns-btn--kakao kakao-login" title="카카오 로그인" aria-label="카카오 로그인">
+                            <img alt="카카오 로고" src="https://static.cdn.kmong.com/assets/icon/kakao-logo_v2.png?w=24" width="24" height="24" loading="lazy">
+                        </button>
+                        <button type="button" class="sns-btn sns-btn--naver naver-login" title="네이버 로그인" aria-label="네이버 로그인">
+                            <img alt="네이버 로고" src="https://static.cdn.kmong.com/assets/icon/naver-logo_v2.png?w=24" width="24" height="24" loading="lazy">
+                        </button>
+                        <button type="button" id="login-google-login" class="sns-btn sns-btn--google google-login" title="구글 로그인" aria-label="구글 로그인">
+
+                        </button>
+                        <button type="button" id="login-facebook-login" class="sns-btn sns-btn--facebook facebook-login" title="페이스북 로그인" aria-label="페이스북 로그인">
+
+                        </button>
+                    </div>
+                </div>
+
+                <p class="signup-text">계정이 없으신가요? <a href="#">가입하기</a></p>
+            </div>
+        </section>
+    </div>
+
+    <!-- 로그인 비밀번호 모달 -->
+    <div id="login-password-modal" class="login-overlay" aria-hidden="true" style="display:none">
+        <section class="login-modal" role="dialog" aria-modal="true" aria-labelledby="loginPasswordTitle">
+            <button type="button" class="login-close" aria-label="닫기">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M10.59 12L4.54 5.96l1.42-1.42L12 10.59l6.04-6.05 1.42 1.42L13.41 12l6.05 6.04-1.42 1.42L12 13.41l-6.04 6.05-1.42-1.42L10.59 12z"></path>
+                </svg>
+            </button>
+
+            <div class="login-logo" aria-hidden="true">
+                <img src="/images/logo/logo.png" alt="globalgates">
+            </div>
+
+            <div class="login-inner">
+                <h1 id="loginPasswordTitle" class="login-title">비밀번호를 입력하세요</h1>
+
+                <div class="mail-box">
+                    <span class="mail-label">이메일</span>
+                    <strong class="mail-value"></strong>
+                </div>
+
+                <label class="password-wrap" for="passwordInput">
+                    <span class="password-label">비밀번호</span>
+                    <input id="passwordInput" name="memberPassword" type="password" autocomplete="current-password" value="">
+                    <button type="button" class="eye-btn" aria-label="비밀번호 보기">
+                        <svg class="eye-open" viewBox="0 0 24 24" aria-hidden="true">
+                            <path d="M2 12s3.5-6 10-6 10 6 10 6-3.5 6-10 6-10-6-10-6z"></path>
+                            <circle cx="12" cy="12" r="3.2"></circle>
+                        </svg>
+                        <svg class="eye-off is-hidden" viewBox="0 0 24 24" aria-hidden="true">
+                            <path d="M2 12s3.5-6 10-6 10 6 10 6-3.5 6-10 6-10-6-10-6z"></path>
+                            <circle cx="12" cy="12" r="3.2"></circle>
+                            <line x1="4" y1="20" x2="20" y2="4"></line>
+                        </svg>
+                    </button>
+                </label>
+
+                <a href="#" class="find-password">비밀번호 찾기</a>
+                    <input id="login-id" name="loginId" type="hidden" value="">
+                <button type="button" class="btn-login" id="loginBtn" disabled>로그인하기</button>
+
+                <p class="signup-text">계정이 없으신가요? <a href="#">가입하기</a></p>
+            </div>
+        </section>
+    </div>
+
+    <!-- 로그인 재활성화 확인 모달 -->
+    <div id="login-reactivation-modal" class="auth-overlay" aria-hidden="true" style="display:none">
+        <section class="auth-modal" role="dialog" aria-modal="true" aria-labelledby="reactivationTitle">
+            <button type="button" class="auth-close" data-reactivation-close aria-label="닫기">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M10.59 12L4.54 5.96l1.42-1.42L12 10.59l6.04-6.05 1.42 1.42L13.41 12l6.05 6.04-1.42 1.42L12 13.41l-6.04 6.05-1.42-1.42L10.59 12z"></path>
+                </svg>
+            </button>
+
+            <div class="auth-logo" aria-hidden="true">
+                <img src="/images/logo/logo.png" alt="globalgates">
+            </div>
+
+            <div class="auth-inner">
+                <h1 id="reactivationTitle" class="auth-title">비활성화된 계정입니다</h1>
+                <p class="auth-desc">계정을 다시 활성화하려면 본인 확인이 필요합니다.</p>
+                <p class="auth-desc second">아래 연락처로 인증 코드를 보내시겠어요?</p>
+
+                <div class="auth-method selected" aria-hidden="true">
+                    <span class="method-text" id="reactivationTargetText">가입된 연락처</span>
+                    <span class="check-circle" aria-hidden="true">
+                        <svg viewBox="0 0 24 24"><path d="M9.55 17.4L4.7 12.55l1.4-1.4 3.45 3.45 8.35-8.35 1.4 1.4z"></path></svg>
+                    </span>
+                </div>
+
+                <div class="auth-actions">
+                    <button type="button" class="btn-next" id="reactivationSendBtn">확인</button>
+                    <button type="button" class="btn-cancel" id="reactivationCancelBtn">취소</button>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- 로그인 재활성화 코드 모달 -->
+    <div id="login-reactivation-code-modal" class="code-overlay" aria-hidden="true" style="display:none">
+        <section class="code-modal" role="dialog" aria-modal="true" aria-labelledby="reactivationCodeTitle">
+            <button type="button" class="code-close" data-reactivation-code-close aria-label="닫기">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M10.59 12L4.54 5.96l1.42-1.42L12 10.59l6.04-6.05 1.42 1.42L13.41 12l6.05 6.04-1.42 1.42L12 13.41l-6.04 6.05-1.42-1.42L10.59 12z"></path>
+                </svg>
+            </button>
+
+            <div class="code-logo" aria-hidden="true">
+                <img src="/images/logo/logo.png" alt="globalgates">
+            </div>
+
+            <div class="code-inner">
+                <h1 id="reactivationCodeTitle" class="code-title">코드를 전송했습니다</h1>
+                <p class="code-desc" id="reactivationCodeDesc">전송된 인증 코드를 입력하세요.</p>
+
+                <label class="code-input-wrap" for="reactivationCodeInput">
+                    <span class="code-label">코드를 입력하세요</span>
+                    <input id="reactivationCodeInput" type="text" autocomplete="one-time-code">
+                </label>
+
+                <button type="button" class="code-action is-secondary" id="reactivationCodeBtn">돌아가기</button>
+            </div>
+        </section>
+    </div>
+    <!-- 모바일 진입 스플래시 (≤600px 전용, 데스크탑은 CSS로 숨김) -->
+    <div class="join-splash" id="joinSplash" role="dialog" aria-label="시작 화면">
+        <div class="join-splash-waves" aria-hidden="true">
+            <svg class="join-splash-waves-svg"
+                 xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+                 viewBox="0 24 150 28" preserveAspectRatio="none" shape-rendering="auto">
+                <defs>
+                    <path id="join-splash-wave"
+                          d="M-160 44c30 0 58-18 88-18s 58 18 88 18 58-18 88-18 58 18 88 18 v44h-352z"/>
+                </defs>
+                <g class="parallax">
+                    <use xlink:href="#join-splash-wave" x="48" y="0" class="wave1"/>
+                    <use xlink:href="#join-splash-wave" x="48" y="3" class="wave2"/>
+                    <use xlink:href="#join-splash-wave" x="48" y="5" class="wave3"/>
+                    <use xlink:href="#join-splash-wave" x="48" y="7" class="wave4"/>
+                </g>
+            </svg>
+        </div>
+        <header class="join-splash-header" aria-label="Global Gates">
+            <span class="join-splash-header-name">Global Gates</span>
+        </header>
+        <button type="button" id="btn-start" class="join-splash-btn">
+            <span class="join-splash-btn-label">시작하기</span>
+        </button>
+    </div>
+
+    <footer class="join-footer">2026 globalgates</footer>
+    <script src="/js/member/join/service.js"></script>
+    <script src="/js/member/join/event.js"></script>
+    <script src="/js/member/login/service.js"></script>
+    <script src="/js/member/login/event.js"></script>
+    <script src="/js/member/join-modal.js"></script>
+    <script src="/js/member/isvalied/join-isvalied.js"></script>
+    <script src="/js/member/join-modal-code.js"></script>
+    <script src="/js/member/join-modal-password.js"></script>
+    <script src="/js/member/join-modal-user-name.js"></script>
+    <script src="/js/member/join-modal-business-regist.js"></script>
+    <script src="/js/member/join-modal-profile-img.js"></script>
+    <script src="/js/member/join-modal-category.js"></script>
+    <script src="/js/member/join-modal-language.js"></script>
+    <script src="/js/member/join-modal-notification.js"></script>
+    <script src="/js/member/join-modal-submit.js"></script>
+    <script src="/js/member/join-modal-keyboard.js"></script>
+    <script src="/js/member/login.js"></script>
+    <script>
+        // 모바일(≤600px) 진입 스플래시 — 시작하기 누르면 패널이 모달처럼 올라오고
+        // 패널 바깥(스플래시 배경)을 누르면 다시 시작하기 화면으로 돌아온다.
+        (() => {
+            const splash = document.getElementById('joinSplash');
+            const btn = document.getElementById('btn-start');
+            const panel = document.querySelector('.join-panel');
+            if (!splash || !btn) return;
+
+            const mq = window.matchMedia('(max-width: 600px)');
+            if (!mq.matches) {
+                splash.remove();
+                return;
+            }
+
+            document.body.classList.add('has-splash');
+
+            const openPanel = () => {
+                if (splash.dataset.leaving === '1') return;
+                splash.dataset.leaving = '1';
+
+                btn.classList.add('is-pressing');
+
+                setTimeout(() => {
+                    splash.classList.add('is-leaving');
+                    document.body.classList.add('panel-revealed');
+                }, 220);
+            };
+
+            const closePanel = () => {
+                if (splash.dataset.leaving !== '1') return;
+                document.body.classList.remove('panel-revealed');
+                splash.classList.remove('is-leaving');
+                btn.classList.remove('is-pressing');
+                splash.dataset.leaving = '0';
+            };
+
+            btn.addEventListener('click', openPanel);
+
+            // 패널 밖(스플래시 영역)을 클릭하면 시작하기 화면으로 복귀.
+            // 단, 회원가입/로그인 등 가입 플로우 모달이 열려 있을 때는 모달 내부 클릭을
+            // "패널 밖 클릭"으로 오인해 splash로 돌아가지 않도록 예외 처리한다.
+            document.addEventListener('click', (e) => {
+                if (splash.dataset.leaving !== '1') return;
+                if (panel && panel.contains(e.target)) return;
+                if (btn.contains(e.target)) return;
+                if (e.target.closest && e.target.closest('.join-flow-modal')) return;
+                closePanel();
+            });
+        })();
+    </script>
+</body>
+</html>

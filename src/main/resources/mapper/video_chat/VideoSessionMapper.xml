@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.app.globalgates.mapper.video_chat.VideoChatMapper">
+    <select id="selectSession">
+        select id,
+               conversation_id,
+               caller_id,
+               receiver_id,
+               started_at,
+               ended_at,
+               duration_sec,
+               created_datetime
+        from tbl_video_session
+        where conversation_id = #{conversationId}
+        limit 1
+    </select>
+
+    <insert id="insertVideoSession" useGeneratedKeys="true" keyProperty="id">
+        insert into tbl_video_session (conversation_id, caller_id, receiver_id)
+        values (#{conversationId}, #{callerId}, #{receiverId})
+    </insert>
+
+    <!-- caller/receiver 본인만 종료 가능 — 다른 회원이 conversationId 만 알아도 갱신 못 함.
+         affected rows 가 0 이면 controller 에서 권한 거부로 처리 -->
+    <update id="updateSessionEnd">
+        UPDATE tbl_video_session
+        SET ended_at     = NOW(),
+            duration_sec = EXTRACT(EPOCH FROM (NOW() - started_at))::int
+        WHERE conversation_id = #{conversationId}
+          AND (caller_id = #{memberId} OR receiver_id = #{memberId})
+    </update>
+
+    <!-- 내가 발신자인 화상회의 목록 + (있다면) 요약 LEFT JOIN — caller_id = 인증된 본인 -->
+    <select id="selectSessionsByCallerId"
+            resultType="com.app.globalgates.domain.video_chat.VideoSessionListVO">
+        select s.id,
+               s.conversation_id,
+               s.caller_id,
+               s.receiver_id,
+               to_char(s.started_at, 'YYYY-MM-DD HH24:MI:SS') as started_at,
+               to_char(s.ended_at,   'YYYY-MM-DD HH24:MI:SS') as ended_at,
+               s.duration_sec,
+               sm.summary,
+               rm.member_handle   as receiver_handle,
+               rm.member_nickname as receiver_nickname
+        from tbl_video_session s
+        left join tbl_ai_video_summary sm on sm.video_session_id = s.id
+        left join tbl_member rm           on rm.id = s.receiver_id
+        where s.caller_id = #{callerId}
+        order by s.started_at desc nulls last, s.id desc
+    </select>
+
+</mapper>

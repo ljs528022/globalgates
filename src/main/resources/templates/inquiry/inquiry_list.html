@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="ko">
+<head>
+    <link rel="icon" type="image/png" href="/images/logo/logo.png">
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>거래처 등록 목록</title>
+    <link rel="stylesheet" href="/css/common/mobile-nav.css" th:href="@{/css/common/mobile-nav.css}"/>
+    <link rel="stylesheet" href="/css/main/main.css"/>
+    <link rel="stylesheet" href="/css/common/post-modal.css"/>
+    <link rel="stylesheet" href="/css/inquiry/inquiry_list.css"/>
+    <script src="/js/common/mobile-nav.js" th:src="@{/js/common/mobile-nav.js}" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/@joeattardi/emoji-button@3.0.3/dist/index.min.js"></script>
+    <script th:inline="javascript">
+        const memberId = /*[[${member?.id}]]*/ null;
+    </script>
+    <script src="/js/main/service.js"></script>
+    <script src="/js/common/post-modal-service.js"></script>
+    <script src="/js/common/post-modal.js"></script>
+    <script src="/js/inquiry_list/event.js"></script>
+    <script src="/js/inquiry_list/service.js"></script>
+    <script src="/js/inquiry_list/layout.js"></script>
+</head>
+<body>
+<div class="app-layout">
+    <header th:replace="common/header::header"></header>
+    <main class="main-content">
+        <div class="main-header">
+            <button class="header-back" id="headerBack" type="button">
+                <svg viewBox="0 0 24 24" class="header-back-icon">
+                    <path
+                            d="M7.414 13l5.043 5.04-1.414 1.42L3.586 12l7.457-7.46 1.414 1.42L7.414 11H21v2H7.414z"
+                    />
+                </svg>
+            </button>
+            <h1 class="header-title">거래처 등록 목록</h1>
+            <div class="header-spacer"></div>
+        </div>
+
+        <nav class="inquiry-tabnav" aria-label="전문가 페이지" role="navigation">
+            <div class="inquiry-tabnav__inner">
+                <div role="tablist" class="inquiry-tabnav__list" data-testid="ScrollSnap-List">
+                    <div role="presentation" class="inquiry-tabnav__item">
+                        <a href="/inquiry/chart" role="tab" aria-selected="false" class="inquiry-tab" data-inquiry-tab="summary">
+                            <span class="inquiry-tab__label">요약</span>
+                            <span class="inquiry-tab__indicator"></span>
+                        </a>
+                    </div>
+                    <div role="presentation" class="inquiry-tabnav__item">
+                        <a href="/inquiry/member-list" role="tab" aria-selected="true" class="inquiry-tab inquiry-tab--active" data-inquiry-tab="partners">
+                            <span class="inquiry-tab__label">거래처 등록 목록</span>
+                            <span class="inquiry-tab__indicator"></span>
+                        </a>
+                    </div>
+                    <div role="presentation" class="inquiry-tabnav__item">
+                        <a href="/inquiry/activity/list" role="tab" aria-selected="false" class="inquiry-tab" data-inquiry-tab="activity">
+                            <span class="inquiry-tab__label">거래처 활동 목록</span>
+                            <span class="inquiry-tab__indicator"></span>
+                        </a>
+                    </div>
+                    <div role="presentation" class="inquiry-tabnav__item">
+                        <a href="/estimation/list" role="tab" aria-selected="false" class="inquiry-tab" data-inquiry-tab="quotes">
+                            <span class="inquiry-tab__label">견적 요청 목록</span>
+                            <span class="inquiry-tab__indicator"></span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </nav>
+
+        <div class="category-banner">
+            <p class="category-banner-title">거래처 유형</p>
+            <div class="category-scroll-wrap">
+                <button
+                        class="category-scroll-arrow category-scroll-left"
+                        id="scrollLeft"
+                        style="display: none"
+                        type="button"
+                >
+                    <svg viewBox="0 0 24 24" width="20" height="20">
+                        <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z" fill="currentColor"/>
+                    </svg>
+                </button>
+                <div class="category-scroll" id="categoryScroll">
+                    <button class="cat-chip active" data-cat="전체">전체</button>
+                    <button class="cat-chip has-subs" data-cat="수출" data-subs="미주,유럽,동남아,중국,일본,중동">수출 ›</button>
+                    <button class="cat-chip has-subs" data-cat="수입" data-subs="원자재,전자부품,완제품,설비">수입 ›</button>
+                    <button class="cat-chip has-subs" data-cat="물류" data-subs="해운,항공,육상,창고">물류 ›</button>
+                    <button class="cat-chip has-subs" data-cat="관세" data-subs="FTA,HS코드,통관,환급">관세 ›</button>
+                    <button class="cat-chip has-subs" data-cat="금융" data-subs="무역금융,환율,보험,LC">금융 ›</button>
+                    <button class="cat-chip has-subs" data-cat="IT" data-subs="플랫폼,자동화,블록체인">IT ›</button>
+                    <button class="cat-chip has-subs" data-cat="식품" data-subs="농산물,수산물,가공식품,건강식품">식품 ›</button>
+                    <button class="cat-chip" data-cat="화장품">화장품</button>
+                    <button class="cat-chip" data-cat="자동차">자동차</button>
+                    <button class="cat-chip" data-cat="섬유/의류">섬유/의류</button>
+                    <button class="cat-chip" data-cat="기계/설비">기계/설비</button>
+                    <button class="cat-chip" data-cat="에너지">에너지</button>
+                </div>
+                <button
+                        class="category-scroll-arrow category-scroll-right"
+                        id="scrollRight"
+                        style="display: none"
+                        type="button"
+                >
+                    <svg viewBox="0 0 24 24" width="20" height="20">
+                        <path
+                                d="M8.59 16.59L10 18l6-6-6-6-1.41 1.41L13.17 12z"
+                                fill="currentColor"
+                        />
+                    </svg>
+                </button>
+            </div>
+        </div>
+
+        <div id="friendsList">
+
+        </div>
+
+        <div class="bottom-spacer">
+
+        </div>
+    </main>
+    <footer th:replace="common/footer::footer"></footer>
+</div>
+
+<!-- 공용 게시글 작성 모달: 사이드바 createPostButton 트리거 -->
+<div th:replace="~{common/compose-modal :: composeModal}"></div>
+
+<!-- 모바일 nav + 더보기 아코디언 (공용 fragment) -->
+<div th:replace="~{common/mobile-nav :: mobileNav('more')}"></div>
+<div th:replace="~{common/mobile-nav :: mobileMoreSheet}"></div>
+
+<div class="modal-overlay" id="disconnectModal">
+    <div class="modal-dialog" role="alertdialog" aria-labelledby="modalTitle">
+        <h1 class="modal-title" id="modalTitle">
+            이 거래처를 Disapproved 처리하시겠습니까?
+        </h1>
+        <p class="modal-desc">
+            Disapproved 처리하면 현재 관리 중인 거래처 등록 요청 목록에서 제외됩니다.
+            필요하면 다시 Approved 상태로 전환할 수 있습니다.
+        </p>
+        <div class="modal-actions">
+            <button class="modal-btn-confirm" id="modalConfirm" type="button">
+                Disapproved
+            </button>
+            <button class="modal-btn-cancel" id="modalCancel" type="button">
+                취소
+            </button>
+        </div>
+    </div>
+</div>
+</body>
+</html>

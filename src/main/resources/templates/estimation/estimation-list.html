@@ -1,0 +1,174 @@
+<!doctype html>
+<html lang="ko">
+<head>
+    <link rel="icon" type="image/png" href="/images/logo/logo.png">
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>견적 요청 목록</title>
+    <link rel="stylesheet" href="/css/common/mobile-nav.css" th:href="@{/css/common/mobile-nav.css}"/>
+    <link rel="stylesheet" href="/css/main/main.css"/>
+    <link rel="stylesheet" href="/css/common/post-modal.css"/>
+    <link
+            rel="stylesheet"
+            href="/css/estimation/estimation-list.css"
+    />
+    <script src="/js/common/mobile-nav.js" th:src="@{/js/common/mobile-nav.js}" defer></script>
+    <script src="/js/common/profile-link.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/@joeattardi/emoji-button@3.0.3/dist/index.min.js"></script>
+    <script th:inline="javascript">
+        const memberId = /*[[${member?.id}]]*/ null;
+    </script>
+    <script src="/js/main/service.js"></script>
+    <script src="/js/common/post-modal-service.js"></script>
+    <script src="/js/common/post-modal.js"></script>
+</head>
+<body>
+<div class="Page-Layout">
+<header th:replace="common/header::header"></header>
+<main class="activity-page">
+    <div class="activity-layout">
+        <div class="activity-shell">
+            <header class="expert-page-header">
+                <div class="main-header">
+                    <button class="header-back" id="headerBack" type="button" aria-label="뒤로가기">
+                        <svg viewBox="0 0 24 24" class="header-back-icon" aria-hidden="true">
+                            <path d="M7.414 13l5.043 5.04-1.414 1.42L3.586 12l7.457-7.46 1.414 1.42L7.414 11H21v2H7.414z"/>
+                        </svg>
+                    </button>
+                    <h1 class="header-title">견적 요청 목록</h1>
+                    <div class="header-spacer"></div>
+                </div>
+                <nav class="inquiry-tabnav" aria-label="전문가 페이지" role="navigation">
+                    <div class="inquiry-tabnav__inner">
+                        <div role="tablist" class="inquiry-tabnav__list" data-testid="ScrollSnap-List">
+                            <div role="presentation" class="inquiry-tabnav__item">
+                                <a href="/inquiry/chart" role="tab" aria-selected="false" class="inquiry-tab" data-inquiry-tab="summary">
+                                    <span class="inquiry-tab__label">요약</span>
+                                    <span class="inquiry-tab__indicator"></span>
+                                </a>
+                            </div>
+                            <div role="presentation" class="inquiry-tabnav__item">
+                                <a href="/inquiry/member-list" role="tab" aria-selected="false" class="inquiry-tab" data-inquiry-tab="partners">
+                                    <span class="inquiry-tab__label">거래처 등록 목록</span>
+                                    <span class="inquiry-tab__indicator"></span>
+                                </a>
+                            </div>
+                            <div role="presentation" class="inquiry-tabnav__item">
+                                <a href="/inquiry/activity/list" role="tab" aria-selected="false" class="inquiry-tab" data-inquiry-tab="activity">
+                                    <span class="inquiry-tab__label">거래처 활동 목록</span>
+                                    <span class="inquiry-tab__indicator"></span>
+                                </a>
+                            </div>
+                            <div role="presentation" class="inquiry-tabnav__item">
+                                <a href="/estimation/list" role="tab" aria-selected="true" class="inquiry-tab inquiry-tab--active" data-inquiry-tab="quotes">
+                                    <span class="inquiry-tab__label">견적 요청 목록</span>
+                                    <span class="inquiry-tab__indicator"></span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </nav>
+            </header>
+
+            <section class="inquiry-panels">
+                <section class="inquiry-panel inquiry-panel--quotes" data-inquiry-panel="quotes">
+                    <section class="activity-toolbar" aria-label="견적 요청 필터">
+                        <div class="activity-toolbar__left">
+                            <div class="activity-filter-dropdown">
+                                <button type="button" class="activity-filter-button" data-activity-filter-trigger
+                                        aria-haspopup="menu" aria-expanded="false">
+                                    <span data-activity-filter-label>전체</span>
+                                    <span class="activity-toolbar__caret" aria-hidden="true"></span>
+                                </button>
+                                <div class="activity-filter-menu" role="menu" data-activity-filter-menu hidden>
+                                    <button type="button"
+                                            class="activity-filter-menu__item activity-filter-menu__item--selected"
+                                            role="menuitemradio" aria-checked="true" data-activity-filter-item="all">
+                                        <span class="activity-filter-menu__check" aria-hidden="true">✓</span>
+                                        <span class="activity-filter-menu__label">전체</span>
+                                    </button>
+                                    <button type="button" class="activity-filter-menu__item" role="menuitemradio"
+                                            aria-checked="false" data-activity-filter-item="approve">
+                                        <span class="activity-filter-menu__check" aria-hidden="true">✓</span>
+                                        <span class="activity-filter-menu__label">승인됨</span>
+                                    </button>
+                                    <button type="button" class="activity-filter-menu__item" role="menuitemradio"
+                                            aria-checked="false" data-activity-filter-item="reject">
+                                        <span class="activity-filter-menu__check" aria-hidden="true">✓</span>
+                                        <span class="activity-filter-menu__label">거절됨</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="activity-toolbar__right">
+                            <div class="activity-date-range" aria-label="조회 기간">
+                                <input type="date" class="activity-date-input" data-activity-date-start/>
+                                <span class="activity-date-range__divider" aria-hidden="true">-</span>
+                                <input type="date" class="activity-date-input" data-activity-date-end/>
+                            </div>
+                            <div class="activity-toolbar__chips" aria-label="빠른 기간">
+                                <button type="button" class="period-chip" data-period-chip="7D">7D</button>
+                                <button type="button" class="period-chip" data-period-chip="2W">2W</button>
+                                <button type="button" class="period-chip" data-period-chip="4W">4W</button>
+                                <button type="button" class="period-chip period-chip--active" data-period-chip="3M">3M</button>
+                            </div>
+                        </div>
+                    </section>
+
+                    <div class="estimation-list" data-estimation-list></div>
+                </section>
+            </section>
+        </div>
+    </div>
+</main>
+<footer th:replace="common/footer::footer"></footer>
+</div>
+
+<section class="estimation-detail-modal" data-estimation-detail-modal hidden>
+    <div class="estimation-detail-modal__backdrop" data-estimation-detail-close></div>
+    <div class="estimation-detail-modal__dialog" role="dialog" aria-modal="true" aria-labelledby="estimationDetailTitle">
+        <header class="estimation-detail-modal__header">
+            <div>
+                <p class="estimation-detail-modal__eyebrow">견적 요청 상세</p>
+                <h2 class="estimation-detail-modal__title" id="estimationDetailTitle">상세 보기</h2>
+            </div>
+            <button type="button" class="estimation-detail-modal__close" aria-label="닫기" data-estimation-detail-close>
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M10.59 12 4.54 5.96 5.96 4.54 12 10.59l6.04-6.05 1.42 1.42L13.41 12l6.05 6.04-1.42 1.42L12 13.41l-6.04 6.05-1.42-1.42L10.59 12z"></path>
+                </svg>
+            </button>
+        </header>
+        <div class="estimation-detail-modal__body"></div>
+    </div>
+</section>
+
+<div class="estimation-confirm-modal" data-estimation-confirm-modal hidden>
+    <div class="estimation-confirm-modal__backdrop" data-estimation-confirm-close></div>
+    <section class="estimation-confirm-modal__dialog" role="dialog" aria-modal="true"
+             aria-labelledby="estimationConfirmTitle">
+        <h3 class="estimation-confirm-modal__title" id="estimationConfirmTitle" data-estimation-confirm-title>
+            정말 승인하시겠습니까?
+        </h3>
+        <div class="estimation-confirm-modal__actions">
+            <button type="button" class="estimation-confirm-modal__button estimation-confirm-modal__button--confirm"
+                    data-estimation-confirm-submit>확인
+            </button>
+            <button type="button" class="estimation-confirm-modal__button estimation-confirm-modal__button--cancel"
+                    data-estimation-confirm-close>취소
+            </button>
+        </div>
+    </section>
+</div>
+
+<!-- 공용 게시글 작성 모달: 사이드바 createPostButton 트리거 -->
+<div th:replace="~{common/compose-modal :: composeModal}"></div>
+
+<script src="/js/estimation/estimaition-list/service.js"></script>
+<script src="/js/estimation/estimaition-list/layout.js"></script>
+<script src="/js/estimation/estimaition-list/event.js"></script>
+
+<!-- 모바일 nav + 더보기 아코디언 (공용 fragment) -->
+<div th:replace="~{common/mobile-nav :: mobileNav('more')}"></div>
+<div th:replace="~{common/mobile-nav :: mobileMoreSheet}"></div>
+</body>
+</html>

@@ -1,0 +1,62 @@
+/* ============================================================
+ * 답글 모달 공용 스타일 (common/reply-modal.html fragment 호환)
+ * post-modal.js 가 .off 클래스로 모달/서브뷰를 토글한다.
+ * main 외 페이지(post-detailed 등)에서 모달 통합 시 이 파일을 추가 로드한다.
+ * 모달 관련 스타일은 점진적으로 main.css 에서 이쪽으로 이전한다.
+ * ============================================================ */
+
+/* 모달 오버레이/서브뷰 .off 토글 숨김 */
+.tweet-modal-overlay.off,
+.tweet-modal__location-view.off,
+.tweet-modal__tag-view.off,
+.tweet-modal__media-view.off,
+.tweet-modal__draft-view.off,
+.tweet-modal__product-view.off,
+.tweet-modal__attachment.off,
+.draft-panel__empty.off,
+.draft-panel__footer.off,
+.draft-panel__confirm-overlay.off {
+    display: none;
+}
+
+/* 답글 모달 아바타 wrap. 원글/본인 아바타 둘 다 40px 정원형 + 자식 img 100% 채움. */
+.tweet-modal__source-avatar-wrap,
+.tweet-modal__avatar-wrap {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    background: none;
+}
+
+.tweet-modal__source-avatar-wrap img,
+.tweet-modal__avatar-wrap img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+/*
+ * 답글 모달 height 보정. post-detailed.css 의 [hidden] 기반 :has 셀렉터가 우리 fragment(.off 사용) 에선
+ * 항상 true 가 되어 모달이 처음부터 90vh 강제되는 문제를 해결.
+ * 1) [hidden] 셀렉터를 height auto 로 풀어 입력에 따라 자연스럽게 늘어나게 한다.
+ * 2) 실제 서브뷰가 .off 빠졌을 때(=열림)만 height 90vh 강제.
+ */
+.tweet-modal:has(.tweet-modal__draft-view:not([hidden])),
+.tweet-modal:has(.tweet-modal__location-view:not([hidden])),
+.tweet-modal:has(.tweet-modal__tag-view:not([hidden])),
+.tweet-modal:has(.tweet-modal__product-view:not([hidden])) {
+    height: auto;
+}
+
+.tweet-modal:has(.tweet-modal__draft-view:not(.off)),
+.tweet-modal:has(.tweet-modal__location-view:not(.off)),
+.tweet-modal:has(.tweet-modal__tag-view:not(.off)),
+.tweet-modal:has(.tweet-modal__product-view:not(.off)) {
+    height: 90vh;
+}

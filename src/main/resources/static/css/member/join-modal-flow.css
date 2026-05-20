@@ -1,0 +1,513 @@
+.join-flow-modal {
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    font-family: "TwitterChirp", "Pretendard Variable", "Pretendard", "Noto Sans KR", "Apple SD Gothic Neo", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
+.join-flow-modal button,
+.join-flow-modal input {
+    font: inherit;
+}
+
+.join-flow-modal .join-modal-line2,
+.join-flow-modal .join-modal-line3,
+.join-flow-modal .join-modal-line4,
+.join-flow-modal .join-modal-line5,
+.join-flow-modal .join-modal-line6 {
+    height: 100%;
+}
+
+.join-flow-modal .join-modal-in-line-top,
+.join-flow-modal .join-modal-in-line-bottom,
+.join-flow-modal .join-modal-line7,
+.join-flow-modal .X-img-junk,
+.join-flow-modal .X-img-junk-css {
+    display: none;
+}
+
+.join-flow-modal .join-modal {
+    position: fixed;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+}
+
+.join-flow-modal .join-modal-all {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.42);
+}
+
+.join-flow-modal .join-modal-box1 {
+    position: relative;
+    z-index: 1;
+    width: min(600px, 100%);
+    max-height: 92vh;
+    border-radius: 16px;
+    overflow: hidden;
+    background: #ffffff;
+    box-shadow: 0 28px 80px rgba(15, 20, 25, 0.28);
+}
+
+.join-flow-modal--business .join-modal-box1 {
+    height: min(720px, 92vh);
+}
+
+.join-flow-modal:not(.join-flow-modal--business) .join-modal-box1 {
+    min-height: 620px;
+}
+
+.join-flow-modal .join-modal-box2,
+.join-flow-modal .join-modal-box3,
+.join-flow-modal .join-modal-in {
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+    height: 100%;
+    background: #ffffff;
+}
+
+.join-flow-modal .join-modal-header,
+.join-flow-modal .join-modal-header-in1,
+.join-flow-modal .join-modal-header-in2,
+.join-flow-modal .join-modal-header-in3 {
+    height: 56px;
+}
+
+.join-flow-modal .join-modal-header-in3 {
+    background: rgba(255, 255, 255, 0.9);
+    backdrop-filter: blur(12px);
+}
+
+.join-flow-modal .join-modal-header-in4 {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 56px;
+    padding: 0 16px;
+}
+
+.join-flow-modal .join-modal-header-left,
+.join-flow-modal .join-modal-header-right {
+    width: 40px;
+    display: flex;
+    align-items: center;
+}
+
+.join-flow-modal .join-modal-header-right {
+    justify-content: flex-end;
+}
+
+.join-flow-modal .join-modal-header-close-button {
+    width: 36px;
+    height: 36px;
+    border: 0;
+    border-radius: 9999px;
+    background: transparent;
+    display: grid;
+    place-items: center;
+    padding: 0;
+    cursor: pointer;
+}
+
+.join-flow-modal .join-modal-header-close-button-in {
+    display: grid;
+    place-items: center;
+}
+
+.join-flow-modal .X-img {
+    width: 20px;
+    height: 20px;
+    fill: currentColor;
+    color: #0f1419;
+}
+
+.join-flow-modal .join-modal-main {
+    display: flex;
+    flex: 1;
+    min-height: 0;
+    flex-direction: column;
+}
+
+.join-flow-modal .join-modal-main-middle {
+    flex: 1;
+    min-height: 0;
+    overflow: auto;
+}
+
+.join-flow-modal .join-modal-main-middle-in {
+    padding: 0px 80px 0;
+}
+
+.join-flow-modal .join-modal-main-under {
+    padding: 24px 80px 32px;
+}
+
+.join-flow-modal .account-create-wrap-in {
+    margin: 20px 0;
+}
+
+.join-flow-modal .account-create,
+.join-flow-modal .account-create1 {
+    margin: 0;
+    color: #0f1419;
+    word-break: keep-all;
+}
+
+.join-flow-modal .account-create {
+    font-size: 31px;
+    line-height: 1.15;
+    font-weight: 700;
+}
+
+.join-flow-modal .account-create1 {
+    color: #78818a;
+    font-size: 15px;
+    line-height: 1.5;
+    font-weight: 700;
+}
+
+.join-flow-modal--password .account-create1 {
+    font-size: 20px;
+    line-height: 1.3;
+}
+
+.join-flow-modal .name-placeholder-wrap,
+.join-flow-modal .phone-number-placeholder {
+    position: relative;
+    padding: 12px 0;
+}
+
+.join-flow-modal .name-placeholder,
+.join-flow-modal .phone-placeholder {
+    position: relative;
+    display: flex;
+    align-items: center;
+    min-height: 58px;
+    border: 1px solid #cfd9de;
+    border-radius: 4px;
+    background: #ffffff;
+}
+
+.join-flow-modal .name-placeholder-in1,
+.join-flow-modal .phone-placeholder-in1 {
+    position: relative;
+    flex: 1;
+    min-width: 0;
+}
+
+.join-flow-modal .name-placeholder-in2,
+.join-flow-modal .phone-placeholder-in2 {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+}
+
+.join-flow-modal .name-text,
+.join-flow-modal .phone-text {
+    display: inline-block;
+    padding: 16px 8px 0;
+    color: #536471;
+    font-size: 17px;
+    line-height: 24px;
+    transition: color 0.15s ease, font-size 0.15s ease, padding-top 0.15s ease;
+}
+
+.join-flow-modal .name-placeholder-in3,
+.join-flow-modal .phone-placeholder-in3 {
+    display: flex;
+    align-items: center;
+    min-height: 58px;
+    padding: 26px 8px 8px;
+}
+
+.join-flow-modal .name-placeholder-text,
+.join-flow-modal .phone-placeholder-text {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    font-size: 17px;
+    line-height: 24px;
+    color: #0f1419;
+}
+
+.join-flow-modal .name-input,
+.join-flow-modal .phone-input,
+.join-flow-modal .password-input,
+.join-flow-modal .handle-input,
+.join-flow-modal .company-name-input,
+.join-flow-modal .business-number-input,
+.join-flow-modal .ceo-name-input,
+.join-flow-modal .post-input,
+.join-flow-modal .birth-date-input {
+    width: 100%;
+    border: 0;
+    outline: none;
+    background: transparent;
+    color: inherit;
+    font-size: 17px;
+    line-height: 24px;
+    padding: 0;
+    resize: none;
+    appearance: none;
+}
+
+.join-flow-modal .name-line,
+.join-flow-modal .phone-line {
+    display: none;
+}
+
+.join-flow-modal .change {
+    margin-top: 6px;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    color: #1d9bf0;
+    font-size: 15px;
+    line-height: 20px;
+    cursor: pointer;
+}
+
+.join-flow-modal--code .change {
+    font-size: 12px;
+}
+
+.join-flow-modal .replace-email,
+.join-flow-modal .replace-phone {
+    pointer-events: none;
+}
+
+.join-flow-modal .birth-date {
+    margin-top: 20px;
+}
+
+.join-flow-modal .birth-date-text {
+    margin-bottom: 8px;
+    color: #0f1419;
+    font-size: 15px;
+    line-height: 20px;
+    font-weight: 700;
+}
+
+.join-flow-modal .birth-date-intro {
+    margin-bottom: 16px;
+    color: #536471;
+    font-size: 14px;
+    line-height: 16px;
+}
+
+.join-flow-modal .birth-date-input {
+    height: 58px;
+    padding: 16px 12px;
+    border: 1px solid #cfd9de;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+.join-flow-modal .birth-date-input::placeholder {
+    color: #536471;
+    font-size: 17px;
+    transition: color 0.18s ease, font-size 0.18s ease;
+}
+
+.join-flow-modal #identity-input::placeholder,
+.join-flow-modal .business-number-input::placeholder {
+    opacity: 0;
+    transition: opacity 0.18s ease;
+}
+
+.join-flow-modal #identity-input.show-placeholder::placeholder,
+.join-flow-modal .business-number-input.show-placeholder::placeholder {
+    opacity: 1;
+}
+
+.join-flow-modal .birth-date-input.birth-focus-placeholder::placeholder {
+    color: #1d9bf0;
+    font-size: 12px;
+}
+
+.join-flow-modal .terms-of-use {
+    margin: 16px 80px 0;
+    color: #536471;
+    font-size: 13px;
+    line-height: 16px;
+}
+
+.join-flow-modal .terms-of-use-in,
+.join-flow-modal .term-of-use-content,
+.join-flow-modal .terms-of-use-content {
+    display: inline;
+}
+
+.join-flow-modal .next {
+    margin-top: 24px;
+    margin-bottom: 24px;
+}
+
+.join-flow-modal .next-button {
+    width: 100%;
+    min-height: 52px;
+    border: 0;
+    border-radius: 9999px;
+    background: #0f1419;
+    color: #ffffff;
+    padding: 0 32px;
+    opacity: 0.5;
+    cursor: default;
+    transition: opacity 0.2s ease, background-color 0.2s ease;
+}
+
+.join-flow-modal .next-button-wrap {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    font-size: 15px;
+    font-weight: 700;
+}
+
+.join-flow-modal .next-button-wrap-in-text {
+    font-size: 17px;
+    line-height: 20px;
+}
+
+.join-flow-modal .next-button:disabled {
+    opacity: 0.5;
+}
+
+.join-flow-modal .next-button:not(:disabled) {
+    opacity: 1;
+    cursor: pointer;
+}
+
+.join-flow-modal--username .next-button {
+    cursor: pointer;
+}
+
+.join-flow-modal .field-error-message {
+    display: none !important;
+    margin-top: 6px;
+    color: rgb(217, 119, 6);
+    font-size: 13px;
+    line-height: 16px;
+    font-weight: 500;
+}
+
+.join-flow-modal .field-error-message.show {
+    display: block !important;
+}
+
+.join-flow-modal .resend-message {
+    margin-top: 8px;
+    color: #1d9bf0;
+    font-size: 14px;
+    line-height: 18px;
+}
+
+.join-flow-modal .eye-btn {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    padding: 0 8px 0 4px;
+}
+
+.join-flow-modal .eye-btn-wrap {
+    width: 32px;
+    height: 32px;
+    border: 0;
+    border-radius: 999px;
+    background: transparent;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    cursor: pointer;
+    color: #0f1419;
+}
+
+.join-flow-modal .eye-btn-wrap svg {
+    width: 24px;
+    height: 24px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.9;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+.join-flow-modal .eye-btn-wrap .is-hidden {
+    display: none;
+}
+
+.join-flow-modal .addr-wrap {
+    gap: 0;
+}
+
+.join-flow-modal .addr-postcode-row {
+    display: flex;
+    align-items: stretch;
+    gap: 8px;
+}
+
+.join-flow-modal .addr-postcode-label {
+    flex: 1;
+    min-width: 0;
+}
+
+.join-flow-modal .addr-search-btn {
+    flex-shrink: 0;
+    min-width: 104px;
+    height: 52px;
+    padding: 0 16px;
+    border: 0;
+    border-radius: 9999px;
+    background: #0f1419;
+    color: #ffffff;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.join-flow-modal #addr-main[readonly],
+.join-flow-modal #postcode[readonly] {
+    color: #536471;
+}
+
+@media (max-width: 720px) {
+    .join-flow-modal .join-modal {
+        padding: 0;
+    }
+
+    .join-flow-modal .join-modal-box1 {
+        width: 100vw;
+        max-height: 100vh;
+        min-height: 100vh;
+        border-radius: 0;
+    }
+
+    .join-flow-modal .join-modal-main-middle-in,
+    .join-flow-modal .join-modal-main-under {
+        padding-left: 24px;
+        padding-right: 24px;
+    }
+
+    .join-flow-modal .terms-of-use {
+        margin-left: 24px;
+        margin-right: 24px;
+    }
+
+    .join-flow-modal .account-create {
+        font-size: 24px;
+    }
+
+    .join-flow-modal--password .account-create1 {
+        font-size: 16px;
+    }
+
+    .join-flow-modal .addr-postcode-row {
+        flex-direction: column;
+    }
+}

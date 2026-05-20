@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.app.globalgates.mapper.SearchHistoryMapper">
+
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+        insert into tbl_search_history (member_id, search_keyword, search_count)
+        values (#{memberId}, #{searchKeyword}, 1)
+    </insert>
+
+    <update id="updateSearchCount">
+        update tbl_search_history
+        set search_count = search_count + 1,
+            created_datetime = now()
+        where member_id = #{memberId}
+          and search_keyword = #{searchKeyword}
+    </update>
+
+    <delete id="delete">
+        delete
+        from tbl_search_history
+        where id = #{id}
+    </delete>
+
+    <delete id="deleteAllByMemberId">
+        delete
+        from tbl_search_history
+        where member_id = #{memberId}
+    </delete>
+
+    <select id="selectAllByMemberId">
+        select id, member_id, search_keyword, search_count, created_datetime
+        from tbl_search_history
+        where member_id = #{memberId}
+        order by created_datetime desc
+    </select>
+
+    <select id="selectByKeyword">
+        select id, member_id, search_keyword, search_count, created_datetime
+        from tbl_search_history
+        where search_keyword like '%' || #{keyword} || '%'
+        order by created_datetime desc
+    </select>
+
+    <select id="selectByMemberIdAndKeyword">
+        select id, member_id, search_keyword, search_count, created_datetime
+        from tbl_search_history
+        where member_id = #{memberId}
+          and search_keyword = #{searchKeyword}
+    </select>
+    
+    <select id="selectSearchHistoryWithRank">
+        select rank() over (order by sum(search_count) desc) as ranking,
+               search_keyword,
+               sum(search_count) as total_count
+        from tbl_search_history
+        group by search_keyword
+        order by ranking
+        limit 10
+    </select>
+</mapper>

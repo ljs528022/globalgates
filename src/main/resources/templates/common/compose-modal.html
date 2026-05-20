@@ -1,0 +1,270 @@
+<!doctype html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<body>
+<!-- 게시물 작성/수정 모달 fragment. 모달 동작은 main/event.js 가 담당, 아바타는 navMember(loginMember 우선 + member 폴백). -->
+<div th:fragment="composeModal" class="tweet-modal-overlay off" data-compose-modal
+     th:with="navMember=${loginMember != null ? loginMember : member}">
+    <div class="tweet-modal">
+        <div class="tweet-modal__compose-view">
+            <div class="tweet-modal__header">
+                <button type="button" class="tweet-modal__close">
+                    <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><g><path d="M10.59 12L4.54 5.96l1.42-1.42L12 10.59l6.04-6.05 1.42 1.42L13.41 12l6.05 6.04-1.42 1.42L12 13.41l-6.04 6.05-1.42-1.42L10.59 12z"></path></g></svg>
+                </button>
+                <h2 class="tweet-modal__title">게시하기</h2>
+                <button type="button" class="tweet-modal__draft">임시저장</button>
+            </div>
+            <div class="tweet-modal__body">
+                <div class="tweet-modal__composer">
+                    <div class="tweet-modal__avatar-wrap" id="composeAvatar">
+                        <img th:src="${navMember?.fileName != null ? navMember.fileName : '/images/profile/default_image.png'}" alt="" />
+                    </div>
+                    <div class="tweet-modal__input-wrap">
+                        <!-- 커뮤니티 선택 영역 (게시판 선택은 제거, 커뮤니티 태그만 유지) -->
+                        <div class="composerAudience">
+                            <div class="composerAudienceRow">
+                                <button class="audienceButton" id="audienceButton" type="button">일반</button>
+                                <div class="composerAudienceTagDock" id="composerAudienceTagDock">
+                                    <div class="tag-input off"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="tweet-modal__editor" contenteditable="true" aria-multiline="true" data-placeholder="게시물 등록하기" ></div>
+                <div class="tweet-modal__attachment attachments off" data-attachment-preview>
+                    <div class="tweet-modal__attachment-media media-grid-wrapper" data-attachment-media></div>
+                </div>
+            </div>
+            <div class="composerMeta">
+                <div class="composerMetaRow">
+                    <div class="replyAudience">
+                        <button type="button" class="composerTagLabel">태그 추가</button>
+                        <div class="composerTagEditor off">
+                            <input type="text" class="composerTagField" placeholder="태그 입력" />
+                        </div>
+                        <button type="button" class="tweet-modal__location-display" hidden>
+                            <div class="tweet-modal__location-display-inner">
+                                <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true" class="tweet-modal__location-display-icon"><g><path d="M12 2c-4.687 0-8.5 3.813-8.5 8.5 0 5.967 7.621 11.116 7.945 11.332l.555.37.555-.37c.324-.216 7.945-5.365 7.945-11.332C20.5 5.813 16.687 2 12 2zm0 11.5c-1.65 0-3-1.34-3-3s1.35-3 3-3c1.66 0 3 1.34 3 3s-1.34 3-3 3z"></path></g></svg>
+                                <div class="tweet-modal__location-display-text-wrap">
+                                            <span class="tweet-modal__location-display-text-outer">
+                                                <input type="text" class="tweet-modal__location-display-text-inner" name="location" readonly />
+                                            </span>
+                                </div>
+                            </div>
+                        </button>
+                    </div>
+                </div>
+                <div class="category-banner composerCategoryBanner">
+                    <div class="category-scroll-wrap">
+                        <button type="button" class="category-scroll-arrow category-scroll-left off">
+                            <svg viewBox="0 0 24 24" width="20" height="20"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z" fill="currentColor" /></svg>
+                        </button>
+                        <div class="category-scroll">
+                            <button type="button" class="cat-chip active">전체</button>
+                            <button type="button" class="cat-chip has-subs" data-subs="미주,유럽,동남아,중국,일본,중동">수출 ›</button>
+                            <button type="button" class="cat-chip has-subs" data-subs="원자재,완제품,식품,전자부품">수입 ›</button>
+                            <button type="button" class="cat-chip has-subs" data-subs="해운,항공,육상,창고">물류 ›</button>
+                            <button type="button" class="cat-chip has-subs" data-subs="FTA,HS코드,통관,환급">관세 ›</button>
+                            <button type="button" class="cat-chip has-subs" data-subs="무역금융,환율,보험,LC">금융 ›</button>
+                            <button type="button" class="cat-chip has-subs" data-subs="플랫폼,자동화,블록체인">IT ›</button>
+                            <button type="button" class="cat-chip has-subs" data-subs="농산물,수산물,가공식품,건강식품">식품 ›</button>
+                            <button type="button" class="cat-chip">화장품</button>
+                            <button type="button" class="cat-chip">자동차</button>
+                            <button type="button" class="cat-chip">섬유/의류</button>
+                            <button type="button" class="cat-chip">기계/장비</button>
+                            <button type="button" class="cat-chip">에너지</button>
+                        </div>
+                        <button type="button" class="category-scroll-arrow category-scroll-right">
+                            <svg viewBox="0 0 24 24" width="20" height="20"><path d="M8.59 16.59L10 18l6-6-6-6-1.41 1.41L13.17 12z" fill="currentColor" /></svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="tweet-modal__footer">
+                <div class="tweet-modal__footer-bottom">
+                    <div class="tweet-modal__toolbar">
+                        <div class="tweet-modal__tool-file">
+                            <button type="button" class="tweet-modal__tool-btn">
+                                <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><g><path d="M3 5.5C3 4.119 4.119 3 5.5 3h13C19.881 3 21 4.119 21 5.5v13c0 1.381-1.119 2.5-2.5 2.5h-13C4.119 21 3 19.881 3 18.5v-13zM5.5 5c-.276 0-.5.224-.5.5v9.086l3-3 3 3 5-5 3 3V5.5c0-.276-.224-.5-.5-.5h-13zM19 15.414l-3-3-5 5-3-3-3 3V18.5c0 .276.224.5.5.5h13c.276 0 .5-.224.5-.5v-3.086zM9.75 7C8.784 7 8 7.784 8 8.75s.784 1.75 1.75 1.75 1.75-.784 1.75-1.75S10.716 7 9.75 7z"></path></g></svg>
+                            </button>
+                            <input type="file" accept="image/jpeg,image/png,image/webp,image/gif,video/mp4,video/quicktime" multiple class="tweet-modal__file-input" />
+                        </div>
+                        <button type="button" class="tweet-modal__tool-btn tweet-modal__tool-btn--product">
+                            <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><g><path d="M21.53 20.47l-3.66-3.66C19.195 15.24 20 13.214 20 11c0-4.97-4.03-9-9-9s-9 4.03-9 9 4.03 9 9 9c2.215 0 4.24-.804 5.808-2.13l3.66 3.66c.147.146.34.22.53.22s.385-.073.53-.22c.295-.293.295-.767.002-1.06zM3.5 11c0-4.135 3.365-7.5 7.5-7.5s7.5 3.365 7.5 7.5-3.365 7.5-7.5 7.5S3.5 15.135 3.5 11z"></path></g><g><path d="M7 9h10v1.5H7zm0 3h7v1.5H7z"></path></g></svg>
+                        </button>
+                        <button type="button" class="tweet-modal__tool-btn tweet-modal__tool-btn--emoji">
+                            <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><g><path d="M12 22.75C6.072 22.75 1.25 17.928 1.25 12S6.072 1.25 12 1.25 22.75 6.072 22.75 12 17.928 22.75 12 22.75zm0-20c-5.109 0-9.25 4.141-9.25 9.25s4.141 9.25 9.25 9.25 9.25-4.141 9.25-9.25S17.109 2.75 12 2.75zM9 11.75c-.69 0-1.25-.56-1.25-1.25s.56-1.25 1.25-1.25 1.25.56 1.25 1.25-.56 1.25-1.25 1.25zm6 0c-.69 0-1.25-.56-1.25-1.25s.56-1.25 1.25-1.25 1.25.56 1.25 1.25-.56 1.25-1.25 1.25zm-8.071 3.971c.307-.298.771-.397 1.188-.253C9.07 16.154 10.52 16.75 12 16.75s2.93-.596 3.883-.982c.417-.144.88-.044 1.188.253a.846.846 0 01-.149 1.34c-1.254.715-3.059 1.139-4.922 1.139s-3.668-.424-4.922-1.139a.847.847 0 01-.149-1.39z"></path></g></svg>
+                        </button>
+                        <button type="button" class="tweet-modal__tool-btn tweet-modal__tool-btn--geo">
+                            <div class="tweet-modal__tool-btn-inner">
+                                <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" class="tweet-modal__tool-btn-icon tweet-modal__tool-btn-icon--geo"><g><path d="M12 7c-1.93 0-3.5 1.57-3.5 3.5S10.07 14 12 14s3.5-1.57 3.5-3.5S13.93 7 12 7zm0 5c-.827 0-1.5-.673-1.5-1.5S11.173 9 12 9s1.5.673 1.5 1.5S12.827 12 12 12zm0-10c-4.687 0-8.5 3.813-8.5 8.5 0 5.967 7.621 11.116 7.945 11.332l.555.37.555-.37c.324-.216 7.945-5.365 7.945-11.332C20.5 5.813 16.687 2 12 2zm0 17.77c-1.665-1.241-6.5-5.196-6.5-9.27C5.5 6.916 8.416 4 12 4s6.5 2.916 6.5 6.5c0 4.073-4.835 8.028-6.5 9.27z"></path></g></svg>
+                                <div class="tweet-modal__tool-btn-text-wrap">
+                                    <span class="tweet-modal__tool-btn-text"></span>
+                                </div>
+                            </div>
+                        </button>
+                        <button type="button" class="tweet-modal__tool-btn tweet-modal__tool-btn--bold">
+                            <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" class="tweet-modal__tool-format-icon"><g><path d="M15.636 11.671c2.079-.583 3.093-2.18 3.093-3.929 0-2.307-1.471-4.741-5.983-4.741H5.623V21h7.579c4.411 0 6.008-2.484 6.008-4.994 0-2.383-1.343-3.955-3.574-4.335zm-3.295-6.287c2.535 0 3.27 1.319 3.27 2.662 0 1.242-.583 2.611-3.27 2.611H8.69V5.384h3.651zM8.69 18.617v-5.628h4.208c2.231 0 3.194 1.166 3.194 2.738 0 1.547-.887 2.89-3.397 2.89H8.69z"></path></g></svg>
+                        </button>
+                        <button type="button" class="tweet-modal__tool-btn tweet-modal__tool-btn--italic">
+                            <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" class="tweet-modal__tool-format-icon"><g><path d="M9 6h3.731L9.184 18H5v2h10v-2h-3.731l3.547-12H19V4H9v2z"></path></g></svg>
+                        </button>
+                    </div>
+                    <div class="composerActions">
+                        <div class="composerGauge">
+                            <span class="composerGaugeText">500</span>
+                        </div>
+                        <button type="button" class="tweet-modal__submit" disabled>게시하기</button>
+                    </div>
+                </div>
+            </div>
+        </div><!-- /.tweet-modal__compose-view -->
+        <!-- 위치 선택 서브뷰 -->
+        <div class="tweet-modal__location-view off">
+            <div class="tweet-modal__location-modal">
+                <div class="tweet-modal__location-header">
+                    <button type="button" class="tweet-modal__location-close">
+                        <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><g><path d="M7.414 13l5.043 5.04-1.414 1.42L3.586 12l7.457-7.46 1.414 1.42L7.414 11H21v2H7.414z"></path></g></svg>
+                    </button>
+                    <h2 class="tweet-modal__location-title">위치 태그하기</h2>
+                    <div class="tweet-modal__location-actions">
+                        <button type="button" class="tweet-modal__location-action tweet-modal__location-action--ghost" data-location-delete hidden>삭제</button>
+                        <button type="button" class="tweet-modal__location-action tweet-modal__location-action--solid" data-location-complete disabled>완료</button>
+                    </div>
+                </div>
+                <div class="tweet-modal__location-search">
+                    <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" class="tweet-modal__location-search-icon"><g><path d="M10.5 3.75c-3.728 0-6.75 3.022-6.75 6.75s3.022 6.75 6.75 6.75c1.55 0 2.977-.522 4.114-1.4l4.893 4.893 1.06-1.06-4.892-4.893a6.714 6.714 0 001.4-4.114c0-3.728-3.022-6.75-6.75-6.75zm-5.25 6.75c0-2.9 2.35-5.25 5.25-5.25s5.25 2.35 5.25 5.25-2.35 5.25-5.25 5.25-5.25-2.35-5.25-5.25z"></path></g></svg>
+                    <input type="text" class="tweet-modal__location-search-input" data-location-search placeholder="위치 검색" />
+                    <button type="button" class="tweet-modal__location-search-btn" data-location-search-btn>검색</button>
+                </div>
+                <div class="tweet-modal__location-list" data-location-list>
+                </div>
+            </div>
+        </div>
+        <!-- 사용자 태그 서브뷰 -->
+        <div class="tweet-modal__tag-view off">
+            <div class="tweet-modal__tag-modal">
+                <div class="tweet-modal__tag-header">
+                    <button type="button" class="tweet-modal__tag-close">
+                        <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><g><path d="M10.59 12 4.54 5.96l1.42-1.42L12 10.59l6.04-6.05 1.42 1.42L13.41 12l6.05 6.04-1.42 1.42L12 13.41l-6.04 6.05-1.42-1.42L10.59 12z"></path></g></svg>
+                    </button>
+                    <h2 class="tweet-modal__tag-title">사용자 태그하기</h2>
+                    <div class="tweet-modal__tag-actions">
+                        <button type="button" class="tweet-modal__tag-action" data-tag-complete>완료</button>
+                    </div>
+                </div>
+                <div class="tweet-modal__tag-search">
+                    <form class="tweet-modal__tag-search-form" data-tag-search-form>
+                        <div class="tweet-modal__tag-search-shell">
+                            <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" class="tweet-modal__tag-search-icon"><g><path d="M10.25 3.75c-3.59 0-6.5 2.91-6.5 6.5s2.91 6.5 6.5 6.5c1.795 0 3.419-.726 4.596-1.904 1.178-1.177 1.904-2.801 1.904-4.596 0-3.59-2.91-6.5-6.5-6.5zm-8.5 6.5c0-4.694 3.806-8.5 8.5-8.5s8.5 3.806 8.5 8.5c0 1.986-.682 3.815-1.814 5.262l4.276 4.276-1.414 1.414-4.276-4.276A8.466 8.466 0 0110.25 18.75c-4.694 0-8.5-3.806-8.5-8.5z"></path></g></svg>
+                            <div class="tweet-modal__tag-chip-list" data-tag-chip-list></div>
+                            <input type="text" class="tweet-modal__tag-search-input" data-tag-search placeholder="사용자 검색" />
+                        </div>
+                        <div class="tweet-modal__tag-results" data-tag-results></div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <!-- 미디어 설명 서브뷰 -->
+        <div class="tweet-modal__media-view off">
+            <div class="tweet-modal__media-editor">
+                <div class="tweet-modal__media-header">
+                    <button type="button" class="tweet-modal__media-header-btn tweet-modal__media-header-btn--ghost">
+                        <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><g><path d="M7.414 13l5.043 5.04-1.414 1.42L3.586 12l7.457-7.46 1.414 1.42L7.414 11H21v2H7.414z"></path></g></svg>
+                    </button>
+                    <h2 class="tweet-modal__media-title">이미지 설명 수정</h2>
+                    <div class="tweet-modal__media-header-actions">
+                        <button type="button" class="tweet-modal__media-header-btn" data-media-prev>이전</button>
+                        <button type="button" class="tweet-modal__media-header-btn" data-media-next>다음</button>
+                        <button type="button" class="tweet-modal__media-header-btn tweet-modal__media-header-btn--solid" data-media-save>저장</button>
+                    </div>
+                </div>
+                <div class="tweet-modal__media-body">
+                    <section class="tweet-modal__media-panel tweet-modal__media-panel--active">
+                        <div class="tweet-modal__media-alt-preview">
+                            <img src="" alt="" class="tweet-modal__media-preview-image tweet-modal__media-preview-image--alt" data-media-preview-image />
+                        </div>
+                        <label class="tweet-modal__media-alt-field">
+                            <div class="tweet-modal__media-alt-meta">
+                                <span class="tweet-modal__media-alt-label">설명</span>
+                                <span class="tweet-modal__media-alt-count" data-media-alt-count>0 / 1,000</span>
+                            </div>
+                            <textarea class="tweet-modal__media-alt-input" data-media-alt-input maxlength="1000"></textarea>
+                        </label>
+                    </section>
+                </div>
+            </div>
+        </div>
+        <!-- 임시저장 서브뷰 -->
+        <div class="tweet-modal__draft-view off">
+            <div class="draft-panel__header">
+                <button type="button" class="draft-panel__back">
+                    <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><g><path d="M7.414 13l5.043 5.04-1.414 1.42L3.586 12l7.457-7.46 1.414 1.42L7.414 11H21v2H7.414z"></path></g></svg>
+                </button>
+                <h2 class="draft-panel__title">임시저장</h2>
+            </div>
+            <div class="draft-panel__tablist">
+                <div class="draft-panel__tab draft-panel__tab--active draft-panel__tab--single">임시저장</div>
+            </div>
+            <div class="draft-panel__content">
+                <div class="draft-panel__list"></div>
+                <div class="draft-panel__empty off">
+                    <p class="draft-panel__empty-title">잠시 생각을 정리합니다</p>
+                    <p class="draft-panel__empty-body">아직 게시할 준비가 되지 않았나요?<br>임시저장해 두고 나중에 이어서 작성하세요.</p>
+                </div>
+            </div>
+            <div class="draft-panel__footer off">
+                <button type="button" class="draft-panel__footer-link draft-panel__select-all">모두 선택</button>
+                <button type="button" class="draft-panel__footer-delete" disabled>삭제하기</button>
+            </div>
+            <div class="draft-panel__confirm-overlay off">
+                <div class="draft-panel__confirm-backdrop"></div>
+                <div class="draft-panel__confirm-card">
+                    <h3 class="draft-panel__confirm-title">전송하지 않은 게시물 삭제하기</h3>
+                    <p class="draft-panel__confirm-desc">이 작업은 취소할 수 없으며 선택한 전송하지 않은 게시물이 삭제됩니다.</p>
+                    <div class="draft-panel__confirm-actions">
+                        <button type="button" class="draft-panel__confirm-primary">삭제하기</button>
+                        <button type="button" class="draft-panel__confirm-secondary">취소</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- 판매글 선택 서브뷰 -->
+        <div class="tweet-modal__product-view off" data-product-select-modal>
+            <div class="draft-panel__header">
+                <button type="button" class="draft-panel__back" data-product-select-close>
+                    <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><g><path d="M7.414 13l5.043 5.04-1.414 1.42L3.586 12l7.457-7.46 1.414 1.42L7.414 11H21v2H7.414z"></path></g></svg>
+                </button>
+                <h2 class="draft-panel__title">판매글 선택하기</h2>
+                <button type="button" class="draft-panel__action" data-product-select-complete disabled>완료</button>
+            </div>
+            <div class="draft-panel__content">
+                <div class="draft-panel__list" data-product-select-list></div>
+                <div class="draft-panel__empty off" data-product-empty>
+                    <p class="draft-panel__empty-title">등록된 상품이 없습니다</p>
+                    <p class="draft-panel__empty-body">마이페이지에서 상품을 먼저 등록해 주세요.</p>
+                </div>
+            </div>
+        </div>
+        <!-- 대상 선택 드롭다운: audienceButton 클릭 시 토글. position:fixed 라 DOM 위치 무관 -->
+        <div class="boardMenu off" id="boardMenu">
+            <div class="boardMenuSection">
+                <h4 class="boardMenuSectionTitle">대상 선택</h4>
+                <div class="boardMenuOption isSelected" data-target="general">
+                    <span class="boardMenuOptionInfo">
+                        <span class="boardMenuOptionLabel">일반</span>
+                    </span>
+                    <span class="boardMenuOptionCheck">✓</span>
+                </div>
+            </div>
+            <div class="boardMenuSection">
+                <h4 class="boardMenuSectionTitle">내 커뮤니티</h4>
+                <div class="communityMenuList" id="communityMenuList">
+                    <p class="communityMenuEmpty">가입된 커뮤니티가 없습니다</p>
+                </div>
+            </div>
+        </div>
+    </div><!-- /.tweet-modal -->
+</div><!-- /.tweet-modal-overlay[data-compose-modal] -->
+</body>
+</html>

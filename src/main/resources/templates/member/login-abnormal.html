@@ -1,0 +1,49 @@
+﻿<!doctype html>
+<html lang="ko">
+<head>
+    <link rel="icon" type="image/png" href="/images/logo/logo.png">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>비정상 로그인 모달</title>
+  <link rel="stylesheet" href="/css/member/login-abnormal.css" />
+</head>
+<body>
+  <main class="abnormal-page">
+    <section class="abnormal-overlay" id="abnormalOverlay" aria-hidden="false">
+      <article class="abnormal-modal" role="dialog" aria-modal="true" aria-labelledby="abnormalTitle">
+        <header class="abnormal-header">
+          <button class="close-btn" id="closeAbnormal" type="button" aria-label="닫기">×</button>
+          <div class="x-logo" aria-hidden="true"><svg viewBox="0 0 24 24" role="img" aria-label="X"><path d="M18.901 1.153h3.68l-8.04 9.19 9.46 12.504H16.594l-5.8-7.584-6.99 7.584H.12l8.6-9.32L-.001 1.153h7.598l5.243 6.932L18.901 1.153Zm-1.29 19.468h2.04L6.486 3.264H4.298l13.313 17.357Z"></path></svg></div>
+          <span class="header-spacer" aria-hidden="true"></span>
+        </header>
+
+        <section class="abnormal-content">
+          <h1 class="abnormal-title" id="abnormalTitle">휴대폰 번호 또는 사용자 아이디 입력</h1>
+          <p class="abnormal-desc">
+            내 계정에 로그인하려는 비정상적인 시도가 몇 차례 있었습니다. 본인임을 인증하기 위해
+            휴대폰 번호 또는 사용자 아이디를 입력해 주세요.
+          </p>
+
+          <label class="field-wrap" id="abnormalFieldWrap">
+            <span class="field-label" id="abnormalFieldLabel">휴대폰 번호 또는 사용자 아이디</span>
+            <input
+              id="abnormalInput"
+              class="field-input"
+              type="text"
+              autocomplete="username"
+              aria-label="휴대폰 번호 또는 사용자 아이디"
+            />
+          </label>
+        </section>
+
+        <footer class="abnormal-footer">
+          <button class="next-btn is-disabled" id="abnormalNextBtn" type="button" disabled>다음</button>
+        </footer>
+      </article>
+    </section>
+  </main>
+
+  <script src="/js/member/login-abnormal.js"></script>
+</body>
+</html>
+

@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.app.globalgates.mapper.EstimationMapper">
+
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+        insert into tbl_estimation (
+            requester_id,
+            receiver_id,
+            product_id,
+            title,
+            content,
+            location,
+            deadline,
+            status
+        )
+        values (
+            #{requesterId},
+            #{receiverId},
+            #{productId},
+            #{title},
+            #{content},
+            #{location},
+            #{deadLine},
+            cast(#{status} as estimation_status)
+        )
+    </insert>
+
+    <select id="selectTotal" resultType="_int">
+        select count(id)
+        from tbl_estimation
+        where receiver_id = #{receiverId}
+    </select>
+
+    <select id="selectAll" resultType="com.app.globalgates.dto.EstimationDTO">
+        select e.id,
+               e.requester_id,
+               e.receiver_id,
+               e.product_id,
+               e.title,
+               e.content,
+               e.location,
+               e.deadline as deadLine,
+               e.status,
+               requester.member_email    as requesterEmail,
+               requester.member_name     as requester_name,
+               requester.member_nickname as requester_nickname,
+               requester.member_handle   as requester_handle,
+               receiver.member_email     as receiverEmail,
+               receiver.member_name      as receiver_name,
+               receiver.member_nickname  as receiver_nickname,
+               receiver.member_handle    as receiver_handle,
+               e.created_datetime as createdDateTime,
+               e.updated_datetime as updatedDateTime,
+               p.title as product_title,
+               pp.product_price,
+               pp.product_stock
+        from tbl_estimation e
+                 join      tbl_member requester on e.requester_id = requester.id
+                 left join tbl_member receiver  on e.receiver_id  = receiver.id
+                 left join tbl_post p           on e.product_id   = p.id and p.post_status = 'active'
+                 left join tbl_post_product pp  on pp.id          = p.id
+        where e.receiver_id = #{receiverId}
+        order by e.created_datetime desc
+        limit #{criteria.count}
+        offset #{criteria.offset}
+    </select>
+
+    <select id="selectRequestedTotal" resultType="_int">
+        select count(id)
+        from tbl_estimation
+        where requester_id = #{requesterId}
+    </select>
+
+    <select id="selectRequestedAll" resultType="com.app.globalgates.dto.EstimationDTO">
+        select e.id,
+               e.requester_id,
+               e.receiver_id,
+               e.product_id,
+               e.title,
+               e.content,
+               e.location,
+               e.deadline as deadLine,
+               e.status,
+               requester.member_email    as requesterEmail,
+               requester.member_name     as requester_name,
+               requester.member_nickname as requester_nickname,
+               requester.member_handle   as requester_handle,
+               receiver.member_email     as receiverEmail,
+               receiver.member_name      as receiver_name,
+               receiver.member_nickname  as receiver_nickname,
+               receiver.member_handle    as receiver_handle,
+               e.created_datetime as createdDateTime,
+               e.updated_datetime as updatedDateTime,
+               p.title as product_title,
+               pp.product_price,
+               pp.product_stock
+        from tbl_estimation e
+                 join      tbl_member requester on e.requester_id = requester.id
+                 left join tbl_member receiver  on e.receiver_id  = receiver.id
+                 left join tbl_post p           on e.product_id   = p.id and p.post_status = 'active'
+                 left join tbl_post_product pp  on pp.id          = p.id
+        where e.requester_id = #{requesterId}
+        order by e.created_datetime desc
+        limit #{criteria.count}
+        offset #{criteria.offset}
+    </select>
+
+    <select id="selectById" resultType="com.app.globalgates.dto.EstimationDTO">
+        select e.id,
+               e.requester_id,
+               e.receiver_id,
+               e.product_id,
+               e.title,
+               e.content,
+               e.location,
+               e.deadline as deadLine,
+               e.status,
+               requester.member_email    as requesterEmail,
+               requester.member_name     as requester_name,
+               requester.member_nickname as requester_nickname,
+               requester.member_handle   as requester_handle,
+               receiver.member_email     as receiverEmail,
+               receiver.member_name      as receiver_name,
+               receiver.member_nickname  as receiver_nickname,
+               receiver.member_handle    as receiver_handle,
+               e.created_datetime as createdDateTime,
+               e.updated_datetime as updatedDateTime,
+               p.title as product_title,
+               pp.product_price,
+               pp.product_stock
+        from tbl_estimation e
+                 join      tbl_member requester on e.requester_id = requester.id
+                 left join tbl_member receiver  on e.receiver_id  = receiver.id
+                 left join tbl_post p           on e.product_id   = p.id and p.post_status = 'active'
+                 left join tbl_post_product pp  on pp.id          = p.id
+        where e.id = #{id}
+    </select>
+
+    <update id="updateStatus">
+        update tbl_estimation
+        set status = cast(#{status} as estimation_status),
+            updated_datetime = now()
+        where id = #{id}
+          and receiver_id = #{receiverId}
+    </update>
+
+    <select id="selectExpertsForRequest" resultType="com.app.globalgates.dto.EstimationExpertDTO">
+        select m.id,
+               m.member_name as memberName,
+               m.member_nickname as memberNickname,
+               m.member_handle as memberHandle,
+               m.member_email as memberEmail,
+               (
+                   select f.file_name
+                   from tbl_member_profile_file mpf
+                            join tbl_file f on mpf.id = f.id
+                   where mpf.member_id = m.id
+                     and mpf.profile_image_type = 'profile'
+                   limit 1
+               ) as memberProfileFileName
+        from tbl_member m
+        where m.member_status = 'active'
+          and m.id != #{memberId}
+          <if test="keyword != null and keyword != ''">
+              and (
+                  lower(m.member_name) like lower(concat('%', #{keyword}, '%'))
+                      or lower(coalesce(m.member_nickname, '')) like lower(concat('%', #{keyword}, '%'))
+                      or lower(coalesce(m.member_handle, '')) like lower(concat('%', #{keyword}, '%'))
+                      or lower(m.member_email) like lower(concat('%', #{keyword}, '%'))
+                  )
+          </if>
+        order by m.created_datetime desc
+        limit 20 offset #{offset}
+    </select>
+
+    <insert id="insertTag" useGeneratedKeys="true" keyProperty="id">
+        insert into tbl_estimation_tag (tag_name)
+        values (#{tagName})
+    </insert>
+
+    <select id="selectTagByName" resultType="com.app.globalgates.dto.EstimationTagDTO">
+        select id,
+               tag_name,
+               created_datetime as createdDateTime
+        from tbl_estimation_tag
+        where tag_name = #{tagName}
+    </select>
+
+    <select id="selectAllTagsByEstimationId" resultType="com.app.globalgates.dto.EstimationTagDTO">
+        select t.id,
+               t.tag_name,
+               t.created_datetime as createdDateTime
+        from tbl_estimation_tag t
+                 join tbl_estimation_tag_rel tr on t.id = tr.tag_id
+        where tr.estimation_id = #{estimationId}
+        order by t.tag_name
+    </select>
+
+    <insert id="insertTagRel">
+        insert into tbl_estimation_tag_rel (estimation_id, tag_id)
+        values (#{estimationId}, #{tagId})
+    </insert>
+
+</mapper>

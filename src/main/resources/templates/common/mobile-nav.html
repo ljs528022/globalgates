@@ -1,0 +1,77 @@
+<!--
+  공용 모바일 하단 네비게이션 — 텍스트 4개 탭(홈/검색/알림/더보기) + 더보기 시트.
+  사용법:
+    <div th:replace="~{common/mobile-nav :: mobileNav('home')}"></div>
+    <div th:replace="~{common/mobile-nav :: mobileMoreSheet}"></div>
+  파라미터 active: 'home' | 'search' | 'notification' | 'more'
+  CSS / JS는 페이지에서 직접 로드:
+    <link rel="stylesheet" href="/css/common/mobile-nav.css">
+    <script src="/js/common/mobile-nav.js" defer></script>
+-->
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+
+<nav th:fragment="mobileNav(active)" class="mobile-nav">
+    <a href="/main/main"
+       th:classappend="${active == 'home' ? ' active' : ''}"
+       th:attrappend="aria-current=${active == 'home' ? 'page' : null}"
+       class="mob-nav-item">
+        <span class="mob-nav-text">홈</span>
+    </a>
+    <a href="/explore"
+       th:classappend="${active == 'search' ? ' active' : ''}"
+       th:attrappend="aria-current=${active == 'search' ? 'page' : null}"
+       class="mob-nav-item">
+        <span class="mob-nav-text">검색</span>
+    </a>
+    <a href="/notification"
+       th:classappend="${active == 'notification' ? ' active' : ''}"
+       th:attrappend="aria-current=${active == 'notification' ? 'page' : null}"
+       class="mob-nav-item">
+        <span class="mob-nav-text">알림</span>
+    </a>
+    <button type="button"
+            th:classappend="${active == 'more' ? ' active' : ''}"
+            class="mob-nav-item mob-nav-more"
+            id="mobNavMore"
+            aria-expanded="false"
+            aria-controls="mobNavMoreSheet">
+        <span class="mob-nav-text">더보기</span>
+        <span class="mob-nav-badge Chat-MobMessageBadge off"></span>
+    </button>
+</nav>
+
+<!-- 더보기 시트 — 같은 fragment 호출 시 함께 들어감. id 중복 방지를 위해 페이지당 1번만 호출. -->
+<div th:fragment="mobileMoreSheet" >
+    <div class="mob-more-backdrop off" id="mobMoreBackdrop"></div>
+    <div class="mob-more-sheet off" id="mobNavMoreSheet" role="menu" aria-hidden="true">
+        <a href="/friends" class="mob-more-item" role="menuitem">
+            <span>친구</span>
+        </a>
+        <a href="/chat" class="mob-more-item" role="menuitem">
+            <span>채팅</span>
+        </a>
+        <a href="/community" class="mob-more-item" role="menuitem">
+            <span>커뮤니티</span>
+        </a>
+        <a href="/bookmark" class="mob-more-item" role="menuitem">
+            <span>북마크</span>
+        </a>
+        <a href="/subscribe" class="mob-more-item" role="menuitem">
+            <span>구독</span>
+        </a>
+        <a href="/mypage" class="mob-more-item" role="menuitem">
+            <span>프로필</span>
+        </a>
+        <a href="/setting" class="mob-more-item" role="menuitem">
+            <span>설정</span>
+        </a>
+        <button type="button" class="mob-more-item mob-more-logout" id="mobMoreLogout" role="menuitem">
+            <span>로그아웃</span>
+        </button>
+    </div>
+</div>
+
+</body>
+</html>

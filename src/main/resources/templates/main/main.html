@@ -1,0 +1,409 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <link rel="icon" type="image/png" href="/images/logo/logo.png">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>홈 / G</title>
+    <link rel="stylesheet" href="/css/common/mobile-nav.css" th:href="@{/css/common/mobile-nav.css}">
+    <link rel="stylesheet" href="/css/main/main.css">
+    <link rel="stylesheet" href="/css/mention/mention.css">
+    <link rel="stylesheet" href="/css/main/product-in-mainpage.css">
+    <link rel="stylesheet" href="/css/video_ai/video_ai.css"/>
+    <script src="/js/common/mobile-nav.js" th:src="@{/js/common/mobile-nav.js}" defer></script>
+    <script src="/js/common/profile-link.js" defer></script>
+    <script src="/js/common/header.js" defer></script>
+    <script th:inline="javascript">
+        const loginMember = {
+            id: [[${member.id}]],
+            memberNickname: [[${member.memberNickname}]],
+            memberHandle: [[${member.memberHandle}]],
+            memberName: [[${member.memberName}]],
+            memberRole: [[${member.memberRole}]],
+            fileName: [[${member.fileName}]],
+            tier: [[${tier}]]
+        };
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/@joeattardi/emoji-button@3.0.3/dist/index.min.js"></script>
+    <script type="text/javascript"
+            th:src="@{https://dapi.kakao.com/v2/maps/sdk.js(appkey=${kakaoMapsJsKey},libraries='services')}"></script>
+    <script src="/js/bookmark/service.js"></script>
+    <!-- 모달 공용 모듈. event.js 보다 먼저 로드. -->
+    <script src="/js/common/post-modal-service.js"></script>
+    <script src="/js/common/post-modal.js"></script>
+    <script src="/js/main/event.js"></script>
+    <script src="/js/main/service.js"></script>
+    <script src="/js/main/layout.js"></script>
+    <script src="/js/video_ai/service.js" defer></script>
+    <script src="/js/video_ai/layout.js" defer></script>
+    <script src="/js/video_ai/event.js" defer></script>
+</head>
+<body>
+<div class="Page-Layout">
+    <!-- 좌측 글로벌 내비게이션: 홈에서 가장 자주 쓰는 이동 링크와 빠른 작성 진입점, 계정 메뉴가 모여 있다. -->
+    <aside class="sidebar-left" id="navigationSidebar">
+        <div class="sidebar-inner">
+            <!-- 브랜드 로고: 좌측 상단에서 서비스 아이덴티티를 고정적으로 노출한다. -->
+            <div class="nav-logo">
+                <img src="/images/logo/logo.png" alt="">
+            </div>
+            <nav class="nav-list" id="navigationMenu">
+                <a class="nav-item" href="/main/main">
+                    <svg class="nav-icon" viewBox="0 0 24 24" aria-hidden="true">
+                        <g class="nav-icon-line"><path d="M21.591 7.146L12.52 1.157c-.316-.21-.724-.21-1.04 0l-9.071 5.99c-.26.173-.409.456-.409.757v13.183c0 .502.418.913.929.913H9.14c.51 0 .929-.41.929-.913v-7.075h3.909v7.075c0 .502.417.913.928.913h6.165c.511 0 .929-.41.929-.913V7.904c0-.301-.158-.584-.408-.758zM20 20h-4.928v-7.075c0-.502-.418-.913-.929-.913h-4.286c-.511 0-.929.41-.929.913V20H4V8.378l8-5.282 8 5.282V20z"></path></g>
+                        <g class="nav-icon-fill"><path d="M21.591 7.146L12.52 1.157c-.316-.21-.724-.21-1.04 0l-9.071 5.99c-.26.173-.409.456-.409.757v13.183c0 .502.418.913.929.913H9.14c.51 0 .929-.41.929-.913v-7.075h3.909v7.075c0 .502.417.913.928.913h6.165c.511 0 .929-.41.929-.913V7.904c0-.301-.158-.584-.408-.758z"></path></g>
+                    </svg>
+                    <span>홈</span>
+                </a>
+                <a class="nav-item" href="/explore">
+                    <svg class="nav-icon" viewBox="0 0 24 24" aria-hidden="true"><g><path d="M10.25 3.75c-3.59 0-6.5 2.91-6.5 6.5s2.91 6.5 6.5 6.5c1.795 0 3.419-.726 4.596-1.904 1.178-1.177 1.904-2.801 1.904-4.596 0-3.59-2.91-6.5-6.5-6.5zm-8.5 6.5c0-4.694 3.806-8.5 8.5-8.5s8.5 3.806 8.5 8.5c0 1.986-.682 3.815-1.824 5.262l4.781 4.781-1.414 1.414-4.781-4.781c-1.447 1.142-3.276 1.824-5.262 1.824-4.694 0-8.5-3.806-8.5-8.5z"></path></g></svg>
+                    <span>탐색하기</span>
+                </a>
+                <a class="nav-item" href="/notification">
+                            <span class="nav-icon-wrap">
+                                <svg class="nav-icon" viewBox="0 0 24 24" aria-hidden="true">
+                                    <g class="nav-icon-line"><path d="M19.993 9.042C19.48 5.017 16.054 2 11.996 2s-7.49 3.021-7.999 7.051L2.866 18H7.1c.463 2.282 2.481 4 4.9 4s4.437-1.718 4.9-4h4.236l-1.143-8.958zM12 20c-1.306 0-2.417-.835-2.829-2h5.658c-.412 1.165-1.523 2-2.829 2zm-6.866-4l.847-6.698C6.364 6.272 8.941 4 11.996 4s5.627 2.268 6.013 5.295L18.864 16H5.134z"></path></g>
+                                    <g class="nav-icon-fill"><path d="M19.993 9.042C19.48 5.017 16.054 2 11.996 2s-7.49 3.021-7.999 7.051L2.866 18H7.1c.463 2.282 2.481 4 4.9 4s4.437-1.718 4.9-4h4.236l-1.143-8.958z"></path></g>
+                                </svg>
+                                <span class="nav-badge nav-badge--noti"
+                                      th:data-member-id="${member != null ? member.id : null}"
+                                      style="display:none">0</span>
+                            </span>
+                    <span>알림</span>
+                </a>
+                <a class="nav-item" href="/friends">
+                    <svg viewBox="0 0 24 24" class="nav-icon">
+                        <g class="nav-icon-line"><path d="M16.697 5.5c1.813 0 3.303 1.46 3.303 3.25 0 .967-.426 1.885-1.17 2.668L12 18.01l-6.83-6.592A3.74 3.74 0 014 8.75C4 6.96 5.49 5.5 7.303 5.5c.967 0 1.89.414 2.546 1.14L12 8.89l2.151-2.25A3.55 3.55 0 0116.697 5.5zm0-2C15.09 3.5 13.55 4.14 12 5.76 10.45 4.14 8.91 3.5 7.303 3.5 4.386 3.5 2 5.82 2 8.75c0 1.49.62 2.91 1.72 3.97l7.53 7.26a1 1 0 001.39 0l7.53-7.26A5.62 5.62 0 0022 8.75c0-2.93-2.386-5.25-5.303-5.25z"></path></g>
+                        <g class="nav-icon-fill"><path d="M16.697 3.5C15.09 3.5 13.55 4.14 12 5.76 10.45 4.14 8.91 3.5 7.303 3.5 4.386 3.5 2 5.82 2 8.75c0 1.49.62 2.91 1.72 3.97l7.53 7.26a1 1 0 001.39 0l7.53-7.26A5.62 5.62 0 0022 8.75c0-2.93-2.386-5.25-5.303-5.25z"></path></g>
+                    </svg>
+                    <span>친구</span>
+                </a>
+                <a class="nav-item" href="/chat">
+                            <span class="nav-icon-wrap">
+                                <svg class="nav-icon" viewBox="0 0 24 24" aria-hidden="true">
+                                    <g class="nav-icon-line"><path d="M20.7 11.7c0-4.48-3.844-8.2-8.699-8.2-4.854 0-8.698 3.72-8.698 8.2v.015l-.001.014c-.02.667.09 1.225.25 1.767.083.28.176.545.276.839.098.285.202.595.288.918.177.663.284 1.401.156 2.271-.086.582-.274 1.191-.582 1.855 1.264.375 2.55.053 4.013-.599l.455-.203.437.242c1.07.594 1.917 1.08 3.406 1.08 4.855 0 8.7-3.72 8.7-8.199zm2 0c0 5.683-4.84 10.2-10.699 10.2-1.784 0-2.96-.555-3.95-1.095-1.876.768-4.02 1.2-6.245-.075l-.885-.505.524-.875c.54-.904.77-1.581.848-2.118.078-.526.02-.98-.11-1.463-.066-.25-.15-.502-.247-.788-.095-.277-.204-.59-.301-.92-.199-.674-.36-1.449-.332-2.39C1.322 6.002 6.154 1.5 12.002 1.5c5.859 0 10.7 4.518 10.7 10.2z"></path></g>
+                                    <g class="nav-icon-fill"><path d="M12.001 1.5c5.858 0 10.7 4.518 10.7 10.2-.001 5.683-4.842 10.2-10.7 10.2-1.785 0-2.96-.555-3.95-1.095-1.876.768-4.02 1.2-6.245-.075l-.885-.505.523-.875c.54-.904.77-1.581.849-2.118.077-.526.02-.98-.11-1.463-.066-.25-.15-.502-.247-.788-.095-.277-.204-.59-.301-.92-.2-.674-.36-1.449-.332-2.39C1.319 6.002 6.153 1.5 12 1.5z"></path></g>
+                                </svg>
+                                <span class="nav-badge nav-badge--chat" style="display:none">0</span>
+                            </span>
+                    <span>채팅</span>
+                </a>
+                <th:block th:if="${member.memberRole != null and member.memberRole.name() == 'EXPERT'}">
+                <a class="nav-item" href="/inquiry/chart">
+                    <svg class="nav-icon" viewBox="0 0 33 32" aria-hidden="true"><g><path d="M12.745 20.54l10.97-8.19c.539-.4 1.307-.244 1.564.38 1.349 3.288.746 7.241-1.938 9.955-2.683 2.714-6.417 3.31-9.83 1.954l-3.728 1.745c5.347 3.697 11.84 2.782 15.898-1.324 3.219-3.255 4.216-7.692 3.284-11.693l.008.009c-1.351-5.878.332-8.227 3.782-13.031L33 0l-4.54 4.59v-.014L12.743 20.544m-2.263 1.987c-3.837-3.707-3.175-9.446.1-12.755 2.42-2.449 6.388-3.448 9.852-1.979l3.72-1.737c-.67-.49-1.53-1.017-2.515-1.387-4.455-1.854-9.789-.931-13.41 2.728-3.483 3.523-4.579 8.94-2.697 13.561 1.405 3.454-.899 5.898-3.22 8.364C1.49 30.2.666 31.074 0 32l10.478-9.466"></path></g></svg>
+                    <span>전문가</span>
+                </a>
+                </th:block>
+                <a class="nav-item" href="/bookmark">
+                    <svg class="nav-icon" viewBox="0 0 24 24" aria-hidden="true">
+                        <g class="nav-icon-line"><path d="M4 4.5C4 3.12 5.119 2 6.5 2h11C18.881 2 20 3.12 20 4.5v18.44l-8-5.71-8 5.71V4.5zM6.5 4c-.276 0-.5.22-.5.5v14.56l6-4.29 6 4.29V4.5c0-.28-.224-.5-.5-.5h-11z"></path></g>
+                        <g class="nav-icon-fill"><path d="M4 4.5C4 3.12 5.119 2 6.5 2h11C18.881 2 20 3.12 20 4.5v18.44l-8-5.71-8 5.71V4.5z"></path></g>
+                    </svg>
+                    <span>북마크</span>
+                </a>
+                <a class="nav-item" href="/subscribe">
+                    <svg class="nav-icon" viewBox="0 0 22 22" aria-hidden="true">
+                        <g class="nav-icon-line"><path d="M20.396 11c-.018-.646-.215-1.275-.57-1.816-.354-.54-.852-.972-1.438-1.246.223-.607.27-1.264.14-1.897-.131-.634-.437-1.218-.882-1.687-.47-.445-1.053-.75-1.687-.882-.633-.13-1.29-.083-1.897.14-.273-.587-.704-1.086-1.245-1.44S11.647 1.62 11 1.604c-.646.017-1.273.213-1.813.568s-.969.854-1.24 1.44c-.608-.223-1.267-.272-1.902-.14-.635.13-1.22.436-1.69.882-.445.47-.749 1.055-.878 1.688-.13.633-.08 1.29.144 1.896-.587.274-1.087.705-1.443 1.245-.356.54-.555 1.17-.574 1.817.02.647.218 1.276.574 1.817.356.54.856.972 1.443 1.245-.224.606-.274 1.263-.144 1.896.13.634.433 1.218.877 1.688.47.443 1.054.747 1.687.878.633.132 1.29.084 1.897-.136.274.586.705 1.086 1.246 1.44.54.354 1.17.551 1.816.569.647-.016 1.276-.213 1.817-.567s.972-.854 1.245-1.44c.604.239 1.266.296 1.903.164.636-.132 1.22-.447 1.68-.907.46-.46.776-1.044.908-1.681s.075-1.299-.165-1.903c.586-.274 1.084-.705 1.439-1.245.354-.54.551-1.17.569-1.816zM9.662 14.85l-3.429-3.428 1.293-1.302 2.072 2.072 4.4-4.794 1.347 1.246z"></path></g>
+                        <g class="nav-icon-fill"><path d="M20.396 11c-.018-.646-.215-1.275-.57-1.816-.354-.54-.852-.972-1.438-1.246.223-.607.27-1.264.14-1.897-.131-.634-.437-1.218-.882-1.687-.47-.445-1.053-.75-1.687-.882-.633-.13-1.29-.083-1.897.14-.273-.587-.704-1.086-1.245-1.44S11.647 1.62 11 1.604c-.646.017-1.273.213-1.813.568s-.969.854-1.24 1.44c-.608-.223-1.267-.272-1.902-.14-.635.13-1.22.436-1.69.882-.445.47-.749 1.055-.878 1.688-.13.633-.08 1.29.144 1.896-.587.274-1.087.705-1.443 1.245-.356.54-.555 1.17-.574 1.817.02.647.218 1.276.574 1.817.356.54.856.972 1.443 1.245-.224.606-.274 1.263-.144 1.896.13.634.433 1.218.877 1.688.47.443 1.054.747 1.687.878.633.132 1.29.084 1.897-.136.274.586.705 1.086 1.246 1.44.54.354 1.17.551 1.816.569.647-.016 1.276-.213 1.817-.567s.972-.854 1.245-1.44c.604.239 1.266.296 1.903.164.636-.132 1.22-.447 1.68-.907.46-.46.776-1.044.908-1.681s.075-1.299-.165-1.903c.586-.274 1.084-.705 1.439-1.245.354-.54.551-1.17.569-1.816z"></path><path d="M9.662 14.85l-3.429-3.428 1.293-1.302 2.072 2.072 4.4-4.794 1.347 1.246z" fill="#fff"></path></g>
+                    </svg>
+                    <span>구독</span>
+                </a>
+                <a class="nav-item" href="/mypage">
+                    <svg class="nav-icon" viewBox="0 0 24 24" aria-hidden="true">
+                        <g class="nav-icon-line"><path d="M5.651 19h12.698c-.337-1.8-1.023-3.21-1.945-4.19C15.318 13.65 13.838 13 12 13s-3.317.65-4.404 1.81c-.922.98-1.608 2.39-1.945 4.19zm.486-5.56C7.627 11.85 9.648 11 12 11s4.373.85 5.863 2.44c1.477 1.58 2.366 3.8 2.632 6.46l.11 1.1H3.395l.11-1.1c.266-2.66 1.155-4.88 2.632-6.46zM12 4c-1.105 0-2 .9-2 2s.895 2 2 2 2-.9 2-2-.895-2-2-2zM8 6c0-2.21 1.791-4 4-4s4 1.79 4 4-1.791 4-4 4-4-1.79-4-4z"></path></g>
+                        <g class="nav-icon-fill"><path d="M6.137 13.44C7.627 11.85 9.648 11 12 11s4.373.85 5.863 2.44c1.477 1.58 2.366 3.8 2.632 6.46l.11 1.1H3.395l.11-1.1c.266-2.66 1.155-4.88 2.632-6.46zM8 6c0-2.21 1.791-4 4-4s4 1.79 4 4-1.791 4-4 4-4-1.79-4-4z"></path></g>
+                    </svg>
+                    <span>프로필</span>
+                </a>
+                <button class="nav-item" id="navMore">
+                    <svg class="nav-icon" viewBox="0 0 24 24" aria-hidden="true"><g><path d="M3.75 12c0-4.56 3.69-8.25 8.25-8.25s8.25 3.69 8.25 8.25-3.69 8.25-8.25 8.25S3.75 16.56 3.75 12zM12 1.75C6.34 1.75 1.75 6.34 1.75 12S6.34 22.25 12 22.25 22.25 17.66 22.25 12 17.66 1.75 12 1.75zm-4.75 11.5c.69 0 1.25-.56 1.25-1.25s-.56-1.25-1.25-1.25S6 11.31 6 12s.56 1.25 1.25 1.25zm9.5 0c.69 0 1.25-.56 1.25-1.25s-.56-1.25-1.25-1.25-1.25.56-1.25 1.25.56 1.25 1.25 1.25zM13.25 12c0 .69-.56 1.25-1.25 1.25s-1.25-.56-1.25-1.25.56-1.25 1.25-1.25 1.25.56 1.25 1.25z"></path></g></svg>
+                    <span>더 보기</span>
+                </button>
+            </nav>
+            <button class="post-btn" id="createPostButton">게시하기</button>
+            <div class="accountMenuWrap" id="accountMenuWrap">
+                <!-- 계정 메뉴 팝업: 점세개(profile-more) 바로 위에 뜨도록 wrapper 기준 절대 위치로 띄운다.
+                     좌표를 % 로 두어 사이드바 폭이 달라져도 같은 위치에 정렬되게 한다. -->
+                <div class="account-menu-popup off" id="accountMenuPopup">
+                    <button class="account-menu-logout" id="accountLogoutButton">계정에서 로그아웃</button>
+                </div>
+                <div class="profile-card" id="accountCard">
+                    <div class="profile-avatar" id="accountAvatar">
+                        <img th:src="${member.fileName != null ? member.fileName : '/images/profile/default_image.png'}" alt="" style="width:100%;height:100%;border-radius:50%;object-fit:cover;" />
+                    </div>
+                    <div class="profile-info">
+                        <span class="profile-name" id="accountName" th:text="${member.memberName ?: ''}"></span>
+                        <span class="profile-handle" id="accountHandle" th:text="${member.memberHandle ?: ''}"></span>
+                    </div>
+                    <button class="profile-more">···</button>
+                </div>
+            </div>
+        </div>
+    </aside>
+    <!-- 중앙 타임라인 패널: 탭 전환, 게시글 작성 모달 -->
+    <main class="timelinePanel" id="timelinePanel">
+        <nav class="timelineTabs" id="timelineTabs">
+            <button class="timelineTab isActive" id="tabFeed">Feed</button>
+            <button class="timelineTab" id="tabFriends">Experts</button>
+        </nav>
+        <!-- 메인 피드 영역: 게시글 카드와 카드별 액션 메뉴, 공유/더보기 드롭다운이 모두 이 리스트를 기준으로 작동한다. -->
+        <section class="feedSection isActive" id="feedSection">
+        </section>
+        <section class="friendsSection" id="friendsSection">
+            <div class="friendsSectionInner" id="friendsSectionInner">
+                <div class="friendsList" id="friendsList">
+                </div>
+            </div>
+        </section>
+    </main>
+    <!-- 우측 보조 패널: 검색, 트렌드, 추천 계정처럼 피드 밖의 탐색 보조 정보를 보여준다. -->
+    <aside class="trendSidebar" id="trendSidebar">
+        <div class="trendPanel">
+            <form class="searchForm" id="searchForm">
+                <label class="searchField">
+                    <span class="hiddenText">검색</span>
+                    <span class="searchIcon">
+                                <svg class="search-icon" viewBox="0 0 24 24" aria-hidden="true"><g><path d="M10.25 3.75c-3.59 0-6.5 2.91-6.5 6.5s2.91 6.5 6.5 6.5c1.795 0 3.419-.726 4.596-1.904 1.178-1.177 1.904-2.801 1.904-4.596 0-3.59-2.91-6.5-6.5-6.5zm-8.5 6.5c0-4.694 3.806-8.5 8.5-8.5s8.5 3.806 8.5 8.5c0 1.986-.682 3.815-1.824 5.262l4.781 4.781-1.414 1.414-4.781-4.781c-1.447 1.142-3.276 1.824-5.262 1.824-4.694 0-8.5-3.806-8.5-8.5z"></path></g></svg>
+                            </span>
+                    <input class="searchInput" id="searchInput" placeholder="검색" type="search" autocomplete="off" autocorrect="off">
+                </label>
+                <div class="searchPanel off" id="searchPanel">
+                    <div class="searchPanelEmpty" id="searchPanelEmpty">
+                        <p class="searchPanelText" id="searchPanelText">인물이나 키워드를 검색해 보세요.</p>
+                    </div>
+                    <div class="searchResults off" id="searchResults">
+                        <button class="searchResultTopic" id="searchResultTopic">
+                            <svg viewBox="0 0 21 21" aria-hidden="true" class="searchRecentIcon"><g><path d="M9.094 3.095c-3.314 0-6 2.686-6 6s2.686 6 6 6c1.657 0 3.155-.67 4.243-1.757 1.087-1.088 1.757-2.586 1.757-4.243 0-3.314-2.686-6-6-6zm-9 6c0-4.971 4.029-9 9-9s9 4.029 9 9c0 1.943-.617 3.744-1.664 5.215l4.475 4.474-2.122 2.122-4.474-4.475c-1.471 1.047-3.272 1.664-5.215 1.664-4.97-.001-8.999-4.03-9-9z"></path></g></svg>
+                            <span class="searchResultLabel" id="searchResultLabel">#검색 결과</span>
+                        </button>
+                        <div class="searchResultList" id="searchResultList">
+                        </div>
+                    </div>
+                </div>
+            </form>
+            <section class="suggestionCard sidebarCard">
+                <h2 class="suggestionTitle" id="suggestionTitle">팔로우 추천</h2>
+                <a class="suggestionLink sidebarMoreLink" href="/friends">더 보기</a>
+            </section>
+            <section class="exchangeRateFeedCard sidebarCard" id="exchangeRateFeedCard">
+                <div class="exchangeRateFeedHeader">
+                    <h2 class="exchangeRateFeedTitle" id="exchangeRateFeedTitle">환율</h2>
+                    <p class="exchangeRateFeedSubtitle" id="exchangeRateFeedSubtitle">USD 기준 주요 통화</p>
+                </div>
+                <div class="exchangeRateFeedContent" id="exchangeRateFeedContent">
+                    <p class="exchangeRateFeedState">환율 정보를 불러오는 중입니다.</p>
+                </div>
+            </section>
+            <section class="newsFeedCard sidebarCard">
+                <h2 class="newsFeedTitle" id="newsFeedTitle">주요 뉴스</h2>
+                <div class="newsFeedList" id="newsFeedList">
+                </div>
+                <a class="newsFeedLink sidebarMoreLink" href="/explore?tab=news">더 보기</a>
+            </section>
+            <footer class="footerSection" id="footerSection">
+                <p class="footerText">이용약관 · 개인정보 처리방침 · 쿠키 정책 · 접근성 · 광고 정보 · 더 보기 ··· © 2026 Trade Market Corp.</p>
+            </footer>
+        </div>
+    </aside>
+</div>
+<!-- 게시물 작성 모달: createPostButton 클릭 시 이 블록을 열고 닫는다.
+     마크업은 common/compose-modal 로 추출했고, 모달 제어 JS 는 main/event.js 가 그대로 담당한다. -->
+<div th:replace="~{common/compose-modal :: composeModal}"></div>
+<!-- 답글 모달: 전역 fragment 사용 (post-modal.js가 [data-reply-modal] 셀렉터로 잡아 셋업). -->
+<div th:replace="~{common/reply-modal :: replyModal}"></div>
+<div th:replace="~{video_ai/video_ai :: videoAi}"></div>
+<nav class="mobileBar" id="mobileBar">
+    <a class="mobileItem">홈</a>
+    <a class="mobileItem">탐색</a>
+    <a class="mobileItem">알림</a>
+    <a class="mobileItem">프로필</a>
+</nav>
+<!-- 추천 사용자 카드의 연결 끊기 확인 모달: JS는 이 고정 오버레이의 active/aria 상태만 토글한다. -->
+<div class="modalOverlay" id="disconnectModal">
+    <div class="modalPanel">
+        <h2 class="modalTitle" id="modalTitle">연결을 끊으시겠습니까?</h2>
+        <p class="modalText">상대방은 알림을 받지 않습니다.</p>
+        <div class="modalActions">
+            <button class="modalConfirm" id="modalConfirm">연결 끊기</button>
+            <button class="modalCancel" id="modalCancel">취소</button>
+        </div>
+    </div>
+</div>
+<!-- 이미지 미리보기 오버레이: JS는 이 고정 노드의 `hidden`과 이미지 src만 토글한다. -->
+<div class="mediaPreviewOverlay off" id="mediaPreviewOverlay">
+    <div class="mediaPreviewDialog" id="mediaPreviewDialog">
+        <button class="mediaPreviewClose" id="mediaPreviewClose">
+            <svg viewBox="0 0 24 24" aria-hidden="true" class="mediaPreviewCloseIcon"><g><path d="M10.59 12L4.54 5.96l1.42-1.42L12 10.59l6.04-6.05 1.42 1.42L13.41 12l6.05 6.04-1.42 1.42L12 13.41l-6.04 6.05-1.42-1.42L10.59 12z"></path></g></svg>
+        </button>
+        <img class="mediaPreviewImage" id="mediaPreviewImage"/>
+    </div>
+</div>
+<!-- 전역 토스트/모달 레이어: JS는 새 DOM을 만들지 않고 아래 고정 레이어를 재사용한다. -->
+<div class="notification-toast off"></div>
+<div class="share-toast off"></div>
+<!-- 게시글 더보기의 차단 확인 모달: body 하단 고정 노드로 두고 내용만 바꿔 재사용한다. -->
+<div class="notification-dialog notification-dialog--block off">
+    <div class="notification-dialog__backdrop"></div>
+    <div class="notification-dialog__card notification-dialog__card--small">
+        <h2 class="notification-dialog__title">
+            <span>@user</span> 님을 차단할까요? </h2>
+        <p class="notification-dialog__description"> 내 게시물을 볼 수 없고 더 이상 게시물에 참여할 수 없습니다. 또한 <span>@user</span> 님은 나를 팔로우하거나 쪽지를 보낼 수 없으며, 이 계정과 관련된 알림도 내게 표시되지 않습니다. </p>
+        <div class="notification-dialog__actions">
+            <button class="notification-dialog__danger">차단</button>
+            <button class="notification-dialog__secondary">취소</button>
+        </div>
+    </div>
+</div>
+<!-- 게시글 신고 모달: 신고 사유 목록은 정적 HTML로 두고 open/close만 JS에서 처리한다. -->
+<div class="notification-dialog notification-dialog--report off">
+    <div class="notification-dialog__backdrop"></div>
+    <div class="notification-dialog__card notification-dialog__card--report">
+        <div class="notification-dialog__header">
+            <button class="notification-dialog__icon-btn">
+                <svg><g><path></path></g></svg>
+            </button>
+            <h2 class="notification-dialog__title">신고하기</h2>
+        </div>
+        <div class="notification-dialog__body">
+            <p class="notification-dialog__question">이 게시물에 어떤 문제가 있나요?</p>
+            <ul class="notification-report__list">
+                <li>
+                    <button class="notification-report__item">
+                        <span>다른 회사 제품 도용 신고</span>
+                        <svg><g><path></path></g></svg>
+                    </button>
+                </li>
+                <li>
+                    <button class="notification-report__item">
+                        <span>실제 존재하지 않는 제품 등록 신고</span>
+                        <svg><g><path></path></g></svg>
+                    </button>
+                </li>
+                <li>
+                    <button class="notification-report__item">
+                        <span>스펙·원산지 허위 표기 신고</span>
+                        <svg><g><path></path></g></svg>
+                    </button>
+                </li>
+                <li>
+                    <button class="notification-report__item">
+                        <span>특허 제품 무단 판매 신고</span>
+                        <svg><g><path></path></g></svg>
+                    </button>
+                </li>
+                <li>
+                    <button class="notification-report__item">
+                        <span>수출입 제한 품목 신고</span>
+                        <svg><g><path></path></g></svg>
+                    </button>
+                </li>
+                <li>
+                    <button class="notification-report__item">
+                        <span>반복적인 동일 게시물 신고</span>
+                        <svg><g><path></path></g></svg>
+                    </button>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+<!-- 전역 레이어 마운트: 더보기/공유 드롭다운이 이 루트에 올라온다. 계정 팝업은 사이드바 wrapper 안으로 이동했다. -->
+<div id="layers">
+    <!-- 좌측 더보기 팝오버: JS는 버튼 좌표만 다시 계산하고, 레이어는 이 고정 노드의 hidden만 토글한다. -->
+    <div class="nav-more-layer off" id="navMoreLayer">
+        <div class="nav-more-overlay"></div>
+        <div class="nav-more-popover" id="navMorePopover">
+            <div class="nav-more-dropdown">
+                <div class="nav-more-menu">
+                    <a class="nav-more-item" href="/community">
+                        <div class="nav-more-itemInner">
+                            <svg class="nav-more-itemIcon" viewBox="0 0 24 24" aria-hidden="true"><g><path d="M7.501 19.917L7.471 21H.472l.029-1.027c.184-6.618 3.736-8.977 7-8.977.963 0 1.95.212 2.87.672-.444.478-.851 1.03-1.212 1.656-.507-.204-1.054-.329-1.658-.329-2.767 0-4.57 2.223-4.938 6.004H7.56c-.023.302-.05.599-.059.917zm15.998.056L23.528 21H9.472l.029-1.027c.184-6.618 3.736-8.977 7-8.977s6.816 2.358 7 8.977zM21.437 19c-.367-3.781-2.17-6.004-4.938-6.004s-4.57 2.223-4.938 6.004h9.875zm-4.938-9c-.799 0-1.527-.279-2.116-.73-.836-.64-1.384-1.638-1.384-2.77 0-1.93 1.567-3.5 3.5-3.5s3.5 1.57 3.5 3.5c0 1.132-.548 2.13-1.384 2.77-.589.451-1.317.73-2.116.73zm-1.5-3.5c0 .827.673 1.5 1.5 1.5s1.5-.673 1.5-1.5-.673-1.5-1.5-1.5-1.5.673-1.5 1.5zM7.5 3C9.433 3 11 4.57 11 6.5S9.433 10 7.5 10 4 8.43 4 6.5 5.567 3 7.5 3zm0 2C6.673 5 6 5.673 6 6.5S6.673 8 7.5 8 9 7.327 9 6.5 8.327 5 7.5 5z"></path></g></svg>
+                            <span class="nav-more-itemLabel">커뮤니티</span>
+                        </div>
+                    </a>
+                    <a class="nav-more-item" href="/ad">
+                        <div class="nav-more-itemInner">
+                            <svg class="nav-more-itemIcon" viewBox="0 0 24 24" aria-hidden="true"><g><path d="M1.996 5.5c0-1.38 1.119-2.5 2.5-2.5h15c1.38 0 2.5 1.12 2.5 2.5v13c0 1.38-1.12 2.5-2.5 2.5h-15c-1.381 0-2.5-1.12-2.5-2.5v-13zm2.5-.5c-.277 0-.5.22-.5.5v13c0 .28.223.5.5.5h15c.276 0 .5-.22.5-.5v-13c0-.28-.224-.5-.5-.5h-15zm8.085 5H8.996V8h7v7h-2v-3.59l-5.293 5.3-1.415-1.42L12.581 10z"></path></g></svg>
+                            <span class="nav-more-itemLabel">광고</span>
+                        </div>
+                    </a>
+                    <a class="nav-more-item" href="/setting">
+                        <div class="nav-more-itemInner">
+                            <svg class="nav-more-itemIcon" viewBox="0 0 24 24" aria-hidden="true"><g><path d="M10.54 1.75h2.92l1.57 2.36c.11.17.32.25.53.21l2.53-.59 2.17 2.17-.58 2.54c-.05.2.04.41.21.53l2.36 1.57v2.92l-2.36 1.57c-.17.12-.26.33-.21.53l.58 2.54-2.17 2.17-2.53-.59c-.21-.04-.42.04-.53.21l-1.57 2.36h-2.92l-1.58-2.36c-.11-.17-.32-.25-.52-.21l-2.54.59-2.17-2.17.58-2.54c.05-.2-.03-.41-.21-.53l-2.35-1.57v-2.92L4.1 8.97c.18-.12.26-.33.21-.53L3.73 5.9 5.9 3.73l2.54.59c.2.04.41-.04.52-.21l1.58-2.36zm1.07 2l-.98 1.47C10.05 6.08 9 6.5 7.99 6.27l-1.46-.34-.6.6.33 1.46c.24 1.01-.18 2.07-1.05 2.64l-1.46.98v.78l1.46.98c.87.57 1.29 1.63 1.05 2.64l-.33 1.46.6.6 1.46-.34c1.01-.23 2.06.19 2.64 1.05l.98 1.47h.78l.97-1.47c.58-.86 1.63-1.28 2.65-1.05l1.45.34.61-.6-.34-1.46c-.23-1.01.18-2.07 1.05-2.64l1.47-.98v-.78l-1.47-.98c-.87-.57-1.28-1.63-1.05-2.64l.34-1.46-.61-.6-1.45.34c-1.02.23-2.07-.19-2.65-1.05l-.97-1.47h-.78zM12 10.5c-.83 0-1.5.67-1.5 1.5s.67 1.5 1.5 1.5c.82 0 1.5-.67 1.5-1.5s-.68-1.5-1.5-1.5zM8.5 12c0-1.93 1.56-3.5 3.5-3.5 1.93 0 3.5 1.57 3.5 3.5s-1.57 3.5-3.5 3.5c-1.94 0-3.5-1.57-3.5-3.5z"></path></g></svg>
+                            <span class="nav-more-itemLabel">설정 및 개인정보</span>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- 게시글 공유 드롭다운: 클릭한 공유 버튼 근처로만 재배치되고, 마크업은 `#layers` 안의 고정 노드를 재사용한다. -->
+    <div class="layers-dropdown-container off" id="mainShareDropdown">
+        <div class="layers-overlay"></div>
+        <div class="layers-dropdown-inner">
+            <div class="dropdown-menu" id="mainShareDropdownMenu">
+                <div>
+                    <div class="dropdown-inner">
+                        <button class="menu-item share-menu-item share-menu-item--copy">
+                                    <span class="menu-item__icon share-menu-item__icon">
+                                        <svg viewBox="0 0 24 24" aria-hidden="true" class="r-4qtqp9 r-yyyyoo r-1xvli5t r-dnmrzs r-bnwqim r-lrvibr r-m6rgpd r-18jsvk2 r-1q142lx"><g><path d="M18.36 5.64c-1.95-1.96-5.11-1.96-7.07 0L9.88 7.05 8.46 5.64l1.42-1.42c2.73-2.73 7.16-2.73 9.9 0 2.73 2.74 2.73 7.17 0 9.9l-1.42 1.42-1.41-1.42 1.41-1.41c1.96-1.96 1.96-5.12 0-7.07zm-2.12 3.53l-7.07 7.07-1.41-1.41 7.07-7.07 1.41 1.41zm-12.02.71l1.42-1.42 1.41 1.42-1.41 1.41c-1.96 1.96-1.96 5.12 0 7.07 1.95 1.96 5.11 1.96 7.07 0l1.41-1.41 1.42 1.41-1.42 1.42c-2.73 2.73-7.16 2.73-9.9 0-2.73-2.74-2.73-7.17 0-9.9z"></path></g></svg>
+                                    </span>
+                            <span class="menu-item__label">링크 복사하기</span>
+                        </button>
+                        <button class="menu-item share-menu-item share-menu-item--bookmark">
+                                    <span class="menu-item__icon share-menu-item__icon">
+                                        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 3V0h2v3h3v2h-3v3h-2V5h-3V3zm-7.5 1a.5.5 0 00-.5.5V7h3.5A2.5 2.5 0 0116 9.5v3.48l3 2.1V11h2v7.92l-5-3.5v7.26l-6.5-3.54L3 22.68V9.5A2.5 2.5 0 015.5 7H8V4.5A2.5 2.5 0 0110.5 2H12v2zm-5 5a.5.5 0 00-.5.5v9.82l4.5-2.46 4.5 2.46V9.5a.5.5 0 00-.5-.5z"></path></svg>
+                                    </span>
+                            <span class="menu-item__label">폴더에 북마크 추가하기</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- 북마크 폴더 선택 모달 -->
+    <div class="bookmark-share-sheet" id="shareBookmarkModal" hidden>
+        <div class="bookmark-share-sheet-backdrop" data-share-close="true"></div>
+        <div class="bookmark-share-sheet-card bookmark-share-sheet-card--bookmark"
+             role="dialog" aria-modal="true" aria-labelledby="shareBookmarkTitle">
+            <div class="bookmark-share-sheet-header">
+                <button type="button" class="bookmark-share-sheet-icon-btn" data-share-close="true" aria-label="돌아가기">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10.59 12L4.54 5.96l1.42-1.42L12 10.59l6.04-6.05 1.42 1.42L13.41 12l6.05 6.04-1.42 1.42L12 13.41l-6.04 6.05-1.42-1.42L10.59 12z"></path></svg>
+                </button>
+                <h2 id="shareBookmarkTitle" class="bookmark-share-sheet-title">폴더에 추가</h2>
+                <span class="bookmark-share-sheet-header-spacer"></span>
+            </div>
+            <button type="button" class="bookmark-share-sheet-create-folder" id="shareBookmarkCreateFolder">
+                새 북마크 폴더 만들기
+            </button>
+            <div class="bookmark-share-sheet-folder-list" id="shareBookmarkFolderList">
+                <!-- 폴더 목록은 JS에서 동적 생성 -->
+            </div>
+        </div>
+    </div>
+    <!-- 폴더 만들기 모달 -->
+    <div class="bookmark-modal-overlay" id="createFolderModal" aria-hidden="true">
+        <div class="bookmark-modal" role="dialog" aria-modal="true" aria-labelledby="createFolderModalTitle">
+            <div class="bookmark-modal-header">
+                <button class="bookmark-modal-close" id="createFolderClose" type="button" aria-label="뒤로 가기">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7.414 13l5.043 5.04-1.414 1.42L3.586 12l7.457-7.46 1.414 1.42L7.414 11H21v2H7.414z"/></svg>
+                </button>
+                <h2 class="bookmark-modal-title" id="createFolderModalTitle">폴더 만들기</h2>
+                <button class="bookmark-modal-submit" id="createFolderSubmit" type="button" disabled>만들기</button>
+            </div>
+            <div class="bookmark-modal-body">
+                <label class="bookmark-modal-field" for="createFolderInput">
+                    <span class="bookmark-modal-label">이름</span>
+                    <span class="bookmark-modal-count" id="createFolderCount" aria-live="polite">0 / 25</span>
+                    <input class="bookmark-modal-input" id="createFolderInput" type="text" maxlength="25" autocomplete="off" />
+                </label>
+            </div>
+        </div>
+    </div>
+
+    <!-- 모바일 nav + 더보기 아코디언 (공용 fragment) -->
+    <div th:replace="~{common/mobile-nav :: mobileNav('home')}"></div>
+    <div th:replace="~{common/mobile-nav :: mobileMoreSheet}"></div>
+</div>
+</body>
+</html>

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.app.globalgates.mapper.PaymentSubscribeMapper">
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+        insert into tbl_payment_subscribe (subscription_id, member_id, amount, payment_method, receipt_id, paid_at)
+        values (#{subscriptionId}, #{memberId}, #{amount}, #{paymentMethod}, #{receiptId}, #{paidAt}::timestamp)
+    </insert>
+
+    <select id="selectById">
+        select id, subscription_id, member_id, amount, payment_status, payment_method, receipt_id, paid_at, created_datetime
+        from tbl_payment_subscribe
+        where id = #{id}
+    </select>
+
+    <select id="selectByReceiptId">
+        select id, subscription_id, member_id, amount, payment_status, payment_method, receipt_id, paid_at, created_datetime
+        from tbl_payment_subscribe
+        where receipt_id = #{receiptId}
+    </select>
+
+    <update id="updateStatus">
+        update tbl_payment_subscribe
+        set payment_status = #{paymentStatus},
+            paid_at = #{paidAt}::timestamp
+        where receipt_id = #{receiptId}
+    </update>
+</mapper>

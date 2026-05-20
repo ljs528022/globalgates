@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.app.globalgates.mapper.MentionMapper">
+    <insert id="insert">
+        insert into tbl_mention (mention_tagger_id, mention_tagged_id, post_id)
+        values (#{mentionTaggerId}, #{mentionTaggedId}, #{postId})
+    </insert>
+
+    <delete id="deleteByPostId">
+        delete from tbl_mention where post_id = #{postId}
+    </delete>
+
+    <select id="selectByPostId" resultType="com.app.globalgates.dto.MentionDTO">
+        select id, mention_tagger_id, mention_tagged_id, post_id
+        from tbl_mention
+        where post_id = #{postId}
+    </select>
+
+    <!-- 멘션 검색: member_handle만 검색, 양방향 차단 제외, 프로필이미지+뱃지 포함, 최대 10개 -->
+    <select id="selectMembersForMention" resultType="com.app.globalgates.dto.MentionDTO">
+        select
+            m.id as mentionTaggedId,
+            m.member_name as memberName,
+            m.member_handle as memberHandle,
+            (select f.file_name from tbl_member_profile_file mpf
+                join tbl_file f on mpf.id = f.id
+                where mpf.member_id = m.id and mpf.profile_image_type = 'profile'
+                limit 1) as profileFileName,
+            bg.badge_type as badgeType
+        from tbl_member m
+            left join tbl_badge bg on bg.member_id = m.id
+        where m.member_status = 'active'
+          and m.id != #{memberId}
+          and lower(m.member_handle) like lower(concat('%', #{keyword}, '%'))
+          and not exists (
+            select 1 from tbl_block
+            where (blocker_id = #{memberId} and blocked_id = m.id)
+               or (blocker_id = m.id and blocked_id = #{memberId})
+          )
+        order by m.member_handle
+        limit 10
+    </select>
+</mapper>

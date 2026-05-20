@@ -1,0 +1,76 @@
+
+.mention-dropdown {
+    position: fixed;
+    max-height: 220px;
+    width: 340px;
+    overflow-y: auto;
+    background: #fff;
+    border: 1px solid rgb(207, 217, 222);
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    z-index: 9999;
+}
+
+.mention-dropdown.off {
+    display: none;
+}
+
+.mention-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 16px;
+    cursor: pointer;
+    border: none;
+    background: none;
+    width: 100%;
+    text-align: left;
+}
+
+.mention-item:hover,
+.mention-item.active {
+    background: rgb(247, 249, 249);
+}
+
+.mention-item-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+    flex-shrink: 0;
+}
+
+.mention-item-info {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+}
+
+.mention-item-name {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-weight: 700;
+    font-size: 15px;
+    color: rgb(15, 20, 25);
+}
+
+.mention-item-name .postBadge {
+    width: 18px;
+    height: 18px;
+}
+
+.mention-item-handle {
+    font-size: 13px;
+    color: rgb(83, 100, 113);
+}
+
+
+.mention-tag {
+    color: rgb(29, 155, 240);
+    font-weight: 500;
+}
+
+.mention-tag[contenteditable="false"] {
+    user-select: all;
+}

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.app.globalgates.mapper.ReplyProductRelMapper">
+
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+        insert into tbl_reply_product_rel (reply_post_id, product_post_id)
+        values (#{replyPostId}, #{productPostId})
+    </insert>
+
+    <delete id="deleteByReplyPostId">
+        delete
+        from tbl_reply_product_rel
+        where reply_post_id = #{replyPostId}
+    </delete>
+
+    <select id="selectByReplyPostId">
+        select id, reply_post_id, product_post_id
+        from tbl_reply_product_rel
+        where reply_post_id = #{replyPostId}
+    </select>
+
+</mapper>

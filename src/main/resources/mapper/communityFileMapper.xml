@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.app.globalgates.mapper.CommunityFileMapper">
+    <insert id="insert">
+        insert into tbl_community_file (id, community_id)
+        values (#{id}, #{communityId})
+    </insert>
+
+
+    <delete id="delete">
+        delete from tbl_community_file where id = #{id}
+    </delete>
+
+    <select id="selectByCommunityId" resultType="fileDTO">
+        select f.id, f.original_name, f.file_name, f.file_path, f.file_size,
+               f.content_type, f.created_datetime
+        from tbl_community_file cf
+        join tbl_file f on cf.id = f.id
+        where cf.community_id = #{communityId}
+        limit 1
+    </select>
+
+    <select id="selectByDeletedCommunities" resultType="fileDTO">
+        select f.id, f.original_name, f.file_name, f.file_path, f.file_size,
+               f.content_type, f.created_datetime
+        from tbl_community_file cf
+        join tbl_file f on cf.id = f.id
+        join tbl_community c on c.id = cf.community_id
+        where c.community_status = 'inactive'
+    </select>
+
+</mapper>

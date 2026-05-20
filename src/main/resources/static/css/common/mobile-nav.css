@@ -1,0 +1,164 @@
+/* 공용 모바일 하단 네비게이션 — 텍스트 4탭(홈/검색/알림/더보기) + 더보기 아코디언 */
+
+.mobile-nav {
+    display: none;
+}
+
+.mob-more-sheet,
+.mob-more-backdrop,
+.mob-nav-more {
+    display: none;
+}
+
+@media (max-width: 600px) {
+    .mobile-nav {
+        display: flex;
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background: #fff;
+        border-top: 1px solid #eff3f4;
+        z-index: 50;
+        height: 53px;
+        align-items: stretch;
+        justify-content: space-around;
+    }
+
+    .mob-nav-item {
+        position: relative;
+        flex: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0 8px;
+        background: none;
+        border: none;
+        cursor: pointer;
+        text-decoration: none;
+        font: inherit;
+        color: #536471;
+    }
+
+    .mob-nav-text {
+        font-size: 15px;
+        font-weight: 500;
+        letter-spacing: -0.01em;
+        line-height: 1;
+    }
+
+    .mob-nav-item.active {
+        color: #0f1419;
+    }
+
+    .mob-nav-item.active .mob-nav-text {
+        font-weight: 700;
+    }
+
+    .mob-nav-item.active::after {
+        content: "";
+        position: absolute;
+        left: 50%;
+        bottom: 6px;
+        width: 22px;
+        height: 3px;
+        border-radius: 2px;
+        background: #0f1419;
+        transform: translateX(-50%);
+    }
+
+    .mob-nav-more[aria-expanded="true"] {
+        color: #0f1419;
+    }
+
+    .mob-nav-more[aria-expanded="true"] .mob-nav-text {
+        font-weight: 700;
+    }
+
+    .mob-nav-badge {
+        position: absolute;
+        top: 6px;
+        right: 14px;
+        background: #1d9bf0;
+        color: #fff;
+        font-size: 11px;
+        font-weight: 700;
+        min-width: 18px;
+        height: 18px;
+        border-radius: 9px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0 4px;
+        line-height: 1;
+    }
+
+    .mob-nav-badge.off {
+        display: none;
+    }
+
+    .mob-more-backdrop {
+        display: block;
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.4);
+        z-index: 49;
+    }
+
+    .mob-more-backdrop.off {
+        display: none;
+    }
+
+    .mob-more-sheet {
+        display: flex;
+        flex-direction: column;
+        position: fixed;
+        bottom: 53px;
+        left: 0;
+        right: 0;
+        background: #fff;
+        border-top: 1px solid #eff3f4;
+        box-shadow: 0 -4px 16px rgba(0, 0, 0, 0.08);
+        z-index: 51;
+        max-height: 60vh;
+        overflow-y: auto;
+        animation: mobMoreSlideUp 0.18s ease-out;
+    }
+
+    .mob-more-sheet.off {
+        display: none;
+    }
+
+    .mob-more-item {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        padding: 14px 20px;
+        background: none;
+        border: none;
+        text-align: left;
+        text-decoration: none;
+        color: #0f1419;
+        font-size: 15px;
+        font-weight: 500;
+        cursor: pointer;
+        border-bottom: 1px solid #f1f3f4;
+    }
+
+    .mob-more-item:last-child {
+        border-bottom: none;
+    }
+
+    .mob-more-item:active {
+        background: #f7f9f9;
+    }
+
+    .mob-more-logout {
+        color: #ef4444;
+    }
+
+    @keyframes mobMoreSlideUp {
+        from { transform: translateY(100%); }
+        to { transform: translateY(0); }
+    }
+}

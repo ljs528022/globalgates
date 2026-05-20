@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.app.globalgates.mapper.CommunityFeaturesMapper">
+
+    <!-- 커뮤니티 생성/수정 시 호출 -->
+    <!-- tags 가 null 이면 빈 문자열로 저장 (cold-start fallback 은 FastAPI 가 처리) -->
+    <insert id="upsertTags">
+        insert into tbl_ai_community_features (community_id, tags, updated_at)
+        values (#{communityId}, coalesce(#{tags}, ''), now())
+        on conflict (community_id) do update
+        set tags       = excluded.tags,
+            updated_at = excluded.updated_at
+    </insert>
+
+</mapper>

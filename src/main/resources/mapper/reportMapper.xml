@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.app.globalgates.mapper.ReportMapper">
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+        insert into tbl_report (reporter_id, target_id, target_type, reason)
+        values (#{reporterId}, #{targetId}, #{targetType}, #{reason})
+    </insert>
+
+    <select id="selectByReporterAndTarget">
+        select id, reporter_id, target_id, target_type, reason, status, created_datetime, updated_datetime
+        from tbl_report
+        where reporter_id = #{reporterId}
+          and target_id = #{targetId}
+          and target_type = #{targetType}
+        limit 1
+    </select>
+</mapper>

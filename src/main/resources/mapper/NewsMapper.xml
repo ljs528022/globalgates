@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.app.globalgates.mapper.NewsMapper">
+
+    <select id="selectAll">
+        select id, admin_id, news_title, news_content, news_source_url,
+               news_category, news_type, published_at, created_datetime, updated_datetime
+        from tbl_news
+        order by created_datetime desc
+    </select>
+
+    <select id="selectLatestInMain">
+        select id, news_title, news_content
+        from tbl_news
+        where news_type = 'general'
+        order by created_datetime desc
+        limit 2
+    </select>
+
+    <select id="selectById">
+        select id, admin_id, news_title, news_content, news_source_url,
+               news_category, news_type, published_at, created_datetime, updated_datetime
+        from tbl_news
+        where id = #{id}
+    </select>
+
+
+</mapper>

@@ -1,0 +1,158 @@
+﻿:root {
+    --overlay: rgba(15, 20, 25, 0.38);
+    --card: #ffffff;
+    --text: #0f1419;
+    --muted: #5f6f80;
+    --line: #c7d1da;
+    --focus: #0a84ff;
+    --primary: #000000;
+}
+
+* { box-sizing: border-box; }
+html, body { width: 100%; height: 100%; }
+body {
+    margin: 0;
+    font-family: "TwitterChirp", "Pretendard Variable", "Pretendard", "Noto Sans KR", "Apple SD Gothic Neo", "Segoe UI", sans-serif;
+    color: var(--text);
+}
+
+.account-overlay {
+    position: fixed;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    padding: 16px;
+}
+
+.account-modal {
+    width: min(760px, 92vw);
+    min-height: min(760px, 92vh);
+    border-radius: 18px;
+    background: var(--card);
+    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.18);
+    position: relative;
+    overflow: hidden;
+}
+
+.account-close {
+    position: absolute;
+    top: 24px;
+    left: 24px;
+    width: 44px;
+    height: 44px;
+    border: 0;
+    border-radius: 999px;
+    background: transparent;
+    display: grid;
+    place-items: center;
+    cursor: pointer;
+}
+
+.account-close svg {
+    width: 34px;
+    height: 34px;
+    fill: var(--text);
+}
+
+.account-logo {
+    display: flex;
+    justify-content: center;
+    margin-top: 18px;
+}
+
+.account-logo svg {
+    width: 36px;
+    height: 36px;
+    fill: var(--text);
+}
+
+.account-logo img {
+    width: 44px;
+    height: 44px;
+    object-fit: contain;
+}
+
+.account-inner {
+    width: min(540px, calc(100% - 96px));
+    margin: 34px auto 0;
+    min-height: calc(min(760px, 92vh) - 108px);
+    display: flex;
+    flex-direction: column;
+}
+
+.account-title {
+    margin: 0 0 12px;
+    font-size: 56px;
+    line-height: 1.08;
+    letter-spacing: -0.03em;
+    font-weight: 700;
+}
+
+.account-desc {
+    margin: 0 0 22px;
+    font-size: 16px;
+    line-height: 1.35;
+    color: var(--muted);
+}
+
+.account-input-wrap {
+    width: 100%;
+    min-height: 84px;
+    border: 1px solid #bcc8d2;
+    border-radius: 6px;
+    padding: 10px 12px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 4px;
+    transition: border-color .15s ease, box-shadow .15s ease;
+}
+
+.account-input-wrap.is-focus {
+    border-color: var(--focus);
+    box-shadow: 0 0 0 4px rgba(10, 132, 255, 0.22);
+}
+
+.account-label {
+    font-size: 16px;
+    color: #657685;
+}
+
+.account-input-wrap.is-focus .account-label,
+.account-input-wrap.has-value .account-label {
+    color: var(--focus);
+}
+
+#accountIdentity {
+    border: 0;
+    outline: 0;
+    background: transparent;
+    font-size: 22px;
+    line-height: 1.1;
+    color: #0f1419;
+    padding: 0;
+}
+
+.account-next {
+    width: 108%;
+    min-height: 74px;
+    margin-left: -4%;
+    margin-top: auto;
+    border: 0;
+    border-radius: 999px;
+    background: var(--primary);
+    color: #fff;
+    font-size: 34px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.account-next:disabled {
+    background: #8b9096;
+    cursor: not-allowed;
+}
+
+
+
+
+

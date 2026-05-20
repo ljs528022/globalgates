@@ -1,0 +1,783 @@
+﻿:root {
+    --text: #0f1419;
+    --sub: #536471;
+    --line: #cfd9de;
+    --bg: #ffffff;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+html,
+body {
+    width: 100%;
+    min-height: 100%;
+}
+
+body {
+    margin: 0;
+    min-height: 100vh;
+    color: var(--text);
+    background: var(--bg);
+    font-family: "TwitterChirp", "Pretendard Variable", "Pretendard", "Noto Sans KR", "Apple SD Gothic Neo", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    display: flex;
+    flex-direction: column;
+}
+
+.join-page {
+    width: 100%;
+    margin: 0;
+    flex: 1;
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    grid-template-rows: repeat(4, minmax(0, 1fr));
+    align-items: stretch;
+    gap: 0;
+    padding: 0 36px;
+}
+
+.join-hero {
+    grid-column: 1 / 3;
+    grid-row: 1 / 5;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 0;
+}
+
+.join-logo {
+    height: 100%;
+    color: var(--text);
+    fill: currentColor;
+    z-index: 1;
+}
+
+.join-panel {
+    grid-column: 4 / 5;
+    grid-row: 2 / 5;
+    align-self: stretch;
+    width: min(620px, 100%);
+    justify-self: start;
+    margin-left: -230px;
+    padding-top: 0;
+}
+
+.join-title {
+    margin: -10px 0 0;
+    font-size: clamp(36px, 4.2vw, 64px);
+    line-height: 1.05;
+    letter-spacing: -0.03em;
+    font-weight: 700;
+    max-width: 100%;
+    overflow-wrap: break-word;
+}
+
+.join-subtitle {
+    margin: 32px 0 22px;
+    font-size: clamp(26px, 2.6vw, 38px);
+    line-height: 1.12;
+    letter-spacing: -0.02em;
+    font-weight: 500;
+    max-width: 100%;
+    overflow-wrap: break-word;
+}
+
+.join-actions {
+    width: min(420px, 100%);
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-left: 160px;
+}
+
+.join-actions > .sns-section {
+    order: 5;
+}
+
+.join-actions > .join-or {
+    order: 2;
+}
+
+.join-actions > #btn-create {
+    order: 3;
+}
+
+.join-actions > .join-terms {
+    order: 4;
+}
+
+.join-actions > .login-block {
+    order: 1;
+}
+
+.sns-section {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.sns-divider {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+}
+
+.sns-divider::before,
+.sns-divider::after {
+    content: "";
+    flex: 1;
+    height: 1px;
+    background: #e6eaf1;
+}
+
+.sns-divider h5 {
+    margin: 0;
+    color: #98a2b3;
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    white-space: nowrap;
+}
+
+.sns-buttons {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    flex-wrap: wrap;
+}
+
+.sns-btn {
+    width: 56px;
+    height: 56px;
+    border: 1px solid #e7ebf2;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    background: #ffffff;
+    box-shadow: 0 10px 24px rgba(15, 23, 42, 0.08);
+    cursor: pointer;
+}
+
+.sns-btn img {
+    width: 24px;
+    height: 24px;
+    display: block;
+}
+
+.sns-btn--kakao {
+    background: #fee500;
+    border-color: #fee500;
+}
+
+.sns-btn--naver {
+    background: #03c75a;
+    border-color: #03c75a;
+}
+
+.sns-btn--google {
+    background: #ffffff;
+    border-color: #e6eaf1;
+}
+
+.sns-btn--facebook {
+    background: #4267f2;
+    border-color: #4267f2;
+}
+
+.join-social-grid {
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+}
+
+.chip-btn-img {
+    display: block;
+    width: 100%;
+    height: auto;
+    object-fit: contain;
+}
+
+.chip-btn {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 9999px;
+    border: 1px solid var(--line);
+    height: 50px;
+    min-height: 50px;
+    padding: 0;
+    cursor: pointer;
+    background: transparent;
+    overflow: hidden;
+}
+
+.chip-google {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px 14px;
+}
+
+.chip-user {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.chip-avatar {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: #ff7a00;
+    color: #fff;
+    font-size: 12px;
+    font-weight: 700;
+    display: grid;
+    place-items: center;
+}
+
+.chip-user-text {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    line-height: 1.2;
+}
+
+.chip-name {
+    font-size: 14px;
+    font-weight: 400;
+}
+
+.chip-email {
+    font-size: 13px;
+    color: #5f7383;
+    font-weight: 400;
+}
+
+.google-g {
+    color: #4285f4;
+    font-size: 30px;
+    line-height: 1;
+    font-weight: 700;
+}
+
+.join-or {
+    margin: 10px 0;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.line {
+    flex: 1;
+    height: 1px;
+    background: var(--line);
+}
+
+.or-text {
+    font-size: 18px;
+}
+
+.primary-btn,
+.secondary-btn {
+    width: 100%;
+    min-height: 52px;
+    border-radius: 9999px;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    letter-spacing: -0.02em;
+}
+
+.primary-btn {
+    background: #07121f;
+    color: #fff;
+    font-weight: 700;
+}
+
+.join-terms {
+    margin: 12px 0 0;
+    color: var(--sub);
+    font-size: 12px;
+    line-height: 1.34;
+}
+
+.login-block {
+    margin-top: 15px;
+}
+
+.login-title {
+    margin: 0 0 12px;
+    font-size: 18px;
+    line-height: 1.3;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+}
+
+.secondary-btn {
+    border: 1px solid var(--line);
+    color: var(--text);
+    background: #fff;
+    font-weight: 400;
+    transition: background-color 0.18s ease, border-color 0.18s ease;
+}
+
+.secondary-btn:hover {
+    background: #f3f6f8;
+    border-color: #bcc8d2;
+}
+
+.join-footer {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 8px;
+    width: 100%;
+    margin: 0;
+    padding: 0 20px;
+    text-align: center;
+    font-size: 12px;
+    color: #5f7383;
+}
+
+@media (max-width: 1220px) {
+    .join-page {
+        grid-template-columns: 1fr;
+        grid-template-rows: auto;
+        gap: 22px;
+        justify-items: center;
+        padding-top: 18px;
+    }
+
+    .join-hero {
+        min-height: 240px;
+    }
+
+    .join-logo {
+        width: min(260px, 45vw);
+    }
+
+    .join-panel {
+        width: min(560px, 100%);
+        margin-left: 0;
+    }
+
+    .join-title {
+        margin: -10px 0 0;
+        font-size: clamp(34px, 5.6vw, 56px);
+        line-height: 1.06;
+        letter-spacing: -0.03em;
+        font-weight: 700;
+        max-width: 100%;
+        overflow-wrap: break-word;
+    }
+
+    .join-subtitle {
+        margin: 28px 0 18px;
+        font-size: clamp(22px, 3.4vw, 34px);
+        line-height: 1.12;
+        letter-spacing: -0.02em;
+        font-weight: 500;
+        max-width: 100%;
+        overflow-wrap: break-word;
+    }
+
+    .login-title {
+        margin: 0 0 12px;
+        font-size: 18px;
+        line-height: 1.3;
+        font-weight: 600;
+        letter-spacing: -0.01em;
+    }
+
+    .primary-btn,
+    .secondary-btn {
+        font-size: clamp(24px, 5vw, 34px);
+    }
+}
+
+@media (max-width: 720px) {
+    .sns-buttons {
+        gap: 12px;
+    }
+
+    .sns-btn {
+        width: 52px;
+        height: 52px;
+    }
+
+    .join-social-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* join.html modal host */
+.flow-modal-root {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(15, 20, 25, 0.48);
+    padding: 16px;
+}
+
+.flow-modal-root.is-hidden {
+    display: none;
+}
+
+.flow-modal-frame {
+    width: min(920px, 100vw);
+    height: min(940px, 100vh);
+    border: 0;
+    border-radius: 18px;
+    background: transparent;
+}
+
+@media (max-width: 820px) {
+    .flow-modal-frame {
+        width: 100vw;
+        height: 100vh;
+        border-radius: 0;
+    }
+}
+
+/* browser 80% 체감을 100%에서 맞춤 (모달 제외) */
+@media (min-width: 981px) {
+    .join-page,
+    .join-footer {
+        zoom: 0.8;
+    }
+}
+
+/* ===== 데스크탑(>1220px)에서 타이틀이 그림에 붙어 보이지 않도록 좌측 여백 확보 ===== */
+/* 화면 너비에 비례(vw) — 어떤 데스크탑 해상도에서도 일정한 비율의 간격 유지 */
+@media (min-width: 1221px) {
+    .join-panel { margin-left: -10vw; }
+    .join-title,
+    .join-subtitle { padding-left: 4vw; }
+}
+
+/* ===== 모바일 진입 스플래시 — 비디오 풀스크린 + 시작하기 버튼 (≤600px 전용) ===== */
+
+/* 데스크탑/태블릿: 스플래시 자체를 숨김 */
+.join-splash { display: none; }
+
+@media (max-width: 600px) {
+    body.has-splash { overflow: hidden; }
+
+    .join-splash {
+        position: fixed;
+        inset: 0;
+        z-index: 1000;
+        background: linear-gradient(180deg, #ffffff 0%, #dbeafe 100%);
+        overflow: hidden;
+        display: flex;
+        align-items: flex-end;
+        justify-content: center;
+        padding: 0 0 8vh;
+        transition: transform 0.85s cubic-bezier(0.76, 0, 0.24, 1),
+                    opacity 0.5s ease 0.2s;
+    }
+    .join-splash.is-leaving {
+        pointer-events: none;
+        z-index: 0;
+    }
+    .join-splash.is-gone {
+        pointer-events: none;
+        z-index: 0;
+    }
+
+    /* SVG 4겹 파도 — 화면 하단 */
+    .join-splash-waves {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 28vh;
+        z-index: 0;
+        pointer-events: none;
+        overflow: hidden;
+    }
+    .join-splash-waves-svg {
+        position: relative;
+        width: 100%;
+        height: 100%;
+    }
+    .join-splash-waves .parallax > use {
+        animation: joinSplashWaveMove 25s cubic-bezier(0.55, 0.5, 0.45, 0.5) infinite;
+    }
+    .join-splash-waves .wave1 {
+        fill: #1e3a8a;
+        opacity: 0.3;
+        animation-duration: 20s !important;
+        transform: scaleY(1.4);
+    }
+    .join-splash-waves .wave2 {
+        fill: #3b82f6;
+        opacity: 0.5;
+        animation-delay: -3s;
+        animation-duration: 13s !important;
+        transform: scaleY(0.7);
+    }
+    .join-splash-waves .wave3 {
+        fill: #60a5fa;
+        opacity: 0.7;
+        animation-delay: -4s;
+        animation-duration: 10s !important;
+        transform: scaleY(1.1);
+    }
+    .join-splash-waves .wave4 {
+        fill: #93c5fd;
+        animation-delay: -5s;
+        animation-duration: 7s !important;
+        transform: scaleY(0.5);
+    }
+    @keyframes joinSplashWaveMove {
+        0%   { transform: translate3d(-90px, 0, 0); }
+        100% { transform: translate3d(85px, 0, 0); }
+    }
+
+    /* 파도 위 — Global Gates 텍스트 */
+    .join-splash-header {
+        position: absolute;
+        top: 28vh;
+        left: 50%;
+        transform: translateX(-50%);
+        z-index: 2;
+        display: inline-flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 2.6vw;
+        background: none;
+        padding: 0;
+        border: 0;
+    }
+    .join-splash-header-logo {
+        width: 337px;
+        height: 116px;
+        object-fit: contain;
+        border-radius: 24%;
+        display: block;
+        box-shadow: 0 1.2vh 3vh rgba(0, 0, 0, 0.45),
+                    0 0 0 1px rgba(255, 255, 255, 0.06);
+        animation: splashHeaderIn 0.55s 0.1s cubic-bezier(0.34, 1.56, 0.64, 1) backwards;
+    }
+    .join-splash-header-name {
+        padding: 0;
+        background: none;
+        color: #0f1419;
+        border-radius: 0;
+        font-family: "Helvetica Neue", "Pretendard", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        font-size: clamp(34px, 10vw, 52px);
+        font-weight: 300;
+        letter-spacing: 0.04em;
+        line-height: 1;
+        white-space: nowrap;
+        text-shadow: none;
+        box-shadow: none;
+        animation: splashHeaderIn 0.5s 0.28s cubic-bezier(0.34, 1.56, 0.64, 1) backwards;
+    }
+    @keyframes splashHeaderIn {
+        0%   { opacity: 0; transform: translateY(-1.2vh) scale(0.92); }
+        100% { opacity: 1; transform: translateY(0) scale(1); }
+    }
+    /* 모달이 올라와도 Global Gates 헤더는 그대로 유지한다. */
+
+    /* 시작하기 버튼 — 비디오 위에 깔끔한 흰색 알약 */
+    .join-splash-btn {
+        position: relative;
+        z-index: 2;
+        width: min(87%, 363px);
+        padding: clamp(12px, 2vh, 18px) 8%;
+        border: 0;
+        border-radius: 16px;
+        background: #fff;
+        color: #0f1419;
+        font-size: clamp(15px, 4.4vw, 18px);
+        font-weight: 800;
+        letter-spacing: -0.01em;
+        cursor: pointer;
+        box-shadow: 0 1.2vh 3vh rgba(0, 0, 0, 0.45),
+                    0 0 0 1px rgba(255, 255, 255, 0.06);
+        overflow: hidden;
+        transition: transform 0.18s ease;
+        animation: splashBtnIn 0.5s 0.2s cubic-bezier(0.34, 1.56, 0.64, 1) backwards;
+    }
+    .join-splash-btn:active { transform: scale(0.97); }
+    .join-splash-btn-label { position: relative; z-index: 1; }
+
+    @keyframes splashBtnIn {
+        0%   { opacity: 0; transform: translateY(2vh) scale(0.92); }
+        100% { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    /* 클릭 임팩트 — 살짝 줄었다가 링이 퍼지며 사라짐 */
+    .join-splash-btn.is-pressing {
+        animation: splashBtnPress 0.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+    }
+    @keyframes splashBtnPress {
+        0%   { transform: scale(1); }
+        25%  { transform: scale(0.93); box-shadow: 0 1vh 3vh rgba(0,0,0,0.3), 0 0 0 6vw rgba(255,255,255,0.10); }
+        100% { transform: scale(1.10); box-shadow: 0 0 0 22vw rgba(255,255,255,0); opacity: 0; }
+    }
+}
+
+/* 모션 줄이기 */
+@media (max-width: 600px) and (prefers-reduced-motion: reduce) {
+    .join-splash-btn,
+    .join-splash-header,
+    .join-splash-header-logo,
+    .join-splash-header-name,
+    .join-splash-waves .parallax > use { animation: none !important; }
+    .join-splash { transition: opacity 0.2s ease, transform 0.2s ease; }
+}
+
+/* 모바일 hero 콘텐츠는 데스크탑에서 숨김 */
+.join-hero-mobile {
+    display: none;
+}
+
+
+/* ===== 옵션 A · 모바일 (<=600px): 미니멀 히어로 + 소셜 우선 ===== */
+@media (max-width: 600px) {
+    body {
+        background: #fff;
+    }
+
+    .join-page {
+        display: flex;
+        flex-direction: column;
+        gap: 0;
+        padding: 0;
+        min-height: 100vh;
+    }
+
+    /* 모바일에서는 히어로 사진 자체를 사용하지 않는다. 스플래시 종료 후 패널이 모달로 뜬다. */
+    .join-hero,
+    .join-hero img.join-logo,
+    .join-hero-mobile {
+        display: none;
+    }
+
+    /* 본문 패널 — 스플래시 종료 후 화면 하단에서 모달처럼 슬라이드업.
+       Global Gates 헤더와 파도/그라데이션 배경은 패널 위쪽으로 그대로 노출된다. */
+    .join-page {
+        background: transparent;
+        min-height: 100vh;
+    }
+    .join-panel {
+        position: fixed;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        margin: 0;
+        width: 100%;
+        max-height: 62vh;
+        overflow-y: auto;
+        background: #fff;
+        border-radius: 22px 22px 0 0;
+        padding: 24px 22px 24px;
+        box-shadow: 0 -16px 48px rgba(15, 23, 42, 0.18);
+        z-index: 1100;
+        transform: translateY(100%);
+        transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    body.panel-revealed .join-panel {
+        transform: translateY(0);
+    }
+
+    /* 데스크탑용 큰 타이틀은 모바일에서 숨김 (hero가 대체) */
+    .join-title {
+        display: none;
+    }
+
+    .join-subtitle {
+        font-size: 18px;
+        font-weight: 700;
+        line-height: 1.3;
+        letter-spacing: -0.01em;
+        margin: 0 0 16px;
+        color: #0f1419;
+    }
+
+    .join-actions {
+        width: 100%;
+        margin: 0;
+        gap: 10px;
+    }
+
+    /* 모바일 액션 순서: 소셜 → 계정 만들기 → 로그인 → 약관 */
+    .join-actions > .sns-section { order: 1; }
+    .join-actions > #btn-create  { order: 2; }
+    .join-actions > .login-block { order: 3; margin-top: 0; }
+    .join-actions > .join-terms  { order: 4; }
+
+    .sns-section {
+        gap: 12px;
+    }
+
+    .sns-divider h5 {
+        font-size: 12px;
+    }
+
+    .sns-buttons {
+        gap: 10px;
+    }
+
+    .sns-btn {
+        width: 48px;
+        height: 48px;
+        box-shadow: 0 4px 12px rgba(15, 23, 42, 0.06);
+    }
+
+    .primary-btn,
+    .secondary-btn {
+        font-size: 15px;
+        min-height: 48px;
+    }
+
+    .join-terms {
+        font-size: 11px;
+        line-height: 1.5;
+        text-align: center;
+        margin: 8px 0 0;
+    }
+
+    .join-footer {
+        position: static;
+        padding: 16px 20px;
+        background: #fff;
+    }
+
+    /* 모바일에서 회원가입/로그인 모달은 슬라이드업된 .join-panel(z-index:1100) 위에 떠야
+       입력칸 클릭이 가능하다. splash 파도/Global Gates 배경은 모달 백드롭을 옅게 두어 그대로 비치게 한다. */
+    .join-flow-modal {
+        z-index: 1200;
+    }
+    .join-flow-modal .join-modal-all {
+        background: rgba(15, 20, 25, 0.32);
+    }
+
+    /* 모달이 열려 있는 동안에는 슬라이드업된 패널을 다시 화면 밖으로 내려서
+       입력 모달만 단독으로 보이게 한다. 모달이 닫히면 panel-revealed 가 살아 있으므로
+       패널이 자동 복귀한다. */
+    body.flow-modal-open.panel-revealed .join-panel {
+        transform: translateY(100%);
+    }
+}
+
+
+
+
+

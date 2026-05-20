@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.app.globalgates.mapper.BlockMapper">
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+        insert into tbl_block (blocker_id, blocked_id)
+        values (#{blockerId}, #{blockedId})
+    </insert>
+
+    <delete id="delete">
+        delete from tbl_block
+        where blocker_id = #{blockerId} and blocked_id = #{blockedId}
+    </delete>
+
+    <select id="selectByBlockerIdAndBlockedId">
+        select id, blocker_id, blocked_id, created_datetime
+        from tbl_block
+        where blocker_id = #{blockerId} and blocked_id = #{blockedId}
+    </select>
+
+    <select id="selectAllByBlockerId">
+        select b.id, b.blocker_id, b.blocked_id, b.created_datetime,
+               m.member_nickname, m.member_handle
+        from tbl_block b
+                 join tbl_member m on b.blocked_id = m.id
+        where b.blocker_id = #{blockerId}
+        order by b.created_datetime desc
+    </select>
+
+    <select id="selectIsBlockedEither" resultType="boolean">
+        select exists(
+            select 1 from tbl_block
+            where (blocker_id = #{memberId1} and blocked_id = #{memberId2})
+               or (blocker_id = #{memberId2} and blocked_id = #{memberId1})
+        )
+    </select>
+</mapper>

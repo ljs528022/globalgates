@@ -1,0 +1,179 @@
+﻿<!doctype html>
+<html lang="ko">
+<head>
+    <link rel="icon" type="image/png" href="/images/logo/logo.png">
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>요약</title>
+    <link rel="stylesheet" href="/css/common/mobile-nav.css" th:href="@{/css/common/mobile-nav.css}"/>
+    <link rel="stylesheet" href="/css/main/main.css"/>
+    <link rel="stylesheet" href="/css/common/post-modal.css"/>
+    <link rel="stylesheet" href="/css/inquiry/inquiry-chart.css"/>
+    <script src="/js/common/mobile-nav.js" th:src="@{/js/common/mobile-nav.js}" defer></script>
+    <script src="https://www.gstatic.com/charts/loader.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@joeattardi/emoji-button@3.0.3/dist/index.min.js"></script>
+    <script th:inline="javascript">
+        const memberId = /*[[${member?.id}]]*/ null;
+    </script>
+    <script src="/js/main/service.js"></script>
+    <script src="/js/common/post-modal-service.js"></script>
+    <script src="/js/common/post-modal.js"></script>
+    <script src="/js/inquiry-chart/service.js"></script>
+    <script src="/js/inquiry-chart/layout.js"></script>
+    <script src="/js/inquiry-chart/event.js"></script>
+</head>
+<body>
+<div class="Page-Layout">
+<header th:replace="common/header::header"></header>
+<main class="Activity-Page">
+    <div class="Activity-Layout">
+        <div class="Activity-Shell">
+            <header class="expert-page-header">
+                <div class="main-header">
+                    <button class="header-back" id="headerBack" type="button" aria-label="뒤로가기">
+                        <svg viewBox="0 0 24 24" class="header-back-icon" aria-hidden="true">
+                            <path d="M7.414 13l5.043 5.04-1.414 1.42L3.586 12l7.457-7.46 1.414 1.42L7.414 11H21v2H7.414z"/>
+                        </svg>
+                    </button>
+                    <h1 class="header-title">요약 보기</h1>
+                    <div class="header-spacer"></div>
+                </div>
+                <nav class="inquiry-tabnav" aria-label="전문가 페이지" role="navigation">
+                    <div class="inquiry-tabnav__inner">
+                        <div role="tablist" class="inquiry-tabnav__list" data-testid="ScrollSnap-List">
+                            <div role="presentation" class="inquiry-tabnav__item">
+                                <a href="/inquiry/chart" role="tab" aria-selected="true" class="inquiry-tab inquiry-tab--active" data-inquiry-tab="summary">
+                                    <span class="inquiry-tab__label">요약</span>
+                                    <span class="inquiry-tab__indicator"></span>
+                                </a>
+                            </div>
+                            <div role="presentation" class="inquiry-tabnav__item">
+                                <a href="/inquiry/member-list" role="tab" aria-selected="false" class="inquiry-tab" data-inquiry-tab="partners">
+                                    <span class="inquiry-tab__label">거래처 등록 목록</span>
+                                    <span class="inquiry-tab__indicator"></span>
+                                </a>
+                            </div>
+                            <div role="presentation" class="inquiry-tabnav__item">
+                                <a href="/inquiry/activity/list" role="tab" aria-selected="false" class="inquiry-tab" data-inquiry-tab="activity">
+                                    <span class="inquiry-tab__label">거래처 활동 목록</span>
+                                    <span class="inquiry-tab__indicator"></span>
+                                </a>
+                            </div>
+                            <div role="presentation" class="inquiry-tabnav__item">
+                                <a href="/estimation/list" role="tab" aria-selected="false" class="inquiry-tab" data-inquiry-tab="quotes">
+                                    <span class="inquiry-tab__label">견적 요청 목록</span>
+                                    <span class="inquiry-tab__indicator"></span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </nav>
+            </header>
+
+            <section class="Inquiry-Panels">
+                <section class="Inquiry-Panel Inquiry-Panel--Blank" data-inquiry-panel="summary" hidden=""></section>
+                <section class="Inquiry-Panel Inquiry-Panel--Blank" data-inquiry-panel="partners" hidden=""></section>
+
+                <section class="Inquiry-Panel Inquiry-Panel--Activity" data-inquiry-panel="activity">
+                    <section class="Expert-State-Grid">
+                        <div class="Expert-State-Card">
+                            <div class="Expert-State-Label">프로필 조회 수</div>
+                            <div class="Expert-State-Value">0</div>
+                        </div>
+                        <div class="Expert-State-Card">
+                            <div class="Expert-State-Label">거래 성사 수</div>
+                            <div class="Expert-State-Value">0</div>
+                        </div>
+                        <div class="Expert-State-Card">
+                            <div class="Expert-State-Label">상담 요청 수</div>
+                            <div class="Expert-State-Value">0</div>
+                        </div>
+                        <div class="Expert-State-Card">
+                            <div class="Expert-State-Label">요청 평균 응답 속도</div>
+                            <div class="Expert-State-Value">-</div>
+                        </div>
+                        <div class="Expert-State-Card">
+                            <div class="Expert-State-Label">좋아요</div>
+                            <div class="Expert-State-Value">0</div>
+                        </div>
+                        <div class="Expert-State-Card">
+                            <div class="Expert-State-Label">북마크</div>
+                            <div class="Expert-State-Value">0</div>
+                        </div>
+                    </section>
+
+                    <section class="Expert-Chart-Wrapper">
+                        <div class="Expert-Chart-Single">
+                            <div class="Single-Chart-Header">
+                                <div class="Chart-Header-Dropbox" data-dropbox>
+                                    <button type="button" class="Chart-Header-Title" data-dropbox-trigger aria-haspopup="listbox" aria-expanded="false">
+                                        <span class="Chart-Header-Text" data-dropbox-label>프로필 조회 수</span>
+                                        <svg class="Chart-Header-Icon" data-dropbox-icon xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640">
+                                            <path d="M297.4 438.6C309.9 451.1 330.2 451.1 342.7 438.6L502.7 278.6C515.2 266.1 515.2 245.8 502.7 233.3C490.2 220.8 469.9 220.8 457.4 233.3L320 370.7L182.6 233.4C170.1 220.9 149.8 220.9 137.3 233.4C124.8 245.9 124.8 266.2 137.3 278.7L297.3 438.7z"/>
+                                        </svg>
+                                    </button>
+                                    <ul class="Chart-Header-Options" data-dropbox-menu role="listbox" hidden>
+                                        <li class="Chart-Option" role="option" data-metric="profileViewCount" aria-selected="true">프로필 조회 수</li>
+                                        <li class="Chart-Option" role="option" data-metric="inquiryRequestCount" aria-selected="false">견적 요청 수</li>
+                                    </ul>
+                                </div>
+
+                                <div class="Chart-Header-Filter" data-line-period-group>
+                                    <button class="Header-Filter-Button Header-Filter-Button--Active" data-line-period="7d">최근 7일</button>
+                                    <button class="Header-Filter-Button" data-line-period="30d">최근 30일</button>
+                                    <button class="Header-Filter-Button" data-line-period="6m">최근 6개월</button>
+                                </div>
+                            </div>
+
+                            <div class="Chart-Body">
+                                <div id="chart-line" class="Chart-Body-Area"></div>
+                            </div>
+                        </div>
+
+                        <div class="Expert-Chart-Double">
+                            <div class="Double-Chart-Area">
+                                <div class="Chart-Header">
+                                    <span class="Chart-Header-Text">커넥트 변화 추이</span>
+                                </div>
+                                <div class="Chart-Body">
+                                    <div id="chart-bar" class="Chart-Body-Area"></div>
+                                </div>
+                            </div>
+
+                            <div class="Double-Chart-Area">
+                                <div class="Chart-Header">
+                                    <span class="Chart-Header-Text">거래 카테고리 분포</span>
+                                </div>
+                                <div class="Chart-Body">
+                                    <div id="chart-donut" class="Chart-Body-Area"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="Expert-Chart-Single">
+                            <div class="Chart-Header">
+                                <span class="Chart-Header-Text">거래 국가 분포</span>
+                            </div>
+                            <div class="Chart-Body">
+                                <div id="chart-geo" class="Chart-Body-Area Chart-Body-Area--Geo"></div>
+                            </div>
+                        </div>
+                    </section>
+                </section>
+
+                <section class="Inquiry-Panel Inquiry-Panel--Blank" data-inquiry-panel="quotes" hidden=""></section>
+            </section>
+        </div>
+    </div>
+</main>
+<footer th:replace="common/footer::footer"></footer>
+</div>
+
+<!-- 공용 게시글 작성 모달: 사이드바 createPostButton 트리거 -->
+<div th:replace="~{common/compose-modal :: composeModal}"></div>
+
+<!-- 모바일 nav + 더보기 아코디언 (공용 fragment) -->
+<div th:replace="~{common/mobile-nav :: mobileNav('more')}"></div>
+<div th:replace="~{common/mobile-nav :: mobileMoreSheet}"></div>
+</body>
+</html>

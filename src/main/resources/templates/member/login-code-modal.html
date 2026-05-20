@@ -1,0 +1,39 @@
+﻿<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <link rel="icon" type="image/png" href="/images/logo/logo.png">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>인증 코드 모달</title>
+    <link rel="stylesheet" href="/css/member/login-code-modal.css">
+</head>
+<body>
+    <div class="code-overlay" aria-hidden="false">
+        <section class="code-modal" role="dialog" aria-modal="true" aria-labelledby="codeTitle">
+            <button type="button" class="code-close" aria-label="닫기">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M10.59 12L4.54 5.96l1.42-1.42L12 10.59l6.04-6.05 1.42 1.42L13.41 12l6.05 6.04-1.42 1.42L12 13.41l-6.04 6.05-1.42-1.42L10.59 12z"></path>
+                </svg>
+            </button>
+
+            <div class="code-logo" aria-hidden="true">
+                <img src="/images/logo/logo.png" alt="globalgates">
+            </div>
+
+            <div class="code-inner">
+                <h1 id="codeTitle" class="code-title">코드를 전송했습니다</h1>
+                <p class="code-desc">확인 코드를 받았는지 확인해 주세요. 새 코드를 요청하려면 돌아가서 인증을 다시 선택하세요.</p>
+
+                <label class="code-input-wrap" for="authCodeInput">
+                    <span class="code-label">코드를 입력하세요</span>
+                    <input id="authCodeInput" type="text" autocomplete="one-time-code">
+                </label>
+
+                <button type="button" class="code-action is-secondary" id="codeActionBtn">돌아가기</button>
+            </div>
+        </section>
+    </div>
+
+    <script src="/js/member/login-code-modal.js"></script>
+</body>
+</html>

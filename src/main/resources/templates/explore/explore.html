@@ -1,0 +1,154 @@
+<!doctype html>
+<html lang="ko" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{common/layout}">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>explore</title>
+    <link rel="stylesheet" href="/css/common/mobile-nav.css" th:href="@{/css/common/mobile-nav.css}"/>
+    <link rel="stylesheet" href="/css/explore/explore.css"/>
+    <script src="/js/common/mobile-nav.js" th:src="@{/js/common/mobile-nav.js}" defer></script>
+    <script th:inline="javascript">
+        const memberId = /*[[${member != null ? member.id : null}]]*/ null;
+    </script>
+    <script src="/js/main/service.js"></script>
+    <script src="/js/main/layout.js"></script>
+    <script src="/js/explore/explore.js"></script>
+    <script src="/js/explore/service.js"></script>
+    <script src="/js/explore/layout.js"></script>
+    <script src="/js/utils/exchange.js"></script>
+</head>
+<body>
+<div class="pageLayout" id="mainPage">
+<th:block layout:fragment="content">
+    <!-- 중앙 타임라인 패널: 탭 전환, 게시글 작성 모달, 실제 피드 카드가 이 영역을 기준으로 렌더링된다. -->
+    <main class="timelinePanel" id="timelinePanel">
+        <div class="exploreSticky">
+            <form class="searchForm" id="searchForm">
+                <div class="searchDropdownWrap">
+                    <label class="searchField" for="searchInput">
+                        <span class="hiddenText">검색</span>
+                        <span class="searchIcon" aria-hidden="true">
+                            <svg viewBox="0 0 24 24" class="search-icon"><path
+                                    d="M10.25 3.75c-3.59 0-6.5 2.91-6.5 6.5s2.91 6.5 6.5 6.5c1.795 0 3.419-.726 4.596-1.904 1.178-1.177 1.904-2.801 1.904-4.596 0-3.59-2.91-6.5-6.5-6.5zm-8.5 6.5c0-4.694 3.806-8.5 8.5-8.5s8.5 3.806 8.5 8.5c0 1.986-.682 3.815-1.824 5.262l4.781 4.781-1.414 1.414-4.781-4.781c-1.447 1.142-3.276 1.824-5.262 1.824-4.694 0-8.5-3.806-8.5-8.5z"/></svg>
+                        </span>
+                        <input
+                                class="searchInput"
+                                id="searchInput"
+                                name="keyword"
+                                type="search"
+                                placeholder="검색"
+                                autocomplete="off"
+                                autocorrect="off"
+                        />
+                        <button
+                                class="searchClearBtn"
+                                id="searchClearBtn"
+                                type="button"
+                                aria-label="검색어 지우기"
+                                hidden
+                        >
+                            <svg viewBox="0 0 24 24" aria-hidden="true" class="searchClearIcon">
+                                <g>
+                                    <path d="M12 1.75C6.34 1.75 1.75 6.34 1.75 12S6.34 22.25 12 22.25 22.25 17.66 22.25 12 17.66 1.75 12 1.75zm3.71 12.54l-1.42 1.42-2.29-2.3-2.29 2.3-1.42-1.42 2.3-2.29-2.3-2.29 1.42-1.42 2.29 2.3 2.29-2.3 1.42 1.42-2.3 2.29 2.3 2.29z"></path>
+                                </g>
+                            </svg>
+                        </button>
+                    </label>
+                    <div class="searchPanel" id="searchPanel" hidden>
+                        <!-- 1. 입력 전 + 최근검색 없을때 -->
+                        <div class="searchPanelEmpty" id="searchPanelEmpty" hidden>
+                            <p class="searchPanelText" id="searchPanelText">
+                                인물이나 키워드를 검색해 보세요
+                            </p>
+                        </div>
+
+                        <!-- 2. 입력 전 + 최근검색 있음 -->
+                        <div id="searchRecentSection">
+                            <div class="searchRecentHeader">
+                                <span>최근 검색</span>
+                                <button class="searchRecentClearAll" type="button">모두 지우기</button>
+                            </div>
+                            <!-- 연관 검색어가 JS로 동적 렌더링됨 -->
+                        </div>
+
+                        <!-- 3. 입력 있음 -->
+                        <div class="searchResults" id="searchResults" hidden>
+                            <button class="searchResultTopic" id="searchResultTopic" type="button">
+                                <span class="searchResultLabel" id="searchResultLabel">검색 결과</span>
+                            </button>
+                            <div class="searchResultList" id="searchResultList">
+                                <!-- 연관 검색어가 JS로 동적 렌더링됨 -->
+                            </div>
+                        </div>
+                    </div>
+                </div><!-- /.searchDropdownWrap -->
+            </form>
+            <nav
+                    class="timelineTabs"
+                    id="timelineTabs"
+                    aria-label="피드 탭"
+            >
+                <button class="timelineTab isActive" id="tabProducts" type="button" aria-current="page">
+                    추천제품
+                </button>
+                <button class="timelineTab" id="tabNews" type="button">
+                    뉴스
+                </button>
+                <button class="timelineTab" id="tabTrending" type="button">
+                    실시간
+                </button>
+            </nav>
+        </div><!-- /.exploreSticky -->
+
+        <!-- 메인 피드: 게시글 카드와 카드별 액션 메뉴, 공유/더보기 드롭다운이 모두 이 리스트를 기준으로 작동한다. -->
+        <section class="productsSection" id="productsSection" aria-label="상품 목록">
+            <div class="emptySection" id="productsEmpty">
+                <p class="emptyMessage">표시할 상품이 없습니다.</p>
+            </div>
+        </section>
+
+        <section
+                class="newsSection"
+                id="newsSection"
+                aria-label="뉴스"
+                hidden
+        >
+            <div class="trend-list">
+                <div class="emptySection" id="newsEmpty">
+                    <p class="emptyMessage">표시할 뉴스가 없습니다.</p>
+                </div>
+            </div>
+        </section>
+
+        <section
+                class="trendingSection"
+                id="trendingSection"
+                aria-label="트렌딩"
+                hidden>
+            <div class="trending-list">
+                <div class="emptySection" id="trendingEmpty">
+                    <p class="emptyMessage">표시할 트렌드가 없습니다.</p>
+                </div>
+            </div>
+        </section>
+        <!-- 이미지 프리뷰 오버레이 -->
+        <div class="Post-Media-Preview-Overlay off" id="postMediaPreviewOverlay">
+            <div class="Post-Media-Preview-Dialog">
+                <img class="Post-Media-Preview-Image" id="postMediaPreviewImage" src="" alt="">
+                <button class="Post-Media-Preview-Close" id="postMediaPreviewClose" aria-label="닫기">
+                    <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
+                        <path d="M10.59 12L4.54 5.96l1.42-1.42L12 10.59l6.04-6.05 1.42 1.42L13.41 12l6.05 6.04-1.42 1.42L12 13.41l-6.04 6.05-1.42-1.42L10.59 12z"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </main>
+
+    <!-- 모바일 nav + 더보기 아코디언 (공용 fragment) -->
+    <div th:replace="~{common/mobile-nav :: mobileNav('search')}"></div>
+    <div th:replace="~{common/mobile-nav :: mobileMoreSheet}"></div>
+</th:block>
+</div>
+</body>
+</html>

@@ -1,0 +1,627 @@
+/* ===== Reset & Base ===== */
+*, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    scrollbar-gutter: stable;
+    overflow-x: hidden;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    background: #fff;
+    color: #0f1419;
+    line-height: 1.4;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+button {
+    border: none;
+    background: none;
+    cursor: pointer;
+    font-family: inherit;
+}
+
+.app-layout {
+    display: flex;
+    width: 100%;
+    max-width: 1280px;
+    margin: 0 auto;
+    justify-content: center;
+}
+
+/* ===== Left Sidebar — main.css 의 공용 규칙을 사용한다. 페이지별 재정의 금지(시각 통일성). ===== */
+
+/* ===== Main Content ===== */
+.main-content {
+    flex: 1;
+    min-width: 0;
+    width: 100%;
+    max-width: 600px;
+    min-height: 100vh;
+    border-left: 1px solid #eff3f4;
+    border-right: 1px solid #eff3f4;
+}
+
+/* Header */
+.main-header {
+    position: sticky;
+    top: 0;
+    z-index: 20;
+    background: rgba(255, 255, 255, .85);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid #eff3f4;
+    padding: 0 16px;
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    height: 53px;
+}
+
+.header-back {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    transition: background .2s;
+}
+
+.header-back:hover {
+    background: #eff3f4;
+}
+
+.header-back-icon {
+    width: 20px;
+    height: 20px;
+    fill: #0f1419;
+}
+
+.header-title {
+    font-size: 20px;
+    font-weight: 700;
+}
+
+.header-spacer {
+    flex: 1;
+}
+
+
+/* ===== Category Banner ===== */
+.category-banner {
+    border-bottom: 1px solid #eff3f4;
+    padding-bottom: 0;
+}
+
+.category-banner-title {
+    font-weight: 700;
+    font-size: 15px;
+    padding: 12px 16px 8px;
+}
+
+.category-scroll-wrap {
+    position: relative;
+    overflow: hidden;
+}
+
+.category-scroll {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 0 16px 12px;
+    overflow-x: auto;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    width: 100%;
+}
+
+.category-scroll::-webkit-scrollbar {
+    display: none;
+}
+
+.cat-chip {
+    flex-shrink: 0;
+    padding: 6px 16px;
+    border-radius: 9999px;
+    font-size: 14px;
+    font-weight: 500;
+    background: #fff;
+    color: #0f1419;
+    transition: all .15s;
+    border: 1px solid #cfd9de;
+}
+
+.cat-chip:hover {
+    background: #f7f9f9;
+    border-color: #b0bec5;
+}
+
+.cat-chip.active {
+    background: #1d9bf0;
+    color: #fff;
+    font-weight: 700;
+    border-color: #1d9bf0;
+}
+
+
+.category-scroll-arrow {
+    position: absolute;
+    top: 0;
+    bottom: 12px;
+    width: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 5;
+    border: none;
+    color: #0f1419;
+}
+
+.category-scroll-left {
+    left: 0;
+    background: linear-gradient(to right, #fff 60%, transparent);
+}
+
+.category-scroll-right {
+    right: 0;
+    background: linear-gradient(to left, #fff 60%, transparent);
+}
+
+/* ===== User Cards ===== */
+.user-card {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 12px 16px;
+    transition: background .15s;
+    cursor: pointer;
+}
+
+.user-card:hover {
+    background: #f7f9f9;
+}
+
+.user-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    overflow: hidden;
+}
+
+.user-avatar-img {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.user-info {
+    flex: 1;
+    min-width: 0;
+}
+
+.user-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.user-name-group {
+    min-width: 0;
+}
+
+.user-name {
+    font-weight: 700;
+    font-size: 15px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.verified-badge {
+    width: 18px;
+    height: 18px;
+    fill: #1d9bf0;
+    flex-shrink: 0;
+}
+
+.user-handle {
+    color: #536471;
+    font-size: 15px;
+}
+
+.user-followed-by {
+    color: #536471;
+    font-size: 15px;
+    margin-top: 2px;
+}
+
+.user-bio {
+    font-size: 15px;
+    margin-top: 4px;
+    line-height: 1.4;
+}
+
+/* ===== Connect Button (main) ===== */
+.connect-btn {
+    flex-shrink: 0;
+    min-width: 110px;
+    padding: 0 16px;
+    height: 34px;
+    border-radius: 9999px;
+    font-size: 14px;
+    font-weight: 700;
+    transition: all .2s;
+    border: 1px solid transparent;
+}
+
+.connect-btn.default {
+    background: #0f1419;
+    color: #fff;
+}
+
+.connect-btn.default:hover {
+    background: #272c30;
+}
+
+.connect-btn.connected {
+    background: transparent;
+    color: #0f1419;
+    border-color: #cfd9de;
+}
+
+.connect-btn.connected:hover {
+    border-color: #f4212e;
+    color: #f4212e;
+    background: rgba(244, 33, 46, .1);
+}
+
+/* ===== Connect Button (sidebar small) ===== */
+.connect-btn-sm {
+    flex-shrink: 0;
+    min-width: 80px;
+    padding: 0 14px;
+    height: 30px;
+    border-radius: 9999px;
+    font-size: 13px;
+    font-weight: 700;
+    transition: all .2s;
+    border: 1px solid transparent;
+}
+
+.connect-btn-sm.default {
+    background: #0f1419;
+    color: #fff;
+}
+
+.connect-btn-sm.default:hover {
+    background: #272c30;
+}
+
+.connect-btn-sm.connected {
+    background: transparent;
+    color: #0f1419;
+    border-color: #cfd9de;
+}
+
+.connect-btn-sm.connected:hover {
+    border-color: #f4212e;
+    color: #f4212e;
+    background: rgba(244, 33, 46, .1);
+}
+
+/* ===== Right Sidebar ===== */
+.sidebar-right {
+    display: none;
+}
+
+@media (min-width: 1024px) {
+    .sidebar-right {
+        display: block;
+        width: 350px;
+        flex-shrink: 0;
+    }
+
+    .sidebar-right-inner {
+        position: fixed;
+        top: 0;
+        width: 350px;
+        height: 100vh;
+        overflow-y: auto;
+        padding: 8px 24px;
+    }
+}
+
+.search-box {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: #eff3f4;
+    border-radius: 9999px;
+    padding: 10px 16px;
+    margin-bottom: 16px;
+    margin-top: 4px;
+}
+
+.search-icon {
+    width: 16px;
+    height: 16px;
+    fill: #536471;
+    flex-shrink: 0;
+}
+
+.search-input {
+    border: none;
+    outline: none;
+    background: transparent;
+    font-size: 15px;
+    flex: 1;
+    color: #0f1419;
+}
+
+.search-input::placeholder {
+    color: #536471;
+}
+
+.trends-card {
+    background: #f7f9f9;
+    border-radius: 16px;
+    overflow: hidden;
+    margin-bottom: 16px;
+}
+
+.trends-title {
+    font-size: 20px;
+    font-weight: 800;
+    padding: 12px 16px;
+}
+
+.trend-item {
+    padding: 12px 16px;
+    transition: background .15s;
+    cursor: pointer;
+}
+
+.trend-item:hover {
+    background: #eff3f4;
+}
+
+.sidebar-user {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.user-avatar-sm {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: #cfe8fc;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    color: #1d9bf0;
+    font-size: 13px;
+    flex-shrink: 0;
+}
+
+.sidebar-user-info {
+    flex: 1;
+    min-width: 0;
+}
+
+.sidebar-user-name {
+    display: flex;
+    align-items: center;
+    gap: 3px;
+    font-weight: 700;
+    font-size: 15px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.sidebar-user-handle {
+    display: block;
+    color: #536471;
+    font-size: 13px;
+}
+
+.verified-badge-sm {
+    width: 16px;
+    height: 16px;
+    fill: #1d9bf0;
+    flex-shrink: 0;
+}
+
+.show-more {
+    display: block;
+    padding: 12px 16px;
+    color: #1d9bf0;
+    font-size: 15px;
+}
+
+.show-more:hover {
+    background: #eff3f4;
+}
+
+.footer-links {
+    font-size: 13px;
+    color: #536471;
+    line-height: 1.6;
+    padding: 8px 0;
+}
+
+.bottom-spacer {
+    height: 64px;
+}
+
+@media (min-width: 688px) {
+    .bottom-spacer {
+        display: none;
+    }
+}
+
+/* ===== Disconnect Confirmation Modal ===== */
+.modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, .4);
+    z-index: 200;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-overlay.active {
+    display: flex;
+}
+
+.modal-dialog {
+    background: #fff;
+    border-radius: 16px;
+    padding: 32px;
+    max-width: 320px;
+    width: 90%;
+}
+
+.modal-title {
+    font-size: 20px;
+    font-weight: 800;
+    color: #0f1419;
+    margin-bottom: 8px;
+}
+
+.modal-desc {
+    font-size: 15px;
+    color: #536471;
+    line-height: 1.5;
+    margin-bottom: 24px;
+}
+
+.modal-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.modal-btn-confirm {
+    width: 100%;
+    height: 44px;
+    border-radius: 9999px;
+    font-size: 17px;
+    font-weight: 700;
+    background: #0f1419;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    transition: background .2s;
+}
+
+.modal-btn-confirm:hover {
+    background: #272c30;
+}
+
+.modal-btn-cancel {
+    width: 100%;
+    height: 44px;
+    border-radius: 9999px;
+    font-size: 17px;
+    font-weight: 700;
+    background: transparent;
+    color: #0f1419;
+    border: 1px solid #cfd9de;
+    cursor: pointer;
+    transition: background .2s;
+}
+
+.modal-btn-cancel:hover {
+    background: #f7f9f9;
+}
+
+/* ===== Friends Tabs (pill) ===== */
+.friends-tabs {
+    display: flex;
+    gap: 8px;
+    padding: 12px 16px;
+    border-bottom: 1px solid #eff3f4;
+}
+
+.friends-tab {
+    flex-shrink: 0;
+    padding: 8px 18px;
+    border-radius: 9999px;
+    font-size: 14px;
+    font-weight: 600;
+    background: #fff;
+    color: #0f1419;
+    border: 1px solid #cfd9de;
+    transition: all .15s;
+}
+
+.friends-tab:hover {
+    background: #f7f9f9;
+    border-color: #b0bec5;
+}
+
+.friends-tab.active {
+    background: #0f1419;
+    color: #fff;
+    border-color: #0f1419;
+    font-weight: 700;
+}
+
+.friends-tab-count {
+    margin-left: 4px;
+    opacity: 0.7;
+    font-weight: 500;
+}
+
+/* ===== Empty State ===== */
+.empty-state {
+    padding: 60px 24px;
+    text-align: center;
+    color: #536471;
+    font-size: 15px;
+}
+
+.empty-state-title {
+    font-size: 18px;
+    font-weight: 700;
+    color: #0f1419;
+    margin-bottom: 8px;
+}
+
+/* ===== Mobile responsive ===== */
+@media (max-width: 480px) {
+    .connect-btn {
+        min-width: 90px;
+        font-size: 13px;
+        padding: 0 12px;
+    }
+
+    .user-name {
+        font-size: 14px;
+    }
+
+    .user-bio {
+        font-size: 14px;
+    }
+
+    .cat-chip {
+        padding: 5px 12px;
+        font-size: 13px;
+    }
+}
+

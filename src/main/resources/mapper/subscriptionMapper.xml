@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.app.globalgates.mapper.SubscriptionMapper">
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+        insert into tbl_subscription (member_id, tier, billing_cycle, status, expires_at, billing_key, amount)
+        values (#{memberId}, #{tier}, #{billingCycle}, #{status}, COALESCE(#{expiresAt}::timestamp, now() + interval '1 minute'), #{billingKey}, #{amount})
+    </insert>
+
+    <select id="selectByMemberId">
+        select id, member_id, tier, billing_cycle, status, started_at, expires_at, created_datetime, updated_datetime, quartz, billing_key, amount
+        from tbl_subscription
+        where member_id = #{memberId} and status = 'active'
+        order by id desc
+        limit 1
+    </select>
+
+    <select id="selectExpiredMembers">
+        <![CDATA[
+        select id, member_id, tier, billing_cycle, status, started_at, expires_at, created_datetime, updated_datetime, quartz, billing_key, amount
+        from tbl_subscription
+        where status = 'active' and expires_at < now()
+        ]]>
+    </select>
+
+    <update id="updateQuartz">
+        update tbl_subscription
+        set quartz = #{quartz},
+            updated_datetime = now()
+        where id = #{id}
+    </update>
+
+    <update id="updateSubscribe">
+        update tbl_subscription
+        set expires_at = expires_at + interval '1 minute',
+            updated_datetime = now()
+        where id = #{id}
+    </update>
+
+    <update id="updateStatus">
+        update tbl_subscription
+        set status = #{status},
+            updated_datetime = now()
+        where id = #{id}
+    </update>
+</mapper>

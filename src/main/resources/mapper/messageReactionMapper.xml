@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.app.globalgates.mapper.MessageReactionMapper">
+
+    <insert id="insert">
+        <selectKey keyProperty="id" resultType="long" order="AFTER">
+            select currval('tbl_message_reaction_id_seq')
+        </selectKey>
+        insert into tbl_message_reaction (message_id, member_id, emoji)
+        values (#{messageId}, #{memberId}, #{emoji})
+    </insert>
+
+    <delete id="delete">
+        delete from tbl_message_reaction
+        where message_id = #{messageId}
+          and member_id = #{memberId}
+          and emoji = #{emoji}
+    </delete>
+
+    <select id="selectAllByMessageId">
+        select
+            id,
+            message_id,
+            member_id,
+            emoji,
+            created_datetime
+        from tbl_message_reaction
+        where message_id = #{messageId}
+        order by created_datetime asc
+    </select>
+
+    <select id="selectConversationIdByMessageId" resultType="java.lang.Long">
+        select conversation_id
+        from tbl_message
+        where id = #{messageId}
+          and is_deleted = false
+    </select>
+
+</mapper>

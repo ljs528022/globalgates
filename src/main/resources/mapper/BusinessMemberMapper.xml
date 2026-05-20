@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.app.globalgates.mapper.BusinessMemberMapper">
+    <insert id="insert">
+        insert into tbl_business_member (id,business_number, company_name, ceo_name, business_type)
+        values (#{id},#{businessNumber}, #{companyName}, #{ceoName},#{businessType})
+    </insert>
+
+    <select id="countByCompanyName" resultType="int">
+        select count(*) from tbl_business_member where company_name = #{companyName}
+    </select>
+
+    <select id="countByBusinessNumber" resultType="int">
+        select count(*) from tbl_business_member where business_number = #{businessNumber}
+    </select>
+
+</mapper>

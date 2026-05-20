@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.app.globalgates.mapper.OAuthMapper">
+    <insert id="insert">
+        insert into tbl_oauth (provider_id, provider, profile_url, member_id)
+        values (#{providerId}, #{provider}, #{profileURL}, #{memberId})
+    </insert>
+
+    <select id="selectMemberForLogin">
+        select
+            m.id, m.member_email, m.member_name,
+            m.member_password, m.member_handle, m.member_phone,
+            m.member_region, m.member_status, m.member_role,
+            m.push_enabled, m.member_language, m.birth_date,
+            m.created_datetime, m.updated_datetime, m.last_login_at,
+            o.provider_id, o.provider, o.profile_url
+        from tbl_member m
+                 join tbl_oauth o
+                      on m.id = o.member_id
+        where (m.member_email = #{loginId} or m.member_phone = #{loginId})
+          and m.member_password = #{memberPassword}
+          and m.member_status = 'active'
+          and o.provider = #{provider}
+    </select>
+
+    <select id="selectMemberByLoginId">
+        select
+            m.id, m.member_email, m.member_password, m.member_nickname, m.member_handle, m.member_phone, m.member_bio,
+            m.member_region, m.member_status, m.member_role,
+            m.push_enabled, m.birth_date, m.created_datetime,
+            m.updated_datetime, m.last_login_at, m.member_name,
+            m.member_language, m.member_login_verified,
+            o.provider_id, o.provider, o.profile_url
+        from tbl_member m
+                 join tbl_oauth o
+                      on m.id = o.member_id
+        where (m.member_email = #{loginId} or m.member_phone = #{loginId})
+          and m.member_status = 'active'
+          and o.provider = #{provider}
+    </select>
+</mapper>

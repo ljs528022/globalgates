@@ -1,0 +1,67 @@
+﻿<!doctype html>
+<html lang="ko">
+<head>
+    <link rel="icon" type="image/png" href="/images/logo/logo.png">
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Video Modal</title>
+    <link rel="stylesheet" href="/css/video/video.css"/>
+    <script src="/js/video/event.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/livekit-client@2.5.9/dist/livekit-client.umd.js"></script>
+</head>
+<body>
+<main class="video-page">
+    <section class="space-modal" aria-label="스페이스 모달">
+        <header class="space-header">
+            <!-- 녹음 시작, 정지 버튼 부분 -->
+            <div class="header-actions">
+                <!-- 기존 play-btn, stop-btn 제거하고 rec-btn으로 교체 -->
+                <button class="rec-btn" type="button" aria-label="녹화">
+                    <span class="rec-dot"></span>
+                    <span class="rec-text">REC</span>
+                </button>
+                <button class="end-btn" type="button">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640"><!--!Font Awesome Free v7.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2026 Fonticons, Inc.--><path d="M224 160C241.7 160 256 145.7 256 128C256 110.3 241.7 96 224 96L160 96C107 96 64 139 64 192L64 448C64 501 107 544 160 544L224 544C241.7 544 256 529.7 256 512C256 494.3 241.7 480 224 480L160 480C142.3 480 128 465.7 128 448L128 192C128 174.3 142.3 160 160 160L224 160zM566.6 342.6C579.1 330.1 579.1 309.8 566.6 297.3L438.6 169.3C426.1 156.8 405.8 156.8 393.3 169.3C380.8 181.8 380.8 202.1 393.3 214.6L466.7 288L256 288C238.3 288 224 302.3 224 320C224 337.7 238.3 352 256 352L466.7 352L393.3 425.4C380.8 437.9 380.8 458.2 393.3 470.7C405.8 483.2 426.1 483.2 438.6 470.7L566.6 342.7z"/></svg>
+                </button>
+            </div>
+        </header>
+
+        <section class="space-body">
+            <!-- 채팅방 바디 (화상통화 출력되는 곳) -->
+            <div class="video-chat-session" id="layout-container">
+                
+            </div>
+        </section>
+
+        <footer class="space-footer">
+
+            <div class="footer-right">
+                <button class="circle-btn" type="button" aria-label="참여자">
+                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                        <circle cx="8" cy="9" r="3"/>
+                        <circle cx="16" cy="9" r="3"/>
+                        <path d="M3 20c0-3 2-5 5-5s5 2 5 5"/>
+                        <path d="M11 20c0-3 2-5 5-5s5 2 5 5"/>
+                    </svg>
+                </button>
+            </div>
+        </footer>
+    </section>
+    <div class="participant-panel off" id="participantPanel">
+        <div class="participant-panel-header">
+            <span class="participant-panel-title">참여자</span>
+            <button class="participant-panel-close" id="participantPanelClose">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M18 6L6 18M6 6l12 12"/>
+                </svg>
+            </button>
+        </div>
+        <ul class="participant-panel-list" id="participantList"></ul>
+    </div>
+</main>
+</body>
+</html>
+
+
+
+

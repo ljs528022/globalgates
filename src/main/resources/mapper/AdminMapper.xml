@@ -1,0 +1,451 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.app.globalgates.mapper.AdminMapper">
+    <select id="selectAdminMemberTotal" resultType="int">
+        select count(*)
+        from tbl_member m
+        left join tbl_business_member bm on bm.id = m.id
+        left join lateral (
+            select s.tier,
+                   s.status
+            from tbl_subscription s
+            where s.member_id = m.id
+              and s.status = 'active'
+            order by s.id desc
+            limit 1
+        ) sub on true
+        where 1 = 1
+        <if test="keyword != null and keyword != ''">
+            and (
+                lower(coalesce(m.member_name, '')) like lower(concat('%', #{keyword}, '%'))
+                or lower(coalesce(m.member_email, '')) like lower(concat('%', #{keyword}, '%'))
+                or lower(coalesce(bm.company_name, '')) like lower(concat('%', #{keyword}, '%'))
+            )
+        </if>
+        <if test="subscriptionTier != null and subscriptionTier != '' and subscriptionTier != 'all'">
+            and case
+                    when m.member_role = 'expert' then 'expert'
+                    else coalesce(cast(sub.tier as varchar), 'free')
+                end = #{subscriptionTier}
+        </if>
+        <if test="memberStatus != null and memberStatus != '' and memberStatus != 'all'">
+            and m.member_status = #{memberStatus}::member_status
+        </if>
+    </select>
+
+    <select id="selectAdminMembers" resultType="com.app.globalgates.dto.AdminMemberListDTO">
+        select m.id,
+               m.member_name,
+               m.member_email,
+               bm.company_name,
+               m.birth_date,
+               m.member_role,
+               case
+                   when m.member_role = 'expert' then 'expert'::subscription_tier
+                   else coalesce(sub.tier, 'free'::subscription_tier)
+               end as subscription_tier,
+               sub.status as subscription_status,
+               m.member_status,
+               to_char(m.created_datetime, 'YYYY-MM-DD HH24:MI:SS') as created_datetime
+        from tbl_member m
+        left join tbl_business_member bm on bm.id = m.id
+        left join lateral (
+            select s.tier,
+                   s.status
+            from tbl_subscription s
+            where s.member_id = m.id
+              and s.status = 'active'
+            order by s.id desc
+            limit 1
+        ) sub on true
+        where 1 = 1
+        <if test="keyword != null and keyword != ''">
+            and (
+                lower(coalesce(m.member_name, '')) like lower(concat('%', #{keyword}, '%'))
+                or lower(coalesce(m.member_email, '')) like lower(concat('%', #{keyword}, '%'))
+                or lower(coalesce(bm.company_name, '')) like lower(concat('%', #{keyword}, '%'))
+            )
+        </if>
+        <if test="subscriptionTier != null and subscriptionTier != '' and subscriptionTier != 'all'">
+            and case
+                    when m.member_role = 'expert' then 'expert'
+                    else coalesce(cast(sub.tier as varchar), 'free')
+                end = #{subscriptionTier}
+        </if>
+        <if test="memberStatus != null and memberStatus != '' and memberStatus != 'all'">
+            and m.member_status = #{memberStatus}::member_status
+        </if>
+        order by m.created_datetime desc
+        limit #{criteria.count}
+        offset #{criteria.offset}
+    </select>
+
+    <select id="selectAdminPostTotal" resultType="int">
+        select count(*)
+        from tbl_post p
+        join tbl_member m on m.id = p.member_id
+        left join tbl_post_product pp on pp.id = p.id
+        left join tbl_category c on c.id = pp.product_category_id
+        where p.reply_post_id is null
+        <if test="keyword != null and keyword != ''">
+            and (
+                lower(coalesce(p.title, '')) like lower(concat('%', #{keyword}, '%'))
+                or lower(coalesce(p.content, '')) like lower(concat('%', #{keyword}, '%'))
+                or lower(coalesce(m.member_name, '')) like lower(concat('%', #{keyword}, '%'))
+            )
+        </if>
+        <if test="postType != null and postType != '' and postType != 'all'">
+            <choose>
+                <when test="postType == 'product'">
+                    and pp.id is not null
+                </when>
+                <when test="postType == 'general'">
+                    and pp.id is null
+                </when>
+            </choose>
+        </if>
+        <if test="categoryName != null and categoryName != '' and categoryName != 'all'">
+            and c.category_name = #{categoryName}
+        </if>
+        <if test="postStatus != null and postStatus != '' and postStatus != 'all'">
+            and p.post_status = #{postStatus}::post_status
+        </if>
+    </select>
+
+    <select id="selectAdminPosts" resultType="com.app.globalgates.dto.AdminPostListDTO">
+        select p.id,
+               p.member_id,
+               m.member_name as author_name,
+               p.title as post_title,
+               p.content as post_content,
+               case when pp.id is not null then 'product' else 'general' end as post_type,
+               c.category_name,
+               p.post_status,
+               to_char(p.created_datetime, 'YYYY-MM-DD HH24:MI:SS') as created_datetime
+        from tbl_post p
+        join tbl_member m on m.id = p.member_id
+        left join tbl_post_product pp on pp.id = p.id
+        left join tbl_category c on c.id = pp.product_category_id
+        where p.reply_post_id is null
+        <if test="keyword != null and keyword != ''">
+            and (
+                lower(coalesce(p.title, '')) like lower(concat('%', #{keyword}, '%'))
+                or lower(coalesce(p.content, '')) like lower(concat('%', #{keyword}, '%'))
+                or lower(coalesce(m.member_name, '')) like lower(concat('%', #{keyword}, '%'))
+            )
+        </if>
+        <if test="postType != null and postType != '' and postType != 'all'">
+            <choose>
+                <when test="postType == 'product'">
+                    and pp.id is not null
+                </when>
+                <when test="postType == 'general'">
+                    and pp.id is null
+                </when>
+            </choose>
+        </if>
+        <if test="categoryName != null and categoryName != '' and categoryName != 'all'">
+            and c.category_name = #{categoryName}
+        </if>
+        <if test="postStatus != null and postStatus != '' and postStatus != 'all'">
+            and p.post_status = #{postStatus}::post_status
+        </if>
+        order by p.created_datetime desc
+        limit #{criteria.count}
+        offset #{criteria.offset}
+    </select>
+
+    <select id="selectAdminReportTotal" resultType="int">
+        select count(*)
+        from tbl_report r
+        join tbl_member reporter on reporter.id = r.reporter_id
+        left join tbl_member target_member on target_member.id = r.target_id and r.target_type = 'member'
+        left join tbl_post target_post on target_post.id = r.target_id and r.target_type = 'post'
+        where 1 = 1
+        <if test="keyword != null and keyword != ''">
+            and (
+                lower(coalesce(reporter.member_name, '')) like lower(concat('%', #{keyword}, '%'))
+                or lower(coalesce(target_member.member_name, '')) like lower(concat('%', #{keyword}, '%'))
+                or lower(coalesce(target_post.title, '')) like lower(concat('%', #{keyword}, '%'))
+                or lower(coalesce(r.reason, '')) like lower(concat('%', #{keyword}, '%'))
+            )
+        </if>
+        <if test="targetType != null and targetType != '' and targetType != 'all'">
+            and r.target_type = #{targetType}::report_target_type
+        </if>
+        <if test="reportStatus != null and reportStatus != '' and reportStatus != 'all'">
+            and r.status = #{reportStatus}::report_status
+        </if>
+    </select>
+
+    <select id="selectAdminReports" resultType="com.app.globalgates.dto.AdminReportListDTO">
+        select r.id,
+               r.target_id,
+               reporter.member_name as reporter_name,
+               r.target_type,
+               case
+                   when r.target_type = 'member' then coalesce(target_member.member_name, cast(r.target_id as varchar))
+                   when r.target_type = 'post' then coalesce(target_post.title, cast(r.target_id as varchar))
+                   else cast(r.target_id as varchar)
+               end as target_name,
+               r.reason,
+               r.status,
+               to_char(r.created_datetime, 'YYYY-MM-DD HH24:MI:SS') as created_datetime,
+               target_author.member_name as author_name,
+               target_post.title as post_title,
+               target_post.content as post_content,
+               case
+                   when r.target_type = 'post' and target_product.id is not null then 'product'
+                   when r.target_type = 'post' then 'general'
+                   else null
+               end as post_type,
+               target_category.category_name,
+               to_char(target_post.created_datetime, 'YYYY-MM-DD HH24:MI:SS') as post_created_datetime
+        from tbl_report r
+        join tbl_member reporter on reporter.id = r.reporter_id
+        left join tbl_member target_member on target_member.id = r.target_id and r.target_type = 'member'
+        left join tbl_post target_post on target_post.id = r.target_id and r.target_type = 'post'
+        left join tbl_member target_author on target_author.id = target_post.member_id
+        left join tbl_post_product target_product on target_product.id = target_post.id
+        left join tbl_category target_category on target_category.id = target_product.product_category_id
+        where 1 = 1
+        <if test="keyword != null and keyword != ''">
+            and (
+                lower(coalesce(reporter.member_name, '')) like lower(concat('%', #{keyword}, '%'))
+                or lower(coalesce(target_member.member_name, '')) like lower(concat('%', #{keyword}, '%'))
+                or lower(coalesce(target_post.title, '')) like lower(concat('%', #{keyword}, '%'))
+                or lower(coalesce(r.reason, '')) like lower(concat('%', #{keyword}, '%'))
+            )
+        </if>
+        <if test="targetType != null and targetType != '' and targetType != 'all'">
+            and r.target_type = #{targetType}::report_target_type
+        </if>
+        <if test="reportStatus != null and reportStatus != '' and reportStatus != 'all'">
+            and r.status = #{reportStatus}::report_status
+        </if>
+        order by r.created_datetime desc
+        limit #{criteria.count}
+        offset #{criteria.offset}
+    </select>
+
+    <update id="updateMemberStatus">
+        update tbl_member
+        set member_status = #{memberStatus}::member_status,
+            updated_datetime = now()
+        where id = #{memberId}
+    </update>
+
+    <update id="updatePostStatus">
+        update tbl_post
+        set post_status = #{postStatus}::post_status,
+            updated_datetime = now()
+        where id in
+        <foreach item="postId" collection="postIds" open="(" separator="," close=")">
+            #{postId}
+        </foreach>
+    </update>
+
+    <update id="updatePostContent">
+        update tbl_post
+        set content = #{postContent},
+            updated_datetime = now()
+        where id = #{postId}
+    </update>
+
+    <update id="updatePostCategory">
+        update tbl_post_product
+        set product_category_id = #{categoryId},
+            updated_datetime = now()
+        where id = #{postId}
+    </update>
+
+    <update id="clearEstimationProducts">
+        update tbl_estimation
+        set product_id = null,
+            updated_datetime = now()
+        where product_id in
+        <foreach item="postId" collection="postIds" open="(" separator="," close=")">
+            #{postId}
+        </foreach>
+    </update>
+
+    <delete id="deletePostMentions">
+        delete from tbl_mention
+        where post_id in (
+            select id from tbl_post where reply_post_id in
+            <foreach item="postId" collection="postIds" open="(" separator="," close=")">
+                #{postId}
+            </foreach>
+        )
+        or post_id in
+        <foreach item="postId" collection="postIds" open="(" separator="," close=")">
+            #{postId}
+        </foreach>
+    </delete>
+
+    <delete id="deletePostReports">
+        delete from tbl_report
+        where target_type = 'post'
+          and (
+            target_id in
+            <foreach item="postId" collection="postIds" open="(" separator="," close=")">
+                #{postId}
+            </foreach>
+            or target_id in (
+                select id from tbl_post where reply_post_id in
+                <foreach item="postId" collection="postIds" open="(" separator="," close=")">
+                    #{postId}
+                </foreach>
+            )
+          )
+    </delete>
+
+    <delete id="deletePostBookmarks">
+        delete from tbl_bookmark
+        where post_id in (
+            select id from tbl_post where reply_post_id in
+            <foreach item="postId" collection="postIds" open="(" separator="," close=")">
+                #{postId}
+            </foreach>
+        )
+        or post_id in
+        <foreach item="postId" collection="postIds" open="(" separator="," close=")">
+            #{postId}
+        </foreach>
+    </delete>
+
+    <delete id="deletePostFiles">
+        delete from tbl_post_file
+        where post_id in (
+            select id from tbl_post where reply_post_id in
+            <foreach item="postId" collection="postIds" open="(" separator="," close=")">
+                #{postId}
+            </foreach>
+        )
+        or post_id in
+        <foreach item="postId" collection="postIds" open="(" separator="," close=")">
+            #{postId}
+        </foreach>
+    </delete>
+
+    <delete id="deletePostLikes">
+        delete from tbl_post_like
+        where post_id in (
+            select id from tbl_post where reply_post_id in
+            <foreach item="postId" collection="postIds" open="(" separator="," close=")">
+                #{postId}
+            </foreach>
+        )
+        or post_id in
+        <foreach item="postId" collection="postIds" open="(" separator="," close=")">
+            #{postId}
+        </foreach>
+    </delete>
+
+    <delete id="deletePostHashtags">
+        delete from tbl_post_hashtag_rel
+        where post_id in (
+            select id from tbl_post where reply_post_id in
+            <foreach item="postId" collection="postIds" open="(" separator="," close=")">
+                #{postId}
+            </foreach>
+        )
+        or post_id in
+        <foreach item="postId" collection="postIds" open="(" separator="," close=")">
+            #{postId}
+        </foreach>
+    </delete>
+
+    <delete id="deletePostProducts">
+        delete from tbl_post_product
+        where id in (
+            select id from tbl_post where reply_post_id in
+            <foreach item="postId" collection="postIds" open="(" separator="," close=")">
+                #{postId}
+            </foreach>
+        )
+        or id in
+        <foreach item="postId" collection="postIds" open="(" separator="," close=")">
+            #{postId}
+        </foreach>
+    </delete>
+
+    <delete id="deleteReplyPosts">
+        delete from tbl_post
+        where reply_post_id in
+        <foreach item="postId" collection="postIds" open="(" separator="," close=")">
+            #{postId}
+        </foreach>
+    </delete>
+
+    <delete id="deletePosts">
+        delete from tbl_post
+        where id in
+        <foreach item="postId" collection="postIds" open="(" separator="," close=")">
+            #{postId}
+        </foreach>
+    </delete>
+
+    <update id="updateReportStatus">
+        update tbl_report
+        set status = #{reportStatus}::report_status,
+            updated_datetime = now()
+        where id in
+        <foreach item="reportId" collection="reportIds" open="(" separator="," close=")">
+            #{reportId}
+        </foreach>
+    </update>
+
+    <update id="updateReportedPostStatusByReportIds">
+        update tbl_post
+        set post_status = #{postStatus}::post_status,
+            updated_datetime = now()
+        where id in (
+            select distinct r.target_id
+            from tbl_report r
+            where r.target_type = 'post'
+              and r.id in
+              <foreach item="reportId" collection="reportIds" open="(" separator="," close=")">
+                  #{reportId}
+              </foreach>
+        )
+    </update>
+
+    <update id="updateReportedMemberStatusByReportIds">
+        update tbl_member
+        set member_status = #{memberStatus}::member_status,
+            updated_datetime = now()
+        where id in (
+            select distinct r.target_id
+            from tbl_report r
+            where r.target_type = 'member'
+              and r.id in
+              <foreach item="reportId" collection="reportIds" open="(" separator="," close=")">
+                  #{reportId}
+              </foreach>
+        )
+    </update>
+
+    <update id="updateReportedMemberPostStatusByReportIds">
+        update tbl_post
+        set post_status = #{postStatus}::post_status,
+            updated_datetime = now()
+        where member_id in (
+            select distinct r.target_id
+            from tbl_report r
+            where r.target_type = 'member'
+              and r.id in
+              <foreach item="reportId" collection="reportIds" open="(" separator="," close=")">
+                  #{reportId}
+              </foreach>
+        )
+    </update>
+
+    <delete id="deleteReports">
+        delete from tbl_report
+        where id in
+        <foreach item="reportId" collection="reportIds" open="(" separator="," close=")">
+            #{reportId}
+        </foreach>
+    </delete>
+</mapper>

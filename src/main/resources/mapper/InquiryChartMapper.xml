@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.app.globalgates.mapper.InquiryChartMapper">
+    <select id="countFollowers" resultType="long">
+        select count(*) from tbl_follow where following_id = #{memberId}
+    </select>
+    <select id="countApprovedEstimations" resultType="long">
+        select count(*) from tbl_estimation where receiver_id = #{memberId} and status = 'approve'
+    </select>
+    <select id="countReceivedEstimations" resultType="long">
+        select count(*) from tbl_estimation where receiver_id = #{memberId}
+    </select>
+    <select id="findAverageResponseHours" resultType="double">
+        select avg(extract(epoch from (updated_datetime - created_datetime)) / 3600.0)
+        from tbl_estimation
+        where receiver_id = #{memberId} and status != 'requesting'
+    </select>
+    <select id="countPostLikes" resultType="long">
+        select count(*)
+        from tbl_post_like pl join tbl_post p on p.id = pl.post_id
+        where p.member_id = #{memberId} and p.post_status = 'active'
+    </select>
+    <select id="countPostBookmarks" resultType="long">
+        select count(*)
+        from tbl_bookmark b join tbl_post p on p.id = b.post_id
+        where p.member_id = #{memberId} and p.post_status = 'active'
+    </select>
+    <select id="selectFollowerDailyCounts" resultType="com.app.globalgates.dto.ChartPointDTO">
+        select to_char(created_datetime, 'YYYY-MM-DD') as label, count(*) as value
+        from tbl_follow
+        where following_id = #{memberId} and created_datetime &gt;= #{startAt} and created_datetime &lt; #{endAt}
+        group by to_char(created_datetime, 'YYYY-MM-DD')
+        order by label
+    </select>
+    <select id="selectFollowerMonthlyCounts" resultType="com.app.globalgates.dto.ChartPointDTO">
+        select to_char(created_datetime, 'YYYY-MM') as label, count(*) as value
+        from tbl_follow
+        where following_id = #{memberId} and created_datetime &gt;= #{startAt} and created_datetime &lt; #{endAt}
+        group by to_char(created_datetime, 'YYYY-MM')
+        order by label
+    </select>
+    <select id="selectEstimationDailyCounts" resultType="com.app.globalgates.dto.ChartPointDTO">
+        select to_char(created_datetime, 'YYYY-MM-DD') as label, count(*) as value
+        from tbl_estimation
+        where receiver_id = #{memberId} and created_datetime &gt;= #{startAt} and created_datetime &lt; #{endAt}
+        group by to_char(created_datetime, 'YYYY-MM-DD')
+        order by label
+    </select>
+    <select id="selectEstimationMonthlyCounts" resultType="com.app.globalgates.dto.ChartPointDTO">
+        select to_char(created_datetime, 'YYYY-MM') as label, count(*) as value
+        from tbl_estimation
+        where receiver_id = #{memberId} and created_datetime &gt;= #{startAt} and created_datetime &lt; #{endAt}
+        group by to_char(created_datetime, 'YYYY-MM')
+        order by label
+    </select>
+    <select id="selectEstimationStatusMonthly" resultType="com.app.globalgates.dto.ChartPointDTO">
+        select to_char(created_datetime, 'YYYY-MM') as label,
+               sum(case when status = 'approve' then 1 else 0 end) as value,
+               sum(case when status = 'reject' then 1 else 0 end) as secondaryValue
+        from tbl_estimation
+        where receiver_id = #{memberId} and created_datetime &gt;= #{startAt} and created_datetime &lt; #{endAt}
+        group by to_char(created_datetime, 'YYYY-MM')
+        order by label
+    </select>
+    <select id="selectDealCategories" resultType="com.app.globalgates.dto.ChartPointDTO">
+        select coalesce(c.category_name, '미분류') as label, count(*) as value
+        from tbl_estimation e
+                 left join tbl_post_product pp on pp.id = e.product_id
+                 left join tbl_category c on c.id = pp.product_category_id
+        where e.receiver_id = #{memberId}
+          and e.status = 'approve'
+        group by coalesce(c.category_name, '미분류')
+        order by value desc, label asc
+        limit 6
+    </select>
+    <select id="selectDealCountries" resultType="com.app.globalgates.dto.ChartPointDTO">
+        select case
+                   when trim(coalesce(m.member_region, '')) = '' then 'Unknown'
+                   else 'South Korea'
+               end as label,
+               count(*) as value
+        from tbl_estimation e
+                 join tbl_member m on m.id = e.requester_id
+        where e.receiver_id = #{memberId}
+          and e.status = 'approve'
+        group by 1
+        order by value desc, label asc
+    </select>
+</mapper>

@@ -1,0 +1,75 @@
+﻿<!doctype html>
+<html lang="ko">
+<head>
+    <link rel="icon" type="image/png" href="/images/logo/logo.png">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>추천 팔로우 모달</title>
+  <link rel="stylesheet" href="/css/member/login-follow-modal.css" />
+</head>
+<body>
+  <main class="follow-page">
+    <section class="follow-overlay" id="followOverlay" aria-hidden="false">
+      <article class="follow-modal" role="dialog" aria-modal="true" aria-labelledby="followTitle">
+        <header class="follow-header">
+          <button class="close-btn" id="closeFollowModal" type="button" aria-label="닫기">×</button>
+          <div class="x-logo" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><path d="M18.901 1.153h3.68l-8.04 9.19 9.46 12.504H16.594l-5.8-7.584-6.99 7.584H.12l8.6-9.32L-.001 1.153h7.598l5.243 6.932L18.901 1.153Zm-1.29 19.468h2.04L6.486 3.264H4.298l13.313 17.357Z"></path></svg>
+          </div>
+          <span></span>
+        </header>
+
+        <section class="follow-content">
+          <h1 class="follow-title" id="followTitle">놓치지 마세요</h1>
+          <p class="follow-desc">다른 사용자를 팔로우하면 내 타임라인에서 이 사용자의 게시물을 볼 수 있습니다. 나와 관련성 높은 추천도 볼 수 있습니다.</p>
+          <h2 class="follow-subtitle">1개 이상의 계정을 팔로우해 보세요</h2>
+
+          <div class="follow-list" role="list">
+            <article class="follow-item" role="listitem">
+              <div class="profile-circle">E</div>
+              <div class="profile-meta">
+                <p class="name">Elon Musk</p>
+                <p class="id">@elonmusk</p>
+              </div>
+              <button class="follow-btn" type="button">팔로우</button>
+            </article>
+
+            <article class="follow-item" role="listitem">
+              <div class="profile-circle">L</div>
+              <div class="profile-meta">
+                <p class="name">Libs of TikTok</p>
+                <p class="id">@libsoftiktok</p>
+              </div>
+              <button class="follow-btn" type="button">팔로우</button>
+            </article>
+
+            <article class="follow-item" role="listitem">
+              <div class="profile-circle">아</div>
+              <div class="profile-meta">
+                <p class="name">아침밥점</p>
+                <p class="id">@Hi_Ohaasa</p>
+              </div>
+              <button class="follow-btn" type="button">팔로우</button>
+            </article>
+
+            <article class="follow-item" role="listitem">
+              <div class="profile-circle">팔</div>
+              <div class="profile-meta">
+                <p class="name">팔쓸사람</p>
+                <p class="id">@dbemgmr</p>
+              </div>
+              <button class="follow-btn" type="button">팔로우</button>
+            </article>
+          </div>
+        </section>
+
+        <footer class="follow-footer">
+          <button id="nextBtn" class="next-btn" type="button" disabled>다음</button>
+        </footer>
+      </article>
+    </section>
+  </main>
+
+  <script src="/js/member/login-follow-modal.js"></script>
+</body>
+</html>

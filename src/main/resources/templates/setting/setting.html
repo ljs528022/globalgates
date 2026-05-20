@@ -1,0 +1,2223 @@
+<!doctype html>
+<html lang="ko" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{common/layout-left-one}">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>설정 / G</title>
+    <link rel="stylesheet" href="/css/common/mobile-nav.css" th:href="@{/css/common/mobile-nav.css}"/>
+    <link rel="stylesheet" href="/css/setting/setting.css"/>
+    <script src="/js/common/mobile-nav.js" th:src="@{/js/common/mobile-nav.js}" defer></script>
+    <script th:inline="javascript">
+        /*
+         * setting 화면의 최초 회원 정보는 서버가 Thymeleaf로 주입하고,
+         * event.js는 이 전역 객체를 읽어 현재 상태 객체를 초기화한다.
+         * 이 패턴을 쓰면 템플릿은 "초기값 제공", JS는 "화면 전환과 상태 동기화"만 맡게 되어
+         * 현재 repo의 window.oauthJoinData 같은 객체 주입 방식과 결이 맞는다.
+         */
+        window.settingMember = {
+            id: [[${member.id}]],
+            memberName: [[${member.memberName}]],
+            memberEmail: [[${member.memberEmail}]],
+            memberPhone: [[${member.memberPhone}]],
+            memberLanguage: [[${member.memberLanguage}]],
+            memberHandle: [[${member.memberHandle}]],
+            memberCountry: [[${member.memberCountry}]],
+            pushEnabled: [[${member.pushEnabled}]],
+            createdDatetime: [[${member.createdDatetime}]],
+            memberBio: [[${member.memberBio}]],
+            // provider 계정은 setting에서 비밀번호 재확인/생성 흐름을 별도로 분기해야 하므로
+            // 최초 렌더 시 서버가 현재 계정의 OAuth 공급자와 passwordless 여부를 함께 내려준다.
+            memberProvider: [[${member.provider}]],
+            isPasswordlessAccount: [[${
+                member
+                .provider != null
+                and(member
+                .memberPassword == null
+                or #strings.isEmpty(member.memberPassword)
+        )
+        }]]
+        }
+        ;
+
+        /*
+         * 알림 상세 초기값도 같은 방식으로 서버가 직접 주입한다.
+         * event.js는 이 객체를 읽어 화면 상태만 구성하고, 저장은 별도 settings API로 보낸다.
+         */
+        window.settingNotificationPreference = {
+            pushConnect: [[${notificationPreference.pushConnect}]],
+            pushExpert: [[${notificationPreference.pushExpert}]],
+            pushLikes: [[${notificationPreference.pushLikes}]],
+            pushPosts: [[${notificationPreference.pushPosts}]],
+            pushComments: [[${notificationPreference.pushComments}]],
+            pushChatMessages: [[${notificationPreference.pushChatMessages}]],
+            pushQuotes: [[${notificationPreference.pushQuotes}]],
+            pushSystem: [[${notificationPreference.pushSystem}]],
+            pushMentions: [[${notificationPreference.pushMentions}]]
+        };
+
+        window.block
+    </script>
+    <script src="/js/main/service.js"></script>
+    <script src="/js/main/layout.js"></script>
+    <script src="/js/setting/service.js"></script>
+    <script src="/js/setting/layout.js"></script>
+    <script src="/js/setting/event.js"></script>
+</head>
+<body th:attr="data-google-maps-api-key=${googleMapsApiKey}">
+<gmpx-api-loader th:attr="key=${googleMapsApiKey}" solution-channel="GMP_QB_addressselection_v4_cABC">
+</gmpx-api-loader>
+<main class="Page-Layout" id="mainPage">
+    <th:block layout:fragment="content">
+    <div class="settings-shell">
+        <section
+                class="settings-panel settings-panel--navigation"
+                aria-label="섹션 탐색"
+        >
+            <header class="panel-header">
+                <div class="panel-header__inner">
+                    <h1 class="panel-title" id="settingsNavigationTitle">
+                        설정
+                    </h1>
+                </div>
+            </header>
+
+            <div class="panel-scroller">
+                <form
+                        class="settings-search"
+                        id="settingsSearchForm"
+                        role="search"
+                        aria-label="설정 검색하기"
+                >
+                    <label class="search-field" for="settingsSearchInput">
+                                <span class="search-icon" aria-hidden="true">
+                                    <svg viewBox="0 0 24 24">
+                                        <g>
+                                            <path
+                                                    d="M10.25 3.75c-3.59 0-6.5 2.91-6.5 6.5s2.91 6.5 6.5 6.5c1.795 0 3.419-.726 4.596-1.904 1.178-1.177 1.904-2.801 1.904-4.596 0-3.59-2.91-6.5-6.5-6.5zm-8.5 6.5c0-4.694 3.806-8.5 8.5-8.5s8.5 3.806 8.5 8.5c0 1.986-.682 3.815-1.824 5.262l4.781 4.781-1.414 1.414-4.781-4.781c-1.447 1.142-3.276 1.824-5.262 1.824-4.694 0-8.5-3.806-8.5-8.5z"
+                                            ></path>
+                                        </g>
+                                    </svg>
+                                </span>
+                        <input
+                                class="search-input"
+                                id="settingsSearchInput"
+                                type="search"
+                                placeholder="설정 검색하기"
+                                aria-label="설정 검색하기"
+                                autocomplete="off"
+                        />
+                    </label>
+                </form>
+
+                <nav
+                        class="settings-navigation"
+                        aria-label="설정 메뉴"
+                >
+                    <div
+                            class="navigation-list"
+                            id="settingsNavigationList"
+                            role="tablist"
+                    >
+                        <div class="navigation-entry navigation-entry--active" data-nav-entry="account">
+                            <a class="navigation-entry__link" href="/settings/account" role="tab" aria-selected="true"
+                               data-section-id="account">
+                                <span class="navigation-entry__label">계정</span>
+                                <span class="navigation-entry__icon"><svg viewBox="0 0 24 24" aria-hidden="true"><g><path
+                                        d="M14.586 12L7.543 4.96l1.414-1.42L17.414 12l-8.457 8.46-1.414-1.42L14.586 12z"></path></g></svg></span>
+                            </a>
+                            <span class="navigation-entry__indicator" aria-hidden="true"></span>
+                        </div>
+                        <div class="navigation-entry" data-nav-entry="notifications">
+                            <a class="navigation-entry__link" href="/settings/notifications" role="tab"
+                               aria-selected="false" data-section-id="notifications">
+                                <span class="navigation-entry__label">알림</span>
+                                <span class="navigation-entry__icon"><svg viewBox="0 0 24 24" aria-hidden="true"><g><path
+                                        d="M14.586 12L7.543 4.96l1.414-1.42L17.414 12l-8.457 8.46-1.414-1.42L14.586 12z"></path></g></svg></span>
+                            </a>
+                            <span class="navigation-entry__indicator" aria-hidden="true"></span>
+                        </div>
+                        <div class="navigation-entry" data-nav-entry="privacy_and_safety">
+                            <a class="navigation-entry__link" href="/settings/privacy_and_safety" role="tab"
+                               aria-selected="false" data-section-id="privacy_and_safety">
+                                <span class="navigation-entry__label">차단한 계정</span>
+                                <span class="navigation-entry__icon"><svg viewBox="0 0 24 24" aria-hidden="true"><g><path
+                                        d="M14.586 12L7.543 4.96l1.414-1.42L17.414 12l-8.457 8.46-1.414-1.42L14.586 12z"></path></g></svg></span>
+                            </a>
+                            <span class="navigation-entry__indicator" aria-hidden="true"></span>
+                        </div>
+                        <div class="navigation-entry" data-nav-entry="subscription">
+                            <a class="navigation-entry__link" href="/settings/subscription" role="tab"
+                               aria-selected="false" data-section-id="subscription">
+                                <span class="navigation-entry__label">구독</span>
+                                <span class="navigation-entry__icon"><svg viewBox="0 0 24 24" aria-hidden="true"><g><path
+                                        d="M14.586 12L7.543 4.96l1.414-1.42L17.414 12l-8.457 8.46-1.414-1.42L14.586 12z"></path></g></svg></span>
+                            </a>
+                            <span class="navigation-entry__indicator" aria-hidden="true"></span>
+                        </div>
+                    </div>
+                </nav>
+            </div>
+        </section>
+
+        <section
+                class="settings-panel settings-panel--detail"
+                aria-label="섹션 세부사항"
+        >
+            <header class="panel-header">
+                <div
+                        class="panel-header__inner panel-header__inner--detail"
+                >
+                    <button
+                            type="button"
+                            class="panel-back"
+                            id="settingsDetailBackButton"
+                            aria-label="뒤로가기"
+                            hidden
+                    >
+                        <svg viewBox="0 0 24 24" aria-hidden="true">
+                            <g>
+                                <path
+                                        d="M7.414 13l5.043 5.04-1.414 1.42L3.586 12l7.457-7.46 1.414 1.42L7.414 11H21v2H7.414z"
+                                ></path>
+                            </g>
+                        </svg>
+                    </button>
+                    <h2
+                            class="panel-title"
+                            id="settingsDetailTitle"
+                    ></h2>
+                    <button
+                            type="button"
+                            class="panel-header__action"
+                            id="settingsDetailActionButton"
+                            hidden
+                    ></button>
+                </div>
+            </header>
+
+            <div
+                    class="panel-scroller detail-content"
+                    id="settingsDetailContent"
+            >
+                <div class="detail-routes" id="settingsDetailRoutes">
+                    <section class="detail-route" data-detail-route-view="account" data-route-title="계정" hidden
+                             aria-hidden="true">
+                        <p class="detail-summary">계정 정보를 확인하고, 계정 비활성화 옵션에 대해 자세히 알아보세요.</p>
+                        <div class="detail-list">
+                            <a class="detail-entry" href="/settings/your_twitter_data/account" role="tab"
+                               aria-selected="false">
+                                        <span class="detail-entry__content">
+                                            <span class="detail-entry__icon"><svg viewBox="0 0 24 24"
+                                                                                  aria-hidden="true"><g><path
+                                                    d="M5.651 19h12.698c-.337-1.8-1.023-3.21-1.945-4.19C15.318 13.65 13.838 13 12 13s-3.317.65-4.404 1.81c-.922.98-1.608 2.39-1.945 4.19zm.486-5.56C7.627 11.85 9.648 11 12 11s4.373.85 5.863 2.44c1.477 1.58 2.366 3.8 2.632 6.46l.11 1.1H3.395l.11-1.1c.266-2.66 1.155-4.88 2.632-6.46zM12 4c-1.105 0-2 .9-2 2s.895 2 2 2 2-.9 2-2-.895-2-2-2zM8 6c0-2.21 1.791-4 4-4s4 1.79 4 4-1.791 4-4 4-4-1.79-4-4z"></path></g></svg></span>
+                                            <span class="detail-entry__body">
+                                                <span class="detail-entry__title">계정 정보</span>
+                                                <p class="detail-entry__description">휴대폰 번호와 이메일 주소와 같은 계정 정보를 조회하세요.</p>
+                                            </span>
+                                        </span>
+                                <span class="detail-entry__arrow"><svg viewBox="0 0 24 24" aria-hidden="true"><g><path
+                                        d="M14.586 12L7.543 4.96l1.414-1.42L17.414 12l-8.457 8.46-1.414-1.42L14.586 12z"></path></g></svg></span>
+                            </a>
+                            <a class="detail-entry" href="/settings/password" role="tab" aria-selected="false">
+                                        <span class="detail-entry__content">
+                                            <span class="detail-entry__icon"><svg viewBox="0 0 24 24"
+                                                                                  aria-hidden="true"><g><path
+                                                    d="M13 9.5c0-.83.67-1.5 1.5-1.5s1.5.67 1.5 1.5-.67 1.5-1.5 1.5-1.5-.67-1.5-1.5zm9.14 1.77l-5.83 5.84-4-1L6.41 22H2v-4.41l5.89-5.9-1-4 5.84-5.83 7.06 2.35 2.35 7.06zm-12.03 1.04L4 18.41V20h1.59l6.1-6.11 4 1 4.17-4.16-1.65-4.94-4.94-1.65-4.16 4.17 1 4z"></path></g></svg></span>
+                                            <span class="detail-entry__body">
+                                                <span class="detail-entry__title">비밀번호 변경</span>
+                                                <p class="detail-entry__description">언제든지 비밀번호를 변경하세요.</p>
+                                            </span>
+                                        </span>
+                                <span class="detail-entry__arrow"><svg viewBox="0 0 24 24" aria-hidden="true"><g><path
+                                        d="M14.586 12L7.543 4.96l1.414-1.42L17.414 12l-8.457 8.46-1.414-1.42L14.586 12z"></path></g></svg></span>
+                            </a>
+                            <a class="detail-entry" href="/settings/deactivate" role="tab" aria-selected="false">
+                                        <span class="detail-entry__content">
+                                            <span class="detail-entry__icon"><svg viewBox="0 0 24 24"
+                                                                                  aria-hidden="true"><g><path
+                                                    d="M21.398 6.52c-.887-1.79-2.647-2.91-4.601-3.01-1.65-.09-3.367.56-4.796 2.01-1.43-1.45-3.147-2.1-4.798-2.01-1.954.1-3.714 1.22-4.601 3.01-.896 1.81-.846 4.17.514 6.67 1.353 2.48 4.003 5.12 8.382 7.67l.504.3.503-.3c4.378-2.55 7.028-5.19 8.379-7.67 1.36-2.5 1.41-4.86.514-6.67zm-2.27 5.71c-1.074 1.97-3.256 4.27-7.126 6.61-3.872-2.34-6.055-4.64-7.129-6.61-1.112-2.04-1.031-3.7-.479-4.82.561-1.13 1.667-1.84 2.91-1.91 1.077-.05 2.338.38 3.452 1.61L8.588 10.3l4.009 2.5-1.428 2.15 1.665 1.1 2.569-3.85-3.991-2.5 1.405-2.06c1.21-1.63 2.662-2.2 3.88-2.14 1.242.07 2.347.78 2.908 1.91.553 1.12.634 2.78-.477 4.82z"></path></g></svg></span>
+                                            <span class="detail-entry__body">
+                                                <span class="detail-entry__title">계정 비활성화</span>
+                                                <p class="detail-entry__description">계정을 비활성화하는 법을 알아보세요.</p>
+                                            </span>
+                                        </span>
+                                <span class="detail-entry__arrow"><svg viewBox="0 0 24 24" aria-hidden="true"><g><path
+                                        d="M14.586 12L7.543 4.96l1.414-1.42L17.414 12l-8.457 8.46-1.414-1.42L14.586 12z"></path></g></svg></span>
+                            </a>
+                        </div>
+                    </section>
+
+                    <section class="detail-route" data-detail-route-view="notifications" data-route-title="푸시 알림" hidden
+                             aria-hidden="true">
+                        <p class="detail-summary">받고 싶은 푸시 알림 종류를 선택합니다.</p>
+                    </section>
+
+                    <section
+                            class="detail-route"
+                            data-detail-route-view="account-info-auth"
+                            data-route-title="계정 정보"
+                            hidden
+                            aria-hidden="true"
+                    >
+                        <div class="detail-route__section">
+                            <h3 class="detail-route__heading">비밀번호를 확인하세요</h3>
+                            <p class="detail-route__copy">비밀번호를 입력하여 계속하세요.</p>
+                        </div>
+                        <form class="detail-form" data-account-auth-form>
+                            <label class="detail-form__field" data-password-field>
+                                <span class="detail-form__label">비밀번호</span>
+                                <input
+                                        class="detail-form__input"
+                                        type="password"
+                                        aria-label="비밀번호"
+                                        data-account-auth-input
+                                />
+                            </label>
+                            <a class="detail-form__link" href="#">비밀번호를 잊으셨나요?</a>
+                            <div class="detail-form__footer">
+                                <button
+                                        type="button"
+                                        class="detail-form__button"
+                                        data-account-auth-submit
+                                        disabled
+                                >
+                                    확인
+                                </button>
+                            </div>
+                        </form>
+                    </section>
+
+                    <section
+                            class="detail-route detail-route--info"
+                            data-detail-route-view="account-info-list"
+                            data-route-title="계정 정보"
+                            hidden
+                            aria-hidden="true"
+                    >
+                        <div class="account-info-list" data-account-info-list>
+                            <th:block
+                                    th:if="${member.memberEmail != null and !#strings.isEmpty(member.memberEmail)}"
+                                    th:with="providerKey=${member.provider != null ? member.provider.name() : 'LOCAL'}"
+                            >
+                                <div
+                                        class="account-connect-card"
+                                        th:classappend="
+                                            ${providerKey == 'GOOGLE'} ? ' account-connect-card--google' :
+                                            (${providerKey == 'NAVER'} ? ' account-connect-card--naver' :
+                                            (${providerKey == 'KAKAO'} ? ' account-connect-card--kakao' :
+                                            (${providerKey == 'FACEBOOK'} ? ' account-connect-card--facebook' :
+                                            ' account-connect-card--local')))"
+                                >
+                                    <div class="account-connect-card__brand">
+                                        <th:block th:switch="${providerKey}">
+                                            <img
+                                                    th:case="'GOOGLE'"
+                                                    class="account-connect-card__logo"
+                                                    src="https://static.cdn.kmong.com/assets/icon/google-logo_v2.png?w=24"
+                                                    alt="Google 로고"
+                                                    loading="lazy"
+                                            />
+                                            <img
+                                                    th:case="'NAVER'"
+                                                    class="account-connect-card__logo"
+                                                    src="/images/naver_login_kr/naver_login_light_kr_green_icon_h48.png"
+                                                    alt="네이버 로고"
+                                                    loading="lazy"
+                                            />
+                                            <img
+                                                    th:case="'KAKAO'"
+                                                    class="account-connect-card__logo"
+                                                    src="https://static.cdn.kmong.com/assets/icon/kakao-logo_v2.png?w=24"
+                                                    alt="카카오 로고"
+                                                    loading="lazy"
+                                                    style="background-color: #FEE500; padding: 1px; border-radius: 999px;"
+                                            />
+                                            <img
+                                                    th:case="'FACEBOOK'"
+                                                    class="account-connect-card__logo"
+                                                    src="https://static.cdn.kmong.com/assets/icon/facebook-logo_v2.png?w=24"
+                                                    alt="페이스북 로고"
+                                                    loading="lazy"
+                                            />
+                                            <img
+                                                    th:case="*"
+                                                    class="account-connect-card__logo"
+                                                    src="/images/main/global-gates-logo.png"
+                                                    alt="Global Gates 로고"
+                                                    loading="lazy"
+                                            />
+                                        </th:block>
+
+                                        <div class="account-connect-card__meta">
+                                            <strong class="account-connect-card__name">
+                                                <th:block th:switch="${providerKey}">
+                                                    <th:block th:case="'GOOGLE'">Google</th:block>
+                                                    <th:block th:case="'NAVER'">Naver</th:block>
+                                                    <th:block th:case="'KAKAO'">Kakao</th:block>
+                                                    <th:block th:case="'FACEBOOK'">Facebook</th:block>
+                                                    <th:block th:case="*">Global Gates</th:block>
+                                                </th:block>
+                                            </strong>
+
+                                            <span class="account-connect-card__status">
+                                                <span class="account-connect-card__status-icon" aria-hidden="true">✓</span>
+                                                <span
+                                                        class="account-connect-card__status-text"
+                                                        th:text="${providerKey == 'LOCAL' ? '가입됨' : '연결됨'}"
+                                                >
+                                                    연결됨
+                                                </span>
+                                            </span>
+                                        </div>
+                                    </div>
+
+                                    <span
+                                            class="account-connect-card__email"
+                                            th:text="${member.memberEmail}"
+                                    >
+                                        sample@email.com
+                                    </span>
+                                </div>
+                            </th:block>
+                            <button type="button" class="account-info-item" data-account-info-id="username">
+                                        <span class="account-info-item__content">
+                                            <span class="account-info-item__label">사용자 아이디</span>
+                                            <span class="account-info-item__value" data-account-info-value="username"
+                                                  th:text="${member.memberHandle != null and !#strings.isEmpty(member.memberHandle) ? member.memberHandle : '사용자 아이디 정보 없음'}">
+                                                @samplehandle
+                                            </span>
+                                        </span>
+                                <span class="account-info-item__arrow"><svg viewBox="0 0 24 24" aria-hidden="true"><g><path
+                                        d="M14.586 12L7.543 4.96l1.414-1.42L17.414 12l-8.457 8.46-1.414-1.42L14.586 12z"></path></g></svg></span>
+                            </button>
+                            <button type="button" class="account-info-item" data-account-info-id="phone">
+                                        <span class="account-info-item__content">
+                                            <span class="account-info-item__label">휴대폰</span>
+                                            <span class="account-info-item__value" data-account-info-value="phone"
+                                                  th:text="${member.memberPhone != null and !#strings.isEmpty(member.memberPhone) ? member.memberPhone : '등록된 휴대폰 번호가 없습니다.'}">
+                                                010-0000-0000
+                                            </span>
+                                        </span>
+                                <span class="account-info-item__arrow"><svg viewBox="0 0 24 24" aria-hidden="true"><g><path
+                                        d="M14.586 12L7.543 4.96l1.414-1.42L17.414 12l-8.457 8.46-1.414-1.42L14.586 12z"></path></g></svg></span>
+                            </button>
+                            <button type="button" class="account-info-item" data-account-info-id="email">
+                                        <span class="account-info-item__content">
+                                            <span class="account-info-item__label">이메일</span>
+                                            <span class="account-info-item__value" data-account-info-value="email"
+                                                  th:text="${member.memberEmail != null and !#strings.isEmpty(member.memberEmail) ? member.memberEmail : '등록된 이메일이 없습니다.'}">
+                                                sample@email.com
+                                            </span>
+                                        </span>
+                                <span class="account-info-item__arrow"><svg viewBox="0 0 24 24" aria-hidden="true"><g><path
+                                        d="M14.586 12L7.543 4.96l1.414-1.42L17.414 12l-8.457 8.46-1.414-1.42L14.586 12z"></path></g></svg></span>
+                            </button>
+                            <button type="button" class="account-info-item" data-account-info-id="createdAt">
+                                        <span class="account-info-item__content">
+                                            <span class="account-info-item__label">계정 생성</span>
+                                            <span class="account-info-item__value" data-account-info-value="createdAt"
+                                                  th:text="${member.createdDatetime != null and !#strings.isEmpty(member.createdDatetime) ? member.createdDatetime : '생성일 정보 없음'}">
+                                                2025. 2. 3. 오후 5:02:45
+                                            </span>
+                                            <span class="account-info-item__description">현재 로그인 계정 기준 정보</span>
+                                        </span>
+                            </button>
+                            <button type="button" class="account-info-item" data-account-info-id="country">
+                                        <span class="account-info-item__content">
+                                            <span class="account-info-item__label">국가</span>
+                                            <span class="account-info-item__value" data-account-info-value="country"
+                                                  th:text="${member.memberCountry != null and !#strings.isEmpty(member.memberCountry) ? member.memberCountry : '설정되지 않음'}">
+                                                대한민국
+                                            </span>
+                                        </span>
+                                <span class="account-info-item__arrow"><svg viewBox="0 0 24 24" aria-hidden="true"><g><path
+                                        d="M14.586 12L7.543 4.96l1.414-1.42L17.414 12l-8.457 8.46-1.414-1.42L14.586 12z"></path></g></svg></span>
+                            </button>
+                            <button type="button" class="account-info-item" data-account-info-id="language">
+                                        <span class="account-info-item__content">
+                                            <span class="account-info-item__label">언어</span>
+                                            <span class="account-info-item__value" data-language-current-value
+                                                  th:text="${member.memberLanguage != null and !#strings.isEmpty(member.memberLanguage) ? member.memberLanguage : '설정되지 않음'}">
+                                                한국어
+                                            </span>
+                                        </span>
+                                <span class="account-info-item__arrow"><svg viewBox="0 0 24 24" aria-hidden="true"><g><path
+                                        d="M14.586 12L7.543 4.96l1.414-1.42L17.414 12l-8.457 8.46-1.414-1.42L14.586 12z"></path></g></svg></span>
+                            </button>
+                        </div>
+                    </section>
+
+                    <section
+                            class="detail-route detail-route--username"
+                            data-detail-route-view="username-edit"
+                            data-route-title="사용자 이름 변경"
+                            hidden
+                            aria-hidden="true"
+                    >
+                        <form class="username-editor" data-username-form novalidate>
+                            <div class="username-editor__section">
+                                <label class="username-field" data-username-field>
+                                    <span class="username-field__label">사용자 아이디</span>
+                                    <input
+                                            class="username-field__input"
+                                            type="text"
+                                            aria-label="사용자 아이디"
+                                            autocomplete="off"
+                                            autocapitalize="off"
+                                            spellcheck="false"
+                                            data-username-input
+                                    />
+                                </label>
+                                <p class="username-field__message" data-username-message hidden></p>
+                            </div>
+
+                            <section class="username-suggestion">
+                                <h3 class="username-suggestion__title">추천</h3>
+                                <div
+                                        class="username-suggestion__list"
+                                        data-username-suggestion-list
+                                ></div>
+                            </section>
+
+                            <div class="username-action">
+                                <button
+                                        type="submit"
+                                        class="username-action__button"
+                                        data-username-save
+                                        disabled
+                                >
+                                    저장
+                                </button>
+                            </div>
+                        </form>
+
+                        <aside
+                                class="username-marketplace"
+                                data-username-marketplace
+                                hidden
+                                aria-hidden="true"
+                        >
+                            <button
+                                    type="button"
+                                    class="username-marketplace__close"
+                                    aria-label="추천 카드 닫기"
+                                    data-username-marketplace-close
+                            >
+                                <svg viewBox="0 0 24 24" aria-hidden="true">
+                                    <g>
+                                        <path
+                                                d="M10.59 12L4.54 5.96l1.42-1.42L12 10.59l6.04-6.05 1.42 1.42L13.41 12l6.05 6.04-1.42 1.42L12 13.41l-6.04 6.05-1.42-1.42L10.59 12z"
+                                        ></path>
+                                    </g>
+                                </svg>
+                            </button>
+                            <div class="username-marketplace__brand">GlobalGates</div>
+                            <p class="username-marketplace__copy">
+                                Handle Marketplace에 원하는 사용자 아이디가 있을 수도 있습니다
+                            </p>
+                            <button type="button" class="username-marketplace__button">
+                                사용자 아이디 찾아보기
+                            </button>
+                        </aside>
+                    </section>
+
+                    <section
+                            class="detail-route detail-route--password"
+                            data-detail-route-view="password-edit"
+                            data-route-title="비밀번호 변경"
+                            hidden
+                            aria-hidden="true"
+                    >
+                        <form class="password-editor" data-password-editor-form novalidate>
+                            <div class="password-editor__group">
+                                <label class="password-editor__field" data-password-editor-field>
+                                    <span class="password-editor__label">현재 비밀번호</span>
+                                    <input
+                                            class="password-editor__input"
+                                            type="password"
+                                            aria-label="현재 비밀번호"
+                                            data-password-editor-input="currentPassword"
+                                    />
+                                </label>
+                                <a href="#" class="password-editor__link">비밀번호를 잊으셨나요?</a>
+                            </div>
+
+                            <div class="password-editor__group">
+                                <label class="password-editor__field" data-password-editor-field>
+                                    <span class="password-editor__label">새 비밀번호</span>
+                                    <input
+                                            class="password-editor__input"
+                                            type="password"
+                                            aria-label="새 비밀번호"
+                                            data-password-editor-input="nextPassword"
+                                    />
+                                </label>
+                            </div>
+
+                            <div class="password-editor__group">
+                                <label class="password-editor__field" data-password-editor-field>
+                                    <span class="password-editor__label">비밀번호 확인</span>
+                                    <input
+                                            class="password-editor__input"
+                                            type="password"
+                                            aria-label="비밀번호 확인"
+                                            data-password-editor-input="confirmPassword"
+                                    />
+                                </label>
+                            </div>
+
+                            <div class="password-editor__notice">
+                                비밀번호를 변경하면 현재 사용 중인 세션을 제외한 모든 활성 GlobalGates 세션에서 로그아웃됩니다. 내 계정에 대한 액세스 권한이 있는 1개의 애플리케이션은(는) 영향을
+                                받지 않습니다.
+                            </div>
+
+                            <div class="password-editor__actions">
+                                <button
+                                        type="button"
+                                        class="password-editor__save"
+                                        data-password-editor-save
+                                        disabled
+                                >
+                                    저장
+                                </button>
+                            </div>
+                        </form>
+                    </section>
+
+                    <section
+                            class="detail-route detail-route--deactivate"
+                            data-detail-route-view="deactivate-edit"
+                            data-route-title="계정 비활성화"
+                            hidden
+                            aria-hidden="true"
+                    >
+                        <section class="deactivate-editor">
+                            <div class="deactivate-account">
+                                        <span
+                                                class="deactivate-account__avatar"
+                                                aria-hidden="true"
+                                                data-deactivate-avatar
+                                        ></span>
+                                <span class="deactivate-account__meta">
+                                            <strong class="deactivate-account__name" data-deactivate-name></strong>
+                                            <span class="deactivate-account__handle" data-deactivate-handle></span>
+                                        </span>
+                            </div>
+
+                            <h3 class="deactivate-editor__title">계정이 비활성화됩니다</h3>
+                            <p
+                                    class="deactivate-editor__summary"
+                                    data-deactivate-summary
+                            ></p>
+
+                            <h4 class="deactivate-editor__heading">그 밖에 내가 알아야 할 내용</h4>
+                            <p class="deactivate-editor__copy">
+                                실수로 또는 잘못하여 GlobalGates 계정을 비활성화한 후에도 30일 이내에 복구할 수 있습니다.
+                            </p>
+
+                            <div class="deactivate-editor__note-list">
+                                <div class="deactivate-editor__note">
+                                    일부 계정 정보는 Google 또는 Bing과 같은 검색 엔진에서 아직 접근 가능할 수도 있습니다.
+                                </div>
+                                <div class="deactivate-editor__note">
+                                    @사용자 아이디를 변경하기 위해 계정을 비활성화할 필요는 없습니다.
+                                    <a href="#" class="deactivate-editor__link" data-deactivate-link data-deactivate-target="username-edit">설정</a>에서 아이디를
+                                    수정하세요.
+                                </div>
+                                <div class="deactivate-editor__note">
+                                    현재 @사용자 아이디 또는 이메일 주소를 다른 GlobalGates 계정에서 사용하려면 이 계정을 비활성화하기 전에 해당 항목을
+                                    <a href="#" class="deactivate-editor__link" data-deactivate-link data-deactivate-target="account-info">변경</a>하시기 바랍니다.
+                                </div>
+                                <div class="deactivate-editor__note">
+                                    내 GlobalGates 데이터를
+                                    다운로드하려면 계정을 비활성화하기 전에 요청 및 다운로드 프로세스를 모두 완료해야 합니다. 비활성화된 계정으로는 데이터 다운로드 링크를 보낼 수
+                                    없습니다.
+                                </div>
+                            </div>
+
+                            <div class="deactivate-editor__actions">
+                                <button type="button" class="deactivate-editor__button" data-deactivate-confirm>
+                                    비활성화
+                                </button>
+                            </div>
+                        </section>
+                    </section>
+
+                    <section
+                            class="detail-route detail-route--deactivate-confirm"
+                            data-detail-route-view="deactivate-confirm"
+                            data-route-title="비밀번호를 확인하세요"
+                            hidden
+                            aria-hidden="true"
+                    >
+                        <section class="deactivate-confirm-editor">
+                            <h3 class="deactivate-confirm-editor__title">비밀번호를 확인하세요</h3>
+                            <p class="deactivate-confirm-editor__summary">
+                                계정에 연결된 비밀번호를 입력하여 비활성화 요청을 완료하세요.
+                            </p>
+                            <div class="deactivate-confirm-editor__field" data-deactivate-password-field>
+                                <label class="deactivate-confirm-editor__label"
+                                       for="deactivateConfirmPassword">비밀번호</label>
+                                <input
+                                        type="password"
+                                        id="deactivateConfirmPassword"
+                                        class="deactivate-confirm-editor__input"
+                                        autocomplete="current-password"
+                                        data-deactivate-password-input
+                                />
+                            </div>
+                            <p
+                                    class="deactivate-confirm-editor__message"
+                                    data-deactivate-password-message
+                                    hidden
+                            ></p>
+                            <a href="#" class="deactivate-confirm-editor__forgot">비밀번호를 잊으셨나요?</a>
+                            <div class="deactivate-confirm-editor__actions">
+                                <button
+                                        type="button"
+                                        class="deactivate-confirm-editor__button"
+                                        data-deactivate-submit
+                                        disabled
+                                >
+                                    비활성화
+                                </button>
+                            </div>
+                        </section>
+                    </section>
+
+                    <section
+                            class="detail-route detail-route--notification-push"
+                            data-detail-route-view="notification-push-edit"
+                            data-route-title="푸시 알림"
+                            hidden
+                            aria-hidden="true"
+                    >
+                        <section class="notification-push-editor">
+                            <div class="notification-push-editor__top">
+                                <div class="notification-push-editor__copy">
+                                    <h3 class="notification-push-editor__title">푸시 알림</h3>
+                                    <p class="notification-push-editor__summary">
+                                        자리를 비운 동안 GlobalGates에서 일어난 일에 대한 푸시 알림을 받아 보세요. 알림은 언제든지 끌 수 있습니다. 이 선택 사항은 이 브라우저에서 사용하는
+                                        모든 계정에 해당됩니다.
+                                    </p>
+                                </div>
+                                <label class="notification-push-editor__switch">
+                                    <input type="checkbox" class="notification-push-editor__switch-input"
+                                           data-notification-push-toggle/>
+                                    <span class="notification-push-editor__switch-track" aria-hidden="true">
+                                                <span class="notification-push-editor__switch-thumb"></span>
+                                            </span>
+                                </label>
+                            </div>
+                            <div class="notification-push-editor__divider"></div>
+                            <section class="notification-push-editor__empty">
+                                <h4 class="notification-push-editor__empty-title">푸시 알림 켜기</h4>
+                                <p class="notification-push-editor__empty-copy">
+                                    푸시 알림을 통해 지금 일어나는 일에 대한 소식을 실시간으로 받아보세요. GlobalGates에 로그인하지 않아도 알림을 받을 수 있습니다. 알림은 언제든지 끌 수
+                                    있습니다.
+                                </p>
+                                <button
+                                        type="button"
+                                        class="notification-push-editor__enable"
+                                        data-notification-push-enable
+                                >
+                                    켜기
+                                </button>
+                            </section>
+                            <div class="notification-push-editor__content" hidden>
+                                <section class="notification-push-editor__section">
+                                    <h3 class="notification-push-editor__section-title">나 또는 내 게시물 관련</h3>
+                                    <p class="notification-push-editor__section-copy">받고 싶은 푸시 알림만 선택하세요.</p>
+                                    <label class="notification-push-editor__check-item"><span
+                                            class="notification-push-editor__check-label">커넥트 알림</span><span
+                                            class="notification-push-editor__check-control"><input type="checkbox"
+                                                                                                   class="notification-push-editor__checkbox"
+                                                                                                   data-notification-push-check="connect"
+                                                                                                   checked/><span
+                                            class="notification-push-editor__checkbox-box" aria-hidden="true"><svg
+                                            viewBox="0 0 24 24" aria-hidden="true"><g><path
+                                            d="M9.64 18.952l-5.55-4.861 1.317-1.504 3.951 3.459 8.459-10.948L19.4 6.32 9.64 18.952z"></path></g></svg></span></span></label>
+                                    <label class="notification-push-editor__check-item"><span
+                                            class="notification-push-editor__check-label">전문가 알림</span><span
+                                            class="notification-push-editor__check-control"><input type="checkbox"
+                                                                                                   class="notification-push-editor__checkbox"
+                                                                                                   data-notification-push-check="expert"
+                                                                                                   checked/><span
+                                            class="notification-push-editor__checkbox-box" aria-hidden="true"><svg
+                                            viewBox="0 0 24 24" aria-hidden="true"><g><path
+                                            d="M9.64 18.952l-5.55-4.861 1.317-1.504 3.951 3.459 8.459-10.948L19.4 6.32 9.64 18.952z"></path></g></svg></span></span></label>
+                                    <label class="notification-push-editor__check-item"><span
+                                            class="notification-push-editor__check-label">좋아요 알림</span><span
+                                            class="notification-push-editor__check-control"><input type="checkbox"
+                                                                                                   class="notification-push-editor__checkbox"
+                                                                                                   data-notification-push-check="likes"
+                                                                                                   checked/><span
+                                            class="notification-push-editor__checkbox-box" aria-hidden="true"><svg
+                                            viewBox="0 0 24 24" aria-hidden="true"><g><path
+                                            d="M9.64 18.952l-5.55-4.861 1.317-1.504 3.951 3.459 8.459-10.948L19.4 6.32 9.64 18.952z"></path></g></svg></span></span></label>
+                                    <label class="notification-push-editor__check-item"><span
+                                            class="notification-push-editor__check-label">게시글 알림</span><span
+                                            class="notification-push-editor__check-control"><input type="checkbox"
+                                                                                                   class="notification-push-editor__checkbox"
+                                                                                                   data-notification-push-check="posts"
+                                                                                                   checked/><span
+                                            class="notification-push-editor__checkbox-box" aria-hidden="true"><svg
+                                            viewBox="0 0 24 24" aria-hidden="true"><g><path
+                                            d="M9.64 18.952l-5.55-4.861 1.317-1.504 3.951 3.459 8.459-10.948L19.4 6.32 9.64 18.952z"></path></g></svg></span></span></label>
+                                    <label class="notification-push-editor__check-item"><span
+                                            class="notification-push-editor__check-label">댓글 알림</span><span
+                                            class="notification-push-editor__check-control"><input type="checkbox"
+                                                                                                   class="notification-push-editor__checkbox"
+                                                                                                   data-notification-push-check="comments"
+                                                                                                   checked/><span
+                                            class="notification-push-editor__checkbox-box" aria-hidden="true"><svg
+                                            viewBox="0 0 24 24" aria-hidden="true"><g><path
+                                            d="M9.64 18.952l-5.55-4.861 1.317-1.504 3.951 3.459 8.459-10.948L19.4 6.32 9.64 18.952z"></path></g></svg></span></span></label>
+                                    <label class="notification-push-editor__check-item"><span
+                                            class="notification-push-editor__check-label">채팅 메시지 알림</span><span
+                                            class="notification-push-editor__check-control"><input type="checkbox"
+                                                                                                   class="notification-push-editor__checkbox"
+                                                                                                   data-notification-push-check="chatMessages"
+                                                                                                   checked/><span
+                                            class="notification-push-editor__checkbox-box" aria-hidden="true"><svg
+                                            viewBox="0 0 24 24" aria-hidden="true"><g><path
+                                            d="M9.64 18.952l-5.55-4.861 1.317-1.504 3.951 3.459 8.459-10.948L19.4 6.32 9.64 18.952z"></path></g></svg></span></span></label>
+                                    <label class="notification-push-editor__check-item"><span
+                                            class="notification-push-editor__check-label">견적 알림</span><span
+                                            class="notification-push-editor__check-control"><input type="checkbox"
+                                                                                                   class="notification-push-editor__checkbox"
+                                                                                                   data-notification-push-check="quotes"
+                                                                                                   checked/><span
+                                            class="notification-push-editor__checkbox-box" aria-hidden="true"><svg
+                                            viewBox="0 0 24 24" aria-hidden="true"><g><path
+                                            d="M9.64 18.952l-5.55-4.861 1.317-1.504 3.951 3.459 8.459-10.948L19.4 6.32 9.64 18.952z"></path></g></svg></span></span></label>
+                                    <label class="notification-push-editor__check-item"><span
+                                            class="notification-push-editor__check-label">시스템 공지 알림</span><span
+                                            class="notification-push-editor__check-control"><input type="checkbox"
+                                                                                                   class="notification-push-editor__checkbox"
+                                                                                                   data-notification-push-check="system"
+                                                                                                   checked/><span
+                                            class="notification-push-editor__checkbox-box" aria-hidden="true"><svg
+                                            viewBox="0 0 24 24" aria-hidden="true"><g><path
+                                            d="M9.64 18.952l-5.55-4.861 1.317-1.504 3.951 3.459 8.459-10.948L19.4 6.32 9.64 18.952z"></path></g></svg></span></span></label>
+                                    <label class="notification-push-editor__check-item"><span
+                                            class="notification-push-editor__check-label">@맨션 알림</span><span
+                                            class="notification-push-editor__check-control"><input type="checkbox"
+                                                                                                   class="notification-push-editor__checkbox"
+                                                                                                   data-notification-push-check="mentions"
+                                                                                                   checked/><span
+                                            class="notification-push-editor__checkbox-box" aria-hidden="true"><svg
+                                            viewBox="0 0 24 24" aria-hidden="true"><g><path
+                                            d="M9.64 18.952l-5.55-4.861 1.317-1.504 3.951 3.459 8.459-10.948L19.4 6.32 9.64 18.952z"></path></g></svg></span></span></label>
+                                </section>
+                                <div class="notification-push-editor__actions">
+                                    <button type="button" class="notification-push-editor__save"
+                                            data-notification-push-save>
+                                        저장
+                                    </button>
+                                </div>
+                            </div>
+                        </section>
+                    </section>
+
+                    <section class="detail-route detail-route--privacy-blocked-accounts"
+                             data-detail-route-view="privacy-blocked-accounts-edit" data-route-title="차단한 계정" hidden
+                             aria-hidden="true">
+                        <section class="privacy-blocked-accounts-editor">
+                            <p class="privacy-blocked-accounts-editor__summary">
+                                사용자를 차단하면 해당 사용자는 나를 팔로우하거나 내게 쪽지를 보낼 수 없고, 해당 사용자의 알림이 표시되지 않습니다.
+                            </p>
+                                <section class="privacy-blocked-accounts-editor__intro">
+                                    <span class="privacy-blocked-accounts-editor__intro-title">원치 않는 계정 차단하기</span>
+                                    <p class="privacy-blocked-accounts-editor__intro-copy">
+                                        차단된 사용자는 나를 팔로우하거나 내게 쪽지를 보낼 수 없으며, 해당 사용자에 대한 알림이 표시되지 않습니다.
+                                    </p>
+                                </section>
+                            <section class="privacy-blocked-accounts-editor__list" aria-label="차단한 계정 목록">
+
+                            </section>
+                        </section>
+                    </section>
+
+                    <section class="detail-route detail-route--subscription" data-detail-route-view="subscription"
+                             data-route-title="구독" hidden aria-hidden="true">
+                        <p class="detail-summary">현재 구독 상태와 결제 정보를 확인합니다.</p>
+                        <section class="subscription-panel" aria-label="구독 정보">
+                            <p class="subscription-panel__empty" data-subscription-empty hidden>
+                                현재 활성화된 구독이 없습니다.
+                            </p>
+                            <div class="subscription-panel__card" data-subscription-card hidden>
+                                <div class="subscription-panel__row">
+                                    <span class="subscription-panel__label">현재 플랜</span>
+                                    <strong class="subscription-panel__value" data-subscription-plan>Premium</strong>
+                                </div>
+                                <div class="subscription-panel__row">
+                                    <span class="subscription-panel__label">결제 주기</span>
+                                    <span class="subscription-panel__value" data-subscription-billing-cycle>월간</span>
+                                </div>
+                                <div class="subscription-panel__row">
+                                    <span class="subscription-panel__label">다음 결제일</span>
+                                    <span class="subscription-panel__value" data-subscription-next-billing-date>2026-05-03</span>
+                                </div>
+                                <div class="subscription-panel__row">
+                                    <span class="subscription-panel__label">구독 상태</span>
+                                    <span class="subscription-panel__badge" data-subscription-status>활성</span>
+                                </div>
+                                <div class="subscription-panel__actions">
+                                    <a href="/subscribe" class="subscription-panel__change">
+                                        플랜 변경
+                                    </a>
+                                    <button type="button" class="subscription-panel__cancel" data-subscription-cancel>
+                                        구독 해지
+                                    </button>
+                                    <p class="subscription-panel__help" data-subscription-help>
+                                        월간 구독은 현재 결제 주기가 끝나면 해지됩니다.
+                                    </p>
+                                </div>
+                            </div>
+                        </section>
+                    </section>
+
+                    <section class="detail-route detail-route--phone" data-detail-route-view="phone-edit"
+                             data-route-title="휴대폰 변경" hidden aria-hidden="true">
+                        <div class="phone-editor">
+                            <button type="button" class="phone-editor__action" data-modal-type="phone-add">
+                                휴대폰 번호 추가
+                            </button>
+                        </div>
+                        <section class="phone-editor phone-editor--verified" data-phone-verified-screen hidden
+                                 aria-hidden="true">
+                            <div class="phone-editor__current-card">
+                                <span class="phone-editor__current-label">현재 휴대폰 번호</span>
+                                <span class="phone-editor__current-value" data-phone-current-value></span>
+                            </div>
+                            <div class="phone-editor__verified-actions">
+                                <button type="button"
+                                        class="phone-editor__verified-action phone-editor__verified-action--update"
+                                        data-phone-update>휴대폰
+                                    번호 업데이트
+                                </button>
+                            </div>
+                        </section>
+                    </section>
+
+                    <section class="detail-route detail-route--email" data-detail-route-view="email-edit"
+                             data-route-title="이메일 변경" hidden aria-hidden="true">
+                        <section class="email-editor">
+                            <div class="email-editor__current-card">
+                                <span class="email-editor__current-label">현재 이메일</span>
+                                <span class="email-editor__current-value" data-email-current-value></span>
+                            </div>
+                            <div class="email-editor__actions">
+                                <button type="button" class="email-editor__action" data-modal-type="email-add">
+                                    이메일 주소 업데이트
+                                </button>
+                            </div>
+                        </section>
+                    </section>
+
+                    <section class="detail-route detail-route--country" data-detail-route-view="country-edit"
+                             data-route-title="국가 변경" hidden aria-hidden="true">
+                        <section class="country-editor">
+                            <div class="country-editor__section">
+                                <label class="country-editor__field">
+                                    <span class="country-editor__label">국가</span>
+                                    <select id="countrySelectionList" class="country-editor__select" aria-label="국가"
+                                            data-country-select>
+                                        <option value="gh">가나</option>
+                                        <option value="ga">가봉</option>
+                                        <option value="gy">가이아나</option>
+                                        <option value="gm">감비아</option>
+                                        <option value="gg">건지</option>
+                                        <option value="gp">과들루프</option>
+                                        <option value="gt">과테말라</option>
+                                        <option value="gu">괌</option>
+                                        <option value="gd">그레나다</option>
+                                        <option value="gr">그리스</option>
+                                        <option value="gl">그린란드</option>
+                                        <option value="gn">기니</option>
+                                        <option value="gw">기니비사우</option>
+                                        <option value="na">나미비아</option>
+                                        <option value="nr">나우루</option>
+                                        <option value="ng">나이지리아</option>
+                                        <option value="za">남아프리카</option>
+                                        <option value="nl">네덜란드</option>
+                                        <option value="bq">네덜란드령 카리브</option>
+                                        <option value="np">네팔</option>
+                                        <option value="no">노르웨이</option>
+                                        <option value="nf">노퍽섬</option>
+                                        <option value="nz">뉴질랜드</option>
+                                        <option value="nc">뉴칼레도니아</option>
+                                        <option value="nu">니우에</option>
+                                        <option value="ne">니제르</option>
+                                        <option value="ni">니카라과</option>
+                                        <option value="tw">대만</option>
+                                        <option value="kr">대한민국</option>
+                                        <option value="dk">덴마크</option>
+                                        <option value="dm">도미니카</option>
+                                        <option value="do">도미니카 공화국</option>
+                                        <option value="de">독일</option>
+                                        <option value="tl">동티모르</option>
+                                        <option value="la">라오스</option>
+                                        <option value="lr">라이베리아</option>
+                                        <option value="lv">라트비아</option>
+                                        <option value="ru">러시아</option>
+                                        <option value="lb">레바논</option>
+                                        <option value="ls">레소토</option>
+                                        <option value="ro">루마니아</option>
+                                        <option value="lu">룩셈부르크</option>
+                                        <option value="rw">르완다</option>
+                                        <option value="ly">리비아</option>
+                                        <option value="re">리유니온</option>
+                                        <option value="lt">리투아니아</option>
+                                        <option value="li">리히텐슈타인</option>
+                                        <option value="mg">마다가스카르</option>
+                                        <option value="mq">마르티니크</option>
+                                        <option value="mh">마셜 제도</option>
+                                        <option value="yt">마요트</option>
+                                        <option value="mo">마카오(중국 특별행정구)</option>
+                                        <option value="mk">마케도니아</option>
+                                        <option value="mw">말라위</option>
+                                        <option value="my">말레이시아</option>
+                                        <option value="ml">말리</option>
+                                        <option value="im">맨 섬</option>
+                                        <option value="mx">멕시코</option>
+                                        <option value="mc">모나코</option>
+                                        <option value="ma">모로코</option>
+                                        <option value="mu">모리셔스</option>
+                                        <option value="mr">모리타니</option>
+                                        <option value="mz">모잠비크</option>
+                                        <option value="me">몬테네그로</option>
+                                        <option value="ms">몬트세라트</option>
+                                        <option value="md">몰도바</option>
+                                        <option value="mv">몰디브</option>
+                                        <option value="mt">몰타</option>
+                                        <option value="mn">몽골</option>
+                                        <option value="us">미국</option>
+                                        <option value="vi">미국령 버진아일랜드</option>
+                                        <option value="fm">미크로네시아</option>
+                                        <option value="vu">바누아투</option>
+                                        <option value="bh">바레인</option>
+                                        <option value="bb">바베이도스</option>
+                                        <option value="va">바티칸 시국</option>
+                                        <option value="bs">바하마</option>
+                                        <option value="bd">방글라데시</option>
+                                        <option value="bm">버뮤다</option>
+                                        <option value="bj">베냉</option>
+                                        <option value="ve">베네수엘라</option>
+                                        <option value="vn">베트남</option>
+                                        <option value="be">벨기에</option>
+                                        <option value="by">벨라루스</option>
+                                        <option value="bz">벨리즈</option>
+                                        <option value="ba">보스니아 헤르체고비나</option>
+                                        <option value="bw">보츠와나</option>
+                                        <option value="bo">볼리비아</option>
+                                        <option value="bi">부룬디</option>
+                                        <option value="bf">부르키나파소</option>
+                                        <option value="bv">부베섬</option>
+                                        <option value="bt">부탄</option>
+                                        <option value="mp">북마리아나제도</option>
+                                        <option value="bg">불가리아</option>
+                                        <option value="br">브라질</option>
+                                        <option value="bn">브루나이</option>
+                                        <option value="ws">사모아</option>
+                                        <option value="sa">사우디아라비아</option>
+                                        <option value="gs">사우스조지아 사우스샌드위치 제도</option>
+                                        <option value="sm">산마리노</option>
+                                        <option value="st">상투메 프린시페</option>
+                                        <option value="mf">생마르탱</option>
+                                        <option value="bl">생바르텔레미</option>
+                                        <option value="pm">생피에르 미클롱</option>
+                                        <option value="sn">세네갈</option>
+                                        <option value="rs">세르비아</option>
+                                        <option value="sc">세이셸</option>
+                                        <option value="lc">세인트루시아</option>
+                                        <option value="vc">세인트빈센트그레나딘</option>
+                                        <option value="kn">세인트키츠 네비스</option>
+                                        <option value="sh">세인트헬레나</option>
+                                        <option value="so">소말리아</option>
+                                        <option value="sb">솔로몬 제도</option>
+                                        <option value="sr">수리남</option>
+                                        <option value="lk">스리랑카</option>
+                                        <option value="sz">스와질란드</option>
+                                        <option value="se">스웨덴</option>
+                                        <option value="ch">스위스</option>
+                                        <option value="es">스페인</option>
+                                        <option value="sk">슬로바키아</option>
+                                        <option value="si">슬로베니아</option>
+                                        <option value="sl">시에라리온</option>
+                                        <option value="sx">신트마르턴</option>
+                                        <option value="sg">싱가포르</option>
+                                        <option value="ae">아랍에미리트</option>
+                                        <option value="aw">아루바</option>
+                                        <option value="am">아르메니아</option>
+                                        <option value="ar">아르헨티나</option>
+                                        <option value="as">아메리칸 사모아</option>
+                                        <option value="is">아이슬란드</option>
+                                        <option value="ht">아이티</option>
+                                        <option value="ie">아일랜드</option>
+                                        <option value="az">아제르바이잔</option>
+                                        <option value="af">아프가니스탄</option>
+                                        <option value="ad">안도라</option>
+                                        <option value="al">알바니아</option>
+                                        <option value="dz">알제리</option>
+                                        <option value="ao">앙골라</option>
+                                        <option value="ag">앤티가 바부다</option>
+                                        <option value="ai">앵귈라</option>
+                                        <option value="er">에리트리아</option>
+                                        <option value="ee">에스토니아</option>
+                                        <option value="ec">에콰도르</option>
+                                        <option value="et">에티오피아</option>
+                                        <option value="sv">엘살바도르</option>
+                                        <option value="gb">영국</option>
+                                        <option value="io">영국령 인도양 식민지</option>
+                                        <option value="ye">예멘</option>
+                                        <option value="om">오만</option>
+                                        <option value="au">오스트레일리아</option>
+                                        <option value="at">오스트리아</option>
+                                        <option value="hn">온두라스</option>
+                                        <option value="ax">올란드 제도</option>
+                                        <option value="wf">왈리스-푸투나 제도</option>
+                                        <option value="jo">요르단</option>
+                                        <option value="ug">우간다</option>
+                                        <option value="uy">우루과이</option>
+                                        <option value="uz">우즈베키스탄</option>
+                                        <option value="ua">우크라이나</option>
+                                        <option value="iq">이라크</option>
+                                        <option value="ir">이란</option>
+                                        <option value="il">이스라엘</option>
+                                        <option value="eg">이집트</option>
+                                        <option value="it">이탈리아</option>
+                                        <option value="in">인도</option>
+                                        <option value="id">인도네시아</option>
+                                        <option value="jp">일본</option>
+                                        <option value="jm">자메이카</option>
+                                        <option value="zm">잠비아</option>
+                                        <option value="je">저지</option>
+                                        <option value="gq">적도 기니</option>
+                                        <option value="ge">조지아</option>
+                                        <option value="cf">중앙 아프리카 공화국</option>
+                                        <option value="dj">지부티</option>
+                                        <option value="gi">지브롤터</option>
+                                        <option value="zw">짐바브웨</option>
+                                        <option value="td">차드</option>
+                                        <option value="cz">체코</option>
+                                        <option value="cl">칠레</option>
+                                        <option value="cm">카메룬</option>
+                                        <option value="cv">카보베르데</option>
+                                        <option value="kz">카자흐스탄</option>
+                                        <option value="qa">카타르</option>
+                                        <option value="kh">캄보디아</option>
+                                        <option value="ca">캐나다</option>
+                                        <option value="ke">케냐</option>
+                                        <option value="ky">케이맨 제도</option>
+                                        <option value="km">코모로</option>
+                                        <option value="xk">코소보</option>
+                                        <option value="cr">코스타리카</option>
+                                        <option value="cc">코코스 제도</option>
+                                        <option value="ci">코트디부아르</option>
+                                        <option value="co">콜롬비아</option>
+                                        <option value="cg">콩고-브라자빌</option>
+                                        <option value="cd">콩고-킨샤사</option>
+                                        <option value="cu">쿠바</option>
+                                        <option value="kw">쿠웨이트</option>
+                                        <option value="ck">쿡 제도</option>
+                                        <option value="cw">퀴라소</option>
+                                        <option value="hr">크로아티아</option>
+                                        <option value="cx">크리스마스섬</option>
+                                        <option value="kg">키르기스스탄</option>
+                                        <option value="ki">키리바시</option>
+                                        <option value="cy">키프로스</option>
+                                        <option value="tj">타지키스탄</option>
+                                        <option value="tz">탄자니아</option>
+                                        <option value="th">태국</option>
+                                        <option value="tc">터크스 케이커스 제도</option>
+                                        <option value="tr">터키</option>
+                                        <option value="tg">토고</option>
+                                        <option value="tk">토켈라우</option>
+                                        <option value="to">통가</option>
+                                        <option value="tm">투르크메니스탄</option>
+                                        <option value="tv">투발루</option>
+                                        <option value="tn">튀니지</option>
+                                        <option value="tt">트리니다드 토바고</option>
+                                        <option value="pa">파나마</option>
+                                        <option value="py">파라과이</option>
+                                        <option value="pk">파키스탄</option>
+                                        <option value="pg">파푸아뉴기니</option>
+                                        <option value="pw">팔라우</option>
+                                        <option value="ps">팔레스타인 지구</option>
+                                        <option value="fo">페로 제도</option>
+                                        <option value="pe">페루</option>
+                                        <option value="pt">포르투갈</option>
+                                        <option value="fk">포클랜드 제도</option>
+                                        <option value="pl">폴란드</option>
+                                        <option value="pr">푸에르토리코</option>
+                                        <option value="fr">프랑스</option>
+                                        <option value="tf">프랑스 남부 지방</option>
+                                        <option value="gf">프랑스령 기아나</option>
+                                        <option value="pf">프랑스령 폴리네시아</option>
+                                        <option value="fj">피지</option>
+                                        <option value="fi">핀란드</option>
+                                        <option value="ph">필리핀</option>
+                                        <option value="pn">핏케언 섬</option>
+                                        <option value="hu">헝가리</option>
+                                        <option value="hk">홍콩(중국 특별행정구)</option>
+                                    </select>
+                                    <span class="country-editor__arrow" aria-hidden="true">
+                                                <svg viewBox="0 0 24 24" aria-hidden="true"><g><path
+                                                        d="M3.543 8.96l1.414-1.42L12 14.59l7.043-7.05 1.414 1.42L12 17.41 3.543 8.96z"></path></g></svg>
+                                            </span>
+                                </label>
+                                <p class="country-editor__help">
+                                    사용자 계정과 연결된 기본 국가입니다. 사용자의 국가는 GlobalGates 환경을 맞춤화하는 데 사용됩니다.
+                                </p>
+                            </div>
+                            <div class="country-editor__actions">
+                                <button type="button" class="country-editor__button" data-country-save>
+                                    저장
+                                </button>
+                            </div>
+                        </section>
+                    </section>
+
+                    <section class="detail-route detail-route--language" data-detail-route-view="language-edit"
+                             data-route-title="언어" hidden aria-hidden="true">
+                        <section class="language-editor">
+                            <p class="language-editor__summary">
+                                사용자 환경을 맞춤 설정할 때 사용되는 언어를 관리합니다.
+                            </p>
+                            <button type="button" class="language-editor__item" data-modal-type="language-select">
+                                        <span class="language-editor__item-copy">
+                                            <span class="language-editor__item-title">앱 및 게시 언어</span>
+                                            <span class="language-editor__item-value"
+                                                  data-language-current-value></span>
+                                        </span>
+                                <span class="language-editor__item-arrow" aria-hidden="true"><svg viewBox="0 0 24 24"
+                                                                                                  aria-hidden="true"><g><path
+                                        d="M14.586 12L7.543 4.96l1.414-1.42L17.414 12l-8.457 8.46-1.414-1.42L14.586 12z"></path></g></svg></span>
+                            </button>
+                        </section>
+                    </section>
+                </div>
+        </div>
+    </th:block>
+</main>
+
+<th:block layout:fragment="modals">
+<div class="modal-layer" id="settingsModalLayer" hidden>
+    <div class="modal-scrim" data-modal-close></div>
+
+    <section
+            class="modal-card modal-card--appearance"
+            id="appearanceModal"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="appearanceModalTitle"
+            hidden
+    >
+        <header class="modal-header">
+            <button
+                    type="button"
+                    class="modal-close"
+                    data-modal-close
+                    aria-label="닫기"
+            >
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <g>
+                        <path
+                                d="M10.59 12L4.54 5.96l1.42-1.42L12 10.59l6.04-6.05 1.42 1.42L13.41 12l6.05 6.04-1.42 1.42L12 13.41l-6.04 6.05-1.42-1.42L10.59 12z"
+                        ></path>
+                    </g>
+                </svg>
+            </button>
+            <h2 class="modal-title" id="appearanceModalTitle">
+                표시
+            </h2>
+            <button
+                    type="button"
+                    class="modal-submit"
+                    id="appearanceCompleteButton"
+            >
+                완료
+            </button>
+        </header>
+
+        <div class="modal-body">
+            <article
+                    class="appearance-preview"
+                    id="appearancePreview"
+            >
+                <div class="appearance-preview__avatar">G</div>
+                <div class="appearance-preview__body">
+                    <div class="appearance-preview__meta">
+                        <strong>Global Gates</strong>
+                        <span>@globalgates</span>
+                        <span>지금</span>
+                    </div>
+                    <p class="appearance-preview__text">
+                        표시 설정은 이 브라우저의 모든 GlobalGates 계정에
+                        적용됩니다.
+                    </p>
+                </div>
+            </article>
+
+            <section class="appearance-section">
+                <h3 class="appearance-title">글꼴 크기</h3>
+                <input
+                        class="appearance-slider"
+                        id="appearanceFontRange"
+                        type="range"
+                        min="0"
+                        max="4"
+                        step="1"
+                        value="2"
+                        aria-label="글꼴 크기"
+                />
+                <div class="appearance-scale">
+                    <span>작게</span>
+                    <span>기본</span>
+                    <span>크게</span>
+                </div>
+            </section>
+
+            <section class="appearance-section">
+                <h3 class="appearance-title">색상</h3>
+                <div
+                        class="appearance-palette"
+                        id="appearanceAccentList"
+                >
+                    <button type="button" class="appearance-chip appearance-chip--active" data-accent-id="blue">
+                        <span class="appearance-chip__dot" style="background:#1d9bf0"></span>
+                        <span class="appearance-chip__label">기본</span>
+                    </button>
+                    <button type="button" class="appearance-chip" data-accent-id="yellow">
+                        <span class="appearance-chip__dot" style="background:#ffd400"></span>
+                        <span class="appearance-chip__label">노랑</span>
+                    </button>
+                    <button type="button" class="appearance-chip" data-accent-id="pink">
+                        <span class="appearance-chip__dot" style="background:#f91880"></span>
+                        <span class="appearance-chip__label">핑크</span>
+                    </button>
+                    <button type="button" class="appearance-chip" data-accent-id="purple">
+                        <span class="appearance-chip__dot" style="background:#7856ff"></span>
+                        <span class="appearance-chip__label">보라</span>
+                    </button>
+                    <button type="button" class="appearance-chip" data-accent-id="orange">
+                        <span class="appearance-chip__dot" style="background:#ff7a00"></span>
+                        <span class="appearance-chip__label">주황</span>
+                    </button>
+                    <button type="button" class="appearance-chip" data-accent-id="green">
+                        <span class="appearance-chip__dot" style="background:#00ba7c"></span>
+                        <span class="appearance-chip__label">초록</span>
+                    </button>
+                </div>
+            </section>
+
+            <section class="appearance-section">
+                <h3 class="appearance-title">배경</h3>
+                <div
+                        class="appearance-surface"
+                        id="appearanceSurfaceList"
+                >
+                    <button type="button" class="surface-chip surface-chip--active" data-surface-id="light">
+                        <span class="surface-chip__swatch" style="background:#ffffff"></span>
+                        <span class="surface-chip__label">기본</span>
+                    </button>
+                    <button type="button" class="surface-chip" data-surface-id="dim">
+                        <span class="surface-chip__swatch" style="background:#15202b"></span>
+                        <span class="surface-chip__label">어두운</span>
+                    </button>
+                    <button type="button" class="surface-chip" data-surface-id="lights-out">
+                        <span class="surface-chip__swatch" style="background:#000000"></span>
+                        <span class="surface-chip__label">완전 어두운</span>
+                    </button>
+                </div>
+            </section>
+        </div>
+    </section>
+
+    <section
+            class="modal-card modal-card--shortcut"
+            id="shortcutModal"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="shortcutModalTitle"
+            hidden
+    >
+        <header class="modal-header">
+            <button
+                    type="button"
+                    class="modal-close"
+                    data-modal-close
+                    aria-label="닫기"
+            >
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <g>
+                        <path
+                                d="M10.59 12L4.54 5.96l1.42-1.42L12 10.59l6.04-6.05 1.42 1.42L13.41 12l6.05 6.04-1.42 1.42L12 13.41l-6.04 6.05-1.42-1.42L10.59 12z"
+                        ></path>
+                    </g>
+                </svg>
+            </button>
+            <h2 class="modal-title" id="shortcutModalTitle">
+                키보드 단축키
+            </h2>
+            <div class="modal-spacer" aria-hidden="true"></div>
+        </header>
+
+        <div class="modal-body">
+            <div class="shortcut-group">
+                <h3 class="shortcut-title">탐색</h3>
+                <div class="shortcut-list">
+                    <div class="shortcut-item">
+                        <span class="shortcut-key">G H</span>
+                        <span class="shortcut-label">홈으로 이동</span>
+                    </div>
+                    <div class="shortcut-item">
+                        <span class="shortcut-key">G N</span>
+                        <span class="shortcut-label">알림으로 이동</span>
+                    </div>
+                    <div class="shortcut-item">
+                        <span class="shortcut-key">/</span>
+                        <span class="shortcut-label">검색창 포커스</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="shortcut-group">
+                <h3 class="shortcut-title">게시물 작성</h3>
+                <div class="shortcut-list">
+                    <div class="shortcut-item">
+                        <span class="shortcut-key">N</span>
+                        <span class="shortcut-label">새 게시물 작성</span>
+                    </div>
+                    <div class="shortcut-item">
+                        <span class="shortcut-key">Ctrl + Enter</span>
+                        <span class="shortcut-label">게시물 제출</span>
+                    </div>
+                    <div class="shortcut-item">
+                        <span class="shortcut-key">Esc</span>
+                        <span class="shortcut-label">열린 패널 닫기</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="shortcut-group">
+                <h3 class="shortcut-title">게시물 액션</h3>
+                <div class="shortcut-list">
+                    <div class="shortcut-item">
+                        <span class="shortcut-key">L</span>
+                        <span class="shortcut-label">마음 표시</span>
+                    </div>
+                    <div class="shortcut-item">
+                        <span class="shortcut-key">R</span>
+                        <span class="shortcut-label">답글 열기</span>
+                    </div>
+                    <div class="shortcut-item">
+                        <span class="shortcut-key">B</span>
+                        <span class="shortcut-label">북마크</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section
+            class="modal-card modal-card--language-selection"
+            id="languageSelectionModal"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="languageSelectionModalTitle"
+            hidden
+    >
+        <header class="modal-header modal-header--language-selection">
+            <button
+                    type="button"
+                    class="modal-close"
+                    aria-label="닫기"
+                    data-modal-close
+            >
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <g>
+                        <path
+                                d="M16.24 7.76 12 12l4.24 4.24-1.41 1.41L10.59 13.41 6.35 17.65 4.94 16.24 9.17 12 4.94 7.76l1.41-1.41 4.24 4.24 4.24-4.24z"
+                        ></path>
+                    </g>
+                </svg>
+            </button>
+            <div class="modal-spacer" aria-hidden="true"></div>
+        </header>
+
+        <div class="modal-body modal-body--language-selection">
+            <div class="language-selection">
+                <h2
+                        class="language-selection__title"
+                        id="languageSelectionModalTitle"
+                >
+                    언어 선택
+                </h2>
+                <p
+                        class="language-selection__summary"
+                        id="languageSelectionSummary"
+                >
+                    GlobalGates 환경을 맞춤 설정하는 데 사용할 언어를 선택하세요.
+                </p>
+
+                <div
+                        class="setting-language-selection__list"
+                        id="languageSelectionList"
+                        role="listbox"
+                        aria-label="언어 선택 목록"
+                        aria-multiselectable="false"
+                >
+                    <button type="button" class="setting-language-selection__item" data-setting-language-id="en"
+                            aria-selected="false"><span
+                            class="setting-language-selection__item-label">영어 - English</span><span
+                            class="setting-language-selection__item-check" aria-hidden="true"></span></button>
+                    <button type="button" class="setting-language-selection__item" data-setting-language-id="ko"
+                            aria-selected="false"><span class="setting-language-selection__item-label">한국어</span><span
+                            class="setting-language-selection__item-check" aria-hidden="true"></span></button>
+                    <button type="button" class="setting-language-selection__item" data-setting-language-id="gu"
+                            aria-selected="false"><span
+                            class="setting-language-selection__item-label">구자라트어 - ગુજરાતી</span><span
+                            class="setting-language-selection__item-check" aria-hidden="true"></span></button>
+                    <button type="button" class="setting-language-selection__item" data-setting-language-id="el"
+                            aria-selected="false"><span
+                            class="setting-language-selection__item-label">그리스어 - Ελληνικά</span><span
+                            class="setting-language-selection__item-check" aria-hidden="true"></span></button>
+                    <button type="button" class="setting-language-selection__item" data-setting-language-id="nl"
+                            aria-selected="false"><span class="setting-language-selection__item-label">네덜란드어 - Nederlands</span><span
+                            class="setting-language-selection__item-check" aria-hidden="true"></span></button>
+                    <button type="button" class="setting-language-selection__item" data-setting-language-id="ne"
+                            aria-selected="false"><span
+                            class="setting-language-selection__item-label">네팔어 - नेपाली</span><span
+                            class="setting-language-selection__item-check" aria-hidden="true"></span></button>
+                    <button type="button" class="setting-language-selection__item" data-setting-language-id="no"
+                            aria-selected="false"><span
+                            class="setting-language-selection__item-label">노르웨이어 - norsk</span><span
+                            class="setting-language-selection__item-check" aria-hidden="true"></span></button>
+                    <button type="button" class="setting-language-selection__item" data-setting-language-id="da"
+                            aria-selected="false"><span
+                            class="setting-language-selection__item-label">덴마크어 - dansk</span><span
+                            class="setting-language-selection__item-check" aria-hidden="true"></span></button>
+                    <button type="button" class="setting-language-selection__item" data-setting-language-id="de"
+                            aria-selected="false"><span
+                            class="setting-language-selection__item-label">독일어 - Deutsch</span><span
+                            class="setting-language-selection__item-check" aria-hidden="true"></span></button>
+                    <button type="button" class="setting-language-selection__item" data-setting-language-id="dv"
+                            aria-selected="false"><span
+                            class="setting-language-selection__item-label">디베히어 - Divehi</span><span
+                            class="setting-language-selection__item-check" aria-hidden="true"></span></button>
+                    <button type="button" class="setting-language-selection__item" data-setting-language-id="lo"
+                            aria-selected="false"><span
+                            class="setting-language-selection__item-label">라오어 - ລາວ</span><span
+                            class="setting-language-selection__item-check" aria-hidden="true"></span></button>
+                    <button type="button" class="setting-language-selection__item" data-setting-language-id="lv"
+                            aria-selected="false"><span
+                            class="setting-language-selection__item-label">라트비아어 - latviešu</span><span
+                            class="setting-language-selection__item-check" aria-hidden="true"></span></button>
+                    <button type="button" class="setting-language-selection__item" data-setting-language-id="ru"
+                            aria-selected="false"><span
+                            class="setting-language-selection__item-label">러시아어 - русский</span><span
+                            class="setting-language-selection__item-check" aria-hidden="true"></span></button>
+                    <button type="button" class="setting-language-selection__item" data-setting-language-id="ro"
+                            aria-selected="false"><span
+                            class="setting-language-selection__item-label">루마니아어 - română</span><span
+                            class="setting-language-selection__item-check" aria-hidden="true"></span></button>
+                    <button type="button" class="setting-language-selection__item" data-setting-language-id="lt"
+                            aria-selected="false"><span
+                            class="setting-language-selection__item-label">리투아니아어 - lietuvių</span><span
+                            class="setting-language-selection__item-check" aria-hidden="true"></span></button>
+                    <button type="button" class="setting-language-selection__item" data-setting-language-id="mr"
+                            aria-selected="false"><span
+                            class="setting-language-selection__item-label">마라티어 - मराठी</span><span
+                            class="setting-language-selection__item-check" aria-hidden="true"></span></button>
+                    <button type="button" class="setting-language-selection__item" data-setting-language-id="ml"
+                            aria-selected="false"><span
+                            class="setting-language-selection__item-label">말라얄람어 - മലയാളം</span><span
+                            class="setting-language-selection__item-check" aria-hidden="true"></span></button>
+                    <button type="button" class="setting-language-selection__item" data-setting-language-id="ms"
+                            aria-selected="false"><span
+                            class="setting-language-selection__item-label">말레이어 - Melayu</span><span
+                            class="setting-language-selection__item-check" aria-hidden="true"></span></button>
+                    <button type="button" class="setting-language-selection__item" data-setting-language-id="eu"
+                            aria-selected="false"><span
+                            class="setting-language-selection__item-label">바스크어 - euskara</span><span
+                            class="setting-language-selection__item-check" aria-hidden="true"></span></button>
+                    <button type="button" class="setting-language-selection__item" data-setting-language-id="my"
+                            aria-selected="false"><span
+                            class="setting-language-selection__item-label">버마어 - မြန်မာ</span><span
+                            class="setting-language-selection__item-check" aria-hidden="true"></span></button>
+                    <button type="button" class="setting-language-selection__item" data-setting-language-id="vi"
+                            aria-selected="false"><span
+                            class="setting-language-selection__item-label">베트남어 - Tiếng Việt</span><span
+                            class="setting-language-selection__item-check" aria-hidden="true"></span></button>
+                    <button type="button" class="setting-language-selection__item" data-setting-language-id="bn"
+                            aria-selected="false"><span
+                            class="setting-language-selection__item-label">벵골어 - বাংলা</span><span
+                            class="setting-language-selection__item-check" aria-hidden="true"></span></button>
+                    <button type="button" class="setting-language-selection__item" data-setting-language-id="bg"
+                            aria-selected="false"><span
+                            class="setting-language-selection__item-label">불가리아어 - български</span><span
+                            class="setting-language-selection__item-check" aria-hidden="true"></span></button>
+                    <button type="button" class="setting-language-selection__item" data-setting-language-id="sr"
+                            aria-selected="false"><span
+                            class="setting-language-selection__item-label">세르비아어 - српски</span><span
+                            class="setting-language-selection__item-check" aria-hidden="true"></span></button>
+                    <button type="button" class="setting-language-selection__item" data-setting-language-id="ckb"
+                            aria-selected="false"><span class="setting-language-selection__item-label">소라니 쿠르드어 - کوردیی ناوەندی</span><span
+                            class="setting-language-selection__item-check" aria-hidden="true"></span></button>
+                    <button type="button" class="setting-language-selection__item" data-setting-language-id="si"
+                            aria-selected="false"><span
+                            class="setting-language-selection__item-label">스리랑카어 - සිංහල</span><span
+                            class="setting-language-selection__item-check" aria-hidden="true"></span></button>
+                    <button type="button" class="setting-language-selection__item" data-setting-language-id="sv"
+                            aria-selected="false"><span
+                            class="setting-language-selection__item-label">스웨덴어 - svenska</span><span
+                            class="setting-language-selection__item-check" aria-hidden="true"></span></button>
+                    <button type="button" class="setting-language-selection__item" data-setting-language-id="es"
+                            aria-selected="false"><span
+                            class="setting-language-selection__item-label">스페인어 - español</span><span
+                            class="setting-language-selection__item-check" aria-hidden="true"></span></button>
+                    <button type="button" class="setting-language-selection__item" data-setting-language-id="sl"
+                            aria-selected="false"><span class="setting-language-selection__item-label">슬로베니아어 - slovenščina</span><span
+                            class="setting-language-selection__item-check" aria-hidden="true"></span></button>
+                    <button type="button" class="setting-language-selection__item" data-setting-language-id="sd"
+                            aria-selected="false"><span class="setting-language-selection__item-label">신디어 - سنڌي</span><span
+                            class="setting-language-selection__item-check" aria-hidden="true"></span></button>
+                    <button type="button" class="setting-language-selection__item" data-setting-language-id="ar"
+                            aria-selected="false"><span
+                            class="setting-language-selection__item-label">아랍어 - العربية</span><span
+                            class="setting-language-selection__item-check" aria-hidden="true"></span></button>
+                    <button type="button" class="setting-language-selection__item" data-setting-language-id="hy"
+                            aria-selected="false"><span
+                            class="setting-language-selection__item-label">아르메니아어 - հայերեն</span><span
+                            class="setting-language-selection__item-check" aria-hidden="true"></span></button>
+                    <button type="button" class="setting-language-selection__item" data-setting-language-id="is"
+                            aria-selected="false"><span
+                            class="setting-language-selection__item-label">아이슬란드어 - íslenska</span><span
+                            class="setting-language-selection__item-check" aria-hidden="true"></span></button>
+                    <button type="button" class="setting-language-selection__item" data-setting-language-id="ht"
+                            aria-selected="false"><span class="setting-language-selection__item-label">아이티어 - Haitian Creole</span><span
+                            class="setting-language-selection__item-check" aria-hidden="true"></span></button>
+                    <button type="button" class="setting-language-selection__item" data-setting-language-id="am"
+                            aria-selected="false"><span
+                            class="setting-language-selection__item-label">암하라어 - አማርኛ</span><span
+                            class="setting-language-selection__item-check" aria-hidden="true"></span></button>
+                    <button type="button" class="setting-language-selection__item" data-setting-language-id="et"
+                            aria-selected="false"><span
+                            class="setting-language-selection__item-label">에스토니아어 - eesti</span><span
+                            class="setting-language-selection__item-check" aria-hidden="true"></span></button>
+                    <button type="button" class="setting-language-selection__item" data-setting-language-id="eo"
+                            aria-selected="false"><span class="setting-language-selection__item-label">에스페란토어 - esperanto</span><span
+                            class="setting-language-selection__item-check" aria-hidden="true"></span></button>
+                    <button type="button" class="setting-language-selection__item" data-setting-language-id="or"
+                            aria-selected="false"><span
+                            class="setting-language-selection__item-label">오리야어 - ଓଡ଼ିଆ</span><span
+                            class="setting-language-selection__item-check" aria-hidden="true"></span></button>
+                    <button type="button" class="setting-language-selection__item" data-setting-language-id="ur"
+                            aria-selected="false"><span
+                            class="setting-language-selection__item-label">우르두어 - اردو</span><span
+                            class="setting-language-selection__item-check" aria-hidden="true"></span></button>
+                    <button type="button" class="setting-language-selection__item" data-setting-language-id="uk"
+                            aria-selected="false"><span class="setting-language-selection__item-label">우크라이나어 - українська</span><span
+                            class="setting-language-selection__item-check" aria-hidden="true"></span></button>
+                    <button type="button" class="setting-language-selection__item" data-setting-language-id="cy"
+                            aria-selected="false"><span
+                            class="setting-language-selection__item-label">웨일스어 - Cymraeg</span><span
+                            class="setting-language-selection__item-check" aria-hidden="true"></span></button>
+                    <button type="button" class="setting-language-selection__item" data-setting-language-id="ug"
+                            aria-selected="false"><span
+                            class="setting-language-selection__item-label">위구르어 - ئۇيغۇرچە</span><span
+                            class="setting-language-selection__item-check" aria-hidden="true"></span></button>
+                    <button type="button" class="setting-language-selection__item" data-setting-language-id="it"
+                            aria-selected="false"><span
+                            class="setting-language-selection__item-label">이탈리아어 - italiano</span><span
+                            class="setting-language-selection__item-check" aria-hidden="true"></span></button>
+                    <button type="button" class="setting-language-selection__item" data-setting-language-id="id"
+                            aria-selected="false"><span class="setting-language-selection__item-label">인도네시아어 - Indonesia</span><span
+                            class="setting-language-selection__item-check" aria-hidden="true"></span></button>
+                    <button type="button" class="setting-language-selection__item" data-setting-language-id="ja"
+                            aria-selected="false"><span
+                            class="setting-language-selection__item-label">일본어 - 日本語</span><span
+                            class="setting-language-selection__item-check" aria-hidden="true"></span></button>
+                    <button type="button" class="setting-language-selection__item" data-setting-language-id="ka"
+                            aria-selected="false"><span
+                            class="setting-language-selection__item-label">조지아어 - ქართული</span><span
+                            class="setting-language-selection__item-check" aria-hidden="true"></span></button>
+                    <button type="button" class="setting-language-selection__item" data-setting-language-id="zh"
+                            aria-selected="false"><span class="setting-language-selection__item-label">중국어 - 中文</span><span
+                            class="setting-language-selection__item-check" aria-hidden="true"></span></button>
+                    <button type="button" class="setting-language-selection__item" data-setting-language-id="cs"
+                            aria-selected="false"><span
+                            class="setting-language-selection__item-label">체코어 - čeština</span><span
+                            class="setting-language-selection__item-check" aria-hidden="true"></span></button>
+                    <button type="button" class="setting-language-selection__item" data-setting-language-id="ca"
+                            aria-selected="false"><span
+                            class="setting-language-selection__item-label">카탈로니아어 - català</span><span
+                            class="setting-language-selection__item-check" aria-hidden="true"></span></button>
+                    <button type="button" class="setting-language-selection__item" data-setting-language-id="kn"
+                            aria-selected="false"><span
+                            class="setting-language-selection__item-label">칸나다어 - ಕನ್ನಡ</span><span
+                            class="setting-language-selection__item-check" aria-hidden="true"></span></button>
+                    <button type="button" class="setting-language-selection__item" data-setting-language-id="km"
+                            aria-selected="false"><span
+                            class="setting-language-selection__item-label">크메르어 - ខ្មែរ</span><span
+                            class="setting-language-selection__item-check" aria-hidden="true"></span></button>
+                    <button type="button" class="setting-language-selection__item" data-setting-language-id="tl"
+                            aria-selected="false"><span
+                            class="setting-language-selection__item-label">타갈로그어 - Tagalog</span><span
+                            class="setting-language-selection__item-check" aria-hidden="true"></span></button>
+                    <button type="button" class="setting-language-selection__item" data-setting-language-id="ta"
+                            aria-selected="false"><span
+                            class="setting-language-selection__item-label">타밀어 - தமிழ்</span><span
+                            class="setting-language-selection__item-check" aria-hidden="true"></span></button>
+                    <button type="button" class="setting-language-selection__item" data-setting-language-id="th"
+                            aria-selected="false"><span
+                            class="setting-language-selection__item-label">태국어 - ไทย</span><span
+                            class="setting-language-selection__item-check" aria-hidden="true"></span></button>
+                    <button type="button" class="setting-language-selection__item" data-setting-language-id="tr"
+                            aria-selected="false"><span
+                            class="setting-language-selection__item-label">터키어 - Türkçe</span><span
+                            class="setting-language-selection__item-check" aria-hidden="true"></span></button>
+                    <button type="button" class="setting-language-selection__item" data-setting-language-id="te"
+                            aria-selected="false"><span
+                            class="setting-language-selection__item-label">텔루구어 - తెలుగు</span><span
+                            class="setting-language-selection__item-check" aria-hidden="true"></span></button>
+                    <button type="button" class="setting-language-selection__item" data-setting-language-id="bo"
+                            aria-selected="false"><span
+                            class="setting-language-selection__item-label">티베트어 - བོད་སྐད་</span><span
+                            class="setting-language-selection__item-check" aria-hidden="true"></span></button>
+                    <button type="button" class="setting-language-selection__item" data-setting-language-id="ps"
+                            aria-selected="false"><span
+                            class="setting-language-selection__item-label">파슈토어 - پښتو</span><span
+                            class="setting-language-selection__item-check" aria-hidden="true"></span></button>
+                    <button type="button" class="setting-language-selection__item" data-setting-language-id="pa"
+                            aria-selected="false"><span
+                            class="setting-language-selection__item-label">펀잡어 - ਪੰਜਾਬੀ</span><span
+                            class="setting-language-selection__item-check" aria-hidden="true"></span></button>
+                    <button type="button" class="setting-language-selection__item" data-setting-language-id="fa"
+                            aria-selected="false"><span
+                            class="setting-language-selection__item-label">페르시아어 - فارسی</span><span
+                            class="setting-language-selection__item-check" aria-hidden="true"></span></button>
+                    <button type="button" class="setting-language-selection__item" data-setting-language-id="pt"
+                            aria-selected="false"><span
+                            class="setting-language-selection__item-label">포르투갈어 - português</span><span
+                            class="setting-language-selection__item-check" aria-hidden="true"></span></button>
+                    <button type="button" class="setting-language-selection__item" data-setting-language-id="pl"
+                            aria-selected="false"><span
+                            class="setting-language-selection__item-label">폴란드어 - polski</span><span
+                            class="setting-language-selection__item-check" aria-hidden="true"></span></button>
+                    <button type="button" class="setting-language-selection__item" data-setting-language-id="fr"
+                            aria-selected="false"><span
+                            class="setting-language-selection__item-label">프랑스어 - français</span><span
+                            class="setting-language-selection__item-check" aria-hidden="true"></span></button>
+                    <button type="button" class="setting-language-selection__item" data-setting-language-id="fi"
+                            aria-selected="false"><span
+                            class="setting-language-selection__item-label">핀란드어 - suomi</span><span
+                            class="setting-language-selection__item-check" aria-hidden="true"></span></button>
+                    <button type="button" class="setting-language-selection__item" data-setting-language-id="hu"
+                            aria-selected="false"><span
+                            class="setting-language-selection__item-label">헝가리어 - magyar</span><span
+                            class="setting-language-selection__item-check" aria-hidden="true"></span></button>
+                    <button type="button" class="setting-language-selection__item" data-setting-language-id="he"
+                            aria-selected="false"><span
+                            class="setting-language-selection__item-label">히브리어 - עברית</span><span
+                            class="setting-language-selection__item-check" aria-hidden="true"></span></button>
+                    <button type="button" class="setting-language-selection__item" data-setting-language-id="hi"
+                            aria-selected="false"><span
+                            class="setting-language-selection__item-label">힌디어 - हिन्दी</span><span
+                            class="setting-language-selection__item-check" aria-hidden="true"></span></button>
+                    <button type="button" class="setting-language-selection__item" data-setting-language-id="etc"
+                            aria-selected="false"><span class="setting-language-selection__item-label">기타</span><span
+                            class="setting-language-selection__item-check" aria-hidden="true"></span></button>
+                </div>
+
+                <div class="language-selection__footer">
+                    <button
+                            type="button"
+                            class="language-selection__primary"
+                            id="languageSelectionNextButton"
+                    >
+                        저장
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section
+            class="modal-card modal-card--phone"
+            id="phoneAddModal"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="phoneAddModalTitle"
+            hidden
+    >
+        <header class="modal-header modal-header--phone">
+            <button
+                    type="button"
+                    class="modal-close modal-close--back"
+                    id="phoneAddCloseButton"
+                    aria-label="뒤로가기"
+            >
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <g>
+                        <path
+                                d="M7.414 13l5.043 5.04-1.414 1.42L3.586 12l7.457-7.46 1.414 1.42L7.414 11H21v2H7.414z"
+                        ></path>
+                    </g>
+                </svg>
+            </button>
+            <div class="phone-modal__brand" aria-hidden="true">GlobalGates</div>
+            <div class="modal-spacer" aria-hidden="true"></div>
+        </header>
+
+        <div class="modal-body modal-body--phone">
+            <div class="phone-modal">
+                <section class="phone-modal__step" id="phoneAddStep">
+                    <h2 class="phone-modal__title" id="phoneAddModalTitle">
+                        전화번호 추가
+                    </h2>
+                    <p class="phone-modal__summary">
+                        내 GlobalGates 계정에 연결할 전화번호를 입력하세요. 이 번호로
+                        인증 코드가 전송됩니다.
+                    </p>
+
+                    <div class="phone-modal__fieldset">
+                        <label class="phone-modal__select-shell">
+                            <span class="phone-modal__select-label">국가 코드</span>
+                            <select
+                                    class="phone-modal__select"
+                                    aria-label="국가 코드"
+                            >
+                                <option value="KR" selected>+82 대한민국</option>
+                                <option value="JP">+81 일본</option>
+                                <option value="US">+1 미국</option>
+                                <option value="CA">+1 캐나다</option>
+                                <option value="GB">+44 영국</option>
+                                <option value="AU">+61 오스트레일리아</option>
+                                <option value="CN">+86 중국</option>
+                                <option value="TW">+886 대만</option>
+                                <option value="HK">+852 홍콩</option>
+                                <option value="SG">+65 싱가포르</option>
+                                <option value="VN">+84 베트남</option>
+                                <option value="TH">+66 태국</option>
+                                <option value="PH">+63 필리핀</option>
+                                <option value="MY">+60 말레이시아</option>
+                                <option value="ID">+62 인도네시아</option>
+                                <option value="IN">+91 인도</option>
+                                <option value="DE">+49 독일</option>
+                                <option value="FR">+33 프랑스</option>
+                                <option value="IT">+39 이탈리아</option>
+                                <option value="ES">+34 스페인</option>
+                            </select>
+                            <span class="phone-modal__select-arrow" aria-hidden="true">
+                                        <svg viewBox="0 0 24 24">
+                                            <g>
+                                                <path
+                                                        d="M12 15.5l-6-6 1.41-1.41L12 12.67l4.59-4.58L18 9.5l-6 6z"
+                                                ></path>
+                                            </g>
+                                        </svg>
+                                    </span>
+                        </label>
+
+                        <label class="phone-modal__input-field">
+                            <span class="phone-modal__input-label">내 전화번호</span>
+                            <input
+                                    class="phone-modal__input"
+                                    id="phoneAddInput"
+                                    type="tel"
+                                    inputmode="numeric"
+                                    pattern="[0-9]*"
+                                    aria-label="내 전화번호"
+                            />
+                        </label>
+                    </div>
+
+                    <label class="phone-modal__check-row">
+                                <span class="phone-modal__check-copy">
+                                    내 휴대폰 번호를 알고 있는 사람들이 GlobalGates에서 나를 찾고 연락할 수 있도록 합니다.
+                                                                    </span>
+                        <span class="phone-modal__check-control">
+                                    <input type="checkbox" class="phone-modal__checkbox"/>
+                                    <span class="phone-modal__check-box" aria-hidden="true">
+                                        <svg viewBox="0 0 24 24">
+                                            <g>
+                                                <path
+                                                        d="M9.96 18.96L3.75 12.75l1.41-1.41 4.8 4.79 8.88-8.88 1.41 1.41-10.29 10.3z"
+                                                ></path>
+                                            </g>
+                                        </svg>
+                                    </span>
+                                </span>
+                    </label>
+
+                    <label class="phone-modal__check-row">
+                                <span class="phone-modal__check-copy">
+                                    GlobalGates에서 광고(광고 기본 설정에서 허용하는 경우)를 포함한 맞춤 서비스를 제공하기 위해 내 전화번호를 사용할 수 있도록 합니다. 이 기능을 활성화하지 않더라도 GlobalGates는 계정 보안 및 스팸, 사기 및 사이버 폭력 방지 등의 목적으로 내 전화번호를 사용할 수 있습니다.
+                                </span>
+                        <span class="phone-modal__check-control">
+                                    <input type="checkbox" class="phone-modal__checkbox" checked/>
+                                    <span class="phone-modal__check-box" aria-hidden="true">
+                                        <svg viewBox="0 0 24 24">
+                                            <g>
+                                                <path
+                                                        d="M9.96 18.96L3.75 12.75l1.41-1.41 4.8 4.79 8.88-8.88 1.41 1.41-10.29 10.3z"
+                                                ></path>
+                                            </g>
+                                        </svg>
+                                    </span>
+                                </span>
+                    </label>
+
+                    <div class="phone-modal__footer">
+                        <button
+                                type="button"
+                                class="phone-modal__action"
+                                id="phoneAddActionButton"
+                        >
+                            취소
+                        </button>
+                    </div>
+                </section>
+
+                <section
+                        class="phone-modal__step phone-modal__step--code"
+                        id="phoneCodeStep"
+                        hidden
+                >
+                    <h2 class="phone-modal__title phone-modal__title--code">
+                        코드를 보내 드렸습니다
+                    </h2>
+                    <p class="phone-modal__summary phone-modal__summary--code">
+                        <span id="phoneCodeNumber">01099139076</span>번을 인증하려면 아래에 코드를 입력하세요.
+                    </p>
+
+                    <div class="phone-modal__fieldset phone-modal__fieldset--code">
+                        <label class="phone-modal__input-field phone-modal__input-field--code">
+                            <span class="phone-modal__input-label phone-modal__input-label--placeholder">인증 코드</span>
+                            <input
+                                    class="phone-modal__input"
+                                    id="phoneCodeInput"
+                                    type="text"
+                                    aria-label="인증 코드"
+                            />
+                        </label>
+                    </div>
+
+                    <div class="phone-modal__help" id="phoneCodeHelp">
+                        <button
+                                type="button"
+                                class="phone-modal__help-link"
+                                id="phoneCodeHelpButton"
+                                aria-controls="phoneCodeHelpMenu"
+                                aria-expanded="false"
+                                aria-haspopup="true"
+                        >
+                            코드를 받지 못하셨나요?
+                        </button>
+                        <div
+                                class="phone-modal__help-menu"
+                                id="phoneCodeHelpMenu"
+                                hidden
+                        >
+                            <div class="phone-modal__help-menu-title">
+                                코드를 받지 못하셨나요?
+                            </div>
+                            <button
+                                    type="button"
+                                    class="phone-modal__help-menu-action"
+                                    id="phoneCodeResendButton"
+                            >
+                                다시 보내기
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="phone-modal__footer phone-modal__footer--code">
+                        <button
+                                type="button"
+                                class="phone-modal__action phone-modal__action--disabled"
+                                id="phoneCodeActionButton"
+                                disabled
+                        >
+                            인증
+                        </button>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </section>
+
+    <section
+            class="modal-card modal-card--phone-verify"
+            id="phoneVerifyModal"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="phoneVerifyModalTitle"
+            hidden
+    >
+        <div class="phone-verify">
+            <h2 class="phone-verify__title" id="phoneVerifyModalTitle">
+                휴대폰 인증하기
+            </h2>
+            <p class="phone-verify__copy">
+                전화 <span id="phoneVerifyNumber">01099139076</span>번으로 인증 코드를 보냅니다. 표준 SMS, 통화 및 데이터 요금이 부과될 수 있습니다.
+            </p>
+            <button
+                    type="button"
+                    class="phone-verify__confirm"
+                    id="phoneVerifyConfirmButton"
+            >
+                확인
+            </button>
+            <button
+                    type="button"
+                    class="phone-verify__edit"
+                    id="phoneVerifyEditButton"
+            >
+                편집
+            </button>
+        </div>
+    </section>
+
+    <section
+            class="modal-card modal-card--phone modal-card--email"
+            id="emailAddModal"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="emailAddModalTitle"
+            hidden
+    >
+        <header class="modal-header modal-header--phone">
+            <button
+                    type="button"
+                    class="modal-close modal-close--back"
+                    id="emailAddCloseButton"
+                    aria-label="뒤로가기"
+            >
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <g>
+                        <path
+                                d="M7.414 13l5.043 5.04-1.414 1.42L3.586 12l7.457-7.46 1.414 1.42L7.414 11H21v2H7.414z"
+                        ></path>
+                    </g>
+                </svg>
+            </button>
+            <div class="phone-modal__brand email-modal__brand" aria-hidden="true">
+                GlobalGates
+            </div>
+            <div class="modal-spacer" aria-hidden="true"></div>
+        </header>
+
+        <div class="modal-body modal-body--phone modal-body--email">
+            <div class="phone-modal email-modal">
+                <section
+                        class="phone-modal__step email-modal__step"
+                        id="emailAddStep"
+                >
+                    <h2
+                            class="phone-modal__title email-modal__title"
+                            id="emailAddModalTitle"
+                    >
+                        이메일 업데이트
+                    </h2>
+                    <p class="phone-modal__summary email-modal__summary">
+                        내 GlobalGates 계정에 연결할 이메일 주소를 입력하세요. 이 이메일로
+                        인증 코드가 전송됩니다.
+                    </p>
+
+                    <div class="phone-modal__fieldset email-modal__fieldset">
+                        <label
+                                class="phone-modal__input-field email-modal__input-field"
+                        >
+                                    <span
+                                            class="phone-modal__input-label email-modal__input-label"
+                                    >
+                                        이메일 주소
+                                    </span>
+                            <input
+                                    class="phone-modal__input email-modal__input"
+                                    id="emailAddInput"
+                                    type="email"
+                                    aria-label="이메일 주소"
+                            />
+                        </label>
+                    </div>
+
+                    <div class="phone-modal__footer email-modal__footer">
+                        <button
+                                type="button"
+                                class="phone-modal__action email-modal__action"
+                                id="emailAddActionButton"
+                        >
+                            취소
+                        </button>
+                    </div>
+                </section>
+
+                <section
+                        class="phone-modal__step phone-modal__step--code email-modal__step email-modal__step--code"
+                        id="emailCodeStep"
+                        hidden
+                >
+                    <h2
+                            class="phone-modal__title phone-modal__title--code email-modal__title email-modal__title--code"
+                    >
+                        코드를 보내 드렸습니다
+                    </h2>
+                    <p
+                            class="phone-modal__summary phone-modal__summary--code email-modal__summary email-modal__summary--code"
+                    >
+                        <span id="emailCodeAddress">tjdgh1851@gmail.com</span> 주소를 인증하려면 아래에 코드를 입력하세요.
+                    </p>
+
+                    <div
+                            class="phone-modal__fieldset phone-modal__fieldset--code email-modal__fieldset email-modal__fieldset--code"
+                    >
+                        <label
+                                class="phone-modal__input-field phone-modal__input-field--code email-modal__input-field email-modal__input-field--code"
+                        >
+                                    <span
+                                            class="phone-modal__input-label phone-modal__input-label--placeholder email-modal__input-label email-modal__input-label--placeholder"
+                                    >
+                                        인증 코드
+                                    </span>
+                            <input
+                                    class="phone-modal__input email-modal__input"
+                                    id="emailCodeInput"
+                                    type="text"
+                                    aria-label="인증 코드"
+                            />
+                        </label>
+                    </div>
+
+                    <div
+                            class="phone-modal__help email-modal__help"
+                            id="emailCodeHelp"
+                    >
+                        <button
+                                type="button"
+                                class="phone-modal__help-link email-modal__help-link"
+                                id="emailCodeHelpButton"
+                                aria-controls="emailCodeHelpMenu"
+                                aria-expanded="false"
+                                aria-haspopup="true"
+                        >
+                            코드를 받지 못하셨나요?
+                        </button>
+                        <div
+                                class="phone-modal__help-menu email-modal__help-menu"
+                                id="emailCodeHelpMenu"
+                                hidden
+                        >
+                            <div
+                                    class="phone-modal__help-menu-title email-modal__help-menu-title"
+                            >
+                                코드를 받지 못하셨나요?
+                            </div>
+                            <button
+                                    type="button"
+                                    class="phone-modal__help-menu-action email-modal__help-menu-action"
+                                    id="emailCodeResendButton"
+                            >
+                                다시 보내기
+                            </button>
+                        </div>
+                    </div>
+
+                    <div
+                            class="phone-modal__footer phone-modal__footer--code email-modal__footer email-modal__footer--code"
+                    >
+                        <button
+                                type="button"
+                                class="phone-modal__action phone-modal__action--disabled email-modal__action email-modal__action--disabled"
+                                id="emailCodeActionButton"
+                                disabled
+                        >
+                            인증
+                        </button>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </section>
+
+    <section
+            class="modal-card modal-card--phone-verify modal-card--email-verify"
+            id="emailVerifyModal"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="emailVerifyModalTitle"
+            hidden
+    >
+        <div class="phone-verify email-verify">
+            <h2
+                    class="phone-verify__title email-verify__title"
+                    id="emailVerifyModalTitle"
+            >
+                이메일 인증하기
+            </h2>
+            <p class="phone-verify__copy email-verify__copy">
+                이메일 <span id="emailVerifyAddress">tjdgh1851@gmail.com</span>
+                주소로 인증 코드를 보냅니다.
+            </p>
+            <button
+                    type="button"
+                    class="phone-verify__confirm email-verify__confirm"
+                    id="emailVerifyConfirmButton"
+            >
+                확인
+            </button>
+            <button
+                    type="button"
+                    class="phone-verify__edit email-verify__edit"
+                    id="emailVerifyEditButton"
+            >
+                편집
+            </button>
+        </div>
+    </section>
+
+    <section
+            class="modal-card modal-card--blocked-unblock"
+            id="blockedUnblockModal"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="blockedUnblockModalTitle"
+            hidden
+    >
+        <div class="blocked-unblock-modal">
+            <h2 class="blocked-unblock-modal__title" id="blockedUnblockModalTitle">
+                <span data-blocked-unblock-handle>handle</span>님을 차단 해제 하겠습니까?
+            </h2>
+
+            <div class="blocked-unblock-modal__footer">
+                <button
+                        type="button"
+                        class="blocked-unblock-modal__confirm"
+                        id="blockedUnblockConfirmButton"
+                >
+                    확인
+                </button>
+                <button
+                        type="button"
+                        class="blocked-unblock-modal__cancel"
+                        id="blockedUnblockCancelButton"
+                >
+                    취소
+                </button>
+            </div>
+        </div>
+    </section>
+</div>
+
+<!-- 모바일 nav + 더보기 아코디언 (공용 fragment) -->
+<div th:replace="~{common/mobile-nav :: mobileNav('more')}"></div>
+<div th:replace="~{common/mobile-nav :: mobileMoreSheet}"></div>
+</th:block>
+</body>
+</html>

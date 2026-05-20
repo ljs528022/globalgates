@@ -1,0 +1,296 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.app.globalgates.mapper.MemberMapper">
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+        insert into tbl_member (member_name
+                               ,member_email
+                               ,member_password
+                               ,member_handle
+                               ,member_phone
+                               ,member_region
+                               ,member_language
+                               ,push_enabled
+                               ,birth_date)
+        values (#{memberName}, #{memberEmail}, #{memberPassword},#{memberHandle},#{memberPhone},#{memberRegion},#{memberLanguage},#{pushEnabled},#{birthDate})
+    </insert>
+
+    <select id="selectMemberForLogin">
+        select
+            m.id, m.member_email, m.member_password, m.member_nickname, m.member_handle,
+            m.member_phone, m.member_bio, m.member_region, m.member_country, m.member_status, m.member_role,
+            m.push_enabled, m.member_language, m.birth_date, m.created_datetime, m.updated_datetime,
+            m.last_login_at, m.member_name, o.provider, o.provider_id, o.profile_url
+        from tbl_member m left join tbl_oauth o on m.id = o.member_id
+        where (member_email = #{loginId} or member_phone = #{loginId})
+          and member_password = #{memberPassword}
+          and member_status = 'active'
+    </select>
+
+    <select id="selectMemberByMemberPhone">
+        select id, member_email, member_password,
+               member_nickname, member_handle, member_phone,
+               member_bio, member_region, member_country, member_status,
+               member_role, push_enabled,
+               member_language, birth_date, created_datetime,
+               updated_datetime, last_login_at, member_name
+        from tbl_member
+        where member_phone = #{memberPhone}
+    </select>
+
+    <select id="selectMemberByMemberEmail">
+        select
+            id, member_email, member_password,
+            member_nickname, member_handle,
+            member_phone, member_bio,
+            member_region, member_country, member_status,
+            member_role, push_enabled,
+            member_language, birth_date, created_datetime,
+            updated_datetime, last_login_at, member_name
+        from tbl_member
+        where member_email = #{memberEmail}
+    </select>
+
+    <select id="selectMemberByLoginId">
+        select
+            m.id, m.member_email, m.member_password,
+            m.member_nickname, m.member_handle,
+            m.member_phone, m.member_bio,
+            m.member_region, m.member_country, m.member_status,
+            m.member_role, m.push_enabled,
+            m.member_language, m.birth_date, m.created_datetime,
+            m.updated_datetime, m.last_login_at, m.member_name,
+            o.provider,o.profile_url,o.provider_id,
+            (select f.file_name from tbl_member_profile_file mpf
+                join tbl_file f on mpf.id = f.id
+             where mpf.member_id = m.id
+               and mpf.profile_image_type = 'profile'
+             limit 1) as file_name
+        from tbl_member m left join tbl_oauth o on m.id = o.member_id
+        where (member_email = #{loginId} or member_phone = #{loginId})
+          and member_status = 'active'
+    </select>
+
+    <select id="selectMemberByLoginIdAnyStatus">
+        select
+            m.id, m.member_email, m.member_password,
+            m.member_nickname, m.member_handle,
+            m.member_phone, m.member_bio,
+            m.member_region, m.member_country, m.member_status,
+            m.member_role, m.push_enabled,
+            m.member_language, m.birth_date, m.created_datetime,
+            m.updated_datetime, m.last_login_at, m.member_name,
+            o.provider, o.profile_url, o.provider_id,
+            (select f.file_name from tbl_member_profile_file mpf
+                join tbl_file f on mpf.id = f.id
+             where mpf.member_id = m.id
+               and mpf.profile_image_type = 'profile'
+             limit 1) as file_name
+        from tbl_member m left join tbl_oauth o on m.id = o.member_id
+        where member_email = #{loginId} or member_phone = #{loginId}
+    </select>
+
+    <select id="selectTotalByKeyword">
+        select count(*)
+        from tbl_member
+        where member_status = 'active'
+          and (member_nickname like concat('%', #{keyword}, '%')
+            or member_handle like concat('%', #{keyword}, '%'))
+    </select>
+
+    <select id="selectMembersByKeyword">
+        select id, member_name, member_nickname, member_handle,
+               member_bio, member_region, member_status, member_role,
+               created_datetime, updated_datetime
+        from tbl_member
+        where member_status = 'active'
+          and (member_nickname like concat('%', #{keyword}, '%')
+            or member_handle like concat('%', #{keyword}, '%'))
+        order by member_nickname
+    </select>
+
+    <select id="selectMembersByKeywordWithFollow">
+        select
+            m.id,
+            m.member_name,
+            m.member_nickname,
+            m.member_handle,
+            m.member_bio,
+            m.member_region,
+            m.member_status,
+            m.member_role,
+            m.created_datetime,
+            m.updated_datetime,
+            case when exists (
+                select 1 from tbl_follow f
+                where f.follower_id = #{memberId}
+                  and f.following_id = m.id
+            ) then 1 else 0 end as followed
+        from tbl_member m
+        where m.member_status = 'active'
+          and m.id != #{memberId}
+          and (
+            m.member_nickname like concat('%', #{keyword}, '%')
+                or m.member_handle like concat('%', #{keyword}, '%')
+            )
+        order by m.member_nickname
+        limit #{criteria.count} offset #{criteria.offset}
+    </select>
+
+    <select id="selectMemberByMemberHandle">
+        select id, member_email, member_password, member_handle, member_phone,
+               member_region, member_status, member_role, created_datetime, updated_datetime,  member_name
+        from tbl_member
+        where member_handle = #{memberHandle} and member_status = 'active'
+    </select>
+
+    <select id="selectMemberByMemberPassword">
+        select id, member_email, member_password, member_handle, member_phone,
+               member_region, member_status, member_role, created_datetime, updated_datetime,  member_name
+        from tbl_member
+        where (member_email = #{loginId} or member_phone = #{loginId}) and member_password = #{memberPassword} and member_status = 'active'
+    </select>
+
+    <select id="selectById">
+        select id, member_email, member_password, member_nickname
+             ,member_handle, member_phone, member_bio, member_region
+             ,member_country
+             ,member_status, member_role, push_enabled
+             ,member_language, birth_date, created_datetime
+             ,updated_datetime, last_login_at, member_name
+        from tbl_member
+        where id = #{id}
+    </select>
+
+    <delete id="delete">
+        delete from tbl_member
+        where id = #{id}
+    </delete>
+
+    <update id="softDelete">
+        update tbl_member
+        set member_status = 'inactive'
+        where id = #{id}
+    </update>
+
+    <update id="reactivate">
+        update tbl_member
+        set member_status = 'active',
+            updated_datetime = now()
+        where id = #{id}
+    </update>
+
+    <update id="update">
+        <!-- 프로필 수정 모달에서 실제로 바꾸는 텍스트 필드만 저장한다.
+             기존 회원가입/로그인 로직과 섞이지 않도록 member 본체 컬럼만 최소 범위로 갱신한다. -->
+        update tbl_member
+        set member_nickname = #{memberNickname},
+            member_bio = #{memberBio},
+            birth_date = #{birthDate},
+            updated_datetime = now()
+        where id = #{id}
+    </update>
+
+    <update id="updatePassword">
+        update tbl_member
+        set member_password = #{memberPassword},
+            updated_datetime = now()
+        where id = #{id}
+    </update>
+
+    <update id="updateHandle">
+        update tbl_member
+        set member_handle = #{memberHandle},
+            updated_datetime = now()
+        where id = #{id}
+    </update>
+
+    <update id="updatePhone">
+        update tbl_member
+        set member_phone = #{memberPhone},
+            updated_datetime = now()
+        where id = #{id}
+    </update>
+
+    <update id="updateEmail">
+        update tbl_member
+        set member_email = #{memberEmail},
+            updated_datetime = now()
+        where id = #{id}
+    </update>
+
+    <update id="updateLanguage">
+        update tbl_member
+        set member_language = #{memberLanguage},
+            updated_datetime = now()
+        where id = #{id}
+    </update>
+
+    <update id="updateCountry">
+        update tbl_member
+        set member_country = #{memberCountry},
+            updated_datetime = now()
+        where id = #{id}
+    </update>
+
+    <update id="updatePushEnabled">
+        update tbl_member
+        set push_enabled = #{pushEnabled},
+            updated_datetime = now()
+        where id = #{id}
+    </update>
+
+    <!-- 채팅 유저 검색 (차단 사용자 제외) -->
+    <select id="searchByKeyword" resultType="com.app.globalgates.dto.MemberDTO">
+        select
+            id, member_name, member_email, member_nickname,
+            member_handle, member_bio, member_region
+        from tbl_member
+        where member_status = 'active'
+          and id != #{memberId}
+          and (
+            lower(member_name) like lower(concat('%', #{keyword}, '%'))
+                or lower(member_handle) like lower(concat('%', #{keyword}, '%'))
+                or lower(member_nickname) like lower(concat('%', #{keyword}, '%'))
+            )
+          and not exists (
+            select 1 from tbl_block
+            where (blocker_id = #{memberId} and blocked_id = tbl_member.id)
+               or (blocker_id = tbl_member.id and blocked_id = #{memberId})
+        )
+        order by member_name
+        limit 20
+    </select>
+
+    <select id="selectInquiryTotal">
+        select count(*)
+        from vw_inquiry_member v
+        where v.member_status = 'active'
+        and v.id != #{memberId}::bigint
+        <if test="categoryName != null and categoryName != '' and categoryName != '전체'">
+            and v.category_name = #{categoryName}
+        </if>
+    </select>
+
+    <select id="selectInquiryMembers">
+        select v.*,
+        case when exists (
+        select 1 from tbl_follow fl
+        where fl.follower_id = #{memberId}::bigint
+        and fl.following_id = v.id
+        ) then true else false end as followed
+        from vw_inquiry_member v
+        where v.member_status = 'active'
+        and v.id != #{memberId}::bigint
+        <if test="categoryName != null and categoryName != '' and categoryName != '전체'">
+            and v.category_name = #{categoryName}
+        </if>
+        limit #{criteria.count} offset #{criteria.offset}
+    </select>
+
+    <update id="updateMemberRole">
+        update tbl_member
+        set member_role = #{memberRole},
+            updated_datetime = now()
+        where id = #{id}
+    </update>
+</mapper>

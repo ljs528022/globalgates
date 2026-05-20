@@ -1,0 +1,37 @@
+# Git
+.git
+.gitignore
+.gitattributes
+
+# Gradle / 빌드 산출물 (Docker 안에서 다시 빌드하므로 호스트의 결과물 불필요)
+.gradle
+build
+out
+
+# IDE
+.idea
+*.iml
+.vscode
+.project
+.classpath
+.settings
+.claude
+.gstack
+.playwright-mcp
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Docs / 이미지 (런타임 불필요)
+docs
+mockups
+mockup_ai_chat.html
+*.md
+
+# 로컬 인증서 (gitignore 되어있지만 혹시 모를 안전장치)
+src/main/resources/key
+
+# 로그
+*.log
+logs

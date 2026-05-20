@@ -1,0 +1,709 @@
+<!doctype html>
+<html lang="ko" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{common/layout}">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>북마크 / X</title>
+    <link rel="stylesheet" href="/css/common/mobile-nav.css"/>
+    <link rel="stylesheet" href="/css/bookmark/bookmark.css"/>
+    <script th:inline="javascript">
+        const memberId = [[${memberId}]];
+        const profileImageUrl = [[${profileImageUrl}]] /*'/images/profile/default_image.png'*/;
+    </script>
+    <script src="/js/common/mobile-nav.js" defer></script>
+    <script src="/js/main/service.js"></script>
+    <script src="/js/main/layout.js"></script>
+    <script src="/js/bookmark/service.js"></script>
+    <script src="/js/bookmark/layout.js"></script>
+    <script src="/js/bookmark/event.js" defer></script>
+    <script src="/js/utils/exchange.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@joeattardi/emoji-button@3.0.3/dist/index.min.js"></script>
+</head>
+<body>
+<div class="bookmark-shell">
+<th:block layout:fragment="content">
+    <main class="bookmark-main">
+        <header class="bookmark-header">
+            <button
+                    class="header-back"
+                    id="headerBack"
+                    type="button"
+                    aria-label="뒤로 가기"
+            >
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <path
+                            d="M7.414 13l5.043 5.04-1.414 1.42L3.586 12l7.457-7.46 1.414 1.42L7.414 11H21v2H7.414z"
+                    />
+                </svg>
+            </button>
+            <h1
+                    class="header-title"
+                    id="headerTitle"
+                    data-default-title="모든 북마크"
+            >
+                모든 북마크
+            </h1>
+            <button
+                    class="header-action"
+                    id="modalOpenButton"
+                    type="button"
+                    aria-label="북마크 추가"
+            >
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <path
+                            d="M18 3V0h2v3h3v2h-3v3h-2V5h-3V3zm-7.5 1a.5.5 0 00-.5.5V7h3.5A2.5 2.5 0 0116 9.5v3.48l3 2.1V11h2v7.92l-5-3.5v7.26l-6.5-3.54L3 22.68V9.5A2.5 2.5 0 015.5 7H8V4.5A2.5 2.5 0 0110.5 2H12v2zm-5 5a.5.5 0 00-.5.5v9.82l4.5-2.46 4.5 2.46V9.5a.5.5 0 00-.5-.5z"
+                    />
+                </svg>
+            </button>
+            <button
+                    class="header-action"
+                    id="detailMoreButton"
+                    type="button"
+                    aria-label="더 보기"
+                    aria-haspopup="menu"
+                    aria-expanded="false"
+                    hidden
+            >
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <path
+                            d="M3 12c0-1.1.9-2 2-2s2 .9 2 2-.9 2-2 2-2-.9-2-2zm9 2c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm7 0c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2z"
+                    />
+                </svg>
+            </button>
+        </header>
+
+        <section class="bookmark-view" id="bookmarkListView">
+            <section
+                    class="bookmark-search-section"
+                    aria-label="북마크 검색"
+            >
+                <div class="search-box" id="searchBox">
+                    <svg
+                            viewBox="0 0 24 24"
+                            class="search-icon"
+                            aria-hidden="true"
+                    >
+                        <path
+                                d="M10.25 3.75c-3.59 0-6.5 2.91-6.5 6.5s2.91 6.5 6.5 6.5c1.795 0 3.419-.726 4.596-1.904 1.178-1.177 1.904-2.801 1.904-4.596 0-3.59-2.91-6.5-6.5-6.5zm-8.5 6.5c0-4.694 3.806-8.5 8.5-8.5s8.5 3.806 8.5 8.5c0 1.986-.682 3.815-1.824 5.262l4.781 4.781-1.414 1.414-4.781-4.781c-1.447 1.142-3.276 1.824-5.262 1.824-4.694 0-8.5-3.806-8.5-8.5z"
+                        />
+                    </svg>
+                    <input
+                            id="bookmarkSearch"
+                            class="search-input"
+                            type="search"
+                            placeholder="북마크 검색"
+                            aria-label="북마크 검색"
+                    />
+                </div>
+            </section>
+
+            <section class="bookmark-list" id="bookmarkFolderList" aria-label="북마크 폴더 목록">
+                <!-- 폴더 목록은 JS에서 동적 생성 -->
+            </section>
+
+
+        </section>
+
+        <section
+                class="bookmark-view bookmark-detail-view"
+                id="bookmarkDetailView"
+                hidden
+        >
+            <section
+                    class="empty-state"
+                    id="bookmarkPostsEmpty"
+                    aria-live="polite"
+                    hidden
+            >
+                <div class="empty-copy">
+                    <h2 class="empty-title">저장된 게시물이 없습니다</h2>
+                    <p class="empty-description">
+                        북마크를 해제하면 이 목록에서 바로 사라집니다.
+                    </p>
+                </div>
+            </section>
+            <div class="bookmark-detail-feed" id="bookmarkPosts">
+                <!-- 게시물 카드는 JS에서 동적 생성 -->
+            </div>
+        </section>
+    </main>
+</th:block>
+</div>
+<th:block layout:fragment="modals">
+<!-- 하드코딩된 게시물 카드 제거됨 — JS에서 동적 생성 -->
+<template id="__DUMMY_REMOVED__"><article class="bookmark-post" data-post-id="101">
+                    <div class="bookmark-post-avatar">T</div>
+                    <div class="bookmark-post-body">
+                        <header class="bookmark-post-header">
+                            <div class="bookmark-post-identity">
+                                <strong class="bookmark-post-name">TradeHub Official</strong>
+                                <span class="bookmark-post-handle">@TradeHub_KR</span>
+                                <span class="bookmark-post-time">2시간</span>
+                            </div>
+                            <div class="bookmark-post-more-wrap">
+                                <button class="bookmark-post-more" type="button" aria-label="게시물 더 보기"
+                                        aria-haspopup="menu" aria-expanded="false" data-post-more>
+                                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                                        <path d="M3 12c0-1.1.9-2 2-2s2 .9 2 2-.9 2-2 2-2-.9-2-2zm9 2c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm7 0c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2z"></path>
+                                    </svg>
+                                </button>
+                                <div class="bookmark-post-more-menu dropdown-menu" role="menu" hidden>
+                                    <button type="button" class="menu-item menu-item--follow-toggle" role="menuitem"
+                                            data-more-action="follow-toggle">
+                                                <span class="menu-item__icon" data-follow-icon>
+                                                    <svg viewBox="0 0 24 24" aria-hidden="true"><path
+                                                            d="M10 4c-1.105 0-2 .9-2 2s.895 2 2 2 2-.9 2-2-.895-2-2-2zM6 6c0-2.21 1.791-4 4-4s4 1.79 4 4-1.791 4-4 4-4-1.79-4-4zm4 7c-3.053 0-5.563 1.193-7.443 3.596l1.548 1.207C5.573 15.922 7.541 15 10 15s4.427.922 5.895 2.803l1.548-1.207C15.563 14.193 13.053 13 10 13zm8-6V5h-3V3h-2v2h-3v2h3v3h2V7h3z"></path></svg>
+                                                </span>
+                                        <span class="menu-item__label" data-follow-label>@TradeHub_KR 님 팔로우하기</span>
+                                    </button>
+                                    <button type="button" class="menu-item menu-item--block" role="menuitem"
+                                            data-more-action="block">
+                                                <span class="menu-item__icon">
+                                                    <svg viewBox="0 0 24 24" aria-hidden="true"><path
+                                                            d="M12 3.75c-4.55 0-8.25 3.69-8.25 8.25 0 1.92.66 3.68 1.75 5.08L17.09 5.5C15.68 4.4 13.92 3.75 12 3.75zm6.5 3.17L6.92 18.5c1.4 1.1 3.16 1.75 5.08 1.75 4.56 0 8.25-3.69 8.25-8.25 0-1.92-.65-3.68-1.75-5.08zM1.75 12C1.75 6.34 6.34 1.75 12 1.75S22.25 6.34 22.25 12 17.66 22.25 12 22.25 1.75 17.66 1.75 12z"></path></svg>
+                                                </span>
+                                        <span class="menu-item__label">@TradeHub_KR 님 차단하기</span>
+                                    </button>
+                                    <button type="button" class="menu-item menu-item--report" role="menuitem"
+                                            data-more-action="report">
+                                                <span class="menu-item__icon">
+                                                    <svg viewBox="0 0 24 24" aria-hidden="true"><path
+                                                            d="M3 2h18.61l-3.5 7 3.5 7H5v6H3V2zm2 12h13.38l-2.5-5 2.5-5H5v10z"></path></svg>
+                                                </span>
+                                        <span class="menu-item__label">게시물 신고하기</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </header>
+                        <p class="bookmark-post-text">2026년 무역 흐름 요약과 함께 이번 주 글로벌 관세 변동 사항을 정리했습니다.</p>
+                        <div class="bookmark-post-media">
+                            <img src="/images/main/KakaoTalk_20260310_145435590.jpg" alt="무역 데이터 리포트 미리보기 이미지"
+                                 class="bookmark-post-media-image" data-media-preview="true"/>
+                        </div>
+                        <footer class="bookmark-post-metrics">
+                            <div class="bookmark-post-actions">
+                                <button type="button" class="bookmark-post-action bookmark-post-action--reply"
+                                        data-action="reply" aria-label="0 답글">
+                                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                                        <path d="M1.751 10c0-4.42 3.584-8 8.005-8h4.366c4.49 0 8.129 3.64 8.129 8.13 0 2.96-1.607 5.68-4.196 7.11l-8.054 4.46v-3.69h-.067c-4.49.1-8.183-3.51-8.183-8.01zm8.005-6c-3.317 0-6.005 2.69-6.005 6 0 3.37 2.77 6.08 6.138 6.01l.351-.01h1.761v2.3l5.087-2.81c1.951-1.08 3.163-3.13 3.163-5.36 0-3.39-2.744-6.13-6.129-6.13H9.756z"></path>
+                                    </svg>
+                                    <span class="tweet-action-count">0</span>
+                                </button>
+                                <button type="button" class="bookmark-post-action bookmark-post-action--like"
+                                        data-action="like" data-base-count="187" aria-label="마음 187">
+                                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                                        <path d="M16.697 5.5c-1.222-.06-2.679.51-3.89 2.16l-.805 1.09-.806-1.09C9.984 6.01 8.526 5.44 7.304 5.5c-1.243.07-2.349.78-2.91 1.91-.552 1.12-.633 2.78.479 4.82 1.074 1.97 3.257 4.27 7.129 6.61 3.87-2.34 6.052-4.64 7.126-6.61 1.111-2.04 1.03-3.7.477-4.82-.561-1.13-1.666-1.84-2.908-1.91zm4.187 7.69c-1.351 2.48-4.001 5.12-8.379 7.67l-.503.3-.504-.3c-4.379-2.55-7.029-5.19-8.382-7.67-1.36-2.5-1.41-4.86-.514-6.67.887-1.79 2.647-2.91 4.601-3.01 1.651-.09 3.368.56 4.798 2.01 1.429-1.45 3.146-2.1 4.796-2.01 1.954.1 3.714 1.22 4.601 3.01.896 1.81.846 4.17-.514 6.67z"
+                                              data-path-inactive="M16.697 5.5c-1.222-.06-2.679.51-3.89 2.16l-.805 1.09-.806-1.09C9.984 6.01 8.526 5.44 7.304 5.5c-1.243.07-2.349.78-2.91 1.91-.552 1.12-.633 2.78.479 4.82 1.074 1.97 3.257 4.27 7.129 6.61 3.87-2.34 6.052-4.64 7.126-6.61 1.111-2.04 1.03-3.7.477-4.82-.561-1.13-1.666-1.84-2.908-1.91zm4.187 7.69c-1.351 2.48-4.001 5.12-8.379 7.67l-.503.3-.504-.3c-4.379-2.55-7.029-5.19-8.382-7.67-1.36-2.5-1.41-4.86-.514-6.67.887-1.79 2.647-2.91 4.601-3.01 1.651-.09 3.368.56 4.798 2.01 1.429-1.45 3.146-2.1 4.796-2.01 1.954.1 3.714 1.22 4.601 3.01.896 1.81.846 4.17-.514 6.67z"
+                                              data-path-active="M20.884 13.19c-1.351 2.48-4.001 5.12-8.379 7.67l-.503.3-.504-.3c-4.379-2.55-7.029-5.19-8.382-7.67-1.36-2.5-1.41-4.86-.514-6.67.887-1.79 2.647-2.91 4.601-3.01 1.651-.09 3.368.56 4.798 2.01 1.429-1.45 3.146-2.1 4.796-2.01 1.954.1 3.714 1.22 4.601 3.01.896 1.81.846 4.17-.514 6.67z"></path>
+                                    </svg>
+                                    <span>187</span>
+                                </button>
+                                <button type="button" class="bookmark-post-action" aria-label="조회수 32">
+                                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                                        <path d="M8.75 21V3h2v18h-2zM18 21V8.5h2V21h-2zM4 21l.004-10h2L6 21H4zm9.248 0v-7h2v7h-2z"></path>
+                                    </svg>
+                                    <span>32</span>
+                                </button>
+                                <div class="bookmark-post-action-right">
+                                    <button type="button"
+                                            class="bookmark-post-action bookmark-post-action--bookmark active"
+                                            data-action="bookmark" aria-label="북마크에 추가됨">
+                                        <svg viewBox="0 0 24 24" aria-hidden="true">
+                                            <path d="M4 4.5C4 3.12 5.119 2 6.5 2h11C18.881 2 20 3.12 20 4.5v18.44l-8-5.71-8 5.71V4.5z"
+                                                  data-path-inactive="M4 4.5C4 3.12 5.119 2 6.5 2h11C18.881 2 20 3.12 20 4.5v18.44l-8-5.71-8 5.71V4.5zM6.5 4c-.276 0-.5.22-.5.5v14.56l6-4.29 6 4.29V4.5c0-.28-.224-.5-.5-.5h-11z"
+                                                  data-path-active="M4 4.5C4 3.12 5.119 2 6.5 2h11C18.881 2 20 3.12 20 4.5v18.44l-8-5.71-8 5.71V4.5z"></path>
+                                        </svg>
+                                    </button>
+                                    <button type="button" class="bookmark-post-action" data-action="share"
+                                            aria-label="게시물 공유하기" aria-haspopup="menu" aria-expanded="false">
+                                        <svg viewBox="0 0 24 24" aria-hidden="true">
+                                            <path d="M12 2.59l5.7 5.7-1.41 1.42L13 6.41V16h-2V6.41l-3.3 3.3-1.41-1.42L12 2.59zM21 15l-.02 3.51c0 1.38-1.12 2.49-2.5 2.49H5.5C4.11 21 3 19.88 3 18.5V15h2v3.5c0 .28.22.5.5.5h12.98c.28 0 .5-.22.5-.5L19 15h2z"></path>
+                                        </svg>
+                                    </button>
+                                </div>
+                            </div>
+                        </footer>
+                    </div>
+                </article>
+                <article class="bookmark-post" data-post-id="202">
+                    <div class="bookmark-post-avatar bookmark-post-avatar--image">
+                        <img src="/images/main/ad.png" alt="홍성호 프로필 이미지"/>
+                    </div>
+                    <div class="bookmark-post-body">
+                        <header class="bookmark-post-header">
+                            <div class="bookmark-post-identity">
+                                <strong class="bookmark-post-name">홍성호</strong>
+                                <span class="bookmark-post-handle">@codingTest0120</span>
+                                <span class="bookmark-post-time">지금</span>
+                            </div>
+                            <div class="bookmark-post-more-wrap">
+                                <button class="bookmark-post-more" type="button" aria-label="게시물 더 보기"
+                                        aria-haspopup="menu" aria-expanded="false" data-post-more>
+                                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                                        <path d="M3 12c0-1.1.9-2 2-2s2 .9 2 2-.9 2-2 2-2-.9-2-2zm9 2c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm7 0c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2z"></path>
+                                    </svg>
+                                </button>
+                                <div class="bookmark-post-more-menu dropdown-menu" role="menu" hidden>
+                                    <button type="button" class="menu-item menu-item--follow-toggle" role="menuitem"
+                                            data-more-action="follow-toggle">
+                                                <span class="menu-item__icon" data-follow-icon>
+                                                    <svg viewBox="0 0 24 24" aria-hidden="true"><path
+                                                            d="M10 4c-1.105 0-2 .9-2 2s.895 2 2 2 2-.9 2-2-.895-2-2-2zM6 6c0-2.21 1.791-4 4-4s4 1.79 4 4-1.791 4-4 4-4-1.79-4-4zm4 7c-3.053 0-5.563 1.193-7.443 3.596l1.548 1.207C5.573 15.922 7.541 15 10 15s4.427.922 5.895 2.803l1.548-1.207C15.563 14.193 13.053 13 10 13zm8-6V5h-3V3h-2v2h-3v2h3v3h2V7h3z"></path></svg>
+                                                </span>
+                                        <span class="menu-item__label" data-follow-label>@codingTest0120 님 팔로우하기</span>
+                                    </button>
+                                    <button type="button" class="menu-item menu-item--block" role="menuitem"
+                                            data-more-action="block">
+                                                <span class="menu-item__icon">
+                                                    <svg viewBox="0 0 24 24" aria-hidden="true"><path
+                                                            d="M12 3.75c-4.55 0-8.25 3.69-8.25 8.25 0 1.92.66 3.68 1.75 5.08L17.09 5.5C15.68 4.4 13.92 3.75 12 3.75zm6.5 3.17L6.92 18.5c1.4 1.1 3.16 1.75 5.08 1.75 4.56 0 8.25-3.69 8.25-8.25 0-1.92-.65-3.68-1.75-5.08zM1.75 12C1.75 6.34 6.34 1.75 12 1.75S22.25 6.34 22.25 12 17.66 22.25 12 22.25 1.75 17.66 1.75 12z"></path></svg>
+                                                </span>
+                                        <span class="menu-item__label">@codingTest0120 님 차단하기</span>
+                                    </button>
+                                    <button type="button" class="menu-item menu-item--report" role="menuitem"
+                                            data-more-action="report">
+                                                <span class="menu-item__icon">
+                                                    <svg viewBox="0 0 24 24" aria-hidden="true"><path
+                                                            d="M3 2h18.61l-3.5 7 3.5 7H5v6H3V2zm2 12h13.38l-2.5-5 2.5-5H5v10z"></path></svg>
+                                                </span>
+                                        <span class="menu-item__label">게시물 신고하기</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </header>
+                        <p class="bookmark-post-text" data-expandable-text="true"
+                           data-full-text="요즘 글로벌 공급망 흐름이 꽤 빠르게 바뀌고 있는 것 같습니다. 특히 동남아와 인도 쪽 제조 허브가 확대되면서 기존 중국 중심 물류 구조가 조금씩 분산되는 느낌이에요. 수출입 데이터를 보면 해상 물동량 패턴도 미묘하게 변하고 있는데, 환율과 운임, 통관 리드타임까지 같이 보지 않으면 체감이 안 되는 구간이 많습니다. 현업에서는 생산기지 이전 이슈와 항만 적체, 재고 전략 변화가 동시에 엮여서 판단이 더 어려워진 것 같네요.">
+                            <span class="bookmark-post-text-content">요즘 글로벌 공급망 흐름이 꽤 빠르게 바뀌고 있는 것 같습니다. 특히 동남아와 인도 쪽 제조 허브가 확대되면서 기존 중국 중심 물류 구조가 조금씩 분산되는 느낌이에요. 수출입 데이터를 보면 해상 물동량 패턴도 미묘하게 변하고 있는데, 환율과 운임, 통관 리드타임까지 같이 보지 않으면 체감이 안 되는 구간이...</span>
+                            <button type="button" class="bookmark-post-text-toggle">더보기</button>
+                        </p>
+                        <div class="bookmark-post-media-grid bookmark-post-media-grid--2">
+                            <img src="/images/main/ad.png" alt="게시물 이미지 1" class="bookmark-post-media-image"
+                                 data-media-preview="true"/>
+                            <img src="/images/main/ad.png" alt="게시물 이미지 2" class="bookmark-post-media-image"
+                                 data-media-preview="true"/>
+                        </div>
+                        <footer class="bookmark-post-metrics">
+                            <div class="bookmark-post-actions">
+                                <button type="button" class="bookmark-post-action bookmark-post-action--reply"
+                                        data-action="reply" aria-label="0 답글">
+                                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                                        <path d="M1.751 10c0-4.42 3.584-8 8.005-8h4.366c4.49 0 8.129 3.64 8.129 8.13 0 2.96-1.607 5.68-4.196 7.11l-8.054 4.46v-3.69h-.067c-4.49.1-8.183-3.51-8.183-8.01zm8.005-6c-3.317 0-6.005 2.69-6.005 6 0 3.37 2.77 6.08 6.138 6.01l.351-.01h1.761v2.3l5.087-2.81c1.951-1.08 3.163-3.13 3.163-5.36 0-3.39-2.744-6.13-6.129-6.13H9.756z"></path>
+                                    </svg>
+                                    <span class="tweet-action-count">0</span>
+                                </button>
+                                <button type="button" class="bookmark-post-action bookmark-post-action--like"
+                                        data-action="like" data-base-count="208" aria-label="마음 208">
+                                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                                        <path d="M16.697 5.5c-1.222-.06-2.679.51-3.89 2.16l-.805 1.09-.806-1.09C9.984 6.01 8.526 5.44 7.304 5.5c-1.243.07-2.349.78-2.91 1.91-.552 1.12-.633 2.78.479 4.82 1.074 1.97 3.257 4.27 7.129 6.61 3.87-2.34 6.052-4.64 7.126-6.61 1.111-2.04 1.03-3.7.477-4.82-.561-1.13-1.666-1.84-2.908-1.91zm4.187 7.69c-1.351 2.48-4.001 5.12-8.379 7.67l-.503.3-.504-.3c-4.379-2.55-7.029-5.19-8.382-7.67-1.36-2.5-1.41-4.86-.514-6.67.887-1.79 2.647-2.91 4.601-3.01 1.651-.09 3.368.56 4.798 2.01 1.429-1.45 3.146-2.1 4.796-2.01 1.954.1 3.714 1.22 4.601 3.01.896 1.81.846 4.17-.514 6.67z"
+                                              data-path-inactive="M16.697 5.5c-1.222-.06-2.679.51-3.89 2.16l-.805 1.09-.806-1.09C9.984 6.01 8.526 5.44 7.304 5.5c-1.243.07-2.349.78-2.91 1.91-.552 1.12-.633 2.78.479 4.82 1.074 1.97 3.257 4.27 7.129 6.61 3.87-2.34 6.052-4.64 7.126-6.61 1.111-2.04 1.03-3.7.477-4.82-.561-1.13-1.666-1.84-2.908-1.91zm4.187 7.69c-1.351 2.48-4.001 5.12-8.379 7.67l-.503.3-.504-.3c-4.379-2.55-7.029-5.19-8.382-7.67-1.36-2.5-1.41-4.86-.514-6.67.887-1.79 2.647-2.91 4.601-3.01 1.651-.09 3.368.56 4.798 2.01 1.429-1.45 3.146-2.1 4.796-2.01 1.954.1 3.714 1.22 4.601 3.01.896 1.81.846 4.17-.514 6.67z"
+                                              data-path-active="M20.884 13.19c-1.351 2.48-4.001 5.12-8.379 7.67l-.503.3-.504-.3c-4.379-2.55-7.029-5.19-8.382-7.67-1.36-2.5-1.41-4.86-.514-6.67.887-1.79 2.647-2.91 4.601-3.01 1.651-.09 3.368.56 4.798 2.01 1.429-1.45 3.146-2.1 4.796-2.01 1.954.1 3.714 1.22 4.601 3.01.896 1.81.846 4.17-.514 6.67z"></path>
+                                    </svg>
+                                    <span>208</span>
+                                </button>
+                                <button type="button" class="bookmark-post-action" aria-label="조회수 18만">
+                                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                                        <path d="M8.75 21V3h2v18h-2zM18 21V8.5h2V21h-2zM4 21l.004-10h2L6 21H4zm9.248 0v-7h2v7h-2z"></path>
+                                    </svg>
+                                    <span>18만</span>
+                                </button>
+                                <div class="bookmark-post-action-right">
+                                    <button type="button"
+                                            class="bookmark-post-action bookmark-post-action--bookmark active"
+                                            data-action="bookmark" aria-label="북마크에 추가됨">
+                                        <svg viewBox="0 0 24 24" aria-hidden="true">
+                                            <path d="M4 4.5C4 3.12 5.119 2 6.5 2h11C18.881 2 20 3.12 20 4.5v18.44l-8-5.71-8 5.71V4.5z"
+                                                  data-path-inactive="M4 4.5C4 3.12 5.119 2 6.5 2h11C18.881 2 20 3.12 20 4.5v18.44l-8-5.71-8 5.71V4.5zM6.5 4c-.276 0-.5.22-.5.5v14.56l6-4.29 6 4.29V4.5c0-.28-.224-.5-.5-.5h-11z"
+                                                  data-path-active="M4 4.5C4 3.12 5.119 2 6.5 2h11C18.881 2 20 3.12 20 4.5v18.44l-8-5.71-8 5.71V4.5z"></path>
+                                        </svg>
+                                    </button>
+                                    <button type="button" class="bookmark-post-action" data-action="share"
+                                            aria-label="게시물 공유하기" aria-haspopup="menu" aria-expanded="false">
+                                        <svg viewBox="0 0 24 24" aria-hidden="true">
+                                            <path d="M12 2.59l5.7 5.7-1.41 1.42L13 6.41V16h-2V6.41l-3.3 3.3-1.41-1.42L12 2.59zM21 15l-.02 3.51c0 1.38-1.12 2.49-2.5 2.49H5.5C4.11 21 3 19.88 3 18.5V15h2v3.5c0 .28.22.5.5.5h12.98c.28 0 .5-.22.5-.5L19 15h2z"></path>
+                                        </svg>
+                                    </button>
+                                </div>
+                            </div>
+                        </footer>
+                    </div>
+                </article>
+            </div>
+        </section>
+    </main>
+</div>
+</template>
+
+<div id="bookmarkLayers">
+    <div class="bookmark-layers-dropdown" id="shareDropdown" hidden>
+        <div role="menu" class="dropdown-menu">
+            <button type="button" class="menu-item share-menu-item share-menu-item--copy" data-share-action="copy">
+                <span class="menu-item__icon share-menu-item__icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path
+                        d="M18.36 5.64c-1.95-1.96-5.11-1.96-7.07 0L9.88 7.05 8.46 5.64l1.42-1.42c2.73-2.73 7.16-2.73 9.9 0 2.73 2.74 2.73 7.17 0 9.9l-1.42 1.42-1.41-1.42 1.41-1.41c1.96-1.96 1.96-5.12 0-7.07zm-2.12 3.53l-7.07 7.07-1.41-1.41 7.07-7.07 1.41 1.41zm-12.02.71l1.42-1.42 1.41 1.42-1.41 1.41c-1.96 1.96-1.96 5.12 0 7.07 1.95 1.96 5.11 1.96 7.07 0l1.41-1.41 1.42 1.41-1.42 1.42c-2.73 2.73-7.16 2.73-9.9 0-2.73-2.74-2.73-7.17 0-9.9z"></path></svg></span>
+                <span class="menu-item__label">링크 복사하기</span>
+            </button>
+            <button type="button" class="menu-item share-menu-item share-menu-item--bookmark"
+                    data-share-action="bookmark">
+                <span class="menu-item__icon share-menu-item__icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path
+                        d="M18 3V0h2v3h3v2h-3v3h-2V5h-3V3zm-7.5 1a.5.5 0 00-.5.5V7h3.5A2.5 2.5 0 0116 9.5v3.48l3 2.1V11h2v7.92l-5-3.5v7.26l-6.5-3.54L3 22.68V9.5A2.5 2.5 0 015.5 7H8V4.5A2.5 2.5 0 0110.5 2H12v2zm-5 5a.5.5 0 00-.5.5v9.82l4.5-2.46 4.5 2.46V9.5a.5.5 0 00-.5-.5z"></path></svg></span>
+                <span class="menu-item__label">폴더에 북마크 추가하기</span>
+            </button>
+        </div>
+    </div>
+</div>
+<div class="bookmark-toast" id="bookmarkToast" role="status" aria-live="polite" hidden></div>
+
+<div class="bookmark-share-sheet" id="shareBookmarkModal" hidden>
+    <div class="bookmark-share-sheet-backdrop" data-share-close="true"></div>
+    <div
+            class="bookmark-share-sheet-card bookmark-share-sheet-card--bookmark"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="shareBookmarkTitle"
+    >
+        <div class="bookmark-share-sheet-header">
+            <button
+                    type="button"
+                    class="bookmark-share-sheet-icon-btn"
+                    data-share-close="true"
+                    aria-label="닫기"
+            >
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <path
+                            d="M10.59 12 4.54 5.96l1.42-1.42L12 10.59l6.04-6.05 1.42 1.42L13.41 12l6.05 6.04-1.42 1.42L12 13.41l-6.04 6.05-1.42-1.42L10.59 12z"
+                    />
+                </svg>
+            </button>
+            <h2 id="shareBookmarkTitle" class="bookmark-share-sheet-title">폴더에 추가</h2>
+            <span class="bookmark-share-sheet-header-spacer"></span>
+        </div>
+        <button type="button" class="bookmark-share-sheet-create-folder" id="shareBookmarkCreateFolder">
+            새 북마크 폴더 만들기
+        </button>
+        <div class="bookmark-share-sheet-folder-list" id="shareBookmarkFolderList">
+            <!-- 폴더 목록은 JS에서 동적 생성 -->
+        </div>
+    </div>
+</div>
+
+<div
+        class="bookmark-folder-menu"
+        id="detailFolderMenu"
+        role="menu"
+        aria-label="폴더 메뉴"
+        hidden
+>
+    <button
+            class="bookmark-folder-menu-button"
+            id="detailFolderEditButton"
+            type="button"
+            role="menuitem"
+    >
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path
+                    d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zm2 2.25h-.5v-.5l8.56-8.56.5.5L5 19.5zM20.71 7.04a1.003 1.003 0 000-1.42L18.37 3.29a1.003 1.003 0 00-1.42 0l-1.13 1.13 3.75 3.75 1.14-1.13z"
+            />
+        </svg>
+        <span>폴더 수정하기</span>
+    </button>
+</div>
+
+<div class="bookmark-media-preview" id="mediaPreviewOverlay" hidden>
+    <div class="bookmark-media-preview-dialog">
+        <img
+                class="bookmark-media-preview-image"
+                id="mediaPreviewImage"
+                alt="게시물 이미지 미리보기"
+        />
+        <button
+                class="bookmark-media-preview-close"
+                id="mediaPreviewClose"
+                type="button"
+                aria-label="닫기"
+        >
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path
+                        d="M10.59 12 4.54 5.96l1.42-1.42L12 10.59l6.04-6.05 1.42 1.42L13.41 12l6.05 6.04-1.42 1.42L12 13.41l-6.04 6.05-1.42-1.42L10.59 12z"
+                />
+            </svg>
+        </button>
+    </div>
+</div>
+
+<div
+        class="bookmark-modal-overlay"
+        id="bookmarkModal"
+        aria-hidden="true"
+>
+    <div
+            class="bookmark-modal"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="bookmarkModalTitle"
+    >
+        <div class="bookmark-modal-header">
+            <button
+                    class="bookmark-modal-close"
+                    id="modalCloseButton"
+                    type="button"
+                    aria-label="뒤로 가기"
+            >
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <path
+                            d="M7.414 13l5.043 5.04-1.414 1.42L3.586 12l7.457-7.46 1.414 1.42L7.414 11H21v2H7.414z"
+                    />
+                </svg>
+            </button>
+            <h2 class="bookmark-modal-title" id="bookmarkModalTitle">
+                폴더 만들기
+            </h2>
+            <button
+                    class="bookmark-modal-submit"
+                    id="modalSubmitButton"
+                    type="button"
+                    disabled
+            >
+                만들기
+            </button>
+        </div>
+
+        <div class="bookmark-modal-body">
+            <label class="bookmark-modal-field" for="folderNameInput">
+                <span class="bookmark-modal-label">이름</span>
+                <span
+                        class="bookmark-modal-count"
+                        id="folderNameCount"
+                        aria-live="polite"
+                >
+                            0 / 25
+                        </span>
+                <input
+                        class="bookmark-modal-input"
+                        id="folderNameInput"
+                        type="text"
+                        maxlength="25"
+                        autocomplete="off"
+                        autocorrect="off"
+                        spellcheck="false"
+                />
+            </label>
+            <p class="bookmark-modal-error" id="folderNameError" hidden style="color: #f4212e; font-size: 13px; margin-top: 4px;"></p>
+        </div>
+    </div>
+</div>
+<div
+        class="bookmark-modal-overlay"
+        id="bookmarkEditModal"
+        aria-hidden="true"
+>
+    <div
+            class="bookmark-modal bookmark-edit-modal"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="bookmarkEditModalTitle"
+    >
+        <div class="bookmark-modal-header">
+            <button
+                    class="bookmark-modal-close"
+                    id="editModalCloseButton"
+                    type="button"
+                    aria-label="닫기"
+            >
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <path
+                            d="M10.59 12 4.54 5.96l1.42-1.42L12 10.59l6.04-6.05 1.42 1.42L13.41 12l6.05 6.04-1.42 1.42L12 13.41l-6.04 6.05-1.42-1.42L10.59 12z"
+                    />
+                </svg>
+            </button>
+            <h2 class="bookmark-modal-title" id="bookmarkEditModalTitle">
+                폴더 수정하기
+            </h2>
+            <button
+                    class="bookmark-modal-submit"
+                    id="editModalSubmitButton"
+                    type="button"
+                    disabled
+            >
+                저장
+            </button>
+        </div>
+
+        <div class="bookmark-modal-body">
+            <label class="bookmark-modal-field" for="editFolderNameInput">
+                <span class="bookmark-modal-label">이름</span>
+                <span
+                        class="bookmark-modal-count"
+                        id="editFolderNameCount"
+                        aria-live="polite"
+                >
+                            0 / 25
+                        </span>
+                <input
+                        class="bookmark-modal-input"
+                        id="editFolderNameInput"
+                        type="text"
+                        maxlength="25"
+                        autocomplete="off"
+                        autocorrect="off"
+                        spellcheck="false"
+                />
+            </label>
+            <button
+                    class="bookmark-edit-delete-button"
+                    id="editModalDeleteButton"
+                    type="button"
+            >
+                폴더 삭제
+            </button>
+        </div>
+    </div>
+</div>
+<div
+        class="bookmark-modal-overlay"
+        id="bookmarkDeleteModal"
+        aria-hidden="true"
+>
+    <div
+            class="bookmark-modal bookmark-delete-modal"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="bookmarkDeleteModalTitle"
+            aria-describedby="bookmarkDeleteModalDescription"
+    >
+        <div class="bookmark-delete-modal-body">
+            <h2
+                    class="bookmark-delete-modal-title"
+                    id="bookmarkDeleteModalTitle"
+            >
+                폴더를 삭제할까요?
+            </h2>
+            <p
+                    class="bookmark-delete-modal-description"
+                    id="bookmarkDeleteModalDescription"
+            >
+                삭제하면 이 폴더에 저장된 북마크를 다시 복구할 수 없습니다.
+            </p>
+        </div>
+        <div class="bookmark-delete-modal-actions">
+            <button
+                    class="bookmark-delete-modal-button bookmark-delete-modal-button--danger"
+                    id="deleteModalSubmitButton"
+                    type="button"
+            >
+                삭제
+            </button>
+            <button
+                    class="bookmark-delete-modal-button bookmark-delete-modal-button--ghost"
+                    id="deleteModalCancelButton"
+                    type="button"
+            >
+                취소
+            </button>
+        </div>
+    </div>
+</div>
+<div class="bookmark-notification-dialog" id="bookmarkBlockModal" hidden>
+    <div class="bookmark-notification-dialog__backdrop"></div>
+    <div
+            class="bookmark-notification-dialog__card bookmark-notification-dialog__card--small"
+            role="alertdialog"
+            aria-modal="true"
+            aria-labelledby="bookmarkBlockTitle"
+            aria-describedby="bookmarkBlockDesc"
+    >
+        <h2 class="bookmark-notification-dialog__title" id="bookmarkBlockTitle"></h2>
+        <p class="bookmark-notification-dialog__description" id="bookmarkBlockDesc"></p>
+        <div class="bookmark-notification-dialog__actions">
+            <button
+                    type="button"
+                    class="bookmark-notification-dialog__danger"
+                    id="bookmarkBlockConfirmButton"
+            >
+                차단
+            </button>
+            <button
+                    type="button"
+                    class="bookmark-notification-dialog__secondary"
+                    id="bookmarkBlockCancelButton"
+            >
+                취소
+            </button>
+        </div>
+    </div>
+</div>
+<div class="bookmark-notification-dialog" id="bookmarkReportModal" hidden>
+    <div class="bookmark-notification-dialog__backdrop"></div>
+    <div
+            class="bookmark-notification-dialog__card bookmark-notification-dialog__card--report"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="bookmarkReportTitle"
+    >
+        <div class="bookmark-notification-dialog__header">
+            <button
+                    type="button"
+                    class="bookmark-notification-dialog__icon-btn"
+                    id="bookmarkReportCloseButton"
+                    aria-label="돌아가기"
+            >
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <path
+                            d="M7.414 13l5.043 5.04-1.414 1.42L3.586 12l7.457-7.46 1.414 1.42L7.414 11H21v2H7.414z"
+                    />
+                </svg>
+            </button>
+            <h2 class="bookmark-notification-dialog__title" id="bookmarkReportTitle">신고하기</h2>
+        </div>
+        <div class="bookmark-notification-dialog__body">
+            <p class="bookmark-notification-dialog__question">이 게시물에 어떤 문제가 있나요?</p>
+            <ul class="bookmark-notification-report__list">
+                <li>
+                    <button type="button" class="bookmark-notification-report__item" data-report-reason="관심 없음"><span>관심 없음</span>
+                        <svg viewBox="0 0 24 24" aria-hidden="true">
+                            <path d="M9.293 6.293 10.707 4.88 17.828 12l-7.121 7.12-1.414-1.413L14.999 12z"></path>
+                        </svg>
+                    </button>
+                </li>
+                <li>
+                    <button type="button" class="bookmark-notification-report__item" data-report-reason="스팸">
+                        <span>스팸</span>
+                        <svg viewBox="0 0 24 24" aria-hidden="true">
+                            <path d="M9.293 6.293 10.707 4.88 17.828 12l-7.121 7.12-1.414-1.413L14.999 12z"></path>
+                        </svg>
+                    </button>
+                </li>
+                <li>
+                    <button type="button" class="bookmark-notification-report__item" data-report-reason="욕설 또는 유해한 표현">
+                        <span>욕설 또는 유해한 표현</span>
+                        <svg viewBox="0 0 24 24" aria-hidden="true">
+                            <path d="M9.293 6.293 10.707 4.88 17.828 12l-7.121 7.12-1.414-1.413L14.999 12z"></path>
+                        </svg>
+                    </button>
+                </li>
+                <li>
+                    <button type="button" class="bookmark-notification-report__item" data-report-reason="민감한 콘텐츠"><span>민감한 콘텐츠</span>
+                        <svg viewBox="0 0 24 24" aria-hidden="true">
+                            <path d="M9.293 6.293 10.707 4.88 17.828 12l-7.121 7.12-1.414-1.413L14.999 12z"></path>
+                        </svg>
+                    </button>
+                </li>
+                <li>
+                    <button type="button" class="bookmark-notification-report__item" data-report-reason="허위 정보"><span>허위 정보</span>
+                        <svg viewBox="0 0 24 24" aria-hidden="true">
+                            <path d="M9.293 6.293 10.707 4.88 17.828 12l-7.121 7.12-1.414-1.413L14.999 12z"></path>
+                        </svg>
+                    </button>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<!-- 답글 모달 -->
+
+<!-- 모바일 nav + 더보기 아코디언 (공용 fragment) -->
+<div th:replace="~{common/mobile-nav :: mobileNav('more')}"></div>
+<div th:replace="~{common/mobile-nav :: mobileMoreSheet}"></div>
+</th:block>
+</body>
+</html>

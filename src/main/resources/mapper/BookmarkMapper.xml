@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.app.globalgates.mapper.BookmarkMapper">
+
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+        insert into tbl_bookmark (member_id, post_id, folder_id)
+        values (#{memberId}, #{postId}, #{folderId})
+    </insert>
+
+    <delete id="delete">
+        delete
+        from tbl_bookmark
+        where id = #{id}
+    </delete>
+
+    <delete id="deleteByMemberIdAndPostId">
+        delete
+        from tbl_bookmark
+        where member_id = #{memberId}
+          and post_id = #{postId}
+    </delete>
+
+    <update id="clearFolderId">
+        update tbl_bookmark
+        set folder_id = null
+        where folder_id = #{folderId}
+    </update>
+
+    <update id="updateFolderId">
+        update tbl_bookmark
+        set folder_id = #{folderId}
+        where id = #{id}
+    </update>
+
+    <select id="selectById">
+        select b.id, b.member_id, b.post_id, b.folder_id, b.created_datetime
+        from tbl_bookmark b
+        where b.id = #{id}
+    </select>
+
+    <select id="selectByMemberIdAndPostId">
+        select b.id, b.member_id, b.post_id, b.folder_id, b.created_datetime
+        from tbl_bookmark b
+        where b.member_id = #{memberId}
+          and b.post_id = #{postId}
+    </select>
+
+    <sql id="postBookmarkColumns">
+        b.id                                                              as id,
+        b.member_id                                                       as member_id,
+        b.post_id                                                         as post_id,
+        null                                                              as news_id,
+        'post'                                                            as bookmark_type,
+        b.folder_id                                                       as folder_id,
+        b.created_datetime                                                as created_datetime,
+        p.member_id                                                       as post_member_id,
+        p.title                                                           as post_title,
+        p.content                                                         as post_content,
+        coalesce(m.member_nickname, m.member_name)                        as member_nickname,
+        m.member_handle                                                   as member_handle,
+        (select f.file_name
+           from tbl_member_profile_file mpf
+           join tbl_file f on mpf.id = f.id
+           where mpf.member_id = p.member_id
+             and mpf.profile_image_type = 'profile' limit 1)              as member_profile_file_name,
+        (select count(*) from tbl_post_like pl where pl.post_id = p.id)   as like_count,
+        (select count(*) from tbl_post rp where rp.reply_post_id = p.id
+            and rp.post_status = 'active')                                as reply_count,
+        (select count(*) from tbl_bookmark bk where bk.post_id = p.id)    as bookmark_count
+    </sql>
+
+    <sql id="newsBookmarkColumns">
+        nb.id                                                                  as id,
+        nb.member_id                                                           as member_id,
+        null                                                                   as post_id,
+        nb.news_id                                                             as news_id,
+        'news'                                                                 as bookmark_type,
+        nb.folder_id                                                           as folder_id,
+        nb.created_datetime                                                    as created_datetime,
+        null                                                                   as post_member_id,
+        n.news_title                                                           as post_title,
+        n.news_content                                                         as post_content,
+        '뉴스'                                                                  as member_nickname,
+        '@news'                                                                as member_handle,
+        null                                                                   as member_profile_file_name,
+        (select count(*) from tbl_news_like nl where nl.news_id = n.id)        as like_count,
+        0                                                                      as reply_count,
+        (select count(*) from tbl_news_bookmark nbk where nbk.news_id = n.id)  as bookmark_count
+    </sql>
+
+    <select id="selectAllByMemberId">
+        select id, member_id, post_id, news_id, bookmark_type, folder_id, created_datetime,
+               post_member_id, post_title, post_content, member_nickname, member_handle,
+               member_profile_file_name, like_count, reply_count, bookmark_count, liked
+        from (
+            select <include refid="postBookmarkColumns"/>,
+                   case when exists (
+                       select 1 from tbl_post_like pl2
+                       where pl2.post_id = p.id and pl2.member_id = #{memberId}
+                   ) then 1 else 0 end as liked
+            from tbl_bookmark b
+                     left join tbl_post p on b.post_id = p.id
+                     left join tbl_member m on p.member_id = m.id
+            where b.member_id = #{memberId}
+              and not exists (
+                  select 1 from tbl_report r
+                  where r.target_id = p.id and r.reporter_id = #{memberId} and r.target_type = 'post'
+              )
+            union all
+            select <include refid="newsBookmarkColumns"/>,
+                   case when exists (
+                       select 1 from tbl_news_like nl2
+                       where nl2.news_id = n.id and nl2.member_id = #{memberId}
+                   ) then 1 else 0 end as liked
+            from tbl_news_bookmark nb
+                     left join tbl_news n on nb.news_id = n.id
+            where nb.member_id = #{memberId}
+        ) merged
+        order by created_datetime desc
+    </select>
+
+    <select id="selectAllByFolderId">
+        select id, member_id, post_id, news_id, bookmark_type, folder_id, created_datetime,
+               post_member_id, post_title, post_content, member_nickname, member_handle,
+               member_profile_file_name, like_count, reply_count, bookmark_count, liked
+        from (
+            select <include refid="postBookmarkColumns"/>,
+                   case when exists (
+                       select 1 from tbl_post_like pl2
+                       where pl2.post_id = p.id and pl2.member_id = b.member_id
+                   ) then 1 else 0 end as liked
+            from tbl_bookmark b
+                     left join tbl_post p on b.post_id = p.id
+                     left join tbl_member m on p.member_id = m.id
+            where b.folder_id = #{folderId}
+              and not exists (
+                  select 1 from tbl_report r
+                  where r.target_id = p.id and r.reporter_id = b.member_id and r.target_type = 'post'
+              )
+            union all
+            select <include refid="newsBookmarkColumns"/>,
+                   case when exists (
+                       select 1 from tbl_news_like nl2
+                       where nl2.news_id = n.id and nl2.member_id = nb.member_id
+                   ) then 1 else 0 end as liked
+            from tbl_news_bookmark nb
+                     left join tbl_news n on nb.news_id = n.id
+            where nb.folder_id = #{folderId}
+        ) merged
+        order by created_datetime desc
+    </select>
+
+    <select id="selectAllUncategorizedByMemberId">
+        select id, member_id, post_id, news_id, bookmark_type, folder_id, created_datetime,
+               post_member_id, post_title, post_content, member_nickname, member_handle,
+               member_profile_file_name, like_count, reply_count, bookmark_count, liked
+        from (
+            select <include refid="postBookmarkColumns"/>,
+                   case when exists (
+                       select 1 from tbl_post_like pl2
+                       where pl2.post_id = p.id and pl2.member_id = #{memberId}
+                   ) then 1 else 0 end as liked
+            from tbl_bookmark b
+                     left join tbl_post p on b.post_id = p.id
+                     left join tbl_member m on p.member_id = m.id
+            where b.member_id = #{memberId}
+              and b.folder_id is null
+              and not exists (
+                  select 1 from tbl_report r
+                  where r.target_id = p.id and r.reporter_id = #{memberId} and r.target_type = 'post'
+              )
+            union all
+            select <include refid="newsBookmarkColumns"/>,
+                   case when exists (
+                       select 1 from tbl_news_like nl2
+                       where nl2.news_id = n.id and nl2.member_id = #{memberId}
+                   ) then 1 else 0 end as liked
+            from tbl_news_bookmark nb
+                     left join tbl_news n on nb.news_id = n.id
+            where nb.member_id = #{memberId}
+              and nb.folder_id is null
+        ) merged
+        order by created_datetime desc
+    </select>
+
+    <select id="selectCountByMemberId" resultType="int">
+        select count(*)
+        from tbl_bookmark
+        where member_id = #{memberId}
+    </select>
+</mapper>

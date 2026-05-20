@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.app.globalgates.mapper.chat.ChatMessageMapper">
+
+    <insert id="insert">
+        <selectKey keyProperty="id" resultType="long" order="AFTER">
+            select currval('tbl_message_id_seq')
+        </selectKey>
+        insert into tbl_message (conversation_id, sender_id, content)
+        values (#{conversationId}, #{senderId}, #{content})
+    </insert>
+
+    <select id="selectAllByConversationId">
+        <![CDATA[
+        select
+            msg.id,
+            msg.conversation_id,
+            msg.sender_id,
+            coalesce(m.member_nickname, m.member_name) as sender_name,
+            m.member_handle as sender_handle,
+            msg.content,
+            msg.is_deleted,
+            case
+                when msg.sender_id = #{memberId}
+                    and coalesce(v.partner_last_read, 0) >= msg.id
+                    then true
+                else false
+            end as read_by_partner,
+            msg.created_datetime,
+            msg.updated_datetime,
+            f.id as file_id,
+            f.original_name as file_original_name,
+            f.file_path as file_path,
+            f.file_size as file_size,
+            f.content_type as file_content_type
+        from tbl_message msg
+        join tbl_member m on m.id = msg.sender_id
+        join v_my_chat v on v.conversation_id = msg.conversation_id
+                        and v.member_id = #{memberId}
+        left join tbl_message_deletion md on md.message_id = msg.id and md.member_id = #{memberId}
+        left join tbl_chat_file cf on cf.message_id = msg.id
+        left join tbl_file f on f.id = cf.id
+        where msg.conversation_id = #{conversationId}
+          and msg.is_deleted = false
+          and md.message_id is null
+          and msg.id > coalesce(
+              (select deleted_after_message_id from tbl_conversation_setting
+               where conversation_id = #{conversationId} and member_id = #{memberId}), 0
+          )
+          and not (
+              msg.sender_id != #{memberId}
+              and exists (
+                  select 1 from tbl_conversation_setting cs_block
+                  where cs_block.conversation_id = #{conversationId}
+                    and cs_block.member_id = #{memberId}
+                    and cs_block.blocked_after_message_id is not null
+                    and msg.id > cs_block.blocked_after_message_id
+                    and (cs_block.block_released_message_id is null or msg.id <= cs_block.block_released_message_id)
+              )
+          )
+        order by msg.created_datetime asc
+        ]]>
+    </select>
+
+    <select id="selectByConversationIdWithCursor">
+        <![CDATA[
+        select * from (
+            select
+                msg.id,
+                msg.conversation_id,
+                msg.sender_id,
+                coalesce(m.member_nickname, m.member_name) as sender_name,
+                m.member_handle as sender_handle,
+                msg.content,
+                msg.is_deleted,
+                case
+                    when msg.sender_id = #{memberId}
+                        and coalesce(v.partner_last_read, 0) >= msg.id
+                        then true
+                    else false
+                end as read_by_partner,
+                msg.created_datetime,
+                msg.updated_datetime,
+                f.id as file_id,
+                f.original_name as file_original_name,
+                f.file_path as file_path,
+                f.file_size as file_size,
+                f.content_type as file_content_type
+            from tbl_message msg
+            join tbl_member m on m.id = msg.sender_id
+            join v_my_chat v on v.conversation_id = msg.conversation_id
+                            and v.member_id = #{memberId}
+            left join tbl_message_deletion md on md.message_id = msg.id and md.member_id = #{memberId}
+            left join tbl_chat_file cf on cf.message_id = msg.id
+            left join tbl_file f on f.id = cf.id
+            where msg.conversation_id = #{conversationId}
+              and msg.is_deleted = false
+              and md.message_id is null
+              and msg.id > coalesce(
+                  (select deleted_after_message_id from tbl_conversation_setting
+                   where conversation_id = #{conversationId} and member_id = #{memberId}), 0
+              )
+              and not (
+                  msg.sender_id != #{memberId}
+                  and exists (
+                      select 1 from tbl_conversation_setting cs_block
+                      where cs_block.conversation_id = #{conversationId}
+                        and cs_block.member_id = #{memberId}
+                        and cs_block.blocked_after_message_id is not null
+                        and msg.id > cs_block.blocked_after_message_id
+                        and (cs_block.block_released_message_id is null or msg.id <= cs_block.block_released_message_id)
+                  )
+              )
+        ]]>
+              <if test="cursor != null">
+                  and msg.id &lt; #{cursor}
+              </if>
+            order by msg.id desc
+            limit #{pageSize}
+        ) sub
+        order by sub.id asc
+    </select>
+
+    <insert id="softDeleteForMember">
+        insert into tbl_message_deletion (message_id, member_id)
+        values (#{messageId}, #{memberId})
+        on conflict (message_id, member_id) do nothing
+    </insert>
+
+    <!--
+      윈도우 모델: 활성 disappear 설정 + activated_at 함께 조회.
+      태스크는 activated_at + period < now() 인 row만 골라 일괄 삭제 + 비활성화한다.
+    -->
+    <select id="selectActiveDisappearSettings" resultType="map">
+        select cs.conversation_id as conversationId,
+               cs.member_id as memberId,
+               cs.disappear_message as disappearMessage,
+               cs.disappear_activated_at as activatedAt
+        from tbl_conversation_setting cs
+        where cs.disappear_message not in ('none', '없음')
+          and cs.disappear_activated_at is not null
+          and coalesce(cs.is_deleted, false) = false
+    </select>
+
+    <!--
+      윈도우 [activatedAt, expiresAt] 안에 생성된 메시지를 일괄 soft delete.
+      윈도우 끝났을 때 한 번만 호출되며, 윈도우 밖 메시지는 건드리지 않는다.
+    -->
+    <update id="softDeleteWindowedMessages">
+        update tbl_message
+        set is_deleted = true, updated_datetime = now()
+        where conversation_id = #{conversationId}
+          and is_deleted = false
+          and created_datetime &gt;= #{activatedAt}
+          and created_datetime &lt;= #{expiresAt}
+    </update>
+
+    <!-- 만료된 disappear 설정을 'none'으로 자동 복구 + activated_at 클리어 -->
+    <update id="resetDisappearSetting">
+        update tbl_conversation_setting
+        set disappear_message = 'none',
+            disappear_activated_at = null,
+            updated_datetime = now()
+        where conversation_id = #{conversationId}
+          and member_id = #{memberId}
+    </update>
+
+</mapper>

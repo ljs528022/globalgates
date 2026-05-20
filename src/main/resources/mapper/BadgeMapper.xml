@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.app.globalgates.mapper.BadgeMapper">
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+        insert into tbl_badge (member_id, badge_type)
+        values (#{memberId}, #{badgeType})
+    </insert>
+
+    <select id="selectByMemberId">
+        select id, member_id, badge_type, created_datetime, updated_datetime
+        from tbl_badge
+        where member_id = #{memberId}
+        order by id desc
+        limit 1
+    </select>
+
+    <update id="updateBadgeType">
+        update tbl_badge
+        set badge_type = #{badgeType},
+            updated_datetime = now()
+        where id = #{id}
+    </update>
+
+
+    <delete id="deleteByMemberId">
+        delete from tbl_badge
+        where member_id = #{memberId}
+    </delete>
+</mapper>

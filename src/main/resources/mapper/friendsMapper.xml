@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.app.globalgates.mapper.FriendsMapper">
+
+    <sql id="categoryFilter">
+        <if test="categoryId != null">
+            and m.id in (
+                select mcr.member_id from tbl_member_category_rel mcr
+                where mcr.category_id = #{categoryId}
+            )
+        </if>
+    </sql>
+
+    <select id="selectAll">
+        select m.id,
+               m.member_name,
+               m.member_handle,
+               m.member_bio,
+               m.member_role,
+               (select f.file_name from tbl_member_profile_file mpf
+                   join tbl_file f on mpf.id = f.id
+                where mpf.member_id = m.id and mpf.profile_image_type = 'profile'
+                limit 1) as member_profile_file_name,
+               (select mm.member_nickname from tbl_follow fl2
+                   join tbl_member mm on fl2.follower_id = mm.id
+                where fl2.following_id = m.id and fl2.follower_id != #{memberId}
+                limit 1) as follower_intro
+        from tbl_member m
+        where m.member_status = 'active'
+          and m.id != #{memberId}
+          and m.id not in (select fl.following_id from tbl_follow fl where fl.follower_id = #{memberId})
+          and m.id not in (select bl.blocked_id from tbl_block bl where bl.blocker_id = #{memberId})
+          <include refid="categoryFilter"/>
+        order by m.created_datetime desc
+        limit #{criteria.count}
+        offset #{criteria.offset}
+    </select>
+
+    <select id="selectTotal" resultType="int">
+        select count(*)
+        from tbl_member m
+        where m.member_status = 'active'
+          and m.id != #{memberId}
+          and m.id not in (select fl.following_id from tbl_follow fl where fl.follower_id = #{memberId})
+          and m.id not in (select bl.blocked_id from tbl_block bl where bl.blocker_id = #{memberId})
+          <include refid="categoryFilter"/>
+    </select>
+
+    <!-- 커넥터: profileId를 팔로우중인 사람들 (viewerId 기준 팔로우 여부 포함) -->
+    <select id="selectAllFollowers">
+        select m.id,
+               m.member_name,
+               m.member_handle,
+               m.member_bio,
+               m.member_role,
+               (select fi.file_name from tbl_member_profile_file mpf
+                   join tbl_file fi on mpf.id = fi.id
+                where mpf.member_id = m.id and mpf.profile_image_type = 'profile'
+                limit 1) as member_profile_file_name,
+               (select count(*) from tbl_follow fl2
+                where fl2.follower_id = #{viewerId} and fl2.following_id = m.id) as is_following
+        from tbl_follow f
+                 join tbl_member m on f.follower_id = m.id
+        where f.following_id = #{profileId}
+          and m.member_status = 'active'
+          and m.id not in (select bl.blocked_id from tbl_block bl where bl.blocker_id = #{viewerId})
+        order by f.created_datetime desc
+        limit #{criteria.count}
+        offset #{criteria.offset}
+    </select>
+
+    <select id="selectTotalFollowers" resultType="int">
+        select count(*)
+        from tbl_follow f
+                 join tbl_member m on f.follower_id = m.id
+        where f.following_id = #{profileId}
+          and m.member_status = 'active'
+          and m.id not in (select bl.blocked_id from tbl_block bl where bl.blocker_id = #{viewerId})
+    </select>
+
+    <!-- 커넥팅: profileId가 팔로우중인 사람들 (viewerId 기준 팔로우 여부 포함) -->
+    <select id="selectAllFollowings">
+        select m.id,
+               m.member_name,
+               m.member_handle,
+               m.member_bio,
+               m.member_role,
+               (select fi.file_name from tbl_member_profile_file mpf
+                   join tbl_file fi on mpf.id = fi.id
+                where mpf.member_id = m.id and mpf.profile_image_type = 'profile'
+                limit 1) as member_profile_file_name,
+               (select count(*) from tbl_follow fl2
+                where fl2.follower_id = #{viewerId} and fl2.following_id = m.id) as is_following
+        from tbl_follow f
+                 join tbl_member m on f.following_id = m.id
+        where f.follower_id = #{profileId}
+          and m.member_status = 'active'
+          and m.id not in (select bl.blocked_id from tbl_block bl where bl.blocker_id = #{viewerId})
+        order by f.created_datetime desc
+        limit #{criteria.count}
+        offset #{criteria.offset}
+    </select>
+
+    <select id="selectTotalFollowings" resultType="int">
+        select count(*)
+        from tbl_follow f
+                 join tbl_member m on f.following_id = m.id
+        where f.follower_id = #{profileId}
+          and m.member_status = 'active'
+          and m.id not in (select bl.blocked_id from tbl_block bl where bl.blocker_id = #{viewerId})
+    </select>
+
+</mapper>

@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.app.globalgates.mapper.AdminStatsMapper">
+    <select id="selectTotalMemberCount" resultType="long">
+        select count(*)
+        from tbl_member
+    </select>
+
+    <select id="selectTotalPostCount" resultType="long">
+        select count(*)
+        from tbl_post
+        where reply_post_id is null
+    </select>
+
+    <select id="selectTotalReportCount" resultType="long">
+        select count(*)
+        from tbl_report
+    </select>
+
+    <select id="selectMemberJoinedDaily" resultType="com.app.globalgates.dto.ChartPointDTO">
+        select to_char(created_datetime, 'YYYY-MM-DD') as label, count(*) as value
+        from tbl_member
+        where created_datetime &gt;= #{startAt} and created_datetime &lt; #{endAt}
+        group by to_char(created_datetime, 'YYYY-MM-DD')
+        order by label
+    </select>
+    <select id="selectMemberDroppedDaily" resultType="com.app.globalgates.dto.ChartPointDTO">
+        select to_char(updated_datetime, 'YYYY-MM-DD') as label, count(*) as value
+        from tbl_member
+        where member_status != 'active' and updated_datetime &gt;= #{startAt} and updated_datetime &lt; #{endAt}
+        group by to_char(updated_datetime, 'YYYY-MM-DD')
+        order by label
+    </select>
+    <select id="selectMemberJoinedMonthly" resultType="com.app.globalgates.dto.ChartPointDTO">
+        select to_char(created_datetime, 'YYYY-MM') as label, count(*) as value
+        from tbl_member
+        where created_datetime &gt;= #{startAt} and created_datetime &lt; #{endAt}
+        group by to_char(created_datetime, 'YYYY-MM')
+        order by label
+    </select>
+    <select id="selectMemberDroppedMonthly" resultType="com.app.globalgates.dto.ChartPointDTO">
+        select to_char(updated_datetime, 'YYYY-MM') as label, count(*) as value
+        from tbl_member
+        where member_status != 'active' and updated_datetime &gt;= #{startAt} and updated_datetime &lt; #{endAt}
+        group by to_char(updated_datetime, 'YYYY-MM')
+        order by label
+    </select>
+    <select id="selectMemberTypes" resultType="com.app.globalgates.dto.ChartPointDTO">
+        select cast(member_role as text) as label, count(*) as value
+        from tbl_member
+        group by member_role
+        order by value desc, label asc
+    </select>
+    <select id="selectHourlyVisits" resultType="com.app.globalgates.dto.ChartPointDTO">
+        select cast(extract(hour from last_login_at) as text) as label, count(*) as value
+        from tbl_member
+        where last_login_at is not null and last_login_at &gt;= #{startAt} and last_login_at &lt; #{endAt}
+        group by extract(hour from last_login_at)
+        order by cast(extract(hour from last_login_at) as integer)
+    </select>
+    <select id="selectPostDailyCounts" resultType="com.app.globalgates.dto.ChartPointDTO">
+        select to_char(created_datetime, 'YYYY-MM-DD') as label, count(*) as value
+        from tbl_post
+        where post_status = 'active' and reply_post_id is null and created_datetime &gt;= #{startAt} and created_datetime &lt; #{endAt}
+        group by to_char(created_datetime, 'YYYY-MM-DD')
+        order by label
+    </select>
+    <select id="selectPostMonthlyCounts" resultType="com.app.globalgates.dto.ChartPointDTO">
+        select to_char(created_datetime, 'YYYY-MM') as label, count(*) as value
+        from tbl_post
+        where post_status = 'active' and reply_post_id is null and created_datetime &gt;= #{startAt} and created_datetime &lt; #{endAt}
+        group by to_char(created_datetime, 'YYYY-MM')
+        order by label
+    </select>
+    <select id="selectPostCategoryCounts" resultType="com.app.globalgates.dto.ChartPointDTO">
+        select coalesce(c.category_name, '일반') as label, count(*) as value
+        from tbl_post p
+                 left join tbl_post_product pp on pp.id = p.id
+                 left join tbl_category c on c.id = pp.product_category_id
+        where p.post_status = 'active' and p.reply_post_id is null and p.created_datetime &gt;= #{startAt} and p.created_datetime &lt; #{endAt}
+        group by coalesce(c.category_name, '일반')
+        order by value desc, label asc
+        limit 7
+    </select>
+    <select id="selectReportDailyCounts" resultType="com.app.globalgates.dto.ChartPointDTO">
+        select to_char(created_datetime, 'YYYY-MM-DD') as label, count(*) as value
+        from tbl_report
+        where created_datetime &gt;= #{startAt} and created_datetime &lt; #{endAt}
+        group by to_char(created_datetime, 'YYYY-MM-DD')
+        order by label
+    </select>
+    <select id="selectReportMonthlyCounts" resultType="com.app.globalgates.dto.ChartPointDTO">
+        select to_char(created_datetime, 'YYYY-MM') as label, count(*) as value
+        from tbl_report
+        where created_datetime &gt;= #{startAt} and created_datetime &lt; #{endAt}
+        group by to_char(created_datetime, 'YYYY-MM')
+        order by label
+    </select>
+    <select id="selectReportStatuses" resultType="com.app.globalgates.dto.ChartPointDTO">
+        select cast(status as text) as label, count(*) as value
+        from tbl_report
+        group by status
+        order by value desc, label asc
+    </select>
+    <select id="selectReportReasons" resultType="com.app.globalgates.dto.ChartPointDTO">
+        select case when char_length(reason) &gt; 20 then substr(reason, 1, 20) || '...' else reason end as label,
+               count(*) as value
+        from tbl_report
+        where target_type = #{targetType}::report_target_type
+        group by case when char_length(reason) &gt; 20 then substr(reason, 1, 20) || '...' else reason end
+        order by value desc, label asc
+        limit 5
+    </select>
+</mapper>

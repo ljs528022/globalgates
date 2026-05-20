@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.app.globalgates.mapper.AdvertisementMapper">
+    <sql id="search">
+        advertiser_id = #{memberId}
+        <if test="search.keyword != null and search.keyword != ''.toString()">
+            AND (
+            headline ILIKE '%' || #{search.keyword} || '%'
+            OR (
+            title ILIKE '%' || #{search.keyword} || '%'
+            AND NOT (headline ILIKE '%' || #{search.keyword} || '%')
+            )
+            )
+        </if>
+        <choose>
+            <when test="search.filter == 'active'.toString()">
+                AND status = 'active'
+            </when>
+            <when test="search.filter == 'reported'.toString()">
+                AND status = 'reported'
+            </when>
+        </choose>
+    </sql>
+
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+        insert into tbl_advertisement (advertiser_id, title, headline, description, landing_url, budget,
+                                       impression_estimate, started_at)
+        values (#{advertiserId}, #{title}, #{headline}, #{description}, #{landingUrl}, #{budget}, #{impressionEstimate},
+                #{startedAt}::timestamp)
+    </insert>
+
+    <select id="selectAllForMain">
+        select a.id,
+               a.advertiser_id,
+               a.title,
+               a.headline,
+               a.description,
+               a.landing_url,
+               a.budget,
+               a.impression_estimate,
+               a.receipt_id,
+               a.status,
+               a.started_at,
+               a.created_datetime,
+               a.updated_datetime,
+               m.member_name as advertiser_name,
+               m.member_handle as advertiser_handle,
+               (select f.file_name from tbl_member_profile_file mpf
+                   join tbl_file f on mpf.id = f.id
+                where mpf.member_id = a.advertiser_id and mpf.profile_image_type = 'profile'
+                limit 1) as advertiser_profile_file_name
+        from tbl_advertisement a
+        join tbl_member m on a.advertiser_id = m.id
+        order by a.created_datetime desc
+        limit #{count} offset #{offset}
+    </select>
+
+    <select id="selectBySearch">
+        select
+            distinct
+            id, advertiser_id, title, headline, description, landing_url,
+            budget, impression_estimate, receipt_id,
+            status, started_at, created_datetime, updated_datetime
+        from tbl_advertisement
+        <where>
+            <include refid="search"></include>
+        </where>
+        order by created_datetime desc
+        limit #{criteria.count} offset #{criteria.offset}
+    </select>
+
+    <select id="selectTotal">
+        select count(*)
+        from tbl_advertisement
+        <where>
+            <include refid="search"></include>
+        </where>
+    </select>
+
+    <select id="selectById">
+        select
+            id, advertiser_id, title, headline, description,
+            landing_url, budget, impression_estimate, receipt_id,
+            status, started_at, created_datetime, updated_datetime
+        from tbl_advertisement
+        where id = #{id}
+    </select>
+
+    <delete id="delete">
+        delete from tbl_advertisement
+        where id = #{id}
+    </delete>
+</mapper>

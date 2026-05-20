@@ -1,0 +1,212 @@
+<!doctype html>
+<html lang="ko" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{common/layout}">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>explore</title>
+    <link rel="stylesheet" href="/css/common/mobile-nav.css" th:href="@{/css/common/mobile-nav.css}"/>
+    <link rel="stylesheet" href="/css/explore/explore.css"/>
+    <link rel="stylesheet" href="/css/explore/explore-result.css"/>
+    <script src="/js/common/mobile-nav.js" th:src="@{/js/common/mobile-nav.js}" defer></script>
+    <script th:inline="javascript">
+        const memberId = /*[[${member != null ? member.id : null}]]*/ null;
+    </script>
+    <script src="/js/explore/explore-result.js"></script>
+    <script src="/js/explore/service.js"></script>
+    <script src="/js/main/service.js"></script>
+    <script src="/js/main/layout.js"></script>
+    <script src="/js/explore/layout.js"></script>
+    <script src="/js/utils/exchange.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@joeattardi/emoji-button@3.0.3/dist/index.min.js"></script>
+</head>
+<body>
+<div class="pageLayout" id="mainPage">
+<th:block layout:fragment="content">
+
+    <!-- 중앙 타임라인 패널: 탭 전환, 게시글 작성 모달, 실제 피드 카드가 이 영역을 기준으로 렌더링된다. -->
+    <main class="timelinePanel" id="timelinePanel">
+        <div class="exploreSticky">
+            <form class="searchForm" id="searchForm">
+                <div class="searchDropdownWrap">
+                    <label class="searchField" for="searchInput">
+                        <span class="hiddenText">검색</span>
+                        <span class="searchIcon" aria-hidden="true">
+                            <svg viewBox="0 0 24 24" class="search-icon"><path
+                                    d="M10.25 3.75c-3.59 0-6.5 2.91-6.5 6.5s2.91 6.5 6.5 6.5c1.795 0 3.419-.726 4.596-1.904 1.178-1.177 1.904-2.801 1.904-4.596 0-3.59-2.91-6.5-6.5-6.5zm-8.5 6.5c0-4.694 3.806-8.5 8.5-8.5s8.5 3.806 8.5 8.5c0 1.986-.682 3.815-1.824 5.262l4.781 4.781-1.414 1.414-4.781-4.781c-1.447 1.142-3.276 1.824-5.262 1.824-4.694 0-8.5-3.806-8.5-8.5z"/></svg>
+                        </span>
+                        <input
+                                class="searchInput"
+                                id="searchInput"
+                                name="keyword"
+                                type="search"
+                                placeholder="검색"
+                                autocomplete="off"
+                                autocorrect="off"
+                        />
+                        <button
+                                class="searchClearBtn"
+                                id="searchClearBtn"
+                                type="button"
+                                aria-label="검색어 지우기"
+                                hidden
+                        >
+                            <svg viewBox="0 0 24 24" aria-hidden="true" class="searchClearIcon">
+                                <g>
+                                    <path d="M12 1.75C6.34 1.75 1.75 6.34 1.75 12S6.34 22.25 12 22.25 22.25 17.66 22.25 12 17.66 1.75 12 1.75zm3.71 12.54l-1.42 1.42-2.29-2.3-2.29 2.3-1.42-1.42 2.3-2.29-2.3-2.29 1.42-1.42 2.29 2.3 2.29-2.3 1.42 1.42-2.3 2.29 2.3 2.29z"></path>
+                                </g>
+                            </svg>
+                        </button>
+                    </label>
+                    <div class="searchPanel" id="searchPanel" hidden>
+                        <!-- 1. 입력 전 + 최근검색 없을때 -->
+                        <div class="searchPanelEmpty" id="searchPanelEmpty" hidden>
+                            <p class="searchPanelText" id="searchPanelText">
+                                인물이나 리스트 또는 키워드를 검색해 보세요
+                            </p>
+                        </div>
+
+                        <!-- 2. 입력 전 + 최근검색 있음 -->
+                        <div id="searchRecentSection">
+                            <div class="searchRecentHeader">
+                                <span>최근 검색</span>
+                                <button class="searchRecentClearAll" type="button">모두 지우기</button>
+                            </div>
+                            <!-- 연관 검색어가 JS로 동적 렌더링됨 -->
+                        </div>
+
+                        <!-- 3. 입력 있음 -->
+                        <div class="searchResults" id="searchResults" hidden>
+                            <button class="searchResultTopic" id="searchResultTopic" type="button">
+                                <span class="searchResultLabel" id="searchResultLabel">검색 결과</span>
+                            </button>
+                            <!-- 연관 검색어가 JS로 동적 렌더링됨 -->
+                        </div>
+                    </div>
+                </div><!-- /.searchDropdownWrap -->
+            </form>
+            <nav class="timelineTabs" id="timelineTabs" aria-label="검색 결과 탭">
+                <button class="timelineTab isActive" id="tabPopular" type="button" aria-current="page">
+                    인기순
+                </button>
+                <button class="timelineTab" id="tabLatest" type="button">
+                    최신순
+                </button>
+                <button class="timelineTab" id="tabMembers" type="button">
+                    회원
+                </button>
+            </nav>
+        </div><!-- /.exploreSticky -->
+
+
+        <section class="feedSection" id="popularSection" aria-label="인기 게시물 목록">
+
+        </section>
+
+        <section class="feedSection" id="latestSection" aria-label="최신 게시물 목록" hidden>
+
+        </section>
+
+        <section class="friendsSection" id="membersSection" aria-label="회원 목록" hidden>
+            <div id="friendsList">
+
+            </div>
+        </section>
+
+    </main>
+
+    <!-- 모바일 nav + 더보기 아코디언 (공용 fragment) -->
+    <div th:replace="~{common/mobile-nav :: mobileNav('search')}"></div>
+    <div th:replace="~{common/mobile-nav :: mobileMoreSheet}"></div>
+</th:block>
+</div>
+<div class="modal-overlay" id="disconnectModal">
+    <div class="modal-dialog" role="alertdialog" aria-labelledby="disconnectModalTitle">
+        <h1 class="modal-title" id="disconnectModalTitle">연결을 끊으시겠습니까?</h1>
+        <p class="modal-desc">이 사용자의 게시물은 더 이상 팔로잉 타임라인에 표시되지 않습니다. 이 사용자의 프로필은 게시물이 비공개로 설정되지 않는 한 계속 볼 수 있습니다.</p>
+        <div class="modal-actions">
+            <button class="modal-btn-confirm" id="disconnectConfirm">연결 끊기</button>
+            <button class="modal-btn-cancel" id="disconnectCancel">취소</button>
+        </div>
+    </div>
+</div>
+
+<!-- 게시글 공유 드롭다운: 클릭한 공유 버튼 근처로만 재배치되고, 마크업은 `#layers` 안의 고정 노드를 재사용한다. -->
+<div class="layers-dropdown-container off" id="mainShareDropdown">
+    <div class="layers-overlay"></div>
+    <div class="layers-dropdown-inner">
+        <div class="dropdown-menu" id="mainShareDropdownMenu">
+            <div>
+                <div class="dropdown-inner">
+                    <button class="menu-item share-menu-item share-menu-item--copy">
+                                    <span class="menu-item__icon share-menu-item__icon">
+                                        <svg viewBox="0 0 24 24" aria-hidden="true" class="r-4qtqp9 r-yyyyoo r-1xvli5t r-dnmrzs r-bnwqim r-lrvibr r-m6rgpd r-18jsvk2 r-1q142lx"><g><path d="M18.36 5.64c-1.95-1.96-5.11-1.96-7.07 0L9.88 7.05 8.46 5.64l1.42-1.42c2.73-2.73 7.16-2.73 9.9 0 2.73 2.74 2.73 7.17 0 9.9l-1.42 1.42-1.41-1.42 1.41-1.41c1.96-1.96 1.96-5.12 0-7.07zm-2.12 3.53l-7.07 7.07-1.41-1.41 7.07-7.07 1.41 1.41zm-12.02.71l1.42-1.42 1.41 1.42-1.41 1.41c-1.96 1.96-1.96 5.12 0 7.07 1.95 1.96 5.11 1.96 7.07 0l1.41-1.41 1.42 1.41-1.42 1.42c-2.73 2.73-7.16 2.73-9.9 0-2.73-2.74-2.73-7.17 0-9.9z"></path></g></svg>
+                                    </span>
+                        <span class="menu-item__label">링크 복사하기</span>
+                    </button>
+                    <button class="menu-item share-menu-item share-menu-item--bookmark">
+                                    <span class="menu-item__icon share-menu-item__icon">
+                                        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 3V0h2v3h3v2h-3v3h-2V5h-3V3zm-7.5 1a.5.5 0 00-.5.5V7h3.5A2.5 2.5 0 0116 9.5v3.48l3 2.1V11h2v7.92l-5-3.5v7.26l-6.5-3.54L3 22.68V9.5A2.5 2.5 0 015.5 7H8V4.5A2.5 2.5 0 0110.5 2H12v2zm-5 5a.5.5 0 00-.5.5v9.82l4.5-2.46 4.5 2.46V9.5a.5.5 0 00-.5-.5z"></path></svg>
+                                    </span>
+                        <span class="menu-item__label">폴더에 북마크 추가하기</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- 북마크 폴더 선택 모달 -->
+<div class="bookmark-share-sheet" id="shareBookmarkModal" hidden>
+    <div class="bookmark-share-sheet-backdrop" data-share-close="true"></div>
+    <div class="bookmark-share-sheet-card bookmark-share-sheet-card--bookmark"
+         role="dialog" aria-modal="true" aria-labelledby="shareBookmarkTitle">
+        <div class="bookmark-share-sheet-header">
+            <button type="button" class="bookmark-share-sheet-icon-btn" data-share-close="true" aria-label="돌아가기">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10.59 12L4.54 5.96l1.42-1.42L12 10.59l6.04-6.05 1.42 1.42L13.41 12l6.05 6.04-1.42 1.42L12 13.41l-6.04 6.05-1.42-1.42L10.59 12z"></path></svg>
+            </button>
+            <h2 id="shareBookmarkTitle" class="bookmark-share-sheet-title">폴더에 추가</h2>
+            <span class="bookmark-share-sheet-header-spacer"></span>
+        </div>
+        <button type="button" class="bookmark-share-sheet-create-folder" id="shareBookmarkCreateFolder">
+            새 북마크 폴더 만들기
+        </button>
+        <div class="bookmark-share-sheet-folder-list" id="shareBookmarkFolderList">
+            <!-- 폴더 목록은 JS에서 동적 생성 -->
+        </div>
+    </div>
+</div>
+<!-- 폴더 만들기 모달 -->
+<div class="bookmark-modal-overlay" id="createFolderModal" aria-hidden="true">
+    <div class="bookmark-modal" role="dialog" aria-modal="true" aria-labelledby="createFolderModalTitle">
+        <div class="bookmark-modal-header">
+            <button class="bookmark-modal-close" id="createFolderClose" type="button" aria-label="뒤로 가기">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7.414 13l5.043 5.04-1.414 1.42L3.586 12l7.457-7.46 1.414 1.42L7.414 11H21v2H7.414z"/></svg>
+            </button>
+            <h2 class="bookmark-modal-title" id="createFolderModalTitle">폴더 만들기</h2>
+            <button class="bookmark-modal-submit" id="createFolderSubmit" type="button" disabled>만들기</button>
+        </div>
+        <div class="bookmark-modal-body">
+            <label class="bookmark-modal-field" for="createFolderInput">
+                <span class="bookmark-modal-label">이름</span>
+                <span class="bookmark-modal-count" id="createFolderCount" aria-live="polite">0 / 25</span>
+                <input class="bookmark-modal-input" id="createFolderInput" type="text" maxlength="25" autocomplete="off" />
+            </label>
+        </div>
+    </div>
+</div>
+
+<!-- 게시물 작성 모달: createPostButton 클릭 시 이 블록을 열고 닫는다.
+     마크업은 common/compose-modal 로 추출했고, 모달 제어 JS 는 main/event.js 가 그대로 담당한다. -->
+<div th:replace="~{common/compose-modal :: composeModal}"></div>
+<!-- 답글 모달: 전역 fragment 사용 (post-modal.js가 [data-reply-modal] 셀렉터로 잡아 셋업). -->
+<div th:replace="~{common/reply-modal :: replyModal}"></div>
+
+</body>
+</html>
+
+
+
+
+
+
+

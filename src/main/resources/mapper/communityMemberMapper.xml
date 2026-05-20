@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.app.globalgates.mapper.CommunityMemberMapper">
+
+    <insert id="insert">
+        insert into tbl_community_member (community_id, member_id, member_role)
+        values (#{communityId}, #{memberId}, #{memberRole}::community_member_role)
+    </insert>
+
+    <delete id="delete">
+        delete from tbl_community_member
+        where community_id = #{communityId} and member_id = #{memberId}
+    </delete>
+
+    <update id="updateRole">
+        update tbl_community_member
+        set member_role = #{role}::community_member_role
+        where community_id = #{communityId} and member_id = #{memberId}
+    </update>
+
+    <select id="selectByIds" resultType="communityMemberDTO">
+        select cm.community_id, cm.member_id, cm.member_role, cm.joined_at,
+               m.member_nickname, m.member_handle,
+               (select f.file_path from tbl_member_profile_file mpf
+                   join tbl_file f on mpf.id = f.id
+                where mpf.member_id = m.id and mpf.profile_image_type = 'profile'
+                limit 1) as member_profile_file_path
+        from tbl_community_member cm
+        join tbl_member m on cm.member_id = m.id
+        where cm.community_id = #{communityId} and cm.member_id = #{memberId}
+    </select>
+
+    <select id="selectByCommunityId" resultType="communityMemberDTO">
+        select cm.community_id, cm.member_id, cm.member_role, cm.joined_at,
+               m.member_nickname, m.member_handle,
+               (select f.file_path from tbl_member_profile_file mpf
+                   join tbl_file f on mpf.id = f.id
+                where mpf.member_id = m.id and mpf.profile_image_type = 'profile'
+                limit 1) as member_profile_file_path
+        from tbl_community_member cm
+        join tbl_member m on cm.member_id = m.id
+        where cm.community_id = #{communityId}
+        order by cm.joined_at asc
+        limit #{criteria.count} offset #{criteria.offset}
+    </select>
+
+    <select id="selectCountByCommunityId" resultType="int">
+        select count(*) from tbl_community_member
+        where community_id = #{communityId}
+    </select>
+
+</mapper>

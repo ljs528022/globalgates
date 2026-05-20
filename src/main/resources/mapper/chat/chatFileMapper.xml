@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.app.globalgates.mapper.chat.ChatFileMapper">
+    <insert id="insert">
+        insert into tbl_chat_file (id, message_id)
+        values (#{fileId}, #{messageId})
+    </insert>
+
+    <!--
+      파일이 회원이 참여한 대화방의 메시지에 속하는지 확인.
+      파일 다운로드/미리보기 endpoint에서 권한 검증용.
+    -->
+    <select id="selectIsFileAccessible" resultType="boolean">
+        select exists (
+            select 1
+            from tbl_chat_file cf
+            join tbl_message m on cf.message_id = m.id
+            join tbl_conversation_member_rel rel on rel.conversation_id = m.conversation_id
+            where cf.id = #{fileId}
+              and (rel.sender_id = #{memberId} or rel.invited_id = #{memberId})
+        )
+    </select>
+</mapper>

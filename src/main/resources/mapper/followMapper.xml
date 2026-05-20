@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.app.globalgates.mapper.FollowMapper">
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+        insert into tbl_follow (follower_id, following_id)
+        values (#{followerId}, #{followingId})
+    </insert>
+
+    <delete id="delete">
+        delete from tbl_follow
+        where follower_id = #{followerId} and following_id = #{followingId}
+    </delete>
+
+    <select id="selectByFollowerIdAndFollowingId">
+        select id, follower_id, following_id, created_datetime
+        from tbl_follow
+        where follower_id = #{followerId} and following_id = #{followingId}
+    </select>
+
+    <!-- 팔로워 목록 (나를 팔로우한 사람들) -->
+    <select id="selectAllFollowers">
+        select f.id, f.follower_id, f.following_id, f.created_datetime,
+               m.member_nickname, m.member_handle,
+               (select fi.file_name from tbl_member_profile_file mpf
+                   join tbl_file fi on mpf.id = fi.id
+                where mpf.member_id = f.follower_id and mpf.profile_image_type = 'profile'
+                limit 1) as member_profile_file_name
+        from tbl_follow f
+                 join tbl_member m on f.follower_id = m.id
+        where f.following_id = #{followingId}
+        order by f.created_datetime desc
+    </select>
+
+    <!-- 팔로잉 목록 (내가 팔로우한 사람들) -->
+    <select id="selectAllFollowings">
+        select f.id, f.follower_id, f.following_id, f.created_datetime,
+               m.member_nickname, m.member_handle,
+               (select fi.file_name from tbl_member_profile_file mpf
+                   join tbl_file fi on mpf.id = fi.id
+                where mpf.member_id = f.following_id and mpf.profile_image_type = 'profile'
+                limit 1) as member_profile_file_name
+        from tbl_follow f
+                 join tbl_member m on f.following_id = m.id
+        where f.follower_id = #{followerId}
+        order by f.created_datetime desc
+    </select>
+    <!-- 아직 팔로우하지 않은 회원 3명 (최신 가입순) -->
+    <select id="selectUnfollowedMembers" resultType="com.app.globalgates.dto.MemberDTO">
+        select m.id, m.member_name, m.member_handle,
+               (select fi.file_name from tbl_member_profile_file mpf
+                   join tbl_file fi on mpf.id = fi.id
+                where mpf.member_id = m.id and mpf.profile_image_type = 'profile'
+                limit 1) as file_name
+        from tbl_member m
+        where m.id != #{memberId}
+          and m.id not in (
+              select f.following_id from tbl_follow f where f.follower_id = #{memberId}
+          )
+          and m.id not in (
+              select bl.blocked_id from tbl_block bl where bl.blocker_id = #{memberId}
+          )
+        order by m.id desc
+        limit 3
+    </select>
+</mapper>

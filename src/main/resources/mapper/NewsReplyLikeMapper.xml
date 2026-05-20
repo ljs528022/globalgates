@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.app.globalgates.mapper.NewsReplyLikeMapper">
+
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+        insert into tbl_news_reply_like (member_id, reply_id)
+        values (#{memberId}, #{replyId})
+    </insert>
+
+    <delete id="deleteByMemberIdAndReplyId">
+        delete
+        from tbl_news_reply_like
+        where member_id = #{memberId}
+          and reply_id = #{replyId}
+    </delete>
+
+    <select id="selectByMemberIdAndReplyId">
+        select id, member_id, reply_id, created_datetime
+        from tbl_news_reply_like
+        where member_id = #{memberId}
+          and reply_id = #{replyId}
+    </select>
+
+</mapper>

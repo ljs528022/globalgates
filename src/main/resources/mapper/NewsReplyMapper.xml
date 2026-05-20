@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.app.globalgates.mapper.NewsReplyMapper">
+
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+        insert into tbl_news_reply (member_id, news_id, content, reply_status)
+        values (#{memberId}, #{newsId}, #{content}, coalesce(#{replyStatus}, 'active'))
+    </insert>
+
+    <select id="selectById">
+        select r.id,
+               r.member_id,
+               r.news_id,
+               r.content,
+               r.reply_status,
+               to_char(r.created_datetime, 'YYYY-MM-DD HH24:MI:SS') as created_datetime,
+               to_char(r.updated_datetime, 'YYYY-MM-DD HH24:MI:SS') as updated_datetime,
+               m.member_name,
+               m.member_handle,
+               (select f.file_name
+                from tbl_member_profile_file mpf
+                join tbl_file f on mpf.id = f.id
+                where mpf.member_id = r.member_id and mpf.profile_image_type = 'profile'
+                limit 1) as member_profile_file_name,
+               (select count(*) from tbl_news_reply_like rl where rl.reply_id = r.id) as like_count,
+               false as liked
+        from tbl_news_reply r
+        join tbl_member m on r.member_id = m.id
+        where r.id = #{id}
+    </select>
+
+    <select id="selectByNewsId">
+        select r.id,
+               r.member_id,
+               r.news_id,
+               r.content,
+               r.reply_status,
+               to_char(r.created_datetime, 'YYYY-MM-DD HH24:MI:SS') as created_datetime,
+               to_char(r.updated_datetime, 'YYYY-MM-DD HH24:MI:SS') as updated_datetime,
+               m.member_name,
+               m.member_handle,
+               (select f.file_name
+                from tbl_member_profile_file mpf
+                join tbl_file f on mpf.id = f.id
+                where mpf.member_id = r.member_id and mpf.profile_image_type = 'profile'
+                limit 1) as member_profile_file_name,
+               (select count(*) from tbl_news_reply_like rl where rl.reply_id = r.id) as like_count,
+               <choose>
+                   <when test="currentMemberId != null">
+                       exists(
+                           select 1 from tbl_news_reply_like rl2
+                           where rl2.reply_id = r.id and rl2.member_id = #{currentMemberId}
+                       ) as liked
+                   </when>
+                   <otherwise>
+                       false as liked
+                   </otherwise>
+               </choose>
+        from tbl_news_reply r
+        join tbl_member m on r.member_id = m.id
+        where r.news_id = #{newsId}
+          and r.reply_status = 'active'
+        <choose>
+            <when test="sort == 'popular'">
+                order by like_count desc, r.created_datetime desc
+            </when>
+            <otherwise>
+                order by r.created_datetime desc
+            </otherwise>
+        </choose>
+    </select>
+
+    <select id="selectCountByNewsId" resultType="int">
+        select count(*)
+        from tbl_news_reply
+        where news_id = #{newsId}
+          and reply_status = 'active'
+    </select>
+
+    <update id="softDeleteById">
+        update tbl_news_reply
+        set reply_status = 'deleted',
+            updated_datetime = current_timestamp
+        where id = #{id}
+          and member_id = #{memberId}
+          and reply_status = 'active'
+    </update>
+
+    <update id="updateContentById">
+        update tbl_news_reply
+        set content = #{content},
+            updated_datetime = current_timestamp
+        where id = #{id}
+          and member_id = #{memberId}
+          and reply_status = 'active'
+    </update>
+
+</mapper>

@@ -1,0 +1,7250 @@
+/* ================================================
+   PAGE CSS - 캠페인 양식
+   URL: https://ads.x.com/campaign_form/18ce55uy9xt/campaign/new?objective=14
+   Generated: 2026-03-09T02:50:50.094Z
+   ================================================ */
+
+/* ---- External Stylesheets (58 files) ---- */
+@import url("https://ton.twimg.com/web-app-framework/navbars/css/73520.cec6716bf61a261297c4.css");
+@import url("https://ton.twimg.com/web-app-framework/navbars/css/96903.c9fd880a4d7872291564.css");
+@import url("https://ton.twimg.com/web-app-framework/navbars/css/33473.b2e6ea22b141941da643.css");
+@import url("https://ton.twimg.com/web-app-framework/navbars/css/6294.aa120231468d61b8fbc7.css");
+@import url("https://ton.twimg.com/web-app-framework/navbars/css/18184.1d1d060d58f472db1798.css");
+@import url("https://ton.twimg.com/web-app-framework/navbars/css/8399.85b957119b27f64468b4.css");
+@import url("https://ton.twimg.com/web-app-framework/navbars/css/21269.cd1482aa39a3d8d57485.css");
+@import url("https://ton.twimg.com/web-app-framework/navbars/css/4345.0684c44a568f97788b2a.css");
+@import url("https://ton.twimg.com/web-app-framework/navbars/css/56485.4952ea34d119b097058d.css");
+@import url("https://ton.twimg.com/web-app-framework/navbars/css/10703.338df48312758a66a751.css");
+@import url("https://ton.twimg.com/web-app-framework/navbars/css/96455.8d2a9176569d94a98c5b.css");
+@import url("https://ton.twimg.com/web-app-framework/navbars/css/52339.9fbb22cbce20b08db84b.css");
+@import url("https://ton.twimg.com/web-app-framework/navbars/css/3735.1133606235036daa61c0.css");
+@import url("https://ton.twimg.com/web-app-framework/navbars/css/28968.2764cbc4a3bcf8e48ade.css");
+@import url("https://ton.twimg.com/web-app-framework/navbars/css/8145.d071bc3986112c80e69b.css");
+@import url("https://ton.twimg.com/web-app-framework/navbars/css/64383.c9e0c70332299517aa72.css");
+@import url("https://ton.twimg.com/web-app-framework/advertiser-interface/css/9863.c6b9df24330b2bb17a7d.css");
+@import url("https://ton.twimg.com/web-app-framework/advertiser-interface/css/9749.8d44cad26184a05f7360.css");
+@import url("https://ton.twimg.com/web-app-framework/advertiser-interface/css/6559.ace56c0d164c0c5d3a09.css");
+@import url("https://ton.twimg.com/web-app-framework/advertiser-interface/css/8968.6e2995d75a228d4ded00.css");
+@import url("https://ton.twimg.com/web-app-framework/advertiser-interface/css/7338.6f990e0053fc06456e02.css");
+@import url("https://ton.twimg.com/web-app-framework/advertiser-interface/css/8261.b39886081c9e2f84b4e3.css");
+@import url("https://ton.twimg.com/web-app-framework/advertiser-interface/css/6294.0d20a284a7a83a4eda6e.css");
+@import url("https://ton.twimg.com/web-app-framework/advertiser-interface/css/8184.0697b772b138bd0b0d2c.css");
+@import url("https://ton.twimg.com/web-app-framework/advertiser-interface/css/5462.be6fa8d02ea2c17a5667.css");
+@import url("https://ton.twimg.com/web-app-framework/advertiser-interface/css/1269.82ed5da533c4ec2b8598.css");
+@import url("https://ton.twimg.com/web-app-framework/advertiser-interface/css/9777.18ed43d601a1996e6d32.css");
+@import url("https://ton.twimg.com/web-app-framework/advertiser-interface/css/916.d3138ef46413d54fe1d9.css");
+@import url("https://ton.twimg.com/web-app-framework/advertiser-interface/css/4971.2984070cdceb0cc4fd18.css");
+@import url("https://ton.twimg.com/web-app-framework/advertiser-interface/css/7084.a04a4d0415a603d387d5.css");
+@import url("https://ton.twimg.com/web-app-framework/advertiser-interface/css/3579.36d65fc4908f3c9a8f94.css");
+@import url("https://ton.twimg.com/web-app-framework/advertiser-interface/css/3533.a55548d1bb7429d07788.css");
+@import url("https://ton.twimg.com/web-app-framework/advertiser-interface/css/9264.b6f780da7202596657c8.css");
+@import url("https://ton.twimg.com/web-app-framework/advertiser-interface/css/3942.006fffd8d19e0ff8ebda.css");
+@import url("https://ton.twimg.com/web-app-framework/advertiser-interface/css/5761.2058e87630a311c51a45.css");
+@import url("https://ton.twimg.com/web-app-framework/advertiser-interface/css/1194.140543ebeef3cef7d41e.css");
+@import url("https://ton.twimg.com/web-app-framework/advertiser-interface/css/6859.13b4ee5f4f8fc8f0021f.css");
+@import url("https://ton.twimg.com/web-app-framework/advertiser-interface/css/2677.c664a009c29180c2d39f.css");
+@import url("https://ton.twimg.com/web-app-framework/advertiser-interface/css/5017.6fba83eeb522836a9302.css");
+@import url("https://ton.twimg.com/web-app-framework/advertiser-interface/css/5470.0e806fdafdace340516d.css");
+@import url("https://ton.twimg.com/web-app-framework/advertiser-interface/css/8145.72cee72f77de4d766082.css");
+@import url("https://ton.twimg.com/web-app-framework/advertiser-interface/css/6269.58ea5125e1a5adf20e66.css");
+@import url("https://ton.twimg.com/web-app-framework/advertiser-interface/css/4304.3cdad9880b05844ccdf6.css");
+@import url("https://ton.twimg.com/web-app-framework/advertiser-interface/css/3817.c834087851ecab9cc6e7.css");
+@import url("https://ton.twimg.com/web-app-framework/advertiser-interface/css/4441.6d37d252112c0f264bc9.css");
+@import url("https://ton.twimg.com/web-app-framework/advertiser-interface/css/1389.4e3eb82a9f9429715630.css");
+@import url("https://ton.twimg.com/web-app-framework/advertiser-interface/css/4362.025680d7822cc83c681b.css");
+@import url("https://ton.twimg.com/web-app-framework/advertiser-interface/css/6485.cb4bea3eb5fee39411a6.css");
+@import url("https://ton.twimg.com/web-app-framework/advertiser-interface/css/3735.4f0a72f604cbf8e1a5c1.css");
+@import url("https://ton.twimg.com/web-app-framework/advertiser-interface/css/8838.3a363a23549e169ebfdc.css");
+@import url("https://ton.twimg.com/web-app-framework/advertiser-interface/css/39.9aca913a4c6a5bad52bd.css");
+@import url("https://ton.twimg.com/web-app-framework/advertiser-interface/css/5594.6e34fb16016a4e0ec61d.css");
+@import url("https://ton.twimg.com/web-app-framework/advertiser-interface/css/1524.ed4a07a55c2d65e48a29.css");
+@import url("https://ton.twimg.com/web-app-framework/advertiser-interface/css/2805.a90fdff47e58090be085.css");
+@import url("https://ton.twimg.com/web-app-framework/advertiser-interface/css/5317.ff24ba191377e771741c.css");
+@import url("https://ton.twimg.com/web-app-framework/advertiser-interface/css/9208.7a6113de047e5de7137b.css");
+@import url("https://ton.twimg.com/web-app-framework/advertiser-interface/css/2118.a3a0c9284593ecc4bc5b.css");
+@import url("https://ton.twimg.com/web-app-framework/advertiser-interface/css/5087.c9b0c0a8111a6e61ce10.css");
+
+
+/* ---- Inline Stylesheet #0 ---- */
+input::placeholder {
+    user-select: none;
+}
+
+div div ::-webkit-input-placeholder {
+    color: rgb(117, 117, 117);
+}
+
+iframe {
+    color-scheme: auto;
+}
+
+button {
+    text-align: inherit;
+    font-size: inherit;
+    font-family: inherit;
+    color: inherit;
+}
+
+/* ---- Inline Stylesheet #1 ---- */
+@font-face {
+    font-family: Vazirmatn;
+    src: url("https://abs.twimg.com/responsive-web/client-web/Vazirmatn-Light.a929468a.woff2") format("woff2");
+    font-weight: 300;
+}
+
+@font-face {
+    font-family: Vazirmatn;
+    src: url("https://abs.twimg.com/responsive-web/client-web/Vazirmatn-Regular.58c84f6a.woff2") format("woff2");
+    font-weight: 400;
+}
+
+@font-face {
+    font-family: Vazirmatn;
+    src: url("https://abs.twimg.com/responsive-web/client-web/Vazirmatn-Medium.bc7d8f1a.woff2") format("woff2");
+    font-weight: 500;
+}
+
+@font-face {
+    font-family: Vazirmatn;
+    src: url("https://abs.twimg.com/responsive-web/client-web/Vazirmatn-Bold.0d6a47ca.woff2") format("woff2");
+    font-weight: 700;
+}
+
+@font-face {
+    font-family: Vazirmatn;
+    src: url("https://abs.twimg.com/responsive-web/client-web/Vazirmatn-ExtraBold.b130af7a.woff2") format("woff2");
+    font-weight: 800;
+}
+
+/* ---- Inline Stylesheet #2 ---- */
+@font-face {
+    font-family: TwitterChirp;
+    src: url("https://abs.twimg.com/responsive-web/client-web/Chirp-Light.3a18e64a.woff2") format("woff2"), url("https://abs.twimg.com/responsive-web/client-web/Chirp-Light.7a5673aa.woff") format("woff");
+    font-weight: 300;
+}
+
+@font-face {
+    font-family: TwitterChirp;
+    src: url("https://abs.twimg.com/responsive-web/client-web/Chirp-Regular.80fda27a.woff2") format("woff2"), url("https://abs.twimg.com/responsive-web/client-web/Chirp-Regular.60b215ba.woff") format("woff");
+    font-weight: 400;
+}
+
+@font-face {
+    font-family: TwitterChirp;
+    src: url("https://abs.twimg.com/responsive-web/client-web/Chirp-Medium.f8e2739a.woff2") format("woff2"), url("https://abs.twimg.com/responsive-web/client-web/Chirp-Medium.20fc288a.woff") format("woff");
+    font-weight: 500;
+}
+
+@font-face {
+    font-family: TwitterChirp;
+    src: url("https://abs.twimg.com/responsive-web/client-web/Chirp-Bold.ebb56aba.woff2") format("woff2"), url("https://abs.twimg.com/responsive-web/client-web/Chirp-Bold.a573679a.woff") format("woff");
+    font-weight: 700;
+}
+
+@font-face {
+    font-family: TwitterChirp;
+    src: url("https://abs.twimg.com/responsive-web/client-web/Chirp-Heavy.f44ae4ea.woff2") format("woff2"), url("https://abs.twimg.com/responsive-web/client-web/Chirp-Heavy.d70ec7ca.woff") format("woff");
+    font-weight: 800;
+}
+
+@font-face {
+    font-family: TwitterChirpExtendedHeavy;
+    src: url("https://abs.twimg.com/fonts/v1/chirp-extended-heavy-web.woff2") format("woff2"), url("https://abs.twimg.com/fonts/v1/chirp-extended-heavy-web.woff") format("woff");
+    font-weight: 800;
+}
+
+/* ---- Inline Stylesheet #3 ---- */
+input::placeholder {
+    user-select: none;
+}
+
+div div ::-webkit-input-placeholder {
+    color: rgb(117, 117, 117);
+}
+
+iframe {
+    color-scheme: auto;
+}
+
+button {
+    text-align: inherit;
+    font-size: inherit;
+    font-family: inherit;
+    color: inherit;
+}
+
+/* ---- Inline Stylesheet #4 ---- */
+@font-face {
+    font-family: Vazirmatn;
+    src: url("https://abs.twimg.com/responsive-web/client-web/Vazirmatn-Light.a929468a.woff2") format("woff2");
+    font-weight: 300;
+}
+
+@font-face {
+    font-family: Vazirmatn;
+    src: url("https://abs.twimg.com/responsive-web/client-web/Vazirmatn-Regular.58c84f6a.woff2") format("woff2");
+    font-weight: 400;
+}
+
+@font-face {
+    font-family: Vazirmatn;
+    src: url("https://abs.twimg.com/responsive-web/client-web/Vazirmatn-Medium.bc7d8f1a.woff2") format("woff2");
+    font-weight: 500;
+}
+
+@font-face {
+    font-family: Vazirmatn;
+    src: url("https://abs.twimg.com/responsive-web/client-web/Vazirmatn-Bold.0d6a47ca.woff2") format("woff2");
+    font-weight: 700;
+}
+
+@font-face {
+    font-family: Vazirmatn;
+    src: url("https://abs.twimg.com/responsive-web/client-web/Vazirmatn-ExtraBold.b130af7a.woff2") format("woff2");
+    font-weight: 800;
+}
+
+/* ---- Inline Stylesheet #5 ---- */
+@font-face {
+    font-family: TwitterChirp;
+    src: url("https://abs.twimg.com/responsive-web/client-web/Chirp-Light.3a18e64a.woff2") format("woff2"), url("https://abs.twimg.com/responsive-web/client-web/Chirp-Light.7a5673aa.woff") format("woff");
+    font-weight: 300;
+}
+
+@font-face {
+    font-family: TwitterChirp;
+    src: url("https://abs.twimg.com/responsive-web/client-web/Chirp-Regular.80fda27a.woff2") format("woff2"), url("https://abs.twimg.com/responsive-web/client-web/Chirp-Regular.60b215ba.woff") format("woff");
+    font-weight: 400;
+}
+
+@font-face {
+    font-family: TwitterChirp;
+    src: url("https://abs.twimg.com/responsive-web/client-web/Chirp-Medium.f8e2739a.woff2") format("woff2"), url("https://abs.twimg.com/responsive-web/client-web/Chirp-Medium.20fc288a.woff") format("woff");
+    font-weight: 500;
+}
+
+@font-face {
+    font-family: TwitterChirp;
+    src: url("https://abs.twimg.com/responsive-web/client-web/Chirp-Bold.ebb56aba.woff2") format("woff2"), url("https://abs.twimg.com/responsive-web/client-web/Chirp-Bold.a573679a.woff") format("woff");
+    font-weight: 700;
+}
+
+@font-face {
+    font-family: TwitterChirp;
+    src: url("https://abs.twimg.com/responsive-web/client-web/Chirp-Heavy.f44ae4ea.woff2") format("woff2"), url("https://abs.twimg.com/responsive-web/client-web/Chirp-Heavy.d70ec7ca.woff") format("woff");
+    font-weight: 800;
+}
+
+@font-face {
+    font-family: TwitterChirpExtendedHeavy;
+    src: url("https://abs.twimg.com/fonts/v1/chirp-extended-heavy-web.woff2") format("woff2"), url("https://abs.twimg.com/fonts/v1/chirp-extended-heavy-web.woff") format("woff");
+    font-weight: 800;
+}
+
+/* ---- Inline Stylesheet #6 ---- */
+[stylesheet-group="0"] {
+}
+
+html {
+    text-size-adjust: 100%;
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+}
+
+body {
+    margin: 0px;
+}
+
+input::-webkit-search-cancel-button, input::-webkit-search-decoration, input::-webkit-search-results-button, input::-webkit-search-results-decoration {
+    display: none;
+}
+
+[stylesheet-group="1"] {
+}
+
+.css-175oi2r {
+    align-items: stretch;
+    background-color: rgba(0, 0, 0, 0);
+    border: 0px solid black;
+    box-sizing: border-box;
+    display: flex;
+    flex-basis: auto;
+    flex-direction: column;
+    flex-shrink: 0;
+    list-style: none;
+    margin: 0px;
+    min-height: 0px;
+    min-width: 0px;
+    padding: 0px;
+    position: relative;
+    text-decoration: none;
+    z-index: 0;
+}
+
+[stylesheet-group="1"] {
+}
+
+.css-175oi2r {
+    align-items: stretch;
+    background-color: rgba(0, 0, 0, 0);
+    border: 0px solid black;
+    box-sizing: border-box;
+    display: flex;
+    flex-basis: auto;
+    flex-direction: column;
+    flex-shrink: 0;
+    list-style: none;
+    margin: 0px;
+    min-height: 0px;
+    min-width: 0px;
+    padding: 0px;
+    position: relative;
+    text-decoration: none;
+    z-index: 0;
+}
+
+.css-146c3p1 {
+    background-color: rgba(0, 0, 0, 0);
+    border: 0px solid black;
+    box-sizing: border-box;
+    color: rgb(0, 0, 0);
+    display: inline;
+    font: 14px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    list-style: none;
+    margin: 0px;
+    padding: 0px;
+    position: relative;
+    text-align: start;
+    text-decoration: none;
+    white-space: pre-wrap;
+    overflow-wrap: break-word;
+}
+
+.css-1jxf684 {
+    background-color: rgba(0, 0, 0, 0);
+    border: 0px solid black;
+    box-sizing: border-box;
+    color: inherit;
+    display: inline;
+    font: inherit;
+    list-style: none;
+    margin: 0px;
+    padding: 0px;
+    position: relative;
+    text-align: inherit;
+    text-decoration: none;
+    white-space: inherit;
+    overflow-wrap: break-word;
+}
+
+.css-9pa8cd {
+    inset: 0px;
+    height: 100%;
+    opacity: 0;
+    position: absolute;
+    width: 100%;
+    z-index: -1;
+}
+
+[stylesheet-group="2"] {
+}
+
+.r-4iw3lz {
+    border-width: 0px;
+}
+
+.r-1udh08x {
+    overflow: hidden;
+}
+
+.r-xoduu5 {
+    display: inline-flex;
+}
+
+.r-wwvuq4 {
+    padding: 0px;
+}
+
+.r-6koalj {
+    display: flex;
+}
+
+.r-crgep1 {
+    margin: 0px;
+}
+
+.r-t60dpp {
+    padding: 0px;
+}
+
+.r-xoduu5 {
+    display: inline-flex;
+}
+
+.r-1jkafct {
+    border-radius: 2px;
+}
+
+.r-4qtqp9 {
+    display: inline-block;
+}
+
+.r-krxsd3 {
+    display: -webkit-box;
+}
+
+.r-sdzlij {
+    border-radius: 9999px;
+}
+
+.r-1phboty {
+    border-style: solid;
+}
+
+.r-rs99b7 {
+    border-width: 1px;
+}
+
+.r-13awgt0 {
+    flex: 1 1 0%;
+}
+
+.r-1adg3ll {
+    display: block;
+}
+
+.r-1ets6dv {
+    border-color: rgb(207, 217, 222);
+}
+
+.r-bztko3 {
+    overflow: visible;
+}
+
+.r-jxzhtn {
+    border-color: rgb(239, 243, 244);
+}
+
+.r-1867qdf {
+    border-radius: 16px;
+}
+
+.r-1yadl64 {
+    border-width: 0px;
+}
+
+.r-11mg6pl {
+    border-color: rgb(255, 255, 255);
+}
+
+.r-1xfd6ze {
+    border-radius: 8px;
+}
+
+.r-1wl2o3p {
+    border-color: rgb(229, 234, 236);
+}
+
+.r-1q9bdsx {
+    border-radius: 12px;
+}
+
+.r-xf4iuw {
+    margin: -8px;
+}
+
+.r-podbf7 {
+    margin: -6px;
+}
+
+.r-fx7oqy {
+    border-color: rgb(0, 0, 255);
+}
+
+.r-60ke3l {
+    border-color: rgb(0, 128, 0);
+}
+
+.r-d045u9 {
+    border-width: 2px;
+}
+
+.r-4a18lf {
+    border-color: rgb(255, 0, 0);
+}
+
+.r-1dqxon3 {
+    overflow: auto;
+}
+
+.r-z2wwpe {
+    border-radius: 4px;
+}
+
+.r-494qqr {
+    padding: 32px;
+}
+
+.r-1pcd2l5 {
+    padding: 20px;
+}
+
+.r-hvic4v {
+    display: none;
+}
+
+.r-nsbfu8 {
+    padding: 16px;
+}
+
+.r-ywje51 {
+    margin: auto;
+}
+
+.r-xyw6el {
+    padding: 12px;
+}
+
+.r-98ikmy {
+    margin: 32px;
+}
+
+.r-1d9yedq {
+    flex: 0 1 0%;
+}
+
+.r-sqpuna {
+    border-radius: inherit;
+}
+
+.r-6413gk {
+    display: grid;
+}
+
+.r-8j4m9z {
+    margin: -2px;
+}
+
+.r-zhp00w {
+    padding: 2px;
+}
+
+.r-eg6o18 {
+    border-style: dashed;
+}
+
+.r-1mhqjh3 {
+}
+
+.r-1va55bh {
+}
+
+.r-hwh8t1 {
+    margin: 8px;
+}
+
+.r-42olwf {
+    border-color: rgba(0, 0, 0, 0);
+}
+
+.r-edyy15 {
+    padding: 8px;
+}
+
+.r-6wfxan {
+    flex: 4 1 0%;
+}
+
+.r-y47klf {
+    border-radius: 20px;
+}
+
+.r-17gur6a {
+    border-radius: 0px;
+}
+
+.r-vhj8yc {
+    border-color: rgb(29, 155, 240);
+}
+
+.r-1m6w7xr {
+    border-color: rgb(244, 33, 46);
+}
+
+.r-19vtk4l {
+    border-color: rgb(174, 20, 37);
+}
+
+.r-10vjej {
+    border-color: rgb(46, 47, 49);
+}
+
+.r-1r851ge {
+    overscroll-behavior: contain;
+}
+
+.r-dta0w2 {
+    flex: 2 1 0%;
+}
+
+.r-1q4bek2 {
+    flex: 8 1 0%;
+}
+
+.r-14f9gny {
+    border-width: 4px;
+}
+
+[stylesheet-group="2.1"] {
+}
+
+.r-s49dbf {
+    margin-bottom: 1px;
+    margin-top: 1px;
+}
+
+.r-1559e4e {
+    padding-bottom: 2px;
+    padding-top: 2px;
+}
+
+.r-n7gxbd {
+    padding-left: 4px;
+    padding-right: 4px;
+}
+
+.r-ddtstp {
+    margin-bottom: 0px;
+    margin-top: 0px;
+}
+
+.r-3o4zer {
+    padding-left: 12px;
+    padding-right: 12px;
+}
+
+.r-3pj75a {
+    padding-left: 16px;
+    padding-right: 16px;
+}
+
+.r-cxgwc0 {
+    padding-left: 24px;
+    padding-right: 24px;
+}
+
+.r-1fkl15p {
+    padding-left: 32px;
+    padding-right: 32px;
+}
+
+.r-sjygvo {
+    padding-left: 1em;
+    padding-right: 1em;
+}
+
+.r-1mmae3n {
+    padding-bottom: 12px;
+    padding-top: 12px;
+}
+
+.r-jusfrs {
+    margin-left: 12px;
+    margin-right: 12px;
+}
+
+.r-wnp491 {
+    margin-left: 2px;
+    margin-right: 2px;
+}
+
+.r-1kqz2tg {
+    margin-bottom: calc(-12px);
+    margin-top: calc(-12px);
+}
+
+.r-f8sm7e {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.r-1mkv55d {
+    padding-bottom: 0px;
+    padding-top: 0px;
+}
+
+.r-is05cd {
+    padding-left: 8px;
+    padding-right: 8px;
+}
+
+.r-dp7rxi {
+    padding-bottom: 40px;
+    padding-top: 40px;
+}
+
+.r-184id4b {
+    margin-bottom: 12px;
+    margin-top: 12px;
+}
+
+.r-1xpp3t0 {
+    margin-left: 16px;
+    margin-right: 16px;
+}
+
+.r-w7s2jr {
+    padding-bottom: 16px;
+    padding-top: 16px;
+}
+
+.r-u9wvl5 {
+    padding-left: 20px;
+    padding-right: 20px;
+}
+
+.r-1e084wi {
+    padding-left: 0px;
+    padding-right: 0px;
+}
+
+.r-14tvyh0 {
+    padding-left: 0px;
+    padding-right: 0px;
+}
+
+.r-1537yvj {
+    margin-left: 4px;
+    margin-right: 4px;
+}
+
+.r-11f147o {
+    padding-bottom: 8px;
+    padding-top: 8px;
+}
+
+.r-cnw61z {
+    padding-bottom: 4px;
+    padding-top: 4px;
+}
+
+.r-l00any {
+    margin-bottom: 4px;
+    margin-top: 4px;
+}
+
+.r-iwh88d {
+    margin-left: -16px;
+    margin-right: -16px;
+}
+
+.r-lzsi8w {
+    padding-left: 2px;
+    padding-right: 2px;
+}
+
+[stylesheet-group="2.2"] {
+}
+
+.r-19qo34d {
+    left: -9999px;
+}
+
+.r-15peodp {
+    right: -9999px;
+}
+
+.r-3t4u6i {
+    margin-left: 2px;
+}
+
+.r-x1x4zq {
+    margin-right: 2px;
+}
+
+.r-k4bwe5 {
+    margin-right: 0.075em;
+}
+
+.r-1kpi4qh {
+    margin-left: 0.075em;
+}
+
+.r-1gs4q39 {
+    margin-right: 4px;
+}
+
+.r-1ez5h0i {
+    margin-left: 4px;
+}
+
+.r-1wron08 {
+    margin-right: 8px;
+}
+
+.r-1kkk96v {
+    margin-left: 8px;
+}
+
+.r-1l2kgy {
+    margin-right: 0.5em;
+}
+
+.r-1ca1ndr {
+    margin-left: 0.5em;
+}
+
+.r-5f1w11 {
+    left: -2px;
+}
+
+.r-1q6cnnd {
+    right: -2px;
+}
+
+.r-45ll9u {
+    left: 50%;
+}
+
+.r-ocobd0 {
+    right: 50%;
+}
+
+.r-faml9v {
+    padding-right: 12px;
+}
+
+.r-2dysd3 {
+    padding-left: 12px;
+}
+
+.r-cwltf5 {
+    border-top-right-radius: 32px;
+}
+
+.r-72fyl3 {
+    border-top-left-radius: 32px;
+}
+
+.r-2utimh {
+    right: -4px;
+}
+
+.r-v3tthl {
+    left: -4px;
+}
+
+.r-615f2u {
+    right: 1px;
+}
+
+.r-1182swk {
+    left: 1px;
+}
+
+.r-b4iuiu {
+    margin-right: 12px;
+}
+
+.r-144br3h {
+    margin-left: 12px;
+}
+
+.r-nazi8o {
+    margin-left: 20px;
+}
+
+.r-1rtiivn {
+    margin-right: 20px;
+}
+
+.r-st84sj {
+    border-top-right-radius: 16px;
+}
+
+.r-j3xhw6 {
+    border-top-left-radius: 16px;
+}
+
+.r-16d909q {
+    margin-left: calc(-8px);
+}
+
+.r-1xcu04 {
+    margin-right: calc(-8px);
+}
+
+.r-1yz1tyy {
+    padding-right: 0px;
+}
+
+.r-1gc7ukt {
+    padding-left: 0px;
+}
+
+.r-xfx2eb {
+    padding-left: 4px;
+}
+
+.r-126rwz2 {
+    padding-right: 4px;
+}
+
+.r-1q2fham {
+    border-top-right-radius: 12px;
+}
+
+.r-1scetje {
+    border-top-left-radius: 12px;
+}
+
+.r-14fd9ze {
+    left: 12px;
+}
+
+.r-vznvhx {
+    right: 12px;
+}
+
+.r-15xeili {
+    margin-left: -48px;
+}
+
+.r-gd96e9 {
+    margin-right: -48px;
+}
+
+.r-hjq6k0 {
+    margin-left: 1px;
+}
+
+.r-1iwt575 {
+    margin-right: 1px;
+}
+
+.r-1c4vpko {
+    padding-right: 16px;
+}
+
+.r-1c7gwzm {
+    padding-left: 16px;
+}
+
+.r-dlybji {
+    margin-right: 16px;
+}
+
+.r-1x2e62v {
+    margin-left: 16px;
+}
+
+.r-o59np7 {
+    padding-right: 8px;
+}
+
+.r-qjj4hq {
+    padding-left: 8px;
+}
+
+.r-6w0tje {
+    margin-right: -100%;
+}
+
+.r-vhlkxz {
+    margin-left: -100%;
+}
+
+.r-u1qpv9 {
+    padding-right: 100%;
+}
+
+.r-lprsdi {
+    padding-left: 100%;
+}
+
+.r-1v57z21 {
+    margin-left: auto;
+}
+
+.r-zgris8 {
+    margin-right: auto;
+}
+
+.r-1nptdac {
+    border-top-right-radius: 0px;
+}
+
+.r-1fxuiuv {
+    border-top-left-radius: 0px;
+}
+
+.r-2dkq44 {
+    border-bottom-right-radius: 0px;
+}
+
+.r-1emcu8v {
+    border-bottom-left-radius: 0px;
+}
+
+.r-hv4q04 {
+    border-bottom-left-radius: 4px;
+}
+
+.r-1h6o5vw {
+    border-bottom-right-radius: 4px;
+}
+
+.r-1spjlma {
+    border-left-width: 2px;
+}
+
+.r-1heis2j {
+    border-right-width: 2px;
+}
+
+.r-boostq {
+    margin-left: calc(50% - 1px);
+}
+
+.r-3f16pz {
+    margin-right: calc(50% - 1px);
+}
+
+.r-2i9t9z {
+    left: calc(50% - 1px);
+}
+
+.r-119zqf4 {
+    right: calc(50% - 1px);
+}
+
+.r-kf3vr0 {
+    padding-right: var(--hweb-listTweet-padding-inline-end, 16px);
+}
+
+.r-53ggbn {
+    padding-left: var(--hweb-listTweet-padding-inline-end, 16px);
+}
+
+.r-11k8knx {
+    padding-left: var(--hweb-listTweet-padding-inline-start, 16px);
+}
+
+.r-dottwq {
+    padding-right: var(--hweb-listTweet-padding-inline-start, 16px);
+}
+
+.r-10mv89r {
+    padding-left: 2px;
+}
+
+.r-11ammwz {
+    padding-right: 2px;
+}
+
+.r-4qtqp9 {
+    display: inline-block;
+}
+
+[stylesheet-group="2.2"] {
+}
+
+.r-105ug2t {
+    pointer-events: auto !important;
+}
+
+.r-12vffkv > * {
+    pointer-events: auto;
+}
+
+.r-12vffkv {
+    pointer-events: none !important;
+}
+
+.r-ah5dr5 > * {
+    pointer-events: none;
+}
+
+.r-ah5dr5 {
+    pointer-events: auto !important;
+}
+
+.r-633pao {
+    pointer-events: none !important;
+}
+
+.r-yyyyoo {
+    fill: currentcolor;
+}
+
+.r-1xvli5t {
+    height: 1.25em;
+}
+
+.r-dnmrzs {
+    max-width: 100%;
+}
+
+.r-1plcrui {
+    vertical-align: text-bottom;
+}
+
+.r-lrvibr {
+    user-select: none;
+}
+
+.r-h2q2x {
+    transform: scaleX(-1);
+}
+
+[stylesheet-group="3"] {
+}
+
+.r-1p0dtai {
+    bottom: 0px;
+}
+
+.r-1d2f490 {
+    left: 0px;
+}
+
+.r-u8s1d {
+    position: absolute;
+}
+
+.r-zchlnj {
+    right: 0px;
+}
+
+.r-ipm5af {
+    top: 0px;
+}
+
+.r-1xk2f4g {
+    clip: rect(1px, 1px, 1px, 1px);
+}
+
+.r-109y4c4 {
+    height: 1px;
+}
+
+.r-92ng3h {
+    width: 1px;
+}
+
+.r-1oszu61 {
+    align-items: stretch;
+}
+
+.r-1niwhzg {
+    background-color: rgba(0, 0, 0, 0);
+}
+
+.r-vqxq0j {
+    border: 0px solid black;
+}
+
+.r-deolkf {
+    box-sizing: border-box;
+}
+
+.r-1mlwlqe {
+    flex-basis: auto;
+}
+
+.r-eqz5dr {
+    flex-direction: column;
+}
+
+.r-1ebb2ja {
+    list-style: none;
+}
+
+.r-ifefl9 {
+    min-height: 0px;
+}
+
+.r-bcqeeo {
+    min-width: 0px;
+}
+
+.r-bnwqim {
+    position: relative;
+}
+
+.r-13wfysu {
+    text-decoration-line: none;
+}
+
+.r-417010 {
+    z-index: 0;
+}
+
+.r-105ug2t {
+    pointer-events: auto !important;
+}
+
+.r-12vffkv > * {
+    pointer-events: auto;
+}
+
+.r-12vffkv {
+    pointer-events: none !important;
+}
+
+.r-ah5dr5 > * {
+    pointer-events: none;
+}
+
+.r-ah5dr5 {
+    pointer-events: auto !important;
+}
+
+.r-633pao {
+    pointer-events: none !important;
+}
+
+.r-aqfbo4 {
+    backface-visibility: hidden;
+}
+
+.r-1xcajam {
+    position: fixed;
+}
+
+.r-1awozwy {
+    align-items: center;
+}
+
+.r-2tavb8 {
+    background-color: rgba(0, 0, 0, 0.6);
+}
+
+.r-7q8q6z {
+    cursor: default;
+}
+
+.r-1777fci {
+    justify-content: center;
+}
+
+.r-bt1l66 {
+    min-height: 20px;
+}
+
+.r-1jaylin {
+    width: max-content;
+}
+
+.r-146iojx {
+    max-width: 300px;
+}
+
+.r-6026j {
+    background-color: rgba(255, 255, 255, 0.85);
+}
+
+.r-1loqt21 {
+    cursor: pointer;
+}
+
+.r-b88u0q {
+    font-weight: 700;
+}
+
+.r-36ujnk {
+    font-style: italic;
+}
+
+.r-nhe8su {
+    animation-duration: 0.5s;
+}
+
+.r-yn5ncy {
+    animation-fill-mode: both;
+}
+
+.r-clrlgt {
+    animation-name: r-imtty0;
+}
+
+@-webkit-keyframes r-imtty0 {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+@keyframes r-imtty0 {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+.r-nvplwv {
+    animation-timing-function: ease-out;
+}
+
+.r-1wvb978 {
+    font-feature-settings: "ss01";
+}
+
+.r-qlhcfr {
+    font-size: 0.001px;
+}
+
+.r-qvk6io {
+    line-height: 0px;
+}
+
+.r-orgf3d {
+    opacity: 0;
+}
+
+.r-18u37iz {
+    flex-direction: row;
+}
+
+.r-3s2u2q {
+    white-space: nowrap;
+}
+
+.r-dflpy8 {
+    height: 1.2em;
+}
+
+.r-pp5qcn {
+    vertical-align: -20%;
+}
+
+.r-h9hxbl {
+    width: 1.2em;
+}
+
+.r-1to6hqq {
+    background-color: rgb(255, 212, 0);
+}
+
+.r-dnmrzs {
+    max-width: 100%;
+}
+
+.r-1udbk01 {
+    text-overflow: ellipsis;
+}
+
+.r-1iln25a {
+    overflow-wrap: normal;
+}
+
+.r-8akbws {
+    -webkit-box-orient: vertical;
+}
+
+.r-lrvibr {
+    user-select: none;
+}
+
+.r-1xnzce8 {
+    user-select: text;
+}
+
+.r-fdjqy7 {
+    text-align: left;
+}
+
+.r-1ff274t {
+    text-align: right;
+}
+
+.r-1ttztb7 {
+    text-align: inherit;
+}
+
+.r-qvutc0 {
+    overflow-wrap: break-word;
+}
+
+.r-rjixqe {
+    line-height: 20px;
+}
+
+.r-1ny4l3l {
+    outline-style: none;
+}
+
+.r-1ddef8g {
+    text-decoration-line: underline;
+}
+
+.r-tjvw6i {
+    text-decoration-thickness: 1px;
+}
+
+.r-poiln3 {
+    font-family: inherit;
+}
+
+.r-1qd0xha {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
+.r-1tl8opc {
+    font-family: "Segoe UI", Meiryo, system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+.r-4hwcpe {
+    font-family: Vazirmatn, Tahoma, Arial, sans-serif;
+}
+
+.r-1vmecro {
+    direction: rtl;
+}
+
+.r-1k78y06 {
+    font-family: Tahoma, Arial, sans-serif;
+}
+
+.r-fm7h5w {
+    font-family: TwitterChirpExtendedHeavy, Verdana, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
+.r-q4m81j {
+    text-align: center;
+}
+
+.r-1gkfh8e {
+    font-size: 11px;
+}
+
+.r-56xrmm {
+    line-height: 12px;
+}
+
+.r-n6v787 {
+    font-size: 13px;
+}
+
+.r-1cwl3u0 {
+    line-height: 16px;
+}
+
+.r-1b43r93 {
+    font-size: 14px;
+}
+
+.r-a023e6 {
+    font-size: 15px;
+}
+
+.r-1inkyih {
+    font-size: 17px;
+}
+
+.r-adyw6z {
+    font-size: 20px;
+}
+
+.r-135wba7 {
+    line-height: 24px;
+}
+
+.r-1blvdjr {
+    font-size: 23px;
+}
+
+.r-vrz42v {
+    line-height: 28px;
+}
+
+.r-yy2aun {
+    font-size: 26px;
+}
+
+.r-37tt59 {
+    line-height: 32px;
+}
+
+.r-1yjpyg1 {
+    font-size: 31px;
+}
+
+.r-ueyrd6 {
+    line-height: 36px;
+}
+
+.r-uho16t {
+    font-size: 34px;
+}
+
+.r-nwxazl {
+    line-height: 40px;
+}
+
+.r-s67bdx {
+    font-size: 48px;
+}
+
+.r-1dn12g7 {
+    line-height: 48px;
+}
+
+.r-16dba41 {
+    font-weight: 400;
+}
+
+.r-majxgm {
+    font-weight: 500;
+}
+
+.r-1vr29t4 {
+    font-weight: 800;
+}
+
+.r-1wb8bfx {
+    text-decoration-thickness: 2px;
+}
+
+.r-1q142lx {
+    flex-shrink: 0;
+}
+
+.r-1d09ksm {
+    align-items: baseline;
+}
+
+.r-1wbh5a2 {
+    flex-shrink: 1;
+}
+
+.r-o7ynqc {
+    transition-duration: 0.2s;
+}
+
+.r-6416eg {
+    transition-property: background-color, box-shadow;
+}
+
+.r-icoktb {
+    opacity: 0.5;
+}
+
+.r-16y2uox {
+    flex-grow: 1;
+}
+
+.r-1h0z5md {
+    justify-content: flex-start;
+}
+
+.r-17s6mgv {
+    justify-content: flex-end;
+}
+
+.r-10ptun7 {
+    height: 16px;
+}
+
+.r-1janqcz {
+    width: 16px;
+}
+
+.r-1hjwoze {
+    height: 18px;
+}
+
+.r-12ym1je {
+    width: 18px;
+}
+
+.r-z80fyv {
+    height: 20px;
+}
+
+.r-19wmn03 {
+    width: 20px;
+}
+
+.r-18yzcnr {
+    height: 22px;
+}
+
+.r-yc9v9c {
+    width: 22px;
+}
+
+.r-1472mwg {
+    height: 24px;
+}
+
+.r-lrsllp {
+    width: 24px;
+}
+
+.r-1ceczpf {
+    min-height: 24px;
+}
+
+.r-lp5zef {
+    min-width: 24px;
+}
+
+.r-15ysp7h {
+    min-height: 32px;
+}
+
+.r-4wgw6l {
+    min-width: 32px;
+}
+
+.r-2yi16 {
+    min-height: 36px;
+}
+
+.r-1qi8awa {
+    min-width: 36px;
+}
+
+.r-peo1c {
+    min-height: 44px;
+}
+
+.r-1ps3wis {
+    min-width: 44px;
+}
+
+.r-19yznuf {
+    min-height: 52px;
+}
+
+.r-64el8z {
+    min-width: 52px;
+}
+
+.r-12sks89 {
+    min-height: 22px;
+}
+
+.r-1y7e96w {
+    min-width: 22px;
+}
+
+.r-ero68b {
+    min-height: 40px;
+}
+
+.r-vkv6oe {
+    min-width: 40px;
+}
+
+.r-yyyyoo {
+    fill: currentcolor;
+}
+
+.r-1xvli5t {
+    height: 1.25em;
+}
+
+.r-m6rgpd {
+    vertical-align: text-bottom;
+}
+
+.r-10v3vxq {
+    transform: scaleX(-1);
+}
+
+.r-13qz1uu {
+    width: 100%;
+}
+
+.r-1pi2tsx {
+    height: 100%;
+}
+
+.r-vvn4in {
+    background-position: center center;
+}
+
+.r-u6sd8q {
+    background-repeat: no-repeat;
+}
+
+.r-4gszlv {
+    background-size: cover;
+}
+
+.r-1wyyakw {
+    z-index: -1;
+}
+
+.r-1sxrcry {
+    background-size: auto;
+}
+
+.r-ehq7j7 {
+    background-size: contain;
+}
+
+.r-1mrlafo {
+    background-position: 0px center;
+}
+
+.r-17leim2 {
+    background-repeat: repeat;
+}
+
+.r-x3cy2q {
+    background-size: 100% 100%;
+}
+
+.r-n1ft60 {
+    dynamic-range-limit: standard;
+}
+
+.r-gf0ln {
+    filter: brightness(1);
+}
+
+.r-agouwx {
+    transform: translateZ(0px);
+}
+
+.r-p3p4p0 {
+    max-height: 17px;
+}
+
+.r-hm2b0w {
+    max-width: 17px;
+}
+
+.r-1habvwh {
+    align-items: flex-start;
+}
+
+.r-14gqq1x {
+    margin-top: 4px;
+}
+
+.r-1tl9yi8 {
+    height: 17px;
+}
+
+.r-1cvj4g8 {
+    margin-top: 1px;
+}
+
+.r-ig0lrl {
+    width: 17px;
+}
+
+.r-14j79pv {
+    color: rgb(83, 100, 113);
+}
+
+.r-ip8ujx {
+    height: 1em;
+}
+
+.r-jwli3a {
+    color: rgb(255, 255, 255);
+}
+
+.r-k200y {
+    align-self: flex-start;
+}
+
+.r-1w6e6rj {
+    flex-wrap: wrap;
+}
+
+.r-9aw3ui {
+    gap: 4px;
+}
+
+.r-12181gd {
+    box-shadow: rgba(0, 0, 0, 0.03) 0px 0px 2px inset;
+}
+
+.r-gfcssk {
+    height: 0.2rem;
+}
+
+.r-184en5c {
+    z-index: 1;
+}
+
+.r-1joz4e6 {
+    transition-duration: 0.5s;
+}
+
+.r-11iat2r {
+    transition-property: width;
+}
+
+.r-1c4c958 {
+    transition-timing-function: linear;
+}
+
+.r-1ay1djp {
+    animation-duration: 1s;
+}
+
+.r-1muvv40 {
+    animation-iteration-count: infinite;
+}
+
+.r-j300sb {
+    animation-name: r-1rx4pb;
+}
+
+@-webkit-keyframes r-1rx4pb {
+    0% {
+    }
+    100% {
+    }
+}
+
+@keyframes r-1rx4pb {
+    0% {
+    }
+    100% {
+    }
+}
+
+.r-1ldzwu0 {
+    animation-timing-function: linear;
+}
+
+.r-xigjrr {
+    filter: blur(4px);
+}
+
+.r-jmul1s {
+    transform: scale(1.1);
+}
+
+.r-x572qd {
+    background-color: rgb(247, 249, 249);
+}
+
+.r-14lw9ot {
+    background-color: rgb(255, 255, 255);
+}
+
+.r-8jfcpp {
+    top: -2px;
+}
+
+.r-1v2oles {
+    top: 50%;
+}
+
+.r-176fswd {
+    transform: translateX(-50%) translateY(-50%);
+}
+
+.r-impgnl {
+    transform: translateX(50%) translateY(-50%);
+}
+
+.r-rki7wi {
+    bottom: 12px;
+}
+
+.r-bvlit7 {
+    margin-bottom: -12px;
+}
+
+.r-1ad0z5i {
+    word-break: break-all;
+}
+
+.r-97prym {
+    flex-basis: 16px;
+}
+
+.r-1xoqx8s {
+    flex-basis: 24px;
+}
+
+.r-1cdyxaf {
+    flex-basis: 32px;
+}
+
+.r-onrtq4 {
+    flex-basis: 40px;
+}
+
+.r-1hwvwag {
+    flex-basis: 48px;
+}
+
+.r-v2d8zz {
+    flex-basis: 56px;
+}
+
+.r-193z5jo {
+    flex-basis: 64px;
+}
+
+.r-136ojw6 {
+    z-index: 2;
+}
+
+.r-1iusvr4 {
+    flex-basis: 0px;
+}
+
+.r-18kxxzh {
+    flex-grow: 0;
+}
+
+.r-tbmifm {
+    height: 12px;
+}
+
+.r-16eto9q {
+    width: 12px;
+}
+
+.r-h3s6tt {
+    height: 48px;
+}
+
+.r-rwqe4o {
+    width: 48px;
+}
+
+.r-1cvl2hr {
+    color: rgb(29, 155, 240);
+}
+
+.r-1hjx8j4 {
+    width: 0.5em;
+}
+
+.r-o6sn0f {
+    color: rgb(0, 186, 124);
+}
+
+.r-5c1b6u {
+    color: rgb(255, 122, 0);
+}
+
+.r-vkub15 {
+    color: rgb(249, 24, 128);
+}
+
+.r-1r5qcbo {
+    filter: grayscale(100%);
+}
+
+.r-18jsvk2 {
+    color: rgb(15, 20, 25);
+}
+
+.r-obd0qt {
+    align-items: flex-end;
+}
+
+.r-6gpygo {
+    margin-bottom: 12px;
+}
+
+.r-j5o65s {
+    border-bottom-color: rgb(239, 243, 244);
+}
+
+.r-rull8r {
+    border-bottom-style: solid;
+}
+
+.r-qklmqi {
+    border-bottom-width: 1px;
+}
+
+.r-iphfwy {
+    padding-bottom: 4px;
+}
+
+.r-1wusfap {
+    padding-bottom: calc(6px);
+}
+
+.r-1tq68r1 {
+    flex-basis: unset;
+}
+
+.r-5oul0u {
+    margin-bottom: 8px;
+}
+
+.r-1wtj0ep {
+    justify-content: space-between;
+}
+
+.r-p1pxzi {
+    margin-bottom: 0px;
+}
+
+.r-knv0ih {
+    margin-top: 8px;
+}
+
+.r-1ye8kvj {
+    max-width: 600px;
+}
+
+.r-1betnmo {
+    max-width: 672px;
+}
+
+.r-z7pwl0 {
+    max-width: 700px;
+}
+
+.r-sb58tz {
+    max-width: 1000px;
+}
+
+.r-1dum35f {
+    transition-property: opacity, height;
+}
+
+.r-z2knda {
+    transition-timing-function: ease;
+}
+
+.r-1pz39u2 {
+    align-self: stretch;
+}
+
+.r-g6jmlv {
+    width: 100vw;
+}
+
+.r-1ffj0ar {
+    background-color: rgba(0, 0, 0, 0.4);
+}
+
+.r-1kihuf0 {
+    align-self: center;
+}
+
+.r-xr3zp9 {
+    min-height: calc(192px);
+}
+
+.r-pm9dpa {
+    max-height: 100%;
+}
+
+.r-1rnoaur {
+    overflow-y: auto;
+}
+
+.r-97e31f {
+    padding-bottom: env(safe-area-inset-bottom);
+}
+
+.r-1ur9v65 {
+    padding-top: 40px;
+}
+
+.r-1pjcn9w {
+    max-width: 80vw;
+}
+
+.r-9dcw1g {
+    width: 320px;
+}
+
+.r-l5o3uw {
+    background-color: rgb(29, 155, 240);
+}
+
+.r-285fr0 {
+    min-width: 16px;
+}
+
+.r-i61hcz {
+    min-width: 20px;
+}
+
+.r-1m4drjs {
+    top: -6px;
+}
+
+.r-1ozsyd3 {
+    height: 7px;
+}
+
+.r-12rgx7y {
+    width: 7px;
+}
+
+.r-1f4tc2a {
+    background-color: rgb(244, 33, 46);
+}
+
+.r-3sxh79 {
+    top: -1px;
+}
+
+.r-k5y9r7 {
+    height: 9px;
+}
+
+.r-1t7zxhp {
+    width: 9px;
+}
+
+.r-1tjplnt {
+    box-sizing: content-box;
+}
+
+.r-1mwlp6a {
+    height: 56px;
+}
+
+.r-18tzken {
+    width: 56px;
+}
+
+.r-eu3ka {
+    height: 40px;
+}
+
+.r-1aockid {
+    width: 40px;
+}
+
+.r-h0d30l {
+    height: 28px;
+}
+
+.r-1iww7jx {
+    width: 28px;
+}
+
+.r-1m3jxhj {
+    background-color: rgb(15, 20, 25);
+}
+
+.r-11zy11o {
+    background-color: rgb(201, 54, 204);
+}
+
+.r-q3k7ks {
+    background-color: rgb(0, 122, 255);
+}
+
+.r-2r9icm {
+    background-color: rgb(255, 122, 0);
+}
+
+.r-s224ru {
+    background-color: rgb(0, 186, 124);
+}
+
+.r-9l7dzd {
+    color: rgb(244, 33, 46);
+}
+
+.r-2o02ov {
+    margin-top: 40px;
+}
+
+.r-xb2eav {
+    font-size: 40px;
+}
+
+.r-kzbkwu {
+    padding-bottom: 12px;
+}
+
+.r-1h8ys4a {
+    padding-top: 4px;
+}
+
+.r-18phcnl {
+    direction: ltr;
+}
+
+.r-1wzrnnt {
+    margin-top: 16px;
+}
+
+.r-1s2bzr4 {
+    margin-top: 12px;
+}
+
+.r-113qch9 {
+    cursor: auto;
+}
+
+.r-1bimlpy {
+    background-color: rgb(207, 217, 222);
+}
+
+.r-1d5kdc7 {
+    flex-direction: column-reverse;
+}
+
+.r-10g5efv {
+    width: 4px;
+}
+
+.r-hdaws3 {
+    height: 4px;
+}
+
+.r-6h045k {
+    width: calc(2px);
+}
+
+.r-gwn77k {
+    height: calc(2px);
+}
+
+.r-mabqd8 {
+    height: 32px;
+}
+
+.r-1yvhtrz {
+    width: 32px;
+}
+
+.r-t2kzqp {
+    margin-bottom: calc(-8px);
+}
+
+.r-9hvr93 {
+    box-shadow: rgba(101, 119, 134, 0.2) 0px 0px 7px, rgba(101, 119, 134, 0.15) 0px 1px 3px 1px;
+}
+
+.r-eug0r7 {
+    transform: scale(1);
+}
+
+.r-13tjlyg {
+    transition-duration: 0.1s;
+}
+
+.r-axxi2z {
+    transition-property: transform;
+}
+
+.r-s5r7i3 {
+    top: 4px;
+}
+
+.r-y1sb39 {
+    transform: translate(-50%, -100%);
+}
+
+.r-oqnfxt {
+    transform: scale(1.2);
+}
+
+.r-1w1gmib {
+    transform: scale(0);
+}
+
+.r-1k6nrdp {
+    min-width: calc(1em + 24px);
+}
+
+.r-11pglpa {
+    min-width: calc(1em + 4px);
+}
+
+.r-27tl0q {
+    width: 1em;
+}
+
+.r-1hdv0qi {
+    width: 1.25em;
+}
+
+.r-50lct3 {
+    height: 1.5em;
+}
+
+.r-1srniue {
+    width: 1.5em;
+}
+
+.r-loe9s5 {
+    background-color: rgba(0, 0, 0, 0.77);
+}
+
+.r-h1syrq {
+    background-color: rgba(0, 0, 0, 0.07);
+}
+
+.r-clp7b1 {
+    transition-property: color;
+}
+
+.r-12c3ph5 {
+    opacity: 0.4;
+}
+
+.r-1kbdv8c {
+    column-gap: 4px;
+}
+
+.r-10m99ii {
+    max-width: none;
+}
+
+.r-a2tzq0 {
+    justify-content: space-around;
+}
+
+.r-3qxfft {
+    min-height: 1.875rem;
+}
+
+.r-11yh6sk {
+    overflow-x: hidden;
+}
+
+.r-buy8e9 {
+    overflow-y: hidden;
+}
+
+.r-19z077z {
+    touch-action: none;
+}
+
+.r-2eszeu::-webkit-scrollbar {
+    display: none;
+}
+
+.r-2eszeu {
+    scrollbar-width: none;
+}
+
+.r-150rngu {
+}
+
+.r-lltvgl {
+    overflow-x: auto;
+}
+
+.r-gtdqiz {
+    position: sticky;
+}
+
+.r-mhe3cw {
+    z-index: 10;
+}
+
+.r-mfh4gg {
+    scroll-snap-type: x mandatory;
+}
+
+.r-1ocf4r9 {
+    scroll-snap-type: y mandatory;
+}
+
+.r-cpa5s6 {
+    scroll-snap-align: start;
+}
+
+.r-1euycsn {
+    flex-direction: row-reverse;
+}
+
+.r-173mzie {
+    transform: scaleY(-1);
+}
+
+.r-u92y06 {
+    background-color: rgb(255, 165, 0);
+}
+
+.r-1otgn73 {
+    touch-action: manipulation;
+}
+
+.r-1azx6h {
+    max-height: 480px;
+}
+
+.r-7mdpej {
+    max-width: 360px;
+}
+
+.r-1vsu8ta {
+    min-height: 30px;
+}
+
+.r-ek4qxl {
+    min-width: 260px;
+}
+
+.r-1vqzmdl {
+    background-color: rgb(215, 246, 255);
+}
+
+.r-4nw3r4 {
+    background-color: rgb(249, 24, 128);
+}
+
+.r-168457u {
+    background-color: rgb(120, 86, 255);
+}
+
+.r-ck2lme {
+    background-color: rgb(219, 248, 235);
+}
+
+.r-gkxrsp {
+    background-color: rgb(0, 67, 41);
+}
+
+.r-13w96dm {
+    background-color: rgba(0, 0, 0, 0.3);
+}
+
+.r-1e4ma89 {
+    background-color: rgba(0, 0, 0, 0.55);
+}
+
+.r-1sw30gj {
+    background-color: rgb(239, 243, 244);
+}
+
+.r-1cf81hf {
+    background-color: rgb(83, 100, 113);
+}
+
+.r-19h8fux {
+    background-color: rgb(55, 67, 77);
+}
+
+.r-1xnyija {
+    background-color: rgb(250, 224, 250);
+}
+
+.r-1k5gan {
+    background-color: rgb(236, 232, 255);
+}
+
+.r-178kkxs {
+    background-color: rgb(255, 237, 219);
+}
+
+.r-9tfo2e {
+    background-color: rgba(255, 255, 255, 0.3);
+}
+
+.r-t3ofa {
+}
+
+.r-1vzmqqg {
+    -webkit-font-smoothing: antialiased;
+}
+
+.r-1cj0bla {
+}
+
+.r-k8qxaj {
+    padding-bottom: 20px;
+}
+
+.r-tskmnb {
+    padding-top: 8px;
+}
+
+.r-vz2u4x {
+    height: 11px;
+}
+
+.r-1e5uvyk {
+    backdrop-filter: blur(12px);
+}
+
+.r-1h3ijdo {
+    height: 53px;
+}
+
+.r-1qd7xl {
+    top: 12px;
+}
+
+.r-1t2qqvi {
+    flex-basis: 50%;
+}
+
+.r-s8bhmr {
+    min-width: 56px;
+}
+
+.r-16wqof {
+    padding-bottom: 48px;
+}
+
+.r-11nfnuw {
+    padding-top: 48px;
+}
+
+.r-1knelpx {
+    padding-top: 20px;
+}
+
+.r-hvns9x {
+    max-width: 400px;
+}
+
+.r-1v1z2uz {
+    margin-top: 32px;
+}
+
+.r-1ifxtd0 {
+    margin-bottom: 16px;
+}
+
+.r-4d76ec {
+    height: 200px;
+}
+
+.r-l0gwng {
+    width: 200px;
+}
+
+.r-16l9doz {
+    height: auto;
+}
+
+.r-zd98yo {
+    margin-bottom: 32px;
+}
+
+.r-1mnahxq {
+    margin-top: 0px;
+}
+
+.r-4m99jg {
+    max-width: 320px;
+}
+
+.r-1nxhmzv {
+    margin-bottom: 28px;
+}
+
+.r-ttdzmv {
+    padding-top: 12px;
+}
+
+.r-15zivkp {
+    margin-bottom: 4px;
+}
+
+.r-13orzya {
+    text-underline-offset: 2px;
+}
+
+.r-1gfgf0w {
+    color: rgb(255, 212, 0);
+}
+
+.r-12bvdwa {
+    color: rgb(201, 54, 204);
+}
+
+.r-f9ja8p {
+    max-height: 20px;
+}
+
+.r-og9te1 {
+    max-width: 20px;
+}
+
+.r-1e5efmr {
+    background-color: rgb(255, 239, 255);
+}
+
+.r-9iso6 {
+    vertical-align: middle;
+}
+
+.r-qpl8lv {
+    height: 13px;
+}
+
+.r-1xzupcd {
+    width: 13px;
+}
+
+.r-1l6c170 {
+    align-self: start;
+}
+
+.r-c97pre {
+    z-index: 999;
+}
+
+.r-1g4g62n {
+    animation-duration: 0.2s;
+}
+
+.r-ws73pm {
+    grid-template-columns: auto 0fr;
+}
+
+.r-sn2otd {
+    transition: grid-template--webkit-columns 0.1s, grid-template-columns 0.1s;
+}
+
+.r-1pcluan {
+    grid-template-columns: auto 1fr;
+}
+
+.r-1k4wkcn {
+    transition: opacity 0.15s;
+}
+
+.r-6dt33c {
+    opacity: 1;
+}
+
+.r-147u07z {
+    transition: width 0.1s;
+}
+
+.r-1h2t8mc {
+    width: 0px;
+}
+
+.r-1ro0kt6 {
+    flex-basis: 0%;
+}
+
+.r-tzz3ar {
+    flex-wrap: nowrap;
+}
+
+.r-10m9thr {
+    transform: translate3d(0px, 0px, 0px);
+}
+
+.r-1s5bdkl {
+    scroll-snap-type: none;
+}
+
+.r-j0xqu1 {
+    color: rgb(207, 217, 222);
+}
+
+.r-1i6wzkk {
+    transition-property: opacity;
+}
+
+.r-rxcuwo {
+    height: 50%;
+}
+
+.r-iyfy8q {
+    width: auto;
+}
+
+.r-12pa0mw {
+    background-image: linear-gradient(90deg, transparent 0%, rgb(255, 255, 255) 100%);
+}
+
+.r-1glkqn6 {
+    width: 80px;
+}
+
+.r-1nshp2r {
+    background-image: linear-gradient(90deg, rgb(255, 255, 255) 0%, transparent 100%);
+}
+
+.r-1peqgm7 {
+    background-color: rgba(29, 155, 240, 0.1);
+}
+
+.r-r18ze4 {
+    background-color: rgba(29, 155, 240, 0.2);
+}
+
+.r-1teesnx {
+    box-shadow: rgb(142, 205, 248) 0px 0px 0px 2px;
+}
+
+.r-1cmwbt1 {
+    gap: 8px;
+}
+
+.r-zl2h9q {
+    margin-bottom: 2px;
+}
+
+.r-xb9fkz {
+    min-width: 144px;
+}
+
+.r-1f720gc {
+    width: 50%;
+}
+
+.r-1ut4y0j {
+    color: rgb(185, 202, 211);
+}
+
+.r-15jbc68 {
+    color: rgb(130, 154, 171);
+}
+
+.r-vmopo1 {
+    padding-top: 2px;
+}
+
+.r-1dgieki {
+    border-top-color: rgb(239, 243, 244);
+}
+
+.r-1efd50x {
+    border-top-style: solid;
+}
+
+.r-5kkj8d {
+    border-top-width: 1px;
+}
+
+.r-l4nmg1 {
+    padding-bottom: 2px;
+}
+
+.r-912u2z {
+    margin-bottom: -16px;
+}
+
+.r-1dzmgqr {
+    top: calc(-5px);
+}
+
+.r-vhh4mp {
+    background-color: rgb(234, 250, 255);
+}
+
+.r-4tcnlu {
+    background-color: rgb(255, 240, 241);
+}
+
+.r-ifysjd {
+    background-color: rgb(237, 255, 249);
+}
+
+.r-1vcn8xc {
+    background-color: rgb(254, 245, 236);
+}
+
+.r-tvh3qr {
+    color: rgb(234, 250, 255);
+}
+
+.r-1035753 {
+    color: rgb(255, 239, 255);
+}
+
+.r-1rtmdkh {
+    color: rgb(254, 222, 227);
+}
+
+.r-ea455c {
+    border: none;
+}
+
+.r-k4xj1c {
+    align-items: start;
+}
+
+.r-1panhkp {
+    background-color: rgba(0, 0, 0, 0.03);
+}
+
+.r-11j9u27 {
+    visibility: hidden;
+}
+
+.r-17bb2tj {
+    animation-duration: 0.75s;
+}
+
+.r-1yef0xd {
+    animation-name: r-11cv4x;
+}
+
+@-webkit-keyframes r-11cv4x {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes r-11cv4x {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+.r-1abnn5w {
+    animation-play-state: paused;
+}
+
+.r-1r8g8re {
+    height: 36px;
+}
+
+.r-1acpoxo {
+    width: 36px;
+}
+
+.r-1ozqkpa {
+    text-transform: capitalize;
+}
+
+.r-2llsf {
+    min-height: 100%;
+}
+
+.r-yrgyi6 {
+    white-space: pre;
+}
+
+.r-19hcixa {
+    height: 108px;
+}
+
+.r-117bsoe {
+    margin-bottom: 20px;
+}
+
+.r-17tb59b {
+    opacity: 0.7;
+}
+
+.r-12j2k7l {
+    flex-flow: row;
+}
+
+.r-1ghxqbu {
+    font-variant: tabular-nums;
+}
+
+.r-1jtedbw {
+    animation-direction: alternate;
+}
+
+.r-yyvqcu {
+    animation-duration: 10000ms;
+}
+
+.r-pyq453 {
+    animation-name: r-lqsu46;
+}
+
+@-webkit-keyframes r-lqsu46 {
+    0% {
+    }
+    100% {
+    }
+}
+
+@keyframes r-lqsu46 {
+    0% {
+    }
+    100% {
+    }
+}
+
+.r-1roce1j {
+    transform: translateX(0%);
+}
+
+.r-14jq8y5 {
+    width: 500%;
+}
+
+.r-19qrga8 {
+    margin-top: 3px;
+}
+
+.r-173mn98 {
+    align-self: flex-end;
+}
+
+.r-d7opph {
+    animation-duration: 600ms;
+}
+
+.r-py70b8 {
+    animation-name: r-1cujv0;
+}
+
+@-webkit-keyframes r-1cujv0 {
+    0% {
+    }
+    50% {
+    }
+    100% {
+    }
+}
+
+@keyframes r-1cujv0 {
+    0% {
+    }
+    50% {
+    }
+    100% {
+    }
+}
+
+.r-1qqlz1x {
+    background-color: rgb(121, 75, 196);
+}
+
+.r-8c4r2l {
+    transition: height 200ms steps(6, jump-none);
+}
+
+.r-1f7j148 {
+    will-change: height, transform;
+}
+
+.r-1bi5vs5 {
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 13px 0px;
+}
+
+.r-1oec5bt {
+    opacity: 0.2;
+}
+
+.r-e0yzwg {
+    mask-image: -webkit-gradient(linear, 0% 0%, 0% 100%, from(rgb(0, 0, 0)), to(rgba(0, 0, 0, 0)));
+}
+
+.r-ahpwbk {
+    transition-duration: 400ms;
+}
+
+.r-1609tof {
+    transition-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
+}
+
+.r-16c2ywi {
+    bottom: 10%;
+}
+
+.r-7xmw5f {
+    width: fit-content;
+}
+
+.r-1upy0dh {
+    letter-spacing: 2px;
+}
+
+.r-tsynxw {
+    text-transform: uppercase;
+}
+
+.r-jk79lb {
+    transition: opacity 0.2s ease-in-out;
+}
+
+.r-hma2yj {
+    max-height: calc(128px);
+}
+
+.r-1uvx8do {
+    max-width: calc(128px);
+}
+
+.r-adacv {
+    min-height: 64px;
+}
+
+.r-m5arl1 {
+    width: 2px;
+}
+
+.r-wgabs5 {
+    border-bottom-width: 2px;
+}
+
+.r-1ut4w64 {
+    margin-bottom: -1px;
+}
+
+.r-1wv73ep {
+    align-self: baseline;
+}
+
+.r-m0xrcl {
+    width: calc(120px);
+}
+
+.r-6nmlu6 {
+    padding-bottom: var(--hweb-listTweet-padding-block-end, 12px);
+}
+
+.r-1oik0f3 {
+    padding-top: var(--hweb-listTweet-padding-block-start, 12px);
+}
+
+.r-o29g2o {
+    height: 30%;
+}
+
+.r-hudz2g {
+    min-height: 18px;
+}
+
+.r-ktdv3k {
+    min-width: 18px;
+}
+
+.r-1oji4za {
+    width: 30%;
+}
+
+.r-20nvsa {
+    max-width: 120%;
+}
+
+.r-1nexy4t {
+    transform: translateX(-50%) translateY(25%);
+}
+
+.r-1w1rt8g {
+    transform: translateX(-50%) translateY(30%);
+}
+
+.r-30qeir {
+    bottom: -4px;
+}
+
+.r-1by1ycs {
+    bottom: -2px;
+}
+
+.r-1jeg54m {
+    white-space: normal;
+}
+
+.r-n04z8z {
+}
+
+.r-1mdbw0j {
+    padding-bottom: 0px;
+}
+
+.r-30o5oe {
+    appearance: none;
+}
+
+.r-1dz5y72 {
+    resize: none;
+}
+
+.r-homxoj {
+    color: inherit;
+}
+
+.r-7cikom {
+    font-size: inherit;
+}
+
+.r-wk8lta {
+    padding-top: 0px;
+}
+
+.r-nf76sl {
+    caret-color: rgb(29, 155, 240);
+}
+
+.r-1or9b2r {
+    height: 10px;
+}
+
+.r-5soawk {
+    width: 10px;
+}
+
+.r-1g80hic {
+    opacity: 0.8;
+}
+
+.r-1dqbpge {
+    cursor: text;
+}
+
+.r-12yostc {
+    z-index: revert;
+}
+
+.r-11c0sde {
+    margin-top: 24px;
+}
+
+.r-xd6kpl {
+    padding-bottom: 8px;
+}
+
+.r-qn3fzs {
+    padding-bottom: 24px;
+}
+
+.r-8eqzbf {
+    right: 10px;
+}
+
+.r-q3we1 {
+    margin-top: -4px;
+}
+
+.r-kemksi {
+    background-color: rgb(0, 0, 0);
+}
+
+.r-jumn1c {
+    bottom: -1px;
+}
+
+.r-194cu66 {
+    background-color: rgb(201, 0, 0);
+}
+
+.r-yfoy6g {
+    background-color: rgb(21, 32, 43);
+}
+
+.r-thhjwx {
+    max-width: 75%;
+}
+
+.r-j2cz3j {
+    max-width: calc(384px);
+}
+
+.r-1upvrn0 {
+    box-shadow: rgba(101, 119, 134, 0.2) 0px 0px 15px, rgba(101, 119, 134, 0.15) 0px 0px 3px 1px;
+}
+
+.r-1ydqjzz {
+    background-color: rgba(15, 20, 25, 0.1);
+}
+
+.r-h9yrwi {
+    background-color: rgba(15, 20, 25, 0.2);
+}
+
+.r-9235bf {
+    box-shadow: rgb(135, 138, 140) 0px 0px 0px 2px;
+}
+
+.r-oelmt8 {
+    background-color: rgb(39, 44, 48);
+}
+
+.r-hoaypa {
+    background-color: rgb(63, 67, 71);
+}
+
+/* ---- Inline Stylesheet #7 ---- */
+@keyframes claude-pulse {
+    0% {
+        box-shadow: rgba(217, 119, 87, 0.5) 0px 0px 10px inset, rgba(217, 119, 87, 0.3) 0px 0px 20px inset, rgba(217, 119, 87, 0.1) 0px 0px 30px inset;
+    }
+    50% {
+        box-shadow: rgba(217, 119, 87, 0.7) 0px 0px 15px inset, rgba(217, 119, 87, 0.5) 0px 0px 25px inset, rgba(217, 119, 87, 0.2) 0px 0px 35px inset;
+    }
+    100% {
+        box-shadow: rgba(217, 119, 87, 0.5) 0px 0px 10px inset, rgba(217, 119, 87, 0.3) 0px 0px 20px inset, rgba(217, 119, 87, 0.1) 0px 0px 30px inset;
+    }
+}
+
+.AccountTriggerButton {
+}
+
+.ProfileTriggerButton {
+}
+
+.ObjectiveEditButton {
+}
+
+.PaymentMethodButton {
+}
+
+.AdvancedToggleButton {
+}
+
+.AdvancedContentPanel {
+}
+
+.BudgetOptimizationSwitch {
+}
+
+.SpendLimitSection {
+}
+
+.TooltipTriggerButton {
+}
+
+.BudgetOptimizationTooltipButton {
+}
+
+.SpendLimitTooltipButton {
+}
+
+.AdGroupBranchItem {
+}
+
+.AdGroupBranchButton {
+}
+
+.ExitButton {
+}
+
+.DraftButton {
+}
+
+.NextStepButton {
+}
+
+.ExitButton.PageFooterButton--secondary {
+    color: rgb(15, 20, 25);
+    background: rgb(255, 255, 255);
+    border: 1px solid rgb(207, 217, 222);
+    box-shadow: rgba(0, 0, 0, 0.05) 0px 1px 2px 0px;
+    text-decoration: none;
+}
+
+.ExitButton.PageFooterButton--secondary:hover {
+    color: rgb(23, 23, 23);
+    background: rgb(245, 245, 245);
+    text-decoration: none;
+}
+
+.NextStepButton:disabled {
+    cursor: not-allowed;
+}
+
+.ModalOverlay,
+.ObjectiveModalOverlay,
+.PaymentModalOverlay,
+.ConfirmationOverlay {
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    background: rgba(15, 20, 25, 0.45);
+}
+
+.DialogModal,
+.ObjectiveModal,
+.PaymentModal,
+.ConfirmationDialog {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    z-index: 1001;
+    width: min(calc(100vw - 32px), 860px);
+    max-height: calc(100vh - 48px);
+    transform: translate(-50%, -50%);
+    overflow: auto;
+}
+
+.DialogPanel,
+.ModalPanel,
+.PanelSurface {
+    background: rgb(255, 255, 255);
+    border: 1px solid rgb(229, 234, 236);
+    border-radius: 16px;
+    box-shadow: rgba(101, 119, 134, 0.2) 0px 0px 15px, rgba(101, 119, 134, 0.15) 0px 0px 3px 1px;
+}
+
+.PanelHeader {
+    padding: 20px 24px 0;
+}
+
+.PanelBody {
+    padding: 16px 24px 24px;
+}
+
+.PanelFooter {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    padding: 0 24px 24px;
+}
+
+.TileColumnLabel {
+    margin-bottom: 12px;
+    color: rgb(83, 100, 113);
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.ObjectiveTileGroup {
+    display: grid;
+    gap: 12px;
+}
+
+.ObjectiveOptionTile {
+    display: block;
+    width: 100%;
+    padding: 14px 16px;
+    border: 1px solid rgb(207, 217, 222);
+    border-radius: 16px;
+    background: rgb(255, 255, 255);
+    text-align: left;
+}
+
+.ObjectiveOptionTile.is-selected {
+    border-color: rgb(29, 155, 240);
+    box-shadow: rgb(142, 205, 248) 0px 0px 0px 2px;
+}
+
+.ObjectiveTileHeader {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    margin-bottom: 6px;
+    font-weight: 700;
+}
+
+.ObjectiveTileMarker {
+    flex: 0 0 20px;
+    width: 20px;
+    min-width: 20px;
+    margin-left: auto;
+    flex-shrink: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.ObjectiveTileMarker > .Icon,
+.ObjectiveTileMarker > .Tile-selectCircle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.ObjectiveTileLabel {
+    flex: 1 1 auto;
+    min-width: 0;
+}
+
+.ObjectiveTileTitle {
+    display: inline;
+    line-height: 1.4;
+}
+
+.ObjectiveTileDescription {
+    color: rgb(83, 100, 113);
+    font-size: 14px;
+    line-height: 1.4;
+}
+
+.DropdownMenu {
+    position: fixed;
+    z-index: 1002;
+    box-sizing: border-box;
+    min-width: 0;
+    max-width: calc(100vw - 24px);
+    overflow: hidden;
+    background: rgb(255, 255, 255);
+    border: 1px solid rgb(229, 234, 236);
+    border-radius: 16px;
+    box-shadow: rgba(101, 119, 134, 0.2) 0px 0px 15px, rgba(101, 119, 134, 0.15) 0px 0px 3px 1px;
+}
+
+.DropdownMenuList {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.DropdownMenuItem {
+    display: block;
+    padding: 16px 20px;
+    color: rgb(15, 20, 25);
+    text-decoration: none;
+    white-space: nowrap;
+}
+
+.DropdownMenuItem + .DropdownMenuItem {
+    border-top: 1px solid rgb(239, 243, 244);
+}
+
+.DropdownFooter {
+    padding: 14px 20px;
+    border-top: 1px solid rgb(239, 243, 244);
+    color: rgb(83, 100, 113);
+    font-size: 13px;
+    line-height: 1.5;
+    overflow-wrap: anywhere;
+}
+
+.TooltipPanel {
+    position: fixed;
+    z-index: 1003;
+    width: min(320px, calc(100vw - 24px));
+    background: rgb(15, 20, 25);
+    color: rgb(255, 255, 255);
+    border-radius: 12px;
+    box-shadow: rgba(0, 0, 0, 0.3) 0px 10px 30px;
+}
+
+.TooltipPanelInner {
+    padding: 16px;
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+.TooltipPanelClose {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+}
+
+.BudgetFieldsPanel {
+    display: grid;
+    gap: 12px;
+    margin-top: 12px;
+}
+
+.PacingOptionGroup {
+    display: grid;
+    gap: 8px;
+    margin-top: 4px;
+}
+
+.PacingOption {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+}
+
+.CampaignDetailsView,
+.AdGroupDetailsView,
+.AdCreativeView,
+.ReviewStepView {
+    width: 100%;
+}
+
+.AdStageLayout {
+    display: grid;
+    gap: 16px;
+}
+
+.AdStagePage {
+    display: grid;
+    gap: 24px;
+    width: 100%;
+}
+
+.AdStagePageHeader {
+    padding: 0;
+}
+
+.AdStagePageHeader .PageHeader-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    min-height: 88px;
+    padding: 6px 0 10px;
+}
+
+.AdStagePageHeader .PageHeader-headerContainer {
+    flex: 1 1 auto;
+    min-width: 0;
+}
+
+.AdStagePageHeader .PageHeader-header {
+    color: rgb(15, 20, 25);
+    font-size: 28px;
+    font-weight: 800;
+    line-height: 1.2;
+    word-break: break-word;
+}
+
+.AdStagePageHeader .PageHeader-endContent {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 18px;
+}
+
+.AdStageContentGrid {
+    align-items: flex-start;
+}
+
+.AdStageMainColumn {
+    display: grid;
+    gap: 16px;
+}
+
+.AdStageMainColumn > section {
+    min-width: 0;
+}
+
+.AdStageSidebarColumn {
+    min-width: 280px;
+}
+
+.AdStageSidebarSticky {
+    position: sticky;
+    top: 136px;
+}
+
+.AudienceEstimateCard {
+    box-shadow: rgba(15, 20, 25, 0.05) 0px 8px 24px;
+}
+
+.AdStageInputHeader {
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 8px;
+}
+
+.AdStageInlineFieldRow {
+    gap: 12px;
+}
+
+.AdStageInlineFieldRow .FormInput {
+    min-width: 132px;
+}
+
+.AdStageTokenWrap {
+    display: grid;
+    gap: 12px;
+    margin-top: 12px;
+}
+
+.AdGroupDetailsView .Module {
+    overflow: visible;
+}
+
+.AdGroupDetailsView .FormFieldset {
+    margin: 0;
+}
+
+.AdGroupDetailsView .FormFieldset-content {
+    display: grid;
+    gap: 16px;
+    margin-top: 16px;
+}
+
+.AdGroupDetailsView .Module-body .FormField + .FormField {
+    margin-top: 16px;
+}
+
+.AdGroupDetailsView .ButtonGroup {
+    display: inline-flex;
+    flex-wrap: wrap;
+}
+
+.BidStrategyOption {
+    cursor: pointer;
+}
+
+.AdCreativePage {
+    display: grid;
+    gap: 0;
+    font-family: TwitterChirp, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+.AdCreativeStage {
+    display: grid;
+    gap: 0;
+}
+
+.AdCreativeCanvas {
+    width: 100%;
+}
+
+.AdCreativeRegion {
+    width: 100%;
+}
+
+.AdCreativeRegionCell {
+    min-width: 0;
+}
+
+.AdCreativePageFrame {
+    display: grid;
+    gap: 20px;
+}
+
+.AdCreativeBanner {
+    display: grid;
+}
+
+.AdCreativeCallout {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-height: 72px;
+    padding: 18px 24px;
+    border: 1px solid rgb(236, 228, 214);
+    border-radius: 12px;
+    background: rgb(245, 240, 232);
+}
+
+.AdCreativeCallout .Callout-icon {
+    flex: 0 0 auto;
+    font-size: 18px;
+}
+
+.AdCreativeCallout .Callout-body p {
+    margin: 0;
+    color: rgb(15, 20, 25);
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 1.45;
+}
+
+.AdCreativeStageGrid {
+    display: grid;
+    grid-template-columns: minmax(0, 760px) minmax(360px, 448px);
+    justify-content: space-between;
+    gap: 40px;
+    align-items: flex-start;
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 0 24px;
+}
+
+.AdCreativeLayoutGrid {
+    display: grid;
+}
+
+.AdCreativeComposerPane {
+    min-width: 0;
+}
+
+.AdCreativeComposerViewport,
+.AdCreativeComposerViewportFrame,
+.AdCreativeNavigator {
+    min-width: 0;
+}
+
+.AdCreativeSlide {
+    display: none;
+}
+
+.AdCreativeSlide.is-active {
+    display: block;
+}
+
+.AdCreativeComposerColumn {
+    min-width: 0;
+    max-width: 760px;
+}
+
+.AdCreativeComposerCard,
+.AdCreativeMediaLibraryCard {
+    overflow: hidden;
+    border: 1px solid rgb(207, 217, 222);
+    border-radius: 22px;
+    background: rgb(255, 255, 255);
+    box-shadow: none;
+}
+
+.AdCreativeCardHeader,
+.AdCreativeMediaLibraryHeader {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 34px 40px 16px;
+    border-bottom: 0;
+}
+
+.AdCreativeMediaLibraryHeader {
+    justify-content: flex-start;
+    align-items: center;
+    padding: 24px 28px;
+    border-bottom: 1px solid rgb(229, 234, 236);
+}
+
+.AdCreativeCardTitle,
+.AdCreativeMediaLibraryTitle {
+    color: rgb(15, 20, 25);
+    font-size: 22px;
+    font-weight: 800;
+    line-height: 1.25;
+    letter-spacing: -0.01em;
+}
+
+.AdCreativeCardBody,
+.AdCreativeMediaLibraryBody {
+    display: grid;
+    gap: 22px;
+    padding: 12px 40px 34px;
+}
+
+.AdCreativeMediaLibraryBody {
+    gap: 18px;
+    padding: 24px 28px 28px;
+}
+
+.AdCreativeField {
+    display: grid;
+    gap: 12px;
+}
+
+.AdCreativeFieldHeader {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+}
+
+.AdCreativeFieldLabel {
+    color: rgb(15, 20, 25);
+    font-size: 17px;
+    font-weight: 800;
+}
+
+.AdCreativeFieldMeta {
+    color: rgb(113, 118, 123);
+    font-size: 15px;
+    font-weight: 500;
+}
+
+.AdCreativeNameInput {
+    min-height: 56px;
+    padding: 0 18px;
+    border-color: rgb(207, 217, 222);
+    border-radius: 12px;
+    font-size: 18px;
+}
+
+.AdCreativeHeaderActions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 18px;
+}
+
+.AdCreativeHeaderActions .Button--link,
+.AdCreativeCardAction {
+    min-height: 0;
+    padding: 0;
+    font-weight: 700;
+}
+
+.AdCreativeCreateButton,
+.AdCreativeCopyButton,
+.AdCreativeDeleteButton,
+.AdCreativeCardAction,
+.MentionSettingsButton {
+    line-height: 1.2;
+}
+
+.AdCreativeHeaderActions .Button-label,
+.AdCreativeCardAction .Button-label {
+    font-size: 15px;
+}
+
+.AdCreativeHeaderActions .Button-adornment,
+.AdCreativeCardAction .Button-adornment {
+    margin-right: 8px;
+}
+
+.AdCreativeIdentityBlock {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.AdCreativeIdentityLine {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+
+.AdCreativeAuthorAvatar,
+.AdCreativePreviewAvatar {
+    width: 34px;
+    height: 34px;
+    border-radius: 999px;
+    object-fit: cover;
+}
+
+.AdCreativeAuthorName,
+.AdCreativePreviewName {
+    color: rgb(15, 20, 25);
+    font-size: 16px;
+    font-weight: 800;
+}
+
+.AdCreativeVerifiedIcon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 18px;
+    height: 18px;
+    color: rgb(29, 155, 240);
+    flex: 0 0 auto;
+}
+
+.AdCreativeVerifiedIcon svg {
+    display: block;
+    width: 100%;
+    height: 100%;
+    fill: currentColor;
+}
+
+.AdCreativeAuthorHandle,
+.AdCreativePreviewHandle,
+.AdCreativePreviewSource {
+    color: rgb(83, 100, 113);
+    font-size: 15px;
+}
+
+.MentionSettingsButton {
+    padding: 0;
+}
+
+.MentionSettingsButton .Button-label {
+    display: inline-flex;
+    align-items: center;
+    color: rgb(15, 20, 25);
+    font-size: 15px;
+    font-weight: 700;
+}
+
+.AdCreativeTweetInput {
+    position: relative;
+    display: block;
+    width: 100%;
+    min-height: 116px;
+    margin: 0;
+    padding: 14px 18px;
+    border: 1px solid rgb(207, 217, 222);
+    border-radius: 14px;
+    background: rgb(255, 255, 255);
+    color: rgb(15, 20, 25);
+    font-size: 17px;
+    line-height: 1.45;
+    outline: none;
+    white-space: pre-wrap;
+    word-break: break-word;
+}
+
+.AdCreativeTweetInput.is-empty {
+    min-height: 116px;
+}
+
+.AdCreativeTweetInput.is-empty::before {
+    content: attr(data-placeholder);
+    position: absolute;
+    top: 14px;
+    left: 18px;
+    right: 18px;
+    color: rgb(139, 152, 165);
+    font-size: 17px;
+    line-height: 1.45;
+    pointer-events: none;
+}
+
+.AdCreativeValidationText {
+    margin: -8px 0 0;
+    color: rgb(244, 33, 46);
+    font-size: 15px;
+    font-weight: 500;
+}
+
+.AdCreativeMentionRow {
+    margin-top: -2px;
+}
+
+.AdCreativeMediaActionRow,
+.AdCreativePromotedOnlyRow,
+.AdCreativeMediaLibraryFooter {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.AdCreativeDivider {
+    width: 100%;
+    height: 1px;
+    background: rgb(229, 234, 236);
+}
+
+.AdCreativeInfoNote {
+    margin: 0;
+    color: rgb(83, 100, 113);
+    font-size: 13px;
+    line-height: 1.7;
+}
+
+.AdCreativeInfoBadge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 6px;
+    padding: 0 6px;
+    border-radius: 999px;
+    background: rgb(243, 244, 246);
+    color: rgb(15, 20, 25);
+    font-size: 10px;
+    font-weight: 700;
+}
+
+.AdCreativeExistingDrawerOverlay {
+    position: fixed;
+    inset: 0;
+    z-index: 1005;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    background: rgba(15, 20, 25, 0.4);
+    backdrop-filter: blur(4px);
+}
+
+.AdCreativeExistingDrawer {
+    display: grid;
+    grid-template-rows: auto auto auto minmax(0, 1fr) auto;
+    width: min(700px, 100%);
+    max-height: min(80vh, 760px);
+    background: rgb(255, 255, 255);
+    border-radius: 20px;
+    box-shadow: rgba(15, 20, 25, 0.24) 0px 24px 64px;
+}
+
+.AdCreativeExistingModal {
+    width: min(700px, 100%);
+}
+
+.AdCreativeExistingDrawerHeader {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 24px 24px 18px;
+    border-bottom: 1px solid rgb(239, 243, 244);
+}
+
+.AdCreativeExistingDrawerTitle {
+    color: rgb(15, 20, 25);
+    font-size: 22px;
+    font-weight: 800;
+}
+
+.AdCreativeExistingDrawerDescription {
+    margin: 6px 0 0;
+    color: rgb(83, 100, 113);
+    font-size: 13px;
+    line-height: 1.55;
+}
+
+.AdCreativeExistingDrawerClose {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border: 0;
+    border-radius: 999px;
+    background: transparent;
+    color: rgb(83, 100, 113);
+    font-size: 28px;
+    line-height: 1;
+}
+
+.AdCreativeExistingDrawerClose:hover {
+    background: rgb(247, 249, 249);
+    color: rgb(15, 20, 25);
+}
+
+.AdCreativeExistingFilters {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 12px;
+    padding: 18px 24px 14px;
+}
+
+.AdCreativeFilterChip {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 38px;
+    padding: 0 14px;
+    border: 1px solid rgb(207, 217, 222);
+    border-radius: 999px;
+    background: rgb(255, 255, 255);
+    color: rgb(15, 20, 25);
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 1;
+    transition: border-color 0.15s ease, background-color 0.15s ease, color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.AdCreativeFilterChip:hover {
+    border-color: rgb(15, 20, 25);
+    background: rgb(247, 249, 249);
+}
+
+.AdCreativeFilterChip.is-active {
+    border-color: rgb(15, 20, 25);
+    background: rgb(15, 20, 25);
+    color: rgb(255, 255, 255);
+    box-shadow: rgba(15, 20, 25, 0.14) 0px 8px 18px;
+}
+
+.AdCreativeExistingReplyToggleLabel {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    color: rgb(83, 100, 113);
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+}
+
+.AdCreativeExistingReplyToggleLabel input {
+    width: 16px;
+    height: 16px;
+    accent-color: rgb(15, 20, 25);
+}
+
+.AdCreativeExistingSearchRow {
+    padding: 0 24px 10px;
+}
+
+.AdCreativeExistingSearchInput {
+    width: 100%;
+    min-height: 40px;
+    padding: 9px 14px;
+    border: 1px solid rgb(207, 217, 222);
+    border-radius: 12px;
+    background: rgb(255, 255, 255);
+    color: rgb(15, 20, 25);
+    font-size: 14px;
+}
+
+.AdCreativeExistingSearchInput:focus {
+    border-color: rgb(29, 155, 240);
+    box-shadow: rgb(29, 155, 240) 0px 0px 0px 1px;
+    outline: none;
+}
+
+.AdCreativeExistingDrawerBody {
+    display: grid;
+    align-content: start;
+    gap: 12px;
+    padding: 8px 24px 20px;
+    overflow-y: auto;
+}
+
+.AdCreativeExistingResults {
+    display: grid;
+    gap: 12px;
+}
+
+.AdCreativeExistingOption {
+    display: grid;
+    gap: 6px;
+    padding: 16px 18px;
+    border: 1px solid rgb(229, 234, 236);
+    border-radius: 16px;
+    background: rgb(255, 255, 255);
+    text-align: left;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease, transform 0.15s ease;
+}
+
+.AdCreativeExistingOption:hover {
+    border-color: rgb(29, 155, 240);
+    box-shadow: rgba(29, 155, 240, 0.12) 0px 8px 20px;
+    transform: translateY(-1px);
+}
+
+.AdCreativeExistingOption.is-selected {
+    border-color: rgb(15, 20, 25);
+    box-shadow: rgba(15, 20, 25, 0.1) 0px 10px 22px;
+}
+
+.AdCreativeExistingOptionTitle {
+    color: rgb(15, 20, 25);
+    font-size: 15px;
+    font-weight: 700;
+}
+
+.AdCreativeExistingOptionSubtitle {
+    color: rgb(83, 100, 113);
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.AdCreativeExistingOptionBody {
+    color: rgb(15, 20, 25);
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+.AdCreativeExistingEmpty {
+    display: grid;
+    place-items: center;
+    gap: 8px;
+    min-height: 220px;
+    padding: 32px 20px;
+    border: 1px dashed rgb(207, 217, 222);
+    border-radius: 16px;
+    text-align: center;
+}
+
+.AdCreativeExistingEmptyTitle {
+    color: rgb(15, 20, 25);
+    font-size: 17px;
+    font-weight: 700;
+}
+
+.AdCreativeExistingEmptyDescription {
+    margin: 0;
+    color: rgb(83, 100, 113);
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+.AdCreativeExistingFooter {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    padding: 18px 24px 22px;
+    border-top: 1px solid rgb(239, 243, 244);
+}
+
+.AdCreativeExistingFooterButton {
+    min-height: 38px;
+    padding: 0 18px;
+    border: 1px solid transparent;
+    border-radius: 999px;
+    background: transparent;
+    color: rgb(15, 20, 25);
+    font-size: 14px;
+    font-weight: 700;
+    transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease, opacity 0.15s ease;
+}
+
+.AdCreativeExistingFooterButton:hover {
+    background: rgb(247, 249, 249);
+}
+
+.AdCreativeExistingFooterButton--secondary {
+    border-color: rgb(207, 217, 222);
+    background: rgb(255, 255, 255);
+}
+
+.AdCreativeExistingFooterButton--primary {
+    background: rgb(15, 20, 25);
+    color: rgb(255, 255, 255);
+}
+
+.AdCreativeExistingFooterButton--primary:hover {
+    background: rgb(39, 44, 48);
+}
+
+.AdCreativeExistingFooterButton.is-disabled,
+.AdCreativeExistingFooterButton:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+    box-shadow: none;
+}
+
+.AdCreativeExistingFooterButton.is-disabled:hover,
+.AdCreativeExistingFooterButton:disabled:hover {
+    background: inherit;
+}
+
+.AdCreativePreviewColumn {
+    display: grid;
+    gap: 16px;
+    min-width: 0;
+    width: min(375px, 100%);
+    justify-content: flex-end;
+    justify-self: end;
+}
+
+.AdCreativePreviewShell {
+    overflow: hidden;
+    width: min(375px, 100%);
+    border-radius: 18px;
+    background: rgb(255, 255, 255);
+    border: 1px solid rgb(239, 243, 244);
+}
+
+.AdCreativePreviewRail {
+    display: grid;
+    gap: 12px;
+    padding: 14px 18px 12px;
+    border-bottom: 1px solid rgb(239, 243, 244);
+    background: rgb(248, 250, 251);
+}
+
+.AdCreativePreviewTopSkeleton {
+    display: grid;
+    grid-template-columns: 40px minmax(0, 1fr);
+    gap: 14px;
+    align-items: start;
+}
+
+.AdCreativePreviewTopAvatar,
+.AdCreativePreviewTopLines span,
+.AdCreativePreviewTopDots span,
+.AdCreativePreviewSkeletonCard::before,
+.AdCreativePreviewSkeletonCard::after {
+    display: block;
+    background: rgb(239, 243, 244);
+    border-radius: 999px;
+}
+
+.AdCreativePreviewTopAvatar {
+    width: 40px;
+    height: 40px;
+}
+
+.AdCreativePreviewTopLines {
+    display: grid;
+    gap: 9px;
+    padding-top: 2px;
+}
+
+.AdCreativePreviewTopLines span:nth-child(1) {
+    width: 142px;
+    height: 12px;
+}
+
+.AdCreativePreviewTopLines span:nth-child(2) {
+    width: 88px;
+    height: 10px;
+}
+
+.AdCreativePreviewTopLines span:nth-child(3) {
+    width: 100%;
+    height: 10px;
+}
+
+.AdCreativePreviewTopDots {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    align-items: center;
+    justify-items: center;
+}
+
+.AdCreativePreviewTopDots span {
+    width: 18px;
+    height: 18px;
+}
+
+.AdCreativePreviewCard {
+    padding: 14px 12px 12px;
+    background: rgb(255, 255, 255);
+    border-bottom: 1px solid rgb(239, 243, 244);
+}
+
+.AdCreativePreviewHeader {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+}
+
+.AdCreativePreviewMeta {
+    flex: 1 1 auto;
+    min-width: 0;
+}
+
+.AdCreativePreviewNameRow {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+
+.AdCreativePreviewAvatar {
+    width: 40px;
+    height: 40px;
+}
+
+.AdCreativePreviewText {
+    margin-top: 2px;
+    color: rgb(15, 20, 25);
+    font-size: 15px;
+    line-height: 1.34;
+    white-space: pre-wrap;
+    word-break: break-word;
+}
+
+.AdCreativePreviewText.is-placeholder {
+    color: rgb(83, 100, 113);
+}
+
+.AdCreativePreviewAdBadge {
+    color: rgb(83, 100, 113);
+    padding-top: 3px;
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.AdCreativePreviewMedia {
+    position: relative;
+    margin-top: 12px;
+    overflow: hidden;
+    border-radius: 18px;
+    background: rgb(174, 184, 194);
+}
+
+.AdCreativePreviewMediaContent {
+    position: relative;
+    min-height: 300px;
+}
+
+.AdCreativePreviewMediaPlaceholder {
+    min-height: 300px;
+    background: rgb(174, 184, 194);
+}
+
+.AdCreativePreviewMediaImage {
+    display: block;
+    width: 100%;
+    min-height: 300px;
+    object-fit: cover;
+}
+
+.AdCreativePreviewMediaOverlay {
+    position: absolute;
+    right: 12px;
+    bottom: 12px;
+    left: 12px;
+    display: flex;
+    align-items: flex-end;
+    justify-content: flex-start;
+    pointer-events: none;
+}
+
+.AdCreativeHeadlineButton {
+    display: inline-flex;
+    align-items: center;
+    width: fit-content;
+    padding: 4px 8px;
+    border: 2px solid transparent;
+    border-radius: 6px;
+    background: rgba(15, 20, 25, 0.85);
+    color: rgb(255, 255, 255);
+    font-size: 12px;
+    font-weight: 700;
+    line-height: 1.2;
+    pointer-events: auto;
+}
+
+.AdCreativeHeadlineButton:focus-visible {
+    border-color: rgb(29, 155, 240);
+    outline: none;
+}
+
+.AdCreativePreviewSourceRow {
+    margin-top: 8px;
+}
+
+.AdCreativePreviewActions {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 8px;
+    padding: 0 2px;
+}
+
+.AdCreativePreviewActionButton {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 34px;
+    height: 34px;
+    padding: 0;
+    border: 0;
+    border-radius: 999px;
+    background: transparent;
+    color: rgb(83, 100, 113);
+    transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+.AdCreativePreviewSocialButton svg {
+    width: 18px;
+    height: 18px;
+    fill: currentColor;
+}
+
+.AdCreativePreviewSocialButton:hover,
+.AdCreativePreviewSocialButton:focus-visible {
+    background: rgba(29, 155, 240, 0.1);
+    color: rgb(29, 155, 240);
+    outline: none;
+}
+
+.AdCreativePreviewSkeletonList {
+    display: grid;
+    background: rgb(255, 255, 255);
+}
+
+.AdCreativePreviewSkeletonCard {
+    position: relative;
+    min-height: 110px;
+    border-bottom: 1px solid rgb(239, 243, 244);
+    background: rgb(255, 255, 255);
+}
+
+.AdCreativePreviewSkeletonCard::before {
+    width: 40px;
+    height: 40px;
+    margin: 16px 0 0 16px;
+    border-radius: 999px;
+    content: "";
+}
+
+.AdCreativePreviewSkeletonCard::after {
+    width: calc(100% - 84px);
+    height: 10px;
+    margin: 18px 0 0 68px;
+    content: "";
+}
+
+.AdCreativePreviewHint {
+    margin: 0;
+    color: rgb(83, 100, 113);
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+.AdCreativeMediaLibraryBackButton {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border: 0;
+    border-radius: 999px;
+    background: transparent;
+    color: rgb(83, 100, 113);
+}
+
+.AdCreativeBackArrow {
+    font-size: 20px;
+    line-height: 1;
+}
+
+.AdCreativeBrowseInput {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.AdCreativeUploadPanel {
+    position: relative;
+    display: grid;
+    place-items: center;
+    gap: 12px;
+    min-height: 220px;
+    padding: 24px;
+    border: 1px solid rgb(229, 234, 236);
+    border-radius: 16px;
+    background: rgb(249, 251, 252);
+    text-align: center;
+}
+
+.AdCreativeUploadIcon {
+    font-size: 22px;
+    color: rgb(83, 100, 113);
+}
+
+.AdCreativeUploadText,
+.AdCreativeLibraryHint {
+    margin: 0;
+    color: rgb(83, 100, 113);
+    font-size: 13px;
+    line-height: 1.6;
+}
+
+.AdCreativeMediaTiles {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 14px;
+}
+
+.AdCreativeMediaTile {
+    position: relative;
+    display: block;
+    overflow: hidden;
+    padding: 0;
+    border: 2px solid transparent;
+    border-radius: 14px;
+    background: rgb(15, 20, 25);
+    text-align: left;
+}
+
+.AdCreativeMediaTile.is-selected {
+    border-color: rgb(15, 20, 25);
+    transform: translateY(-1px);
+}
+
+.AdCreativeMediaTileImage {
+    display: block;
+    width: 100%;
+    aspect-ratio: 1.91 / 1;
+    object-fit: cover;
+}
+
+.AdCreativeMediaTileCheck {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 22px;
+    height: 22px;
+    padding: 0 8px;
+    border: 2px solid rgba(255, 255, 255, 0.8);
+    border-radius: 999px;
+    background: rgba(0, 0, 0, 0.45);
+    color: rgb(255, 255, 255);
+    font-size: 10px;
+    font-weight: 700;
+}
+
+.AdCreativeMediaTileMeta {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    display: grid;
+    gap: 2px;
+    padding: 20px 10px 8px;
+    background: linear-gradient(transparent, rgba(0, 0, 0, 0.72));
+}
+
+.AdCreativeMediaTileName,
+.AdCreativeMediaTileDate {
+    color: rgb(255, 255, 255);
+    font-size: 11px;
+    line-height: 1.35;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.AdCreativeMediaTileDate {
+    color: rgba(255, 255, 255, 0.74);
+    font-size: 10px;
+}
+
+.AdCreativeMediaLibraryFooter {
+    justify-content: flex-end;
+    padding: 16px 20px 20px;
+    border-top: 1px solid rgb(229, 234, 236);
+}
+
+.AdCreativeMediaConfirmButton.is-disabled {
+    cursor: not-allowed;
+}
+
+.AdCreativePreviewSourceButton {
+    display: inline-flex;
+    align-items: center;
+    width: fit-content;
+    padding: 2px 4px;
+    border: 2px solid transparent;
+    border-radius: 6px;
+    background: transparent;
+    color: rgb(83, 100, 113);
+    font-size: 14px;
+    line-height: 1.4;
+}
+
+.AdCreativePreviewSourceButton:hover,
+.AdCreativePreviewSourceButton:focus-visible {
+    color: rgb(15, 20, 25);
+    border-color: rgb(29, 155, 240);
+    outline: none;
+}
+
+.AdCreativeCreateButton:hover,
+.AdCreativeCopyButton:hover,
+.ExistingAdButton:hover,
+.MentionSettingsButton:hover {
+    text-decoration: underline;
+    text-decoration-thickness: 2px;
+}
+
+.AdStageToolbar {
+    display: flex;
+    align-items: center;
+}
+
+.AdStageToolbarActions,
+.AdStageInlineActions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 16px;
+}
+
+.AdStagePanelStack {
+    display: grid;
+    gap: 16px;
+}
+
+.AdStagePanel,
+.AdStageReviewCard {
+    padding: 20px 24px;
+    border: 1px solid rgb(229, 234, 236);
+    border-radius: 16px;
+    background: rgb(255, 255, 255);
+    box-shadow: rgba(15, 20, 25, 0.04) 0px 1px 3px;
+}
+
+.AdStageHeaderRow {
+    margin: 0;
+}
+
+.AdStageSectionTitle {
+    color: rgb(15, 20, 25);
+    font-size: 20px;
+    font-weight: 700;
+    line-height: 1.3;
+}
+
+.AdStageSectionDescription {
+    margin: 6px 0 0;
+    color: rgb(83, 100, 113);
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+.AdStageFieldset {
+    margin: 0;
+    padding: 16px 20px 20px;
+    border: 1px solid rgb(229, 234, 236);
+    border-radius: 16px;
+    background: rgb(255, 255, 255);
+}
+
+.AdStageFieldsetContent {
+    margin-top: 12px;
+}
+
+.AdStageButtonGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(144px, max-content));
+    gap: 12px;
+}
+
+.AdStageGhostButton {
+    padding-left: 12px;
+}
+
+.AdStageFilterRow {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+}
+
+.AdStageFilterDropdownContainer,
+.AdCreativeMenuGroup,
+.AdCreativeSelect {
+    position: relative;
+}
+
+.AdStageFilterDropdownContainer {
+    display: flex;
+    align-items: stretch;
+    min-width: min(100%, 420px);
+}
+
+.AdStageFilterInput {
+    display: flex;
+    align-items: center;
+    min-width: 220px;
+    padding: 0 14px;
+    border: 1px solid rgb(207, 217, 222);
+    border-left: none;
+    border-radius: 0 8px 8px 0;
+    background: rgb(255, 255, 255);
+    color: rgb(83, 100, 113);
+    font-size: 15px;
+}
+
+.AdStageFilterMenu,
+.AdCreativeMentionMenu,
+.AdCreativeTypeMenu {
+    position: absolute;
+    top: calc(100% + 8px);
+    left: 0;
+    min-width: 100%;
+    width: max-content;
+}
+
+.AdStageTokenRow {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 16px;
+}
+
+.AdStageToken {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 10px;
+    border: 1px solid rgb(207, 217, 222);
+    border-radius: 999px;
+    background: rgb(247, 249, 249);
+}
+
+.AdStageTokenLabel {
+    color: rgb(15, 20, 25);
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.AdStageGenderGroup {
+    display: inline-flex;
+    margin-top: 16px;
+}
+
+.AdStageGenderButton {
+    border-radius: 0;
+}
+
+.AdStageGenderButton:first-child {
+    border-radius: 999px 0 0 999px;
+}
+
+.AdStageGenderButton:last-child {
+    border-radius: 0 999px 999px 0;
+}
+
+.AdStageGenderButton.is-selected {
+    background: rgb(15, 20, 25);
+    border-color: rgb(15, 20, 25);
+    color: rgb(255, 255, 255);
+}
+
+.AdCreativeMentionIcon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 16px;
+    margin-right: 4px;
+    font-size: 18px;
+    line-height: 1;
+    font-weight: 700;
+}
+
+.AdCreativeTypeCard {
+    display: grid;
+    gap: 16px;
+}
+
+.AdCreativeSelectTrigger {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    min-width: 200px;
+    padding: 10px 15px;
+    border: 1px solid rgb(209, 209, 209);
+    border-radius: 8px;
+    background: rgb(255, 255, 255);
+    color: rgb(15, 20, 25);
+    font-size: 15px;
+    font-weight: 400;
+}
+
+.AdCreativeSelectTrigger[aria-expanded="true"] {
+    border-color: rgb(29, 155, 240);
+    box-shadow: rgb(29, 155, 240) 0px 0px 0px 1px;
+}
+
+.AdCreativeRadioGrid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(180px, 1fr));
+    gap: 12px;
+}
+
+.AdCreativeRadioCard {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+    min-height: 180px;
+    padding: 16px;
+    border: 1px solid rgb(209, 209, 209);
+    border-radius: 12px;
+    background: rgb(255, 255, 255);
+    text-align: left;
+}
+
+.AdCreativeRadioCard.is-selected {
+    border: 1.5px solid rgb(23, 23, 23);
+    background: rgba(23, 23, 23, 0.05);
+}
+
+.AdCreativeRadioCard > .Icon {
+    position: absolute;
+    top: 14px;
+    right: 14px;
+}
+
+.AdCreativeRadioTitle {
+    color: rgb(15, 20, 25);
+    font-size: 16px;
+    font-weight: 700;
+}
+
+.AdCreativeRadioDescription {
+    color: rgb(83, 100, 113);
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+.AdCreativeCheckboxButton {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 18px;
+    height: 18px;
+    border: 1px solid rgb(207, 217, 222);
+    border-radius: 4px;
+    background: rgb(255, 255, 255);
+    color: rgb(255, 255, 255);
+    cursor: pointer;
+    transition: border-color 0.15s ease, background-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.AdCreativeCheckboxButton.is-checked {
+    border-color: rgb(23, 23, 23);
+    background: rgb(23, 23, 23);
+}
+
+.AdCreativeCheckboxButton:focus-visible {
+    box-shadow: rgb(29, 155, 240) 0px 0px 0px 1px;
+    outline: none;
+}
+
+.AdCreativeCheckboxLabel {
+    color: rgb(15, 20, 25);
+    font-size: 14px;
+    font-weight: 600;
+    cursor: default;
+}
+
+.AdCreativePromoInfo {
+    padding-top: 2px;
+}
+
+.AdCreativeMentionMenu .DropdownMenuItem.is-selected::after,
+.AdCreativeTypeMenu .DropdownMenuItem.is-selected::after {
+    content: "✓";
+    margin-left: auto;
+    color: rgb(15, 20, 25);
+    font-weight: 700;
+}
+
+.AdCreativeMediaPanel {
+    overflow: hidden;
+    border: 1px solid rgb(229, 234, 236);
+    border-radius: 16px;
+    background: rgb(249, 251, 252);
+}
+
+.AdCreativeMediaPanelHeader {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 12px 16px;
+    border-bottom: 1px solid rgb(229, 234, 236);
+}
+
+.AdCreativeMediaPanelTitle {
+    color: rgb(15, 20, 25);
+    font-size: 15px;
+    font-weight: 700;
+}
+
+.AdCreativeCollapseButton {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 4px;
+    border: 0;
+    border-radius: 8px;
+    background: transparent;
+    color: rgb(83, 100, 113);
+}
+
+.AdCreativeMediaPanelBody {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 20px;
+}
+
+.AdCreativeMediaPreview {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 180px;
+    flex: 1 1 auto;
+    padding: 16px;
+    border: 1px dashed rgb(207, 217, 222);
+    border-radius: 14px;
+    background: rgb(255, 255, 255);
+    color: rgb(83, 100, 113);
+    font-size: 15px;
+    text-align: center;
+}
+
+.AdStageReviewCard {
+    display: grid;
+    gap: 10px;
+}
+
+.AdStageReviewLabel {
+    color: rgb(83, 100, 113);
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.AdStageReviewValue {
+    color: rgb(15, 20, 25);
+    font-size: 15px;
+}
+
+.AdCreativeMain {
+    display: flex;
+    flex: 1 1 auto;
+    flex-direction: column;
+    width: 100%;
+    padding: 0 20px 65px;
+    font-family: TwitterChirp, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+.AdCreativeMainGrid {
+    display: flex;
+    width: 100%;
+    min-width: 0;
+}
+
+.AdCreativeMainContent {
+    display: block;
+    flex: 1 1 0%;
+    min-width: 0;
+    margin-top: 80px;
+}
+
+.AdCreativePageHeader {
+    position: sticky;
+    top: 56px;
+    z-index: 30;
+    margin: 0 0 24px;
+    padding: 16px 24px;
+    border-bottom: 1px solid rgb(229, 234, 236);
+    background: rgb(255, 255, 255);
+}
+
+.AdCreativePageHeader .PageHeader-content {
+    min-height: 36px;
+    padding: 0;
+}
+
+.AdCreativePageHeader .PageHeader-header {
+    font-size: 23px;
+    line-height: 28px;
+}
+
+.AdCreativeHeaderActions {
+    gap: 16px;
+}
+
+.AdCreativeSectionGrid {
+    width: 100%;
+}
+
+.AdCreativeSectionGrid > .Grid-cell {
+    min-width: 0;
+}
+
+.AdCreativeCalloutWrap {
+    display: grid;
+    gap: 0;
+    margin-bottom: 28px;
+}
+
+.AdCreativeLayoutGrid {
+    grid-template-columns: minmax(0, 1fr) 405px;
+    max-width: 1280px;
+    gap: 40px;
+    padding: 0 30px;
+}
+
+.AdCreativeNavigatorPane {
+    display: flex;
+    flex: 1 1 auto;
+    flex-direction: column;
+    min-width: 0;
+}
+
+.AdCreativePreviewShellCell {
+    display: flex;
+    justify-content: flex-end;
+    min-width: 0;
+}
+
+.AdCreativeDetailsCard {
+    min-width: 0;
+    width: 100%;
+}
+
+.AdCreativeDetailsCardHeader {
+    padding: 30px 30px 0;
+}
+
+.AdCreativeDetailsHeaderRow {
+    width: 100%;
+    align-items: flex-start;
+}
+
+.AdCreativeDetailsCardTitle {
+    font-size: 18px;
+    font-weight: 700;
+}
+
+.AdCreativeDetailsCardBody {
+    padding: 0 30px 30px;
+}
+
+.AdCreativeFieldStack {
+    display: grid;
+    gap: 12px;
+}
+
+.AdCreativeIdentitySection {
+    padding-bottom: 0;
+}
+
+.AdCreativeIdentityRow {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.AdCreativeIdentityLink,
+.AdCreativeIdentityHandleLink,
+.AdCreativeTweetNameLink,
+.AdCreativeTweetHandleLink {
+    color: inherit;
+    text-decoration: none;
+}
+
+.AdCreativeIdentityPrimary {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.AdCreativeIdentityNameRow {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.AdCreativeIdentitySecondary {
+    padding-top: 2px;
+}
+
+.AdCreativeMentionGlyph svg {
+    width: 18px;
+    height: 18px;
+    fill: currentColor;
+}
+
+.AdCreativeTweetComposer {
+    position: relative;
+    min-height: 116px;
+    padding: 14px 18px 38px;
+}
+
+.AdCreativeTweetComposerEditor {
+    min-height: 64px;
+    color: rgb(15, 20, 25);
+    font-size: 17px;
+    line-height: 1.45;
+    white-space: pre-wrap;
+    word-break: break-word;
+    outline: none;
+}
+
+.AdCreativeTweetComposerEditor.is-empty {
+    color: transparent;
+}
+
+.AdCreativeTweetComposerPlaceholder {
+    position: absolute;
+    top: 14px;
+    right: 18px;
+    left: 18px;
+    color: rgb(139, 152, 165);
+    font-size: 17px;
+    line-height: 1.45;
+    pointer-events: none;
+}
+
+.AdCreativeTweetComposerEditor:not(.is-empty) + .AdCreativeTweetComposerPlaceholder {
+    display: none;
+}
+
+.AdCreativeTweetComposerProgressContainer {
+    position: absolute;
+    right: 10px;
+    bottom: 10px;
+}
+
+.AdCreativeTweetComposerProgressRadial {
+    display: block;
+    width: 20px;
+    height: 20px;
+}
+
+.AdCreativeTweetComposerProgressTrack {
+    stroke: rgb(239, 243, 244);
+    stroke-width: 2;
+}
+
+.AdCreativeTweetComposerProgressCircle {
+    stroke: rgb(29, 155, 240);
+    stroke-width: 2;
+    transform: rotate(-90deg);
+    transform-origin: 50% 50%;
+}
+
+.AdCreativeMediaCtaGroup {
+    display: inline-flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.AdCreativeValidationMessage {
+    color: rgb(244, 33, 46);
+    font-size: 14px;
+    line-height: 1.4;
+}
+
+.AdCreativeFormatIndicator {
+    color: rgb(255, 255, 255);
+}
+
+.AdCreativeCheckboxIndicator {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.AdCreativeLibrarySlideFrame {
+    min-height: 100%;
+}
+
+.AdCreativeLibrarySeparator {
+    height: 1px;
+    background: rgb(229, 234, 236);
+}
+
+.AdCreativeMediaLibraryContentPanel {
+    gap: 16px;
+    padding: 12px 12px 16px;
+}
+
+.AdCreativeMediaTile {
+    aspect-ratio: 1.91045 / 1;
+    border: 2px solid transparent;
+    border-radius: 14px;
+}
+
+.AdCreativeMediaTile.is-selected {
+    border-color: rgb(29, 155, 240);
+}
+
+.AdCreativeMediaTileFrame {
+    width: 100%;
+    height: 100%;
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.AdCreativeMediaTileCheck {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 22px;
+    height: 22px;
+    border: 2px solid rgba(255, 255, 255, 0.8);
+    border-radius: 999px;
+    background: rgba(0, 0, 0, 0.3);
+    color: rgb(255, 255, 255);
+    box-shadow: rgba(0, 0, 0, 0.3) 0 1px 3px;
+}
+
+.AdCreativeMediaTileMeta {
+    padding: 20px 8px 6px;
+    border-radius: 0 0 12px 12px;
+    background: linear-gradient(transparent, rgba(0, 0, 0, 0.6));
+}
+
+.AdCreativeMediaTileName {
+    color: rgb(255, 255, 255);
+    font-size: 11px;
+    font-weight: 500;
+    line-height: 1.3;
+}
+
+.AdCreativePreviewPanel {
+    display: flex;
+    justify-content: flex-end;
+    width: min(405px, 100%);
+}
+
+.AdCreativePreviewChrome,
+.AdCreativePreviewSurface {
+    width: min(375px, 100%);
+}
+
+.AdCreativePreviewStack {
+    display: flex;
+    flex-direction: column;
+}
+
+.AdCreativePreviewRail svg {
+    display: block;
+    width: 100%;
+    height: auto;
+}
+
+.AdCreativePreviewViewport {
+    outline: none;
+}
+
+.AdCreativePreviewViewport:focus-visible {
+    outline: 2px solid rgb(29, 155, 240);
+    outline-offset: -2px;
+}
+
+.AdCreativeTweetArticle {
+    position: relative;
+    display: block;
+    background: rgb(255, 255, 255);
+}
+
+.AdCreativeTweetArticleRow {
+    display: flex;
+    gap: 10px;
+    padding: 14px 12px 12px;
+    border-bottom: 1px solid rgb(239, 243, 244);
+}
+
+.AdCreativeTweetAvatarColumn {
+    flex: 0 0 auto;
+}
+
+.AdCreativeTweetContentColumn {
+    flex: 1 1 auto;
+    min-width: 0;
+}
+
+.AdCreativeTweetHeaderRow {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+}
+
+.AdCreativeTweetMetaPrimary {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 6px;
+    min-width: 0;
+}
+
+.AdCreativePreviewMediaBlock {
+    margin-top: 12px;
+}
+
+.AdCreativePreviewMediaCard {
+    width: 100%;
+}
+
+.AdCreativePreviewMediaFrame {
+    overflow: hidden;
+    border-radius: 18px;
+    background: rgb(174, 184, 194);
+}
+
+.AdCreativePreviewMediaButton {
+    display: block;
+    width: 100%;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    text-align: left;
+}
+
+.AdCreativePreviewMediaAspect {
+    position: relative;
+    min-height: 300px;
+}
+
+.AdCreativePreviewMediaHeadlineWrap {
+    position: absolute;
+    right: 12px;
+    bottom: 12px;
+    left: 12px;
+    display: flex;
+    align-items: flex-end;
+    justify-content: flex-start;
+}
+
+.AdCreativePreviewMediaHeadlineText {
+    display: inline-flex;
+    align-items: center;
+    padding: 4px 8px;
+    border-radius: 6px;
+    background: rgba(15, 20, 25, 0.85);
+    color: rgb(255, 255, 255);
+    font-size: 12px;
+    font-weight: 700;
+    line-height: 1.2;
+}
+
+.AdCreativePreviewMediaSpacer {
+    display: none;
+}
+
+.AdCreativePreviewActionRail {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.AdCreativePreviewBadgeWrap {
+    color: rgb(83, 100, 113);
+}
+
+.AdCreativePreviewBadgeInner {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.AdCreativePreviewBadgeInner svg {
+    width: 18px;
+    height: 18px;
+    fill: currentColor;
+}
+
+.AdCreativeBottomSpacer {
+    height: 24px;
+}
+
+@media (max-width: 768px) {
+    .AdCreativeMain {
+        padding: 0 16px 40px;
+    }
+
+    .AdCreativeMainContent {
+        margin-top: 24px;
+    }
+
+    .AdCreativePageHeader {
+        position: static;
+        top: auto;
+        margin-bottom: 20px;
+        padding: 0 0 16px;
+    }
+
+    .AdCreativeLayoutGrid {
+        grid-template-columns: 1fr;
+        gap: 24px;
+        padding: 0;
+    }
+
+    .AdCreativePreviewShellCell,
+    .AdCreativePreviewPanel {
+        justify-content: flex-start;
+    }
+
+    .AdCreativeStageGrid,
+    .AdStagePageHeader .PageHeader-content,
+    .AdStageToolbarActions,
+    .AdStageInlineActions,
+    .AdStageFilterRow,
+    .AdCreativeMediaPanelBody {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .AdStageButtonGrid,
+    .AdCreativeRadioGrid,
+    .AdCreativeMediaTiles {
+        grid-template-columns: 1fr;
+    }
+
+    .AdStageContentGrid {
+        display: grid;
+        grid-template-columns: 1fr;
+    }
+
+    .AdCreativeStageGrid {
+        grid-template-columns: 1fr;
+    }
+
+    .AdStageSidebarColumn {
+        min-width: 0;
+    }
+
+    .AdStageSidebarSticky {
+        position: static;
+        top: auto;
+    }
+
+    .AdStageFilterDropdownContainer {
+        flex-direction: column;
+        min-width: 100%;
+    }
+
+    .AdStageFilterInput {
+        min-height: 44px;
+        border-left: 1px solid rgb(207, 217, 222);
+        border-top: none;
+        border-radius: 0 0 8px 8px;
+    }
+
+    .AdStagePageHeader .PageHeader-endContent {
+        width: 100%;
+        justify-content: flex-start;
+    }
+
+    .AdCreativeCardHeader,
+    .AdCreativeCardBody,
+    .AdCreativeMediaLibraryHeader,
+    .AdCreativeMediaLibraryBody {
+        padding-right: 18px;
+        padding-left: 18px;
+    }
+
+    .AdCreativeTweetInput {
+        min-height: 160px;
+    }
+
+    .AdCreativeTweetComposerEditor,
+    .AdCreativeTweetComposerPlaceholder {
+        font-size: 20px;
+    }
+
+    .AdCreativePreviewMediaPlaceholder,
+    .AdCreativePreviewMediaImage {
+        min-height: 220px;
+    }
+}
+
+.ToastNotice {
+    position: fixed;
+    left: 50%;
+    bottom: 24px;
+    z-index: 1004;
+    transform: translateX(-50%);
+    padding: 10px 14px;
+    color: rgb(255, 255, 255);
+    background: rgb(15, 20, 25);
+    border-radius: 999px;
+    box-shadow: rgba(0, 0, 0, 0.25) 0px 8px 24px;
+}
+
+.MarketplaceAdApp {
+    display: flex;
+    min-height: 100vh;
+    padding-top: 56px;
+    color: rgb(15, 23, 42);
+    background: radial-gradient(circle at top left, rgba(14, 165, 233, 0.08), transparent 28%),
+    linear-gradient(180deg, rgb(247, 249, 252), rgb(241, 245, 249));
+}
+
+.MarketplaceAdSidebar {
+    position: sticky;
+    align-self: flex-start;
+    width: 280px;
+    min-width: 280px;
+    height: calc(100vh - 56px);
+    padding-bottom: 24px;
+    background: rgba(255, 255, 255, 0.86);
+    border-right: 1px solid rgba(148, 163, 184, 0.2);
+    backdrop-filter: blur(10px);
+}
+
+.MarketplaceAdSidebarFooter {
+    padding: 0 16px 16px;
+}
+
+.MarketplaceAdSidebarCard {
+    padding: 16px;
+    color: rgb(15, 23, 42);
+    background: linear-gradient(135deg, rgba(15, 118, 110, 0.08), rgba(14, 165, 233, 0.12));
+    border: 1px solid rgba(14, 165, 233, 0.18);
+    border-radius: 18px;
+}
+
+.MarketplaceAdSidebarCardEyebrow,
+.MarketplaceAdEyebrow,
+.MarketplaceAdPanelEyebrow {
+    margin: 0 0 6px;
+    font-size: 12px;
+    font-weight: 700;
+    color: rgb(14, 116, 144);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+.MarketplaceAdSidebarCard strong {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 15px;
+}
+
+.MarketplaceAdSidebarCard p:last-child {
+    margin: 0;
+    font-size: 13px;
+    line-height: 1.6;
+    color: rgb(71, 85, 105);
+}
+
+.MarketplaceAdMain {
+    flex: 1;
+    min-width: 0;
+    padding: 0 32px 96px;
+}
+
+.MarketplaceAdPageHeader {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 24px;
+}
+
+.MarketplaceAdPageTitle {
+    margin: 0;
+    font-size: 34px;
+    line-height: 1.15;
+    letter-spacing: -0.03em;
+}
+
+.MarketplaceAdPageDescription {
+    max-width: 720px;
+    margin: 10px 0 0;
+    font-size: 15px;
+    line-height: 1.7;
+    color: rgb(71, 85, 105);
+}
+
+.MarketplaceAdHeaderActions,
+.MarketplaceAdTableActions,
+.MarketplaceAdActionStack,
+.MarketplaceAdDetailActions {
+    display: flex;
+    gap: 10px;
+}
+
+.MarketplaceAdHeaderActions {
+    align-items: center;
+}
+
+.MarketplaceAdPrimaryButton,
+.MarketplaceAdSecondaryButton,
+.MarketplaceAdInlineButton,
+.MarketplaceAdTextButton,
+.MarketplaceAdModalClose,
+.MarketplaceAdDropdownItem {
+    appearance: none;
+    border: none;
+    cursor: pointer;
+    font: inherit;
+}
+
+.MarketplaceAdPrimaryButton,
+.MarketplaceAdSecondaryButton {
+    min-height: 44px;
+    padding: 0 18px;
+    border-radius: 999px;
+    font-size: 14px;
+    font-weight: 700;
+    transition: transform 0.16s ease, box-shadow 0.16s ease, background-color 0.16s ease;
+}
+
+.MarketplaceAdPrimaryButton {
+    color: rgb(255, 255, 255);
+    background: linear-gradient(135deg, rgb(15, 23, 42), rgb(30, 41, 59));
+    box-shadow: rgba(15, 23, 42, 0.2) 0 12px 24px -14px;
+}
+
+.MarketplaceAdPrimaryButton:hover {
+    transform: translateY(-1px);
+    box-shadow: rgba(15, 23, 42, 0.28) 0 16px 28px -16px;
+}
+
+.MarketplaceAdSecondaryButton {
+    color: rgb(15, 23, 42);
+    background: rgba(255, 255, 255, 0.88);
+    border: 1px solid rgba(148, 163, 184, 0.24);
+}
+
+.MarketplaceAdSecondaryButton:hover {
+    background: rgb(255, 255, 255);
+}
+
+.MarketplaceAdSecondaryButton--block,
+.MarketplaceAdPrimaryButton--block {
+    width: 100%;
+}
+
+.MarketplaceAdInlineButton,
+.MarketplaceAdTextButton {
+    padding: 0;
+    color: rgb(3, 105, 161);
+    background: transparent;
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.MarketplaceAdView[hidden] {
+    display: none !important;
+}
+
+.MarketplaceAdDropdown[hidden],
+.MarketplaceAdToast[hidden],
+.MarketplaceAdModalOverlay[hidden],
+.MarketplaceAdModal[hidden] {
+    display: none !important;
+}
+
+.MarketplaceAdHero {
+    display: grid;
+    grid-template-columns: minmax(0, 1.3fr) minmax(260px, 0.9fr);
+    gap: 24px;
+    padding: 28px;
+    margin-bottom: 24px;
+    color: rgb(255, 255, 255);
+    background: radial-gradient(circle at top right, rgba(125, 211, 252, 0.28), transparent 30%),
+    linear-gradient(135deg, rgb(15, 23, 42), rgb(12, 74, 110));
+    border-radius: 28px;
+    box-shadow: rgba(15, 23, 42, 0.12) 0 30px 60px -32px;
+}
+
+.MarketplaceAdHeroBadge {
+    display: inline-flex;
+    align-items: center;
+    min-height: 28px;
+    padding: 0 12px;
+    margin-bottom: 14px;
+    font-size: 12px;
+    font-weight: 700;
+    color: rgb(224, 242, 254);
+    background: rgba(255, 255, 255, 0.12);
+    border-radius: 999px;
+}
+
+.MarketplaceAdHero h2 {
+    margin: 0 0 12px;
+    font-size: 30px;
+    line-height: 1.18;
+    letter-spacing: -0.04em;
+}
+
+.MarketplaceAdHero p {
+    margin: 0;
+    font-size: 15px;
+    line-height: 1.7;
+    color: rgba(226, 232, 240, 0.92);
+}
+
+.MarketplaceAdHeroStats {
+    display: grid;
+    gap: 12px;
+}
+
+.MarketplaceAdHeroStat {
+    padding: 18px;
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 18px;
+}
+
+.MarketplaceAdHeroStatValue {
+    display: block;
+    margin-bottom: 6px;
+    font-size: 24px;
+    font-weight: 800;
+}
+
+.MarketplaceAdHeroStatLabel {
+    display: block;
+    font-size: 13px;
+    color: rgba(226, 232, 240, 0.82);
+}
+
+.MarketplaceAdApplyLayout,
+.MarketplaceAdDetailGrid {
+    display: grid;
+    grid-template-columns: minmax(0, 1.42fr) minmax(320px, 0.88fr);
+    gap: 24px;
+}
+
+.MarketplaceAdPrimaryColumn,
+.MarketplaceAdSideColumn {
+    display: grid;
+    gap: 24px;
+    align-content: start;
+}
+
+.MarketplaceAdPanel {
+    overflow: hidden;
+    background: rgba(255, 255, 255, 0.88);
+    border: 1px solid rgba(226, 232, 240, 0.92);
+    border-radius: 24px;
+    box-shadow: rgba(15, 23, 42, 0.05) 0 20px 36px -28px;
+    backdrop-filter: blur(12px);
+}
+
+.MarketplaceAdPanel--full {
+    grid-column: 1 / -1;
+}
+
+.MarketplaceAdPanelHeader {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 24px 24px 0;
+}
+
+.MarketplaceAdPanelHeader h3 {
+    margin: 0;
+    font-size: 20px;
+    line-height: 1.3;
+    letter-spacing: -0.02em;
+}
+
+.MarketplaceAdPanelBody {
+    padding: 24px;
+}
+
+.MarketplaceAdFormGrid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 18px 16px;
+}
+
+.MarketplaceAdFormGrid--compact {
+    margin-top: 18px;
+}
+
+.MarketplaceAdField {
+    display: grid;
+    gap: 8px;
+    min-width: 0;
+}
+
+.MarketplaceAdField--full {
+    grid-column: 1 / -1;
+}
+
+.MarketplaceAdField > span,
+.MarketplaceAdLabel {
+    font-size: 13px;
+    font-weight: 700;
+    color: rgb(51, 65, 85);
+}
+
+.MarketplaceAdInput,
+.MarketplaceAdTextarea {
+    width: 100%;
+    min-width: 0;
+    padding: 0 14px;
+    color: rgb(15, 23, 42);
+    background: rgb(255, 255, 255);
+    border: 1px solid rgb(203, 213, 225);
+    border-radius: 16px;
+    outline: none;
+    transition: border-color 0.16s ease, box-shadow 0.16s ease;
+}
+
+.MarketplaceAdInput {
+    height: 48px;
+}
+
+.MarketplaceAdTextarea {
+    min-height: 144px;
+    padding-top: 14px;
+    padding-bottom: 14px;
+    resize: vertical;
+}
+
+.MarketplaceAdInput:focus,
+.MarketplaceAdTextarea:focus {
+    border-color: rgb(14, 165, 233);
+    box-shadow: rgba(14, 165, 233, 0.15) 0 0 0 4px;
+}
+
+.MarketplaceAdSectionBlock + .MarketplaceAdSectionBlock,
+.MarketplaceAdAssetBox + .MarketplaceAdNotice {
+    margin-top: 22px;
+}
+
+.MarketplaceAdSelectableGrid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 12px;
+    margin-top: 10px;
+}
+
+.MarketplaceAdSelectableCard {
+    display: grid;
+    gap: 8px;
+    padding: 18px;
+    text-align: left;
+    background: rgb(248, 250, 252);
+    border: 1px solid rgb(226, 232, 240);
+    border-radius: 18px;
+}
+
+.MarketplaceAdSelectableCard strong {
+    font-size: 15px;
+}
+
+.MarketplaceAdSelectableCard span {
+    font-size: 13px;
+    line-height: 1.55;
+    color: rgb(100, 116, 139);
+}
+
+.MarketplaceAdSelectableCard.is-selected {
+    background: linear-gradient(180deg, rgba(224, 242, 254, 0.95), rgba(239, 246, 255, 0.95));
+    border-color: rgba(14, 165, 233, 0.45);
+    box-shadow: rgba(14, 165, 233, 0.14) 0 16px 28px -22px;
+}
+
+.MarketplaceAdRowBetween {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+}
+
+.MarketplaceAdChipGroup {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 10px;
+}
+
+.MarketplaceAdChip {
+    display: inline-flex;
+    align-items: center;
+    min-height: 34px;
+    padding: 0 12px;
+    font-size: 12px;
+    font-weight: 700;
+    color: rgb(14, 116, 144);
+    background: rgb(236, 254, 255);
+    border: 1px solid rgba(45, 212, 191, 0.28);
+    border-radius: 999px;
+}
+
+.MarketplaceAdAssetBox,
+.MarketplaceAdNotice,
+.MarketplaceAdPaymentStatus {
+    padding: 18px;
+    background: rgb(248, 250, 252);
+    border: 1px solid rgb(226, 232, 240);
+    border-radius: 18px;
+}
+
+.MarketplaceAdAssetBox p,
+.MarketplaceAdNotice p,
+.MarketplaceAdPaymentStatus {
+    margin: 8px 0 0;
+    font-size: 13px;
+    line-height: 1.65;
+    color: rgb(71, 85, 105);
+}
+
+.MarketplaceAdAssetActions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 12px;
+    margin-top: 14px;
+}
+
+.MarketplaceAdAssetName {
+    font-size: 13px;
+    color: rgb(51, 65, 85);
+}
+
+.MarketplaceAdSummaryRow {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 14px 0;
+    border-bottom: 1px solid rgba(226, 232, 240, 0.84);
+}
+
+.MarketplaceAdSummaryRow:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+}
+
+.MarketplaceAdSummaryRow span {
+    font-size: 13px;
+    color: rgb(100, 116, 139);
+}
+
+.MarketplaceAdSummaryRow strong {
+    font-size: 14px;
+    text-align: right;
+}
+
+.MarketplaceAdSummaryRow--accent strong {
+    color: rgb(15, 118, 110);
+}
+
+/* 예상 그룹 강조 박스 — mockups/ad-registration-plan.html .predict-card 의 시각을 그대로 사용. 세로 1열. */
+.MarketplaceAdEstimateCard {
+    border: 1.5px solid #7856ff;
+    background: linear-gradient(135deg, #ffffff 0%, #f0ecff 100%);
+    border-radius: 14px;
+    padding: 18px;
+    margin-bottom: 16px;
+}
+
+.MarketplaceAdEstimateHeader {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 14px;
+    color: #4c2db8;
+    font-weight: 800;
+    font-size: 13px;
+    letter-spacing: 0.02em;
+}
+
+/* 마법봉 — 흰 SVG 를 violet 그라데이션 pill 안에 넣어 시각적 임팩트 강조 */
+.MarketplaceAdEstimateIcon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+    height: 30px;
+    border-radius: 10px;
+    background: linear-gradient(135deg, #7856ff 0%, #b48bff 100%);
+    color: #ffffff;
+    box-shadow: 0 6px 14px rgba(120, 86, 255, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.25);
+    flex: 0 0 auto;
+}
+
+.MarketplaceAdEstimateIcon svg {
+    width: 18px;
+    height: 18px;
+    filter: drop-shadow(0 1px 2px rgba(76, 45, 184, 0.35));
+}
+
+.MarketplaceAdEstimateTitle {
+    flex: 1 1 auto;
+    min-width: 0;
+}
+
+/* 우측 끝 AI 배지 — violet 그라데이션 + 화이트 텍스트 + 부드러운 글로우 */
+.MarketplaceAdEstimateBadge {
+    margin-left: auto;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 4px 10px;
+    background: linear-gradient(135deg, #7856ff 0%, #c084fc 100%);
+    color: #ffffff;
+    font-size: 10.5px;
+    font-weight: 900;
+    letter-spacing: 0.14em;
+    border-radius: 999px;
+    box-shadow: 0 3px 10px rgba(120, 86, 255, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.3);
+    text-transform: uppercase;
+    flex: 0 0 auto;
+}
+
+.MarketplaceAdEstimateBadgeSpark {
+    font-size: 9px;
+    opacity: 0.95;
+}
+
+.MarketplaceAdEstimateGrid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 12px;
+}
+
+/* 예상 노출 + 예상 노출 시간 — 한 줄 45% × 2 */
+.MarketplaceAdEstimateRow {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+.MarketplaceAdEstimateRow .MarketplaceAdEstimateItem {
+    width: 48%;
+    flex: 0 0 48%;
+    min-width: 0;
+}
+
+/* 좁은 48% 박스 안에서 긴 값(예: "약 4267시간 31분") 이 줄바꿈되지 않도록 nowrap. */
+.MarketplaceAdEstimateRow .MarketplaceAdEstimateValue {
+    white-space: nowrap;
+}
+
+.MarketplaceAdEstimateItem {
+    background: #ffffff;
+    border: 1px solid #e3e8ec;
+    border-radius: 10px;
+    padding: 12px;
+}
+
+.MarketplaceAdEstimateLabel {
+    font-size: 11px;
+    color: rgb(83, 100, 113);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
+
+.MarketplaceAdEstimateValue {
+    font-size: 18px;
+    font-weight: 900;
+    color: rgb(15, 20, 25);
+    margin-top: 4px;
+}
+
+.MarketplaceAdPreviewSurface {
+    display: grid;
+    gap: 14px;
+    padding: 22px;
+    color: rgb(15, 23, 42);
+    background: linear-gradient(180deg, rgb(255, 255, 255), rgb(248, 250, 252));
+    border: 1px solid rgb(226, 232, 240);
+    border-radius: 22px;
+}
+
+.MarketplaceAdPreviewSurface--detail {
+    min-height: 100%;
+}
+
+.MarketplaceAdPreviewHeader {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.MarketplaceAdPreviewAvatar {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    font-size: 13px;
+    font-weight: 800;
+    color: rgb(255, 255, 255);
+    background: linear-gradient(135deg, rgb(2, 132, 199), rgb(15, 118, 110));
+    border-radius: 50%;
+}
+
+.MarketplaceAdPreviewHeader strong,
+.MarketplaceAdPreviewCardFoot strong {
+    display: block;
+}
+
+.MarketplaceAdPreviewHeader span,
+.MarketplaceAdPreviewCardFoot span,
+.MarketplaceAdPreviewMeta span {
+    font-size: 12px;
+    color: rgb(100, 116, 139);
+}
+
+.MarketplaceAdPreviewSurface h4 {
+    margin: 0;
+    font-size: 22px;
+    line-height: 1.35;
+    letter-spacing: -0.03em;
+}
+
+.MarketplaceAdPreviewSurface p {
+    margin: 0;
+    font-size: 14px;
+    line-height: 1.75;
+    color: rgb(51, 65, 85);
+}
+
+.MarketplaceAdPreviewMeta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.MarketplaceAdPreviewCta {
+    min-height: 42px;
+    padding: 0 18px;
+    font-size: 14px;
+    font-weight: 700;
+    color: rgb(255, 255, 255);
+    background: linear-gradient(135deg, rgb(2, 132, 199), rgb(6, 182, 212));
+    border: none;
+    border-radius: 999px;
+}
+
+.MarketplaceAdToolbar,
+.MarketplaceAdStatsGrid {
+    display: grid;
+    gap: 14px;
+}
+
+.MarketplaceAdToolbar {
+    grid-template-columns: minmax(0, 1fr) 180px auto;
+    margin-bottom: 20px;
+}
+
+.MarketplaceAdStatsGrid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    margin-bottom: 20px;
+}
+
+.MarketplaceAdStatCard,
+.MarketplaceAdMetricCard {
+    padding: 18px 20px;
+    background: rgba(255, 255, 255, 0.9);
+    border: 1px solid rgb(226, 232, 240);
+    border-radius: 20px;
+}
+
+.MarketplaceAdStatCard span,
+.MarketplaceAdMetricCard span {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 12px;
+    font-weight: 700;
+    color: rgb(100, 116, 139);
+    text-transform: uppercase;
+}
+
+.MarketplaceAdStatCard strong,
+.MarketplaceAdMetricCard strong {
+    font-size: 24px;
+    letter-spacing: -0.03em;
+}
+
+.MarketplaceAdTableWrap {
+    overflow: hidden;
+    background: rgba(255, 255, 255, 0.9);
+    border: 1px solid rgb(226, 232, 240);
+    border-radius: 24px;
+}
+
+.MarketplaceAdTable {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.MarketplaceAdTable th,
+.MarketplaceAdTable td {
+    padding: 18px 16px;
+    text-align: left;
+    vertical-align: middle;
+    border-bottom: 1px solid rgba(226, 232, 240, 0.9);
+}
+
+.MarketplaceAdTable th {
+    font-size: 12px;
+    font-weight: 800;
+    color: rgb(100, 116, 139);
+    text-transform: uppercase;
+    background: rgba(248, 250, 252, 0.95);
+}
+
+.MarketplaceAdTable td {
+    font-size: 14px;
+    color: rgb(30, 41, 59);
+}
+
+.MarketplaceAdTable tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.MarketplaceAdStatusBadge {
+    display: inline-flex;
+    align-items: center;
+    min-height: 30px;
+    padding: 0 12px;
+    font-size: 12px;
+    font-weight: 800;
+    border-radius: 999px;
+}
+
+.MarketplaceAdStatusBadge.is-pending {
+    color: rgb(146, 64, 14);
+    background: rgb(254, 243, 199);
+}
+
+.MarketplaceAdStatusBadge.is-completed {
+    color: rgb(71, 85, 105);
+    background: rgb(226, 232, 240);
+}
+
+.MarketplaceAdEmptyState {
+    padding: 48px 24px;
+    text-align: center;
+}
+
+.MarketplaceAdEmptyState strong {
+    display: block;
+    margin-bottom: 6px;
+}
+
+.MarketplaceAdEmptyState p {
+    margin: 0;
+    color: rgb(100, 116, 139);
+}
+
+.MarketplaceAdMetricGrid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 16px;
+    margin: 20px 0 24px;
+}
+
+.MarketplaceAdInfoList {
+    display: grid;
+    gap: 12px;
+}
+
+.MarketplaceAdInfoRow {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 16px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid rgba(226, 232, 240, 0.84);
+}
+
+.MarketplaceAdInfoRow:last-child {
+    padding-bottom: 0;
+    border-bottom: none;
+}
+
+.MarketplaceAdInfoRow span {
+    font-size: 13px;
+    color: rgb(100, 116, 139);
+}
+
+.MarketplaceAdInfoRow strong {
+    max-width: 60%;
+    text-align: right;
+    font-size: 14px;
+}
+
+.MarketplaceAdTimeline {
+    display: grid;
+    gap: 14px;
+}
+
+.MarketplaceAdTimelineItem {
+    padding: 16px 18px;
+    background: rgb(248, 250, 252);
+    border: 1px solid rgb(226, 232, 240);
+    border-radius: 18px;
+}
+
+.MarketplaceAdTimelineItem strong {
+    display: block;
+    margin-bottom: 6px;
+}
+
+.MarketplaceAdTimelineItem span {
+    font-size: 13px;
+    line-height: 1.6;
+    color: rgb(71, 85, 105);
+}
+
+.MarketplaceAdDropdown {
+    position: fixed;
+    z-index: 1200;
+    display: grid;
+    width: 180px;
+    padding: 8px;
+    background: rgb(255, 255, 255);
+    border: 1px solid rgba(226, 232, 240, 0.96);
+    border-radius: 18px;
+    box-shadow: rgba(15, 23, 42, 0.18) 0 20px 38px -26px;
+}
+
+.MarketplaceAdDropdownItem {
+    min-height: 38px;
+    padding: 0 12px;
+    text-align: left;
+    color: rgb(15, 23, 42);
+    background: transparent;
+    border-radius: 12px;
+}
+
+.MarketplaceAdDropdownItem:hover {
+    background: rgb(248, 250, 252);
+}
+
+.MarketplaceAdToast {
+    position: fixed;
+    left: 50%;
+    bottom: 28px;
+    z-index: 1300;
+    min-width: 220px;
+    padding: 12px 18px;
+    color: rgb(255, 255, 255);
+    text-align: center;
+    background: rgb(15, 23, 42);
+    border-radius: 999px;
+    transform: translateX(-50%);
+    box-shadow: rgba(15, 23, 42, 0.28) 0 18px 36px -18px;
+}
+
+.MarketplaceAdModalOverlay {
+    position: fixed;
+    inset: 0;
+    z-index: 1250;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    background: rgba(15, 23, 42, 0.48);
+    backdrop-filter: blur(6px);
+}
+
+.MarketplaceAdModal {
+    width: min(480px, 100%);
+    max-height: calc(100vh - 48px);
+    overflow: auto;
+    background: rgb(255, 255, 255);
+    border-radius: 28px;
+    box-shadow: rgba(15, 23, 42, 0.24) 0 32px 56px -24px;
+}
+
+.MarketplaceAdModalHeader,
+.MarketplaceAdModalFooter {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 22px 24px;
+}
+
+.MarketplaceAdModalHeader {
+    border-bottom: 1px solid rgba(226, 232, 240, 0.9);
+}
+
+.MarketplaceAdModalBody {
+    padding: 24px;
+}
+
+.MarketplaceAdModalClose {
+    min-height: 38px;
+    padding: 0 14px;
+    color: rgb(71, 85, 105);
+    background: rgb(248, 250, 252);
+    border-radius: 999px;
+}
+
+.MarketplaceAdPlanCard,
+.MarketplaceAdCheckItem {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    width: 100%;
+    padding: 16px 18px;
+    background: rgb(248, 250, 252);
+    border: 1px solid rgb(226, 232, 240);
+    border-radius: 18px;
+}
+
+.MarketplaceAdPlanCard + .MarketplaceAdPlanCard {
+    margin-top: 12px;
+}
+
+.MarketplaceAdPlanCard input {
+    margin: 0;
+}
+
+.MarketplaceAdPlanCard div {
+    flex: 1;
+    display: grid;
+    gap: 4px;
+}
+
+.MarketplaceAdPlanCard div span {
+    font-size: 13px;
+    color: rgb(100, 116, 139);
+}
+
+.MarketplaceAdPlanCard em {
+    font-style: normal;
+    font-size: 13px;
+    font-weight: 700;
+    color: rgb(3, 105, 161);
+}
+
+.MarketplaceAdPlanCard.is-selected {
+    background: rgb(240, 249, 255);
+    border-color: rgba(14, 165, 233, 0.35);
+}
+
+.MarketplaceAdCheckGrid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+}
+
+.MarketplaceAdGuideList {
+    padding-left: 18px;
+    margin: 0;
+    line-height: 1.8;
+    color: rgb(51, 65, 85);
+}
+
+.MarketplaceAdGuideList li + li {
+    margin-top: 8px;
+}
+
+.is-hidden-row {
+    display: none;
+}
+
+@media (max-width: 1280px) {
+    .MarketplaceAdApplyLayout,
+    .MarketplaceAdDetailGrid {
+        grid-template-columns: 1fr;
+    }
+
+    .MarketplaceAdStatsGrid,
+    .MarketplaceAdMetricGrid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 1024px) {
+    .MarketplaceAdApp {
+        display: block;
+    }
+
+    .MarketplaceAdSidebar {
+        position: static;
+        width: 100%;
+        min-width: 0;
+        height: auto;
+    }
+
+    .MarketplaceAdMain {
+        padding: 0 18px 88px;
+    }
+
+    .MarketplaceAdPageHeader,
+    .MarketplaceAdToolbar,
+    .MarketplaceAdHero {
+        grid-template-columns: 1fr;
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .MarketplaceAdHeaderActions,
+    .MarketplaceAdDetailActions {
+        flex-wrap: wrap;
+    }
+
+    .MarketplaceAdSelectableGrid,
+    .MarketplaceAdFormGrid,
+    .MarketplaceAdCheckGrid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 768px) {
+    .MarketplaceAdStatsGrid,
+    .MarketplaceAdMetricGrid {
+        grid-template-columns: 1fr;
+    }
+
+    .MarketplaceAdTableWrap {
+        overflow-x: auto;
+    }
+
+    .MarketplaceAdTable {
+        min-width: 860px;
+    }
+
+    .MarketplaceAdModalOverlay {
+        padding: 14px;
+    }
+
+    .MarketplaceAdModalHeader,
+    .MarketplaceAdModalBody,
+    .MarketplaceAdModalFooter,
+    .MarketplaceAdPanelHeader,
+    .MarketplaceAdPanelBody {
+        padding-right: 18px;
+        padding-left: 18px;
+    }
+
+    .MarketplaceAdHero,
+    .MarketplaceAdPanel,
+    .MarketplaceAdTableWrap,
+    .MarketplaceAdStatCard,
+    .MarketplaceAdMetricCard {
+        border-radius: 20px;
+    }
+}
+
+/* global gates advertisement center: simplified admin-style overrides */
+.MarketplaceAdApp {
+    margin-top: 20px;
+    min-height: calc(100vh - 56px);
+    padding-top: 0;
+    background: #fff;
+}
+
+.MarketplaceAdSidebar {
+    background: #fff;
+    border-right: 1px solid #cfd9de;
+    backdrop-filter: none;
+}
+
+.MarketplaceAdSidebarCard {
+    background: #f7f9f9;
+    border: 1px solid #eff3f4;
+    border-radius: 12px;
+    box-shadow: none;
+}
+
+.MarketplaceAdSidebarCardEyebrow,
+.MarketplaceAdEyebrow,
+.MarketplaceAdPanelEyebrow {
+    color: #536471;
+    letter-spacing: 0.04em;
+}
+
+.MarketplaceAdMain {
+    padding: 0 24px 88px;
+    background: #fff;
+}
+
+.MarketplaceAdPageTitle {
+    font-size: 32px;
+}
+
+.MarketplaceAdPageDescription {
+    max-width: 760px;
+    color: #536471;
+}
+
+.NavigationBarBrandLogo {
+    width: 32px;
+    height: 32px;
+    display: block;
+    flex-shrink: 0;
+    object-fit: contain;
+}
+
+.MarketplaceAdPrimaryButton,
+.MarketplaceAdSecondaryButton {
+    min-height: 40px;
+    border-radius: 999px;
+    box-shadow: none;
+    transform: none;
+}
+
+.MarketplaceAdPrimaryButton,
+.MarketplaceAdPrimaryButton:hover {
+    color: #fff;
+    background: #0f1419;
+}
+
+.MarketplaceAdSecondaryButton,
+.MarketplaceAdSecondaryButton:hover {
+    color: #0f1419;
+    background: #fff;
+    border: 1px solid #cfd9de;
+}
+
+.MarketplaceAdContent {
+    width: min(1180px, 100%);
+    margin: 0 auto 0 0;
+    margin-top: 15px;
+}
+
+.MarketplaceAdPageHeader {
+    width: min(1180px, 100%);
+    margin: 0 auto 0 0;
+}
+
+.MarketplaceAdApplyLayout,
+.MarketplaceAdDetailGrid {
+    grid-template-columns: minmax(0, 1.18fr) minmax(300px, 0.76fr);
+    gap: 16px;
+}
+
+.MarketplaceAdDetailGrid--simple {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.MarketplaceAdPanel {
+    border: 1px solid #eff3f4;
+    border-radius: 16px;
+    background: #fff;
+    box-shadow: none;
+    backdrop-filter: none;
+}
+
+.MarketplaceAdPanelHeader,
+.MarketplaceAdPanelBody {
+    padding: 18px 20px;
+}
+
+.MarketplaceAdPanelHeader {
+    border-bottom: 1px solid #eff3f4;
+}
+
+.MarketplaceAdPanelHeader--withActions {
+    align-items: flex-start;
+}
+
+.MarketplaceAdPanelHeader h3 {
+    font-size: 20px;
+}
+
+.MarketplaceAdFormGrid--single {
+    grid-template-columns: 1fr;
+}
+
+.MarketplaceAdInput,
+.MarketplaceAdTextarea {
+    border: 1px solid #cfd9de;
+    border-radius: 12px;
+    background: #fff;
+    box-shadow: none;
+}
+
+.MarketplaceAdInput:focus,
+.MarketplaceAdTextarea:focus {
+    border-color: #0f1419;
+    box-shadow: none;
+}
+
+.MarketplaceAdTextarea {
+    min-height: 180px;
+}
+
+.MarketplaceAdFileRow {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 6px;
+}
+
+.MarketplaceAdButtonGroup--uniform {
+    --marketplace-ad-button-width: fit-content;
+}
+
+.MarketplaceAdPrimaryButton,
+.MarketplaceAdSecondaryButton {
+    min-height: 32px;
+    padding: 0 9px;
+    font-size: 12px;
+}
+
+.MarketplaceAdButtonGroup--uniform > .MarketplaceAdPrimaryButton,
+.MarketplaceAdButtonGroup--uniform > .MarketplaceAdSecondaryButton {
+    width: fit-content;
+    min-width: 0;
+    justify-content: center;
+    white-space: nowrap;
+}
+
+.MarketplaceAdHeaderActions.MarketplaceAdButtonGroup--uniform {
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    gap: 6px;
+}
+
+.MarketplaceAdActionStack.MarketplaceAdButtonGroup--uniform {
+    align-items: flex-start;
+    gap: 8px;
+}
+
+.MarketplaceAdActionStack.MarketplaceAdButtonGroup--uniform > .MarketplaceAdPrimaryButton,
+.MarketplaceAdActionStack.MarketplaceAdButtonGroup--uniform > .MarketplaceAdSecondaryButton {
+    width: fit-content;
+}
+
+.MarketplaceAdSecondaryButton--block,
+.MarketplaceAdPrimaryButton--block {
+    width: fit-content;
+}
+
+.MarketplaceAdModalFooter > .MarketplaceAdPrimaryButton {
+    width: fit-content;
+    min-width: 0;
+    justify-content: center;
+}
+
+.MarketplaceAdAttachmentName,
+.MarketplaceAdFormNote,
+.MarketplaceAdPreviewCardMeta,
+.MarketplaceAdPreviewLink,
+.MarketplaceAdPreviewAttachment,
+.MarketplaceAdDetailBody,
+.MarketplaceAdGuideList,
+.MarketplaceAdPaymentStatus,
+.MarketplaceAdInfoRow span,
+.MarketplaceAdSummaryRow span {
+    color: #536471;
+}
+
+.MarketplaceAdFormNote {
+    margin-top: 16px;
+    font-size: 13px;
+    line-height: 1.7;
+}
+
+.MarketplaceAdAttachmentName {
+    flex: 1 1 100%;
+    min-width: 0;
+}
+
+.MarketplaceAdInputGroup {
+    position: relative;
+}
+
+.MarketplaceAdInputPrefix {
+    position: absolute;
+    top: 50%;
+    left: 16px;
+    transform: translateY(-50%);
+    color: #536471;
+    font-size: 14px;
+    font-weight: 700;
+    pointer-events: none;
+}
+
+.MarketplaceAdInput--withPrefix {
+    padding-left: 38px;
+}
+
+.MarketplaceAdFieldHint {
+    display: inline-flex;
+    margin-top: 8px;
+    color: #536471;
+    font-size: 12px;
+    line-height: 1.5;
+}
+
+.MarketplaceAdAttachmentPreview {
+    margin-top: 10px;
+    padding: 8px;
+    border: 1px dashed #cfd9de;
+    border-radius: 10px;
+    background: #f8fafc;
+}
+
+.MarketplaceAdAttachmentPreviewList,
+.MarketplaceAdPreviewAttachmentGallery {
+    display: grid;
+    gap: 12px;
+}
+
+.MarketplaceAdAttachmentPreviewList {
+    grid-template-columns: repeat(auto-fit, minmax(84px, 1fr));
+    gap: 8px;
+}
+
+.MarketplaceAdPreviewAttachmentGallery {
+    grid-template-columns: repeat(auto-fit, minmax(92px, 1fr));
+}
+
+.MarketplaceAdAttachmentCard {
+    min-width: 0;
+    position: relative;
+    display: grid;
+    gap: 4px;
+}
+
+.MarketplaceAdAttachmentCardThumb {
+    aspect-ratio: 1 / 1;
+    border: 1px solid #e5eaec;
+    border-radius: 8px;
+    background: #eef2f4 center / cover no-repeat;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    color: #0f1419;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+}
+
+.MarketplaceAdAttachmentCardThumb[data-file-kind="video"] {
+    color: #fff;
+    background-color: #0f1419;
+    border-color: #0f1419;
+}
+
+.MarketplaceAdAttachmentCardName {
+    min-width: 0;
+    color: #536471;
+    font-size: 10px;
+    line-height: 1.25;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.MarketplaceAdAttachmentRemoveButton {
+    position: absolute;
+    top: 6px;
+    right: 6px;
+    z-index: 1;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 18px;
+    height: 18px;
+    padding: 0;
+    border: 0;
+    border-radius: 999px;
+    background: rgba(15, 20, 25, 0.72);
+    color: #fff;
+    font-size: 12px;
+    line-height: 1;
+}
+
+.MarketplaceAdAttachmentRemoveButton:hover {
+    background: rgba(15, 20, 25, 0.9);
+}
+
+.MarketplaceAdAttachmentPreview[hidden] {
+    display: none !important;
+}
+
+.MarketplaceAdAttachmentCard.is-compact {
+    gap: 6px;
+}
+
+.MarketplaceAdAttachmentCard.is-compact .MarketplaceAdAttachmentCardThumb {
+    border-radius: 10px;
+}
+
+.MarketplaceAdAttachmentCard.is-compact .MarketplaceAdAttachmentCardName {
+    font-size: 11px;
+}
+
+.MarketplaceAdSummaryRow {
+    border-bottom: 1px solid #eff3f4;
+}
+
+.MarketplaceAdSummaryRow strong {
+    font-size: 13px;
+    text-align: right;
+    word-break: break-all;
+}
+
+.MarketplaceAdPreviewSurface {
+    gap: 12px;
+    padding: 20px;
+    background: #fff;
+    border: 1px solid #eff3f4;
+    border-radius: 12px;
+}
+
+.MarketplaceAdPreviewTitle {
+    display: block;
+    font-size: 16px;
+    font-weight: 700;
+    color: #0f1419;
+}
+
+.MarketplaceAdPreviewSurface h4 {
+    font-size: 18px;
+    line-height: 1.4;
+}
+
+.MarketplaceAdPreviewSurface p,
+.MarketplaceAdDetailBody {
+    font-size: 14px;
+    line-height: 1.75;
+}
+
+.MarketplaceAdPreviewAttachment {
+    display: grid;
+    gap: 10px;
+}
+
+.MarketplaceAdPreviewAttachmentLabel {
+    color: #536471;
+    font-size: 12px;
+    line-height: 1.5;
+    word-break: break-all;
+}
+
+.MarketplaceAdPreviewCard .MarketplaceAdPanelBody {
+    padding: 16px;
+}
+
+.AdCreativePreviewColumn {
+    width: 100%;
+    justify-self: stretch;
+}
+
+.AdCreativePreviewShell {
+    width: 100%;
+    max-width: 360px;
+    margin: 0 auto;
+}
+
+.AdCreativePreviewSourceButton {
+    cursor: default;
+}
+
+.AdCreativePreviewCard {
+    padding: 14px 14px 12px;
+}
+
+.AdCreativePreviewText {
+    margin: 4px 0 0 50px;
+    font-size: 14px;
+    line-height: 1.42;
+}
+
+.AdCreativePreviewMedia,
+.AdCreativePreviewSourceRow,
+.AdCreativePreviewActions {
+    margin-left: 50px;
+    max-width: calc(100% - 50px);
+}
+
+.AdCreativePreviewMediaPlaceholder {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    padding: 16px;
+    color: #536471;
+    font-size: 13px;
+    font-weight: 700;
+    line-height: 1.6;
+    text-align: center;
+}
+
+.AdCreativePreviewMediaGallery {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 2px;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    background: #fff;
+}
+
+.AdCreativePreviewMediaTile {
+    min-height: 0;
+    background: #eef2f4 center / cover no-repeat;
+}
+
+.AdCreativePreviewMediaPlaceholder[data-file-kind="video"] {
+    color: #fff;
+    background: #0f1419;
+}
+
+.AdCreativePreviewActions .AdCreativePreviewActionButton:disabled {
+    opacity: 1;
+    cursor: default;
+}
+
+.AdCreativePreviewMediaContent {
+    min-height: 0;
+    aspect-ratio: 1.91 / 1;
+    max-height: 180px;
+}
+
+.AdCreativePreviewMediaPlaceholder,
+.AdCreativePreviewMediaImage,
+.AdCreativePreviewMediaVideo {
+    min-height: 0;
+    max-height: 180px;
+}
+
+.AdCreativePreviewMediaImage {
+    height: 100%;
+    width: 100%;
+    object-fit: contain;
+    background: #eef2f4;
+}
+
+.AdCreativePreviewMediaVideo {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    background: #000;
+}
+
+.MarketplaceAdActionStack {
+    flex-direction: column;
+}
+
+.MarketplaceAdToolbar {
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+    width: 100%;
+    gap: 8px;
+}
+
+.MarketplaceAdToolbarFilter {
+    min-width: 140px;
+    max-width: 180px;
+    margin-left: auto;
+    font-weight: 700;
+}
+
+.MarketplaceAdPanelBody--table {
+    padding-top: 0;
+}
+
+.MarketplaceAdTableWrap {
+    max-width: 1180px;
+    margin: 0 auto 0 0;
+    border: 1px solid #eff3f4;
+    border-radius: 12px;
+    background: #fff;
+}
+
+.MarketplaceAdTable th {
+    color: #536471;
+    background: #fff;
+}
+
+.MarketplaceAdTable th,
+.MarketplaceAdTable td {
+    border-bottom: 1px solid #eff3f4;
+}
+
+.MarketplaceAdTableActions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.MarketplaceAdTextButton {
+    color: #0f1419;
+    font-size: 13px;
+}
+
+.AdListDetailButton {
+    display: inline-flex;
+    align-items: center;
+    white-space: nowrap;
+}
+
+.MarketplaceAdStatusBadge {
+    display: inline-block;
+    width: auto;
+    min-width: 0;
+    padding: 0;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+    color: #0f1419;
+    font-size: 12px;
+    font-weight: 800;
+    white-space: nowrap;
+    text-align: center;
+}
+
+.MarketplaceAdStatusBadge.is-reported {
+    color: #d92d20;
+    background: transparent;
+    border: 0;
+}
+
+.MarketplaceAdDetailHeader {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 20px;
+    margin-bottom: 20px;
+}
+
+.MarketplaceAdDetailTitleWrap h2 {
+    margin: 12px 0 8px;
+    font-size: 28px;
+}
+
+.MarketplaceAdDetailTitleWrap p {
+    margin: 0;
+    color: #536471;
+}
+
+.MarketplaceAdInfoRow {
+    border-bottom: 1px solid #eff3f4;
+}
+
+.MarketplaceAdInfoRow strong {
+    max-width: 64%;
+    color: #0f1419;
+}
+
+.MarketplaceAdModalOverlay {
+    background: rgba(15, 20, 25, 0.35);
+    backdrop-filter: none;
+}
+
+.MarketplaceAdModal {
+    border-radius: 16px;
+    box-shadow: none;
+}
+
+.MarketplaceAdModalHeader,
+.MarketplaceAdModalFooter {
+    padding: 18px 24px;
+}
+
+.MarketplaceAdModalHeader {
+    border-bottom: 1px solid #eff3f4;
+}
+
+.MarketplaceAdModalBody {
+    padding: 24px;
+}
+
+.MarketplaceAdModalClose {
+    color: #0f1419;
+    background: #fff;
+    border: 1px solid #cfd9de;
+}
+
+.MarketplaceAdGuideList {
+    padding-left: 18px;
+}
+
+@media (max-width: 1024px) {
+    .MarketplaceAdMain {
+        padding: 0 18px 88px;
+    }
+
+    .MarketplaceAdApplyLayout,
+    .MarketplaceAdDetailGrid,
+    .MarketplaceAdDetailGrid--simple {
+        grid-template-columns: 1fr;
+    }
+
+    .MarketplaceAdToolbar {
+        grid-template-columns: 1fr;
+    }
+
+    .MarketplaceAdToolbarFilter {
+        margin-left: 0;
+    }
+
+    .MarketplaceAdButtonGroup--uniform > .MarketplaceAdPrimaryButton,
+    .MarketplaceAdButtonGroup--uniform > .MarketplaceAdSecondaryButton,
+    .MarketplaceAdModalFooter > .MarketplaceAdPrimaryButton {
+        width: fit-content;
+        min-width: 0;
+    }
+
+    .MarketplaceAdAttachmentPreviewList {
+        grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    }
+}
+
+@media (max-width: 400px) {
+    .NavigationBarBrandLogo {
+        width: 28px;
+        height: 28px;
+    }
+
+    .MarketplaceAdMain {
+        padding: 0 12px 72px;
+    }
+
+    .MarketplaceAdPageTitle {
+        font-size: 26px;
+    }
+
+    .MarketplaceAdHeaderActions {
+        gap: 6px;
+    }
+
+    .MarketplaceAdToolbarFilter {
+        max-width: none;
+        width: 100%;
+    }
+
+    .MarketplaceAdPanelHeader,
+    .MarketplaceAdPanelBody,
+    .MarketplaceAdModalHeader,
+    .MarketplaceAdModalBody,
+    .MarketplaceAdModalFooter {
+        padding-right: 14px;
+        padding-left: 14px;
+    }
+}

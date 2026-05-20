@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.app.globalgates.mapper.FileAdvertisementMapper">
+    <insert id="insert">
+        insert into tbl_ad_file (id, ad_id)
+        values (#{id}, #{adId})
+    </insert>
+
+    <select id="selectById">
+        select
+            id, original_name, file_name, file_path, file_size,
+            content_type, created_datetime,
+            ad_id
+        from vw_file_advertisement
+        where ad_id = #{adId}
+    </select>
+
+    <delete id="delete">
+        delete from tbl_ad_file
+        where id = #{id}
+    </delete>
+
+    <delete id="deleteByAdId">
+        delete from tbl_ad_file
+        where ad_id = #{adId}
+    </delete>
+</mapper>

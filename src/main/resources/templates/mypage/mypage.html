@@ -1,0 +1,885 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{common/layout-left-one}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>마이페이지</title>
+    <link rel="stylesheet" href="/css/common/mobile-nav.css" th:href="@{/css/common/mobile-nav.css}">
+    <link rel="stylesheet" href="/css/mypage/mypage.css">
+    <link rel="stylesheet" th:if="${member.memberRole != null and member.memberRole.name() == 'EXPERT'}"
+          href="/css/estimation/estimation-regist.css">
+    <link rel="icon" type="image/png" href="/images/logo/logo.png">
+    <script th:inline="javascript">
+        // 목록 탭은 같은 UI를 쓰고 owner/visitor에 따라 API만 다르게 호출하면 되므로
+        // event.js에는 최소 컨텍스트인 owner 여부, 현재 로그인 id, 페이지 주인 id만 내려준다.
+        window.mypageContext = {
+            isOwner: [[${isOwner}]],
+            loginMemberId: [[${loginMemberId}]],
+            pageMemberId: [[${member.id}]]
+        };
+    </script>
+    <script src="/js/common/mobile-nav.js" th:src="@{/js/common/mobile-nav.js}" defer></script>
+    <script src="/js/main/service.js"></script>
+    <script src="/js/main/layout.js"></script>
+    <script src="/js/mypage/service.js"></script>
+    <script src="/js/mypage/layout.js"></script>
+    <script src="/js/mypage/event.js"></script>
+</head>
+<body>
+<div class="Page-Layout">
+<th:block layout:fragment="content">
+    <div class="Primary-Column">
+        <div class="Primary-Column-Inner">
+            <div class="Header-Sticky">
+                <div class="Header-Row">
+                    <div class="Header-Back-Wrap">
+                        <a href="">
+                            <button type="button" class="Header-Back-Btn" data-testid="app-bar-back">
+                                <svg viewBox="0 0 24 24" class="Header-Back-Icon">
+                                    <path d="M7.414 13l5.043 5.04-1.414 1.42L3.586 12l7.457-7.46 1.414 1.42L7.414 11H21v2H7.414z"></path>
+                                </svg>
+                            </button>
+                        </a>
+                    </div>
+                    <div class="Header-Title-Container">
+                        <div class="Header-Name-Row">
+                            <span class="Header-Name-Text" th:text="${member.memberNickname ?: member.memberName ?: ''}"></span>
+                        </div>
+                        <div class="Header-Post-Count">
+                            <span class="Header-Post-Count-Text"
+                                  th:text="|${myPostCount} 게시물|">0 게시물</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- ====== 프로필 섹션 ====== -->
+            <div class="Profile-Section">
+                <div class="Profile-Banner">
+                    <img th:src="${bannerImageUrl}" alt="profile-banner">
+                </div>
+                <div class="Profile-Avatar-Row">
+                    <div class="Profile-Avatar-Container" data-testid="UserAvatar-Container-JeongSIkLe247">
+                        <div class="Profile-Avatar-Img-Wrap">
+                            <div class="Profile-Avatar-Circle">
+                                <img th:src="${profileImageUrl}" src="/images/profile/default_image.png" alt="프로필 이미지" class="Profile-Avatar-Img"/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="Profile-Edit-Wrap">
+                        <!-- 내 페이지면 프로필 수정만 보여주고,
+                             상대 페이지면 상대 프로필용 액션 버튼으로 교체한다. -->
+                        <th:block th:if="${isOwner}">
+                            <button type="button" class="Profile-Edit-Btn Edit">프로필 수정</button>
+                        </th:block>
+
+                        <th:block th:unless="${isOwner}">
+                            <!-- 상대 프로필의 Approve 버튼은 최초 렌더에서도 현재 팔로우 상태를 반영한다. -->
+                            <button
+                                    type="button"
+                                    class="Profile-Edit-Btn"
+                                    th:classappend="${isFollowing} ? ' Connected' : ' Connect'"
+                                    th:text="${isFollowing} ? 'Approved' : 'Approve'">
+                                Approve
+                            </button>
+
+                            <!-- 견적요청은 상대 회원이 expert일 때만 노출한다. -->
+                            <button
+                                    th:if="${member.memberRole != null and member.memberRole.name() == 'EXPERT'}"
+                                    type="button"
+                                    class="Profile-Edit-Btn Request"
+                                    title="견적요청">
+                                견적 요청
+                            </button>
+
+                            <!-- 상대 페이지에서만 채팅 시작 진입점을 보여준다.
+                                 이번 단계에서는 동작을 연결하지 않고 버튼 모양만 먼저 맞춘다. -->
+                            <button type="button" class="Profile-Edit-Btn Chat" title="채팅">
+                                <svg viewBox="0 0 24 24" aria-hidden="true" style="color: rgb(15, 20, 25);">
+                                    <g>
+                                        <path d="M1.998 5.5c0-1.381 1.119-2.5 2.5-2.5h15c1.381 0 2.5 1.119 2.5 2.5v13c0 1.381-1.119 2.5-2.5 2.5h-15c-1.381 0-2.5-1.119-2.5-2.5v-13zm2.5-.5c-.276 0-.5.224-.5.5v2.764l8 3.638 8-3.636V5.5c0-.276-.224-.5-.5-.5h-15zm15.5 5.463l-8 3.636-8-3.638V18.5c0 .276.224.5.5.5h15c.276 0 .5-.224.5-.5v-8.037z"></path>
+                                    </g>
+                                </svg>
+                            </button>
+
+                            <button type="button" class="Profile-Edit-Btn More" title="더보기">
+                                <svg viewBox="0 0 24 24" aria-hidden="true" style="color: rgb(15, 20, 25);">
+                                    <g>
+                                        <path d="M3 12c0-1.1.9-2 2-2s2 .9 2 2-.9 2-2 2-2-.9-2-2zm9 2c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm7 0c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2z"></path>
+                                    </g>
+                                </svg>
+                            </button>
+                        </th:block>
+                    </div>
+                </div>
+                <div class="Profile-Name-Block" data-testid="UserName">
+                    <div class="Profile-Display-Name-Row">
+                        <span class="Profile-Display-Name" th:text="${member.memberNickname ?: member.memberName ?: ''}"></span>
+                        <div class="Profile-Display-Badge">
+                            <!-- 페이지 주인의 구독 tier 기준으로 하나만 노출.
+                                 색상/조건은 main/layout.js, post-detailed/layout.js 와 동일하게 통일.
+                                 ADMIN role 은 별도 처리 없음 — 구독을 가지고 있으면 일반 사용자와 동일하게 노출. -->
+                            <svg
+                                th:if="${subscriptionTier == 'pro'}"
+                                fill="#1d9bf0" viewBox="0 0 22 22" aria-label="Pro" role="img">
+                                <g>
+                                    <path d="M20.396 11c-.018-.646-.215-1.275-.57-1.816-.354-.54-.852-.972-1.438-1.246.223-.607.27-1.264.14-1.897-.131-.634-.437-1.218-.882-1.687-.47-.445-1.053-.75-1.687-.882-.633-.13-1.29-.083-1.897.14-.273-.587-.704-1.086-1.245-1.44S11.647 1.62 11 1.604c-.646.017-1.273.213-1.813.568s-.969.854-1.24 1.44c-.608-.223-1.267-.272-1.902-.14-.635.13-1.22.436-1.69.882-.445.47-.749 1.055-.878 1.688-.13.633-.08 1.29.144 1.896-.587.274-1.087.705-1.443 1.245-.356.54-.555 1.17-.574 1.817.02.647.218 1.276.574 1.817.356.54.856.972 1.443 1.245-.224.606-.274 1.263-.144 1.896.13.634.433 1.218.877 1.688.47.443 1.054.747 1.687.878.633.132 1.29.084 1.897-.136.274.586.705 1.084 1.246 1.439.54.354 1.17.551 1.816.569.647-.016 1.276-.213 1.817-.567s.972-.854 1.245-1.44c.604.239 1.266.296 1.903.164.636-.132 1.22-.447 1.68-.907.46-.46.776-1.044.908-1.681s.075-1.299-.165-1.903c.586-.274 1.084-.705 1.439-1.246.354-.54.551-1.17.569-1.816zM9.662 14.85l-3.429-3.428 1.293-1.302 2.072 2.072 4.4-4.794 1.347 1.246z"></path>
+                                </g>
+                            </svg>
+                            <svg
+                                th:if="${subscriptionTier == 'pro_plus'}"
+                                fill="#cac670" viewBox="0 0 22 22" aria-label="Pro+" role="img">
+                                <g>
+                                    <path d="M20.396 11c-.018-.646-.215-1.275-.57-1.816-.354-.54-.852-.972-1.438-1.246.223-.607.27-1.264.14-1.897-.131-.634-.437-1.218-.882-1.687-.47-.445-1.053-.75-1.687-.882-.633-.13-1.29-.083-1.897.14-.273-.587-.704-1.086-1.245-1.44S11.647 1.62 11 1.604c-.646.017-1.273.213-1.813.568s-.969.854-1.24 1.44c-.608-.223-1.267-.272-1.902-.14-.635.13-1.22.436-1.69.882-.445.47-.749 1.055-.878 1.688-.13.633-.08 1.29.144 1.896-.587.274-1.087.705-1.443 1.245-.356.54-.555 1.17-.574 1.817.02.647.218 1.276.574 1.817.356.54.856.972 1.443 1.245-.224.606-.274 1.263-.144 1.896.13.634.433 1.218.877 1.688.47.443 1.054.747 1.687.878.633.132 1.29.084 1.897-.136.274.586.705 1.084 1.246 1.439.54.354 1.17.551 1.816.569.647-.016 1.276-.213 1.817-.567s.972-.854 1.245-1.44c.604.239 1.266.296 1.903.164.636-.132 1.22-.447 1.68-.907.46-.46.776-1.044.908-1.681s.075-1.299-.165-1.903c.586-.274 1.084-.705 1.439-1.246.354-.54.551-1.17.569-1.816zM9.662 14.85l-3.429-3.428 1.293-1.302 2.072 2.072 4.4-4.794 1.347 1.246z"></path>
+                                </g>
+                            </svg>
+                            <svg
+                                th:if="${subscriptionTier == 'expert'}"
+                                fill="purple" viewBox="0 0 22 22" aria-label="Expert" role="img">
+                                <g>
+                                    <path d="M20.396 11c-.018-.646-.215-1.275-.57-1.816-.354-.54-.852-.972-1.438-1.246.223-.607.27-1.264.14-1.897-.131-.634-.437-1.218-.882-1.687-.47-.445-1.053-.75-1.687-.882-.633-.13-1.29-.083-1.897.14-.273-.587-.704-1.086-1.245-1.44S11.647 1.62 11 1.604c-.646.017-1.273.213-1.813.568s-.969.854-1.24 1.44c-.608-.223-1.267-.272-1.902-.14-.635.13-1.22.436-1.69.882-.445.47-.749 1.055-.878 1.688-.13.633-.08 1.29.144 1.896-.587.274-1.087.705-1.443 1.245-.356.54-.555 1.17-.574 1.817.02.647.218 1.276.574 1.817.356.54.856.972 1.443 1.245-.224.606-.274 1.263-.144 1.896.13.634.433 1.218.877 1.688.47.443 1.054.747 1.687.878.633.132 1.29.084 1.897-.136.274.586.705 1.084 1.246 1.439.54.354 1.17.551 1.816.569.647-.016 1.276-.213 1.817-.567s.972-.854 1.245-1.44c.604.239 1.266.296 1.903.164.636-.132 1.22-.447 1.68-.907.46-.46.776-1.044.908-1.681s.075-1.299-.165-1.903c.586-.274 1.084-.705 1.439-1.246.354-.54.551-1.17.569-1.816zM9.662 14.85l-3.429-3.428 1.293-1.302 2.072 2.072 4.4-4.794 1.347 1.246z"></path>
+                                </g>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="Profile-Handle-Row">
+                        <span class="Profile-Handle-Text" th:text="${member.memberHandle ?: ''}"></span>
+                    </div>
+                </div>
+                <div class="Profile-Description" data-testid="UserDescription">
+                    <span class="Profile-Description-Text" th:text="${member.memberBio ?: ''}"></span>
+                </div>
+                <div class="Profile-Meta" data-testid="UserProfileHeader_Items">
+                    <span class="Profile-Join-Date" data-testid="UserJoinDate">
+                        가입일: 2026년 3월
+                    </span>
+                </div>
+                <div class="Profile-Follow-Row">
+                    <a th:href="@{/friends(profileId=${member.id}, tab='followings')}" class="Profile-Follow-Link">
+                        <!-- 현재 보고 있는 페이지 주인이 "연결하고 있는" 회원 수를 보여준다.
+                             서비스 로직은 기존 followings 개념을 그대로 유지하고,
+                             화면 텍스트만 서비스 용어에 맞춰 커넥팅으로 바꿔서 렌더링한다. -->
+                        <span class="Profile-Follow-Count" th:text="${connectingCount}">0</span>
+                        <span class="Profile-Follow-Label">커넥팅</span>
+                    </a>
+                    <a th:href="@{/friends(profileId=${member.id}, tab='followers')}" class="Profile-Follow-Link">
+                        <!-- 현재 보고 있는 페이지 주인을 "연결한" 회원 수를 보여준다.
+                             서비스 로직은 기존 followers 개념을 그대로 유지하고,
+                             화면 텍스트만 커넥터로 바꿔서 출력한다. -->
+                        <span class="Profile-Follow-Count" th:text="${connectorCount}">0</span>
+                        <span class="Profile-Follow-Label">커넥터</span>
+                    </a>
+                </div>
+            </div>
+            <!-- ====== 탭 네비게이션 ====== -->
+            <nav class="Profile-Nav">
+                <div class="Profile-Nav-Scroll">
+                    <div role="tablist" class="Profile-Tab-List">
+                        <div class="Profile-Tab-Item Posts">
+                            <div class="Profile-Tab-Item-Inner">
+                                <div class="Profile-Tab-Content-Row">
+                                    <span class="Profile-Tab-Text selected">게시물</span>
+                                    <div class="Profile-Tab-Indicator"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="Profile-Tab-Item Replies">
+                            <div class="Profile-Tab-Item-Inner">
+                                <div class="Profile-Tab-Content-Row">
+                                    <span class="Profile-Tab-Text">답글</span>
+                                    <div class="Profile-Tab-Indicator off"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="Profile-Tab-Item MyProducts">
+                            <div class="Profile-Tab-Item-Inner">
+                                <div class="Profile-Tab-Content-Row">
+                                    <span class="Profile-Tab-Text" th:text="${isOwner} ? '내 상품' : '상품'">내 상품</span>
+                                    <div class="Profile-Tab-Indicator off"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- 좋아요 탭은 현재 owner 전용 목록 API만 있으므로
+                             상대 페이지에서는 잘못된 데이터가 섞이지 않게 우선 숨긴다. -->
+                        <div th:if="${isOwner}" class="Profile-Tab-Item Likes">
+                            <div class="Profile-Tab-Item-Inner">
+                                <div class="Profile-Tab-Content-Row">
+                                    <span class="Profile-Tab-Text">좋아요</span>
+                                    <div class="Profile-Tab-Indicator off"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </nav>
+
+            <!-- 게시글 목록 -->
+            <div class="Profile-Content Posts off">
+                <!-- 게시글 탭은 더미 마크업을 두지 않고, layout.js가 실제 목록을 뿌린다. -->
+                <!-- 첫 페이지에 데이터가 없으면 layout.js가 "작성한 게시글이 없습니다." 문구를 넣는다. -->
+                <div class="Profile-Content-List"></div>
+            </div>
+
+            <!-- 답글 목록 -->
+            <div class="Profile-Content Replies off">
+                <!-- Replies 탭도 Posts / Likes와 같은 방식으로 layout.js가 실제 목록을 렌더링한다. -->
+                <div class="Profile-Content-List"></div>
+            </div>
+
+            <!-- 내 상품 목록 -->
+            <div class="Profile-Content MyProducts off">
+                <div class="Profile-Content-Header" th:if="${isOwner}">
+                    <div class="Content-Header-Text">더 좋은 상품으로 다른 사업자분들과 연결되세요.</div>
+                    <!-- 상품 등록은 owner 화면에서만 노출한다. -->
+                    <button  type="button" class="Content-Header-Button">상품 등록</button>
+                </div>
+                <!-- 내 상품은 더미 마크업을 두지 않고, layout.js가 실제 목록을 뿌린다. -->
+                <!-- 첫 페이지에 데이터가 없으면 layout.js가 "등록된 상품이 없습니다." 문구를 넣는다. -->
+                <div class="Profile-Content-List"></div>
+            </div>
+
+            <!-- 좋아요 목록 -->
+            <div th:if="${isOwner}" class="Profile-Content Likes off">
+                <div class="Profile-Content-List">
+                    <!-- Likes 탭도 더미 카드를 두지 않고 layout.js가 실제 목록을 뿌린다. -->
+                    <!-- 첫 페이지에 데이터가 없으면 layout.js가 "좋아요한 게시글이 없습니다." 문구를 넣는다. -->
+                </div>
+            </div>
+
+            <div class="Profile-Empty-State off">
+                <span class="Profile-Empty-Title">아직 게시글이 없습니다.</span>
+            </div>
+        </div>
+    </div><!-- /.Primary-Column -->
+
+    <!-- 사이드바 -->
+    <div class="Sidebar-Column">
+        <div class="Sidebar-Inner">
+            <div class="Sidebar-Card">
+                <div class="Sidebar-Card-Header">
+                    <span class="Sidebar-Card-Title" th:text="${isOwner} ? '내가 팔로우한 사업자들' : '이 회원이 팔로우한 사업자들'">내가 팔로우한 사업자들</span>
+                </div>
+                <!-- 이 영역은 본문 탭처럼 동적 페이징되는 목록이 아니라, mypage 진입 시 즉시 보여줄 요약 카드다.
+                     따라서 별도 JS/API를 추가하지 않고 서버에서 전달한 팔로잉 목록을 Thymeleaf로 바로 렌더링한다. -->
+                <th:block th:if="${#lists.isEmpty(myFollowings)}">
+                    <div class="Sidebar-User-Cell">
+                        <div class="Sidebar-User-Info">
+                            <span class="Sidebar-User-Name">아직 팔로우한 사업자가 없습니다.</span>
+                            <span class="Sidebar-User-Handle">새로운 사업자를 연결해보세요.</span>
+                            <!-- 빈 상태에서 다음 행동으로 바로 이어질 수 있도록
+                                 탐색 화면으로 이동하는 CTA를 같은 카드 안에 둔다.
+                                 기존 사이드바 버튼 스타일을 재사용해서 다른 카드와 시각적 톤을 맞춘다. -->
+                            <button type="button"
+                                    class="Sidebar-Follow-Btn Sidebar-Follow-Btn--Discover"
+                                    th:onclick="|window.location.href='@{/explore}'|">
+                                <span class="Sidebar-Follow-Btn-Text">사업가 찾기</span>
+                            </button>
+                        </div>
+                    </div>
+                </th:block>
+
+                <!-- main의 팔로우 추천 카드와 같은 시각 구조를 가져오되,
+                     마이페이지에서는 "이미 내가 팔로우한 회원" 목록만 노출한다.
+                     그래서 카드 루트에는 모달 문구와 언팔로우 요청에 필요한 최소 식별자만 data-*로 심어 둔다. -->
+                <div class="Mypage-Follow-Card"
+                     data-testid="UserCell"
+                     th:attr="data-following-id=${following.followingId}, data-handle=${following.memberHandle}"
+                     th:each="following : ${myFollowings}">
+
+                    <a href="" class="Mypage-Follow-Avatar-Link">
+                        <div class="Mypage-Follow-Avatar">
+                            <img th:src="${following.memberProfileFileName}"
+                                 src=""
+                                 class="Mypage-Follow-Avatar-Img"
+                                 th:alt="${following.memberNickname ?: following.memberHandle}"/>
+                        </div>
+                    </a>
+
+                    <div class="Mypage-Follow-Info">
+                        <div class="Mypage-Follow-Top">
+                            <div class="Mypage-Follow-Name-Group">
+                                <div class="Mypage-Follow-Name"
+                                     th:text="${following.memberNickname ?: ''}">회원 이름</div>
+                                <div class="Mypage-Follow-Handle"
+                                     th:text="${following.memberHandle ?: ''}">@memberHandle</div>
+                            </div>
+
+                            <!-- 버튼 클래스는 mypage 진입점이라는 맥락을 유지하기 위해 Mypage-Follow-Button을 남기되,
+                                 실제 시각 결과는 main의 connect-btn connected와 완전히 같게 맞춘다.
+                                 이렇게 하면 이후 스타일 비교나 유지보수 시에도 "어느 화면을 기준으로 삼았는지"가 분명하다. -->
+                            <button type="button"
+                                    class="Mypage-Follow-Button connect-btn connected"
+                                    th:attr="data-login-member-id=${member.id}, data-following-id=${following.followingId}">
+                                Connected
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="Sidebar-Card-More" th:if="${!#lists.isEmpty(myFollowings)}">
+                    <a href="" class="Sidebar-Card-More-Link">더 보기</a>
+                </div>
+            </div>
+            <!-- 견적 요약은 본인 mypage에서만 의미가 있어 owner일 때만 렌더한다.
+                 owner이면 member == loginMember이므로 안쪽 분기는 그대로 정확하다. -->
+            <div class="Sidebar-Card" th:if="${isOwner}">
+                <div class="Sidebar-Card-Header">
+                    <span class="Sidebar-Card-Title"
+                          th:text="${member.memberRole != null and member.memberRole.name() == 'EXPERT' ? '받은 견적 요청 목록' : '보낸 견적 요청 목록'}">
+                        견적 요청 목록
+                    </span>
+                </div>
+                <!-- expert / non-expert 모두 같은 카드 마크업을 쓰고,
+                     실제 목록 방향만 mypage API가 role 기준으로 분기한다. -->
+                <div class="Sidebar-Request-List" data-mypage-estimation-list></div>
+                <div class="Sidebar-Card-More">
+                    <a th:if="${member.memberRole != null and member.memberRole.name() == 'EXPERT'}"
+                       href="/estimation/list"
+                       class="Sidebar-Card-More-Link">더 보기</a>
+                    <button th:if="${member.memberRole == null or member.memberRole.name() != 'EXPERT'}"
+                            type="button"
+                            class="Sidebar-Card-More-Link"
+                            data-mypage-estimation-more>
+                        더 보기
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</th:block>
+</div>
+
+<th:block layout:fragment="modals">
+<!-- main의 "연결 끊기" 확인 모달을 마이페이지에도 같은 톤으로 재사용한다.
+     마이페이지는 팔로잉 카드 요약 영역이므로, 여기서는 모달 본문을 정적으로 두고
+     제목만 클릭한 카드의 handle에 맞춰 event.js에서 바꿔 끼운다. -->
+<div class="modalOverlay" id="disconnectModal">
+    <div class="modalPanel">
+        <h2 class="modalTitle" id="modalTitle">연결을 끊으시겠습니까?</h2>
+        <p class="modalText">상대방은 알림을 받지 않습니다.</p>
+        <div class="modalActions">
+            <button class="modalConfirm" id="modalConfirm">연결 끊기</button>
+            <button class="modalCancel" id="modalCancel">취소</button>
+        </div>
+    </div>
+</div>
+
+<!-- 게시글 더보기 메뉴 (Post 탭용: Approve/Disapprove 토글 + 차단 + 신고) -->
+<div class="Post-More-Menu Post off">
+    <div class="More-Menu-Buttons">
+        <!-- Approve/Disapprove 토글 버튼 -->
+        <button type="button" class="Menu-Button ApproveToggle" data-approved="false" data-username="@유저아이디">
+                    <span class="Button-Icon ApproveIcon">
+                        <svg viewBox="0 0 24 24" aria-hidden="true"><g><path
+                                d="M10 4c-1.105 0-2 .9-2 2s.895 2 2 2 2-.9 2-2-.895-2-2-2zM6 6c0-2.21 1.791-4 4-4s4 1.79 4 4-1.791 4-4 4-4-1.79-4-4zm4 7c-3.053 0-5.563 1.193-7.443 3.596l1.548 1.207C5.573 15.922 7.541 15 10 15s4.427.922 5.895 2.803l1.548-1.207C15.563 14.193 13.053 13 10 13zm8-6V5h-3V3h-2v2h-3v2h3v3h2V7h3z"></path></g></svg>
+                    </span>
+            <span class="Button-Text ApproveText">@유저아이디 Approve</span>
+        </button>
+        <button type="button" class="Menu-Button BanUser">
+            <span class="Button-Icon"><svg viewBox="0 0 24 24" aria-hidden="true"><g><path
+                    d="M12 3.75c-4.55 0-8.25 3.69-8.25 8.25 0 1.92.66 3.68 1.75 5.08L17.09 5.5C15.68 4.4 13.92 3.75 12 3.75zm6.5 3.17L6.92 18.5c1.4 1.1 3.16 1.75 5.08 1.75 4.56 0 8.25-3.69 8.25-8.25 0-1.92-.65-3.68-1.75-5.08zM1.75 12C1.75 6.34 6.34 1.75 12 1.75S22.25 6.34 22.25 12 17.66 22.25 12 22.25 1.75 17.66 1.75 12z"></path></g></svg></span>
+            <span class="Button-Text">차단하기</span>
+        </button>
+        <button type="button" class="Menu-Button Report">
+            <span class="Button-Icon"><svg viewBox="0 0 24 24" aria-hidden="true"><g><path
+                    d="M3 2h18.61l-3.5 7 3.5 7H5v6H3V2zm2 12h13.38l-2.5-5 2.5-5H5v10z"></path></g></svg></span>
+            <span class="Button-Text">게시글 신고하기</span>
+        </button>
+    </div>
+</div>
+
+<div class="Post-More-Menu OwnerPost off">
+    <div class="More-Menu-Buttons">
+        <button type="button" class="Menu-Button DeleteOwnedPost" style="color:#f4212e;">
+            <span class="Button-Text" style="color:#f4212e;">게시물 삭제하기</span>
+        </button>
+    </div>
+</div>
+
+<!-- 상품 소유주 id와 로그인한 유저의 id가 같으면 Product, 아니면 ProductOther를 활성화 -->
+<!-- th:if -->
+<!--  -->
+<!-- 내 상품 더보기 메뉴 (MyProducts 탭용) -->
+<div class="Post-More-Menu Product off">
+    <div class="More-Menu-Buttons">
+        <button type="button" class="Menu-Button Edit">
+            <span class="Button-Icon"><svg viewBox="0 0 24 24" aria-hidden="true"><g><path
+                    d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zm2.92 1.42H5v-.71l9.06-9.06.71.71-9.85 9.06zM20.71 5.63l-2.34-2.34c-.2-.2-.45-.29-.71-.29s-.51.1-.7.29l-1.83 1.83 3.75 3.75 1.83-1.83c.39-.39.39-1.02 0-1.41z"></path></g></svg></span>
+            <span class="Button-Text">수정하기</span>
+        </button>
+        <button type="button" class="Menu-Button DeleteProduct" style="color:#f4212e;">
+            <span class="Button-Icon" style="color:#f4212e;"><svg viewBox="0 0 24 24" aria-hidden="true"><g><path
+                    d="M16 6V4.5C16 3.12 14.88 2 13.5 2h-3C9.12 2 8 3.12 8 4.5V6H3v2h1.06l.81 11.21C4.98 20.78 6.28 22 7.86 22h8.28c1.58 0 2.88-1.22 2.99-2.79L19.94 8H21V6h-5zm-6-1.5c0-.28.22-.5.5-.5h3c.28 0 .5.22.5.5V6h-4V4.5zm7.13 14.57c-.04.52-.47.93-1 .93H7.86c-.53 0-.96-.41-1-.93L6.07 8h11.85l-.79 11.07z"></path></g></svg></span>
+            <span class="Button-Text" style="color:#f4212e;">삭제하기</span>
+        </button>
+    </div>
+</div>
+
+<!-- 타인 상품 더보기 메뉴 (Posts/Replies/Likes 탭의 상품 카드용: 관심없음) -->
+<div class="Post-More-Menu ProductOther off">
+    <div class="More-Menu-Buttons">
+        <button type="button" class="Menu-Button NotInterested">
+            <span class="Button-Icon"><svg viewBox="0 0 24 24" aria-hidden="true"><g><path
+                    d="M12 22.75C6.072 22.75 1.25 17.928 1.25 12S6.072 1.25 12 1.25 22.75 6.072 22.75 12 17.928 22.75 12 22.75zm0-20c-5.109 0-9.25 4.141-9.25 9.25s4.141 9.25 9.25 9.25 9.25-4.141 9.25-9.25S17.109 2.75 12 2.75zm3.75 9.25H8.25v-1.5h7.5v1.5z"></path></g></svg></span>
+            <span class="Button-Text">관심없음</span>
+        </button>
+    </div>
+</div>
+<!--  -->
+
+<!-- 공유 메뉴 -->
+<div class="Post-More-Menu Share off">
+    <div class="More-Menu-Buttons">
+        <button type="button" class="Menu-Button CopyLink">
+            <span class="Button-Icon"><svg viewBox="0 0 24 24" aria-hidden="true"><g><path
+                    d="M18.36 5.64c-1.95-1.96-5.11-1.96-7.07 0L9.88 7.05 8.46 5.64l1.42-1.42c2.73-2.73 7.16-2.73 9.9 0 2.73 2.74 2.73 7.17 0 9.9l-1.42 1.42-1.41-1.42 1.41-1.41c1.96-1.96 1.96-5.12 0-7.07zm-2.12 3.53l-7.07 7.07-1.41-1.41 7.07-7.07 1.41 1.41zm-12.02.71l1.42-1.42 1.41 1.42-1.41 1.41c-1.96 1.96-1.96 5.12 0 7.07 1.95 1.96 5.11 1.96 7.07 0l1.41-1.41 1.42 1.41-1.42 1.42c-2.73 2.73-7.16 2.73-9.9 0-2.73-2.74-2.73-7.17 0-9.9z"></path></g></svg></span>
+            <span class="Button-Text">링크 복사하기</span>
+        </button>
+        <button type="button" class="Menu-Button SendChat">
+            <span class="Button-Icon"><svg viewBox="0 0 24 24" aria-hidden="true"><g><path
+                    d="M1.998 5.5c0-1.381 1.119-2.5 2.5-2.5h15c1.381 0 2.5 1.119 2.5 2.5v13c0 1.381-1.119 2.5-2.5 2.5h-15c-1.381 0-2.5-1.119-2.5-2.5v-13zm2.5-.5c-.276 0-.5.224-.5.5v2.764l8 3.638 8-3.636V5.5c0-.276-.224-.5-.5-.5h-15zm15.5 5.463l-8 3.636-8-3.638V18.5c0 .276.224.5.5.5h15c.276 0 .5-.224.5-.5v-8.037z"></path></g></svg></span>
+            <span class="Button-Text">Chat으로 전송하기</span>
+        </button>
+        <button type="button" class="Menu-Button AddBookmark">
+            <span class="Button-Icon"><svg viewBox="0 0 24 24" aria-hidden="true"><g><path
+                    d="M18 3V0h2v3h3v2h-3v3h-2V5h-3V3zm-7.5 1a.5.5 0 00-.5.5V7h3.5A2.5 2.5 0 0116 9.5v3.48l3 2.1V11h2v7.92l-5-3.5v7.26l-6.5-3.54L3 22.68V9.5A2.5 2.5 0 015.5 7H8V4.5A2.5 2.5 0 0110.5 2H12v2zm-5 5a.5.5 0 00-.5.5v9.82l4.5-2.46 4.5 2.46V9.5a.5.5 0 00-.5-.5z"></path></g></svg></span>
+            <span class="Button-Text">폴더에 북마크 추가하기</span>
+        </button>
+    </div>
+</div>
+
+<!-- 미디어 프리뷰 -->
+<div class="Post-Media-Preview-Overlay off" role="dialog" aria-modal="true" aria-label="이미지 전체화면">
+    <div class="Post-Media-Preview-Dialog">
+        <img src="" alt="preview-image" class="Post-Media-Preview-Image">
+        <button class="Post-Media-Preview-Close" type="button" aria-label="닫기">
+            <svg viewBox="0 0 24 24" class="Post-Media-Preview-Close-Icon" aria-hidden="true">
+                <path d="M10.59 12L4.54 5.96l1.42-1.42L12 10.59l6.04-6.05 1.42 1.42L13.41 12l6.05 6.04-1.42 1.42L12 13.41l-6.04 6.05-1.42-1.42L10.59 12z"/>
+            </svg>
+        </button>
+    </div>
+</div>
+
+<!-- 모달 백드롭 -->
+<div class="Modal-BackDrop off" style="pointer-events: auto;"></div>
+
+<!-- 프로필 수정 모달 -->
+<div class="Profile-Edit-Modal-Overlay off" role="dialog">
+    <div class="Profile-Edit-Modal-Box" role="dialog">
+        <div class="Profile-Edit-Modal-Layout">
+            <div class="Profile-Edit-Header">
+                <button class="Profile-Edit-Close-Button" type="button" aria-label="닫기">
+                    <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
+                        <path d="M10.59 12L4.54 5.96l1.42-1.42L12 10.59l6.04-6.05 1.42 1.42L13.41 12l6.05 6.04-1.42 1.42L12 13.41l-6.04 6.05-1.42-1.42L10.59 12z"></path>
+                    </svg>
+                </button>
+                <h2 class="Profile-Edit-Title">프로필 수정</h2>
+                <button class="Profile-Edit-Save-Button" type="button">
+                    <span class="Profile-Edit-Save-Button-Text">저장</span>
+                </button>
+            </div>
+            <div class="Profile-Edit-ScrollContent">
+                <div class="Profile-Edit-PhotoSection">
+                    <div class="Profile-Edit-Banner-Area" th:style="|background-image: url('${bannerImageUrl}');|">
+                        <button class="Profile-Edit-Banner-Button" type="button" aria-label="배너 사진 추가하기">
+                            <svg viewBox="0 0 24 24" width="22" height="22" fill="white">
+                                <path d="M9.697 3H11v2h-.697l-2 2H5c-.276 0-.5.224-.5.5v11c0 .276.224.5.5.5h14c.276 0 .5-.224.5-.5V10h2v8.5c0 1.381-1.119 2.5-2.5 2.5H5c-1.381 0-2.5-1.119-2.5-2.5v-11C2.5 6.119 3.619 5 5 5h2.697l2-2zM12 10.5c-1.105 0-2 .895-2 2s.895 2 2 2 2-.895 2-2-.895-2-2-2zm0-2c2.209 0 4 1.791 4 4s-1.791 4-4 4-4-1.791-4-4 1.791-4 4-4zM17 2h2v2.5h2.5v2H19V9h-2V6.5h-2.5v-2H17V2z"></path>
+                            </svg>
+                        </button>
+                        <input class="Profile-Edit-Banner-FileInput" type="file" accept="image/*">
+                    </div>
+                    <div class="Profile-Edit-Avatar-Container">
+                        <div class="Profile-Edit-Avatar-Image" th:style="|background-image: url('${profileImageUrl}');|"></div>
+                        <button class="Profile-Edit-Avatar-Button" type="button" aria-label="아바타 사진 추가하기">
+                            <svg viewBox="0 0 24 24" width="20" height="20" fill="white">
+                                <path d="M9.697 3H11v2h-.697l-2 2H5c-.276 0-.5.224-.5.5v11c0 .276.224.5.5.5h14c.276 0 .5-.224.5-.5V10h2v8.5c0 1.381-1.119 2.5-2.5 2.5H5c-1.381 0-2.5-1.119-2.5-2.5v-11C2.5 6.119 3.619 5 5 5h2.697l2-2zM12 10.5c-1.105 0-2 .895-2 2s.895 2 2 2 2-.895 2-2-.895-2-2-2zm0-2c2.209 0 4 1.791 4 4s-1.791 4-4 4-4-1.791-4-4 1.791-4 4-4zM17 2h2v2.5h2.5v2H19V9h-2V6.5h-2.5v-2H17V2z"></path>
+                            </svg>
+                        </button>
+                        <input class="Profile-Edit-Avatar-FileInput" type="file" accept="image/*">
+                    </div>
+                </div>
+                <div class="Profile-Edit-Field">
+                    <label class="Profile-Edit-Field-Label" for="displayName">
+                        <div class="Profile-Edit-Field-Inner">
+                            <div class="Profile-Edit-Field-Header">
+                                <span class="Profile-Edit-Field-LabelText">이름</span>
+                                <span class="Profile-Edit-Field-Counter">14 / 50</span>
+                            </div>
+                            <input class="Profile-Edit-Name-Input" id="displayName" type="text" name="displayName"
+                                   maxlength="50" th:value="${member.memberNickname ?: member.memberName ?: ''}" value="JeongSIk Lee">
+                        </div>
+                    </label>
+                </div>
+                <div class="Profile-Edit-Field">
+                    <label class="Profile-Edit-Field-Label" for="description">
+                        <div class="Profile-Edit-Field-Inner">
+                            <div class="Profile-Edit-Field-Header">
+                                <span class="Profile-Edit-Field-LabelText">자기소개</span>
+                                <span class="Profile-Edit-Field-Counter">9 / 160</span>
+                            </div>
+                            <textarea class="Profile-Edit-Bio-Textarea" id="description" name="description"
+                                      maxlength="160" th:text="${member.memberBio ?: ''}">ㅁㄴㅇㅁㄴㅇㅁㄴㅇ</textarea>
+                        </div>
+                    </label>
+                </div>
+                <!-- [FIX 1] 생년월일 정규식 입력 -->
+                <div class="Profile-Edit-Field">
+                    <label class="Profile-Edit-Field-Label" for="birthdate">
+                        <div class="Profile-Edit-Field-Inner">
+                            <div class="Profile-Edit-Field-Header">
+                                <span class="Profile-Edit-Field-LabelText">생년월일 (YYYYMMDD)</span>
+                                <span class="Profile-Edit-Field-Counter Profile-Edit-Birthdate-Error"
+                                      style="color:#f4212e;display:none;"></span>
+                            </div>
+                            <input class="Profile-Edit-Location-Input Profile-Edit-Birthdate-Input" id="birthdate"
+                                   type="text" name="birthdate" maxlength="8" placeholder="19970718" autocomplete="off"
+                                   th:value="${member.birthDate ?: ''}">
+                        </div>
+                    </label>
+                </div>
+                <a href="" class="Profile-Edit-Professional-Link" role="tab">
+                    <div class="Profile-Edit-Professional-Inner">
+                        <span class="Profile-Edit-Professional-Text">Pro 계정으로 전환</span>
+                        <svg viewBox="0 0 24 24" width="18" height="18" fill="rgb(83,100,113)">
+                            <path d="M14.586 12L7.543 4.96l1.414-1.42L17.414 12l-8.457 8.46-1.414-1.42L14.586 12z"></path>
+                        </svg>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 답글 모달: Notification 구조 그대로 이식. event.js의 openReplyModal()/closeReplyModal()이 hidden 토글로 재사용 -->
+<script src="https://cdn.jsdelivr.net/npm/@joeattardi/emoji-button@3.0.3/dist/index.min.js"></script>
+
+<!-- 상품 등록 모달 -->
+<div class="Product-Write-Modal off">
+    <form name="productDTO" class="Product-Write-Form">
+        <div class="Product-From-Wrapper">
+            <div class="Product-From-Container">
+                <div class="From-Input-Wrapper">
+                    <div class="From-Input-Container">
+                        <div class="From-Input-Header">
+                            <div class="Header-Title"><span>상품 추가</span></div>
+                            <div class="Header-Desc"><span>상품을 추가하여 다른 사업자들과의 계약을 체결하세요.</span></div>
+                        </div>
+                        <div class="Form-Input-Content image">
+                            <div class="Input-Content-Label"><span>상품 이미지 <em class="Label-Sub">(최대 4장)</em></span>
+                            </div>
+                            <div class="Product-Image-Upload-Area">
+                                <input type="file" id="productImageInput" accept="image/*" multiple
+                                       style="display:none;">
+                                <div class="Product-Image-Upload-Placeholder">
+                                    <svg viewBox="0 0 24 24" width="28" height="28" fill="currentColor"
+                                         style="opacity:.4;">
+                                        <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V5h14v14zm-5-7l-3 3.72L9 13l-3 4h12l-4-4z"/>
+                                    </svg>
+                                    <span>클릭하여 이미지 추가</span>
+                                </div>
+                                <div class="Product-Image-Preview-Grid off"></div>
+                            </div>
+                            <button type="button" class="Product-Image-Reset-Btn off" disabled>
+                                <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor">
+                                    <path d="M17.65 6.35C16.2 4.9 14.21 4 12 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08c-.82 2.33-3.04 4-5.65 4-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z"/>
+                                </svg>
+                                이미지 초기화
+                            </button>
+                            <input type="hidden" id="productImageHidden" name="postImages">
+                        </div>
+                        <div class="Form-Input-Content name">
+                            <div class="Input-Content-Label"><span>상품 이름</span></div>
+                            <div class="Input-Content-Input">
+                                <div class="Content-Input-Wrapper">
+                                    <input name="postName" type="text" placeholder="상품 이름" class="Content-Input"
+                                           autocomplete="off">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="Form-Input-Content price">
+                            <div class="Input-Content-Label"><span>상품 가격</span></div>
+                            <div class="Input-Content-Input">
+                                <div class="Content-Input-Wrapper">
+                                    <input name="postPrice" type="text" placeholder="상품 가격" class="Content-Input"
+                                           autocomplete="off">
+                                </div>
+                            </div>
+                        </div>
+                        <!-- [FIX 7] 상품 수량 - 숫자만 입력 -->
+                        <div class="Form-Input-Content stock">
+                            <div class="Input-Content-Label"><span>상품 수량</span></div>
+                            <div class="Input-Content-Input">
+                                <div class="Content-Input-Wrapper">
+                                    <input name="postStock" type="text" inputmode="numeric" pattern="[0-9]*"
+                                           placeholder="상품 수량" class="Content-Input Product-Stock-Input"
+                                           autocomplete="off">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="Form-Input-Content">
+                            <div class="Input-Content-Label"><span>상품 설명</span></div>
+                            <textarea name="postContent" placeholder="상품 설명" class="Content-Textarea"
+                                      autocomplete="off"></textarea>
+                        </div>
+                        <div class="Form-Input-Content category">
+                            <div class="Input-Content-Label"><span>상품 카테고리</span></div>
+                            <div class="Category-Banner">
+                                <div class="Category-Scroll-Wrap">
+                                    <button class="Category-Scroll-Arrow Category-Scroll-Left" id="scrollLeft"
+                                            style="display:none" type="button">
+                                        <svg viewBox="0 0 24 24" width="20" height="20">
+                                            <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"
+                                                  fill="currentColor"/>
+                                        </svg>
+                                    </button>
+                                    <div class="Category-Scroll" id="categoryScroll">
+                                        <button class="Cat-Chip Cat-Chip--Has-Subs" data-cat="수출"
+                                                data-subs="미주,유럽,동남아,중국,일본,중동" type="button">수출 ›
+                                        </button>
+                                        <button class="Cat-Chip Cat-Chip--Has-Subs" data-cat="수입"
+                                                data-subs="원자재,완제품,식품,전자부품" type="button">수입 ›
+                                        </button>
+                                        <button class="Cat-Chip Cat-Chip--Has-Subs" data-cat="물류"
+                                                data-subs="해운,항공,육상,창고" type="button">물류 ›
+                                        </button>
+                                        <button class="Cat-Chip Cat-Chip--Has-Subs" data-cat="관세"
+                                                data-subs="FTA,HS코드,통관,환급" type="button">관세 ›
+                                        </button>
+                                        <button class="Cat-Chip Cat-Chip--Has-Subs" data-cat="금융"
+                                                data-subs="무역금융,환율,보험,LC" type="button">금융 ›
+                                        </button>
+                                        <button class="Cat-Chip Cat-Chip--Has-Subs" data-cat="IT"
+                                                data-subs="플랫폼,자동화,블록체인" type="button">IT ›
+                                        </button>
+                                        <button class="Cat-Chip Cat-Chip--Has-Subs" data-cat="식품"
+                                                data-subs="농산물,수산물,가공식품,건강식품" type="button">식품 ›
+                                        </button>
+                                        <button class="Cat-Chip" data-cat="화장품" type="button">화장품</button>
+                                        <button class="Cat-Chip" data-cat="자동차" type="button">자동차</button>
+                                        <button class="Cat-Chip" data-cat="섬유/의류" type="button">섬유/의류</button>
+                                        <button class="Cat-Chip" data-cat="기계/장비" type="button">기계/장비</button>
+                                        <button class="Cat-Chip" data-cat="에너지" type="button">에너지</button>
+                                    </div>
+                                    <button class="Category-Scroll-Arrow Category-Scroll-Right" id="scrollRight"
+                                            style="display:none" type="button">
+                                        <svg viewBox="0 0 24 24" width="20" height="20">
+                                            <path d="M8.59 16.59L10 18l6-6-6-6-1.41 1.41L13.17 12z"
+                                                  fill="currentColor"/>
+                                        </svg>
+                                    </button>
+                                </div>
+                            </div>
+                            <!-- 태그 추가 -->
+                            <div class="Composer-Meta">
+                                <div class="Composer-Meta-Row">
+                                    <div class="Reply-Audience">
+                                        <!-- [FIX 9] 태그 라벨 클릭으로도 닫히게 -->
+                                        <button type="button" class="Composer-Tag-Label" id="composerTagToggle">태그 추가
+                                        </button>
+                                        <div class="Composer-Tag-Editor off" id="composerTagEditor">
+                                            <input type="text" id="productTag" class="Composer-Tag-Field"
+                                                   placeholder="태그 입력 후 Enter"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="Tag-List off" id="tagList"></div>
+                            <input name="postTag" type="hidden">
+                        </div>
+                        <div class="From-Input-Footer">
+                            <!-- [FIX 10,11] cursor pointer + 취소 페이지 이동 방지 -->
+                            <button type="button" class="Input-Footer-Button cancel">취소하기</button>
+                            <button type="button" class="Input-Footer-Button submit">등록하기</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <button type="button" class="Modal-Close-Button">
+            <svg viewBox="0 0 24 24" aria-hidden="true" class="Close-Button-svg" style="color: rgb(15, 20, 25);">
+                <g>
+                    <path d="M10.59 12L4.54 5.96l1.42-1.42L12 10.59l6.04-6.05 1.42 1.42L13.41 12l6.05 6.04-1.42 1.42L12 13.41l-6.04 6.05-1.42-1.42L10.59 12z"></path>
+                </g>
+            </svg>
+        </button>
+    </form>
+</div>
+
+<!-- 공유하기 모달 -->
+<div class="Share-Sheet off">
+    <div class="Share-Sheet-Backdrop" data-share-close="true"></div>
+    <div class="Share-Sheet-Card" role="dialog" aria-modal="true" aria-labelledby="share-chat-title">
+        <div class="Share-Sheet-Header">
+            <button type="button" class="Share-Sheet-Icon-Btn" data-share-close="true" aria-label="돌아가기">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <g>
+                        <path d="M7.414 13l5.043 5.04-1.414 1.42L3.586 12l7.457-7.46 1.414 1.42L7.414 11H21v2H7.414z"></path>
+                    </g>
+                </svg>
+            </button>
+            <h2 id="share-chat-title" class="Share-Sheet-Title">공유하기</h2>
+            <span class="Share-Sheet-Header-Spacer"></span>
+        </div>
+        <div class="Share-Sheet-Search">
+            <input type="text" class="Share-Sheet-Search-Input" placeholder="검색" aria-label="검색">
+        </div>
+        <div class="Share-Sheet-List">
+            <button type="button" class="Share-Sheet-User" data-share-user-id="sokkomann-0">
+                <span class="Share-Sheet-User-Avatar"><img
+                        src="https://pbs.twimg.com/profile_images/2029093315963158528/9_GGpfuL_bigger.png"
+                        alt="김민중"></span>
+                <span class="Share-Sheet-User-Body">
+                            <span class="Share-Sheet-User-Name">김민중</span>
+                            <span class="Share-Sheet-User-Handle">@sokkomann</span>
+                        </span>
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- 유저 차단 확인 모달 -->
+<div class="Small-Modal Ban-User off">
+    <div class="Small-Header"><h2>대화 차단하기</h2></div>
+    <p class="Small-Message">더 이상 메시지 요청이나 메시지를 보낼 수 없습니다.</p>
+    <div class="Small-Buttons">
+        <button type="button" class="Small-Button Ban">차단</button>
+        <button type="button" class="Small-Button Cancel">취소</button>
+    </div>
+    <button type="button" class="Close-Button">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24" width="1em" height="1em">
+            <path d="M10.59 12L4.54 5.96l1.42-1.42L12 10.59l6.04-6.05 1.42 1.42L13.41 12l6.05 6.04-1.42 1.42L12 13.41l-6.04 6.05-1.42-1.42L10.59 12z"></path>
+        </svg>
+    </button>
+</div>
+
+<!-- 신고하기 모달 -->
+<div class="Notification-Dialog Notification-Dialog--Report off">
+    <div class="Notification-Dialog__Backdrop"></div>
+    <div class="Notification-Dialog__Card Notification-Dialog__Card--Report" role="dialog" aria-modal="true">
+        <div class="Notification-Dialog__Header">
+            <button type="button" class="Notification-Dialog__Icon-Btn Notification-Dialog__Close" aria-label="돌아가기">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <g>
+                        <path d="M7.414 13l5.043 5.04-1.414 1.42L3.586 12l7.457-7.46 1.414 1.42L7.414 11H21v2H7.414z"></path>
+                    </g>
+                </svg>
+            </button>
+            <h2 class="Notification-Dialog__Title">신고하기</h2>
+        </div>
+        <div class="Notification-Dialog__Body">
+            <p class="Notification-Dialog__Question">이 게시물에 어떤 문제가 있나요?</p>
+            <ul class="Notification-Report__List">
+                <li>
+                    <button type="button" class="Notification-Report__Item"><span>다른 회사 제품 도용 신고</span>
+                        <svg viewBox="0 0 24 24" aria-hidden="true">
+                            <g>
+                                <path d="M9.293 6.293 10.707 4.88 17.828 12l-7.121 7.12-1.414-1.413L14.999 12z"></path>
+                            </g>
+                        </svg>
+                    </button>
+                </li>
+                <li>
+                    <button type="button" class="Notification-Report__Item"><span>실제 존재하지 않는 제품 등록 신고</span>
+                        <svg viewBox="0 0 24 24" aria-hidden="true">
+                            <g>
+                                <path d="M9.293 6.293 10.707 4.88 17.828 12l-7.121 7.12-1.414-1.413L14.999 12z"></path>
+                            </g>
+                        </svg>
+                    </button>
+                </li>
+                <li>
+                    <button type="button" class="Notification-Report__Item"><span>스펙·원산지 허위 표기 신고</span>
+                        <svg viewBox="0 0 24 24" aria-hidden="true">
+                            <g>
+                                <path d="M9.293 6.293 10.707 4.88 17.828 12l-7.121 7.12-1.414-1.413L14.999 12z"></path>
+                            </g>
+                        </svg>
+                    </button>
+                </li>
+                <li>
+                    <button type="button" class="Notification-Report__Item"><span>특허 제품 무단 판매 신고</span>
+                        <svg viewBox="0 0 24 24" aria-hidden="true">
+                            <g>
+                                <path d="M9.293 6.293 10.707 4.88 17.828 12l-7.121 7.12-1.414-1.413L14.999 12z"></path>
+                            </g>
+                        </svg>
+                    </button>
+                </li>
+                <li>
+                    <button type="button" class="Notification-Report__Item"><span>수출입 제한 품목 신고</span>
+                        <svg viewBox="0 0 24 24" aria-hidden="true">
+                            <g>
+                                <path d="M9.293 6.293 10.707 4.88 17.828 12l-7.121 7.12-1.414-1.413L14.999 12z"></path>
+                            </g>
+                        </svg>
+                    </button>
+                </li>
+                <li>
+                    <button type="button" class="Notification-Report__Item"><span>반복적인 동일 게시물 신고</span>
+                        <svg viewBox="0 0 24 24" aria-hidden="true">
+                            <g>
+                                <path d="M9.293 6.293 10.707 4.88 17.828 12l-7.121 7.12-1.414-1.413L14.999 12z"></path>
+                            </g>
+                        </svg>
+                    </button>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<!-- [FIX 2] 클립보드 Toast -->
+<div class="Clipboard-Toast">
+    <div>클립보드로 복사함</div>
+</div>
+
+<!-- 관심없음 확인 모달 -->
+<div class="Small-Modal Not-Interested off">
+    <button type="button" class="Close-Button Not-Interested-Close">
+        <svg viewBox="0 0 24 24">
+            <path d="M10.59 12L4.54 5.96l1.42-1.42L12 10.59l6.04-6.05 1.42 1.42L13.41 12l6.05 6.04-1.42 1.42L12 13.41l-6.04 6.05-1.42-1.42L10.59 12z"/>
+        </svg>
+    </button>
+    <div class="Small-Header">
+        <h2>이 상품에 관심없음</h2>
+    </div>
+    <p class="Small-Message">이 상품과 비슷한 상품이 더 이상 표시되지 않습니다.</p>
+    <div class="Small-Buttons">
+        <button type="button" class="Small-Button" style="background:#1d9bf0;color:white;" id="confirmNotInterested">
+            확인
+        </button>
+        <button type="button" class="Small-Button Cancel Not-Interested-Close">취소</button>
+    </div>
+</div>
+
+<!-- 상품 삭제 확인 모달 -->
+<div class="Small-Modal Delete-Product off">
+    <button type="button" class="Close-Button Delete-Product-Close">
+        <svg viewBox="0 0 24 24">
+            <path d="M10.59 12L4.54 5.96l1.42-1.42L12 10.59l6.04-6.05 1.42 1.42L13.41 12l6.05 6.04-1.42 1.42L12 13.41l-6.04 6.05-1.42-1.42L10.59 12z"/>
+        </svg>
+    </button>
+    <div class="Small-Header">
+        <h2>상품을 삭제할까요?</h2>
+    </div>
+    <p class="Small-Message">삭제한 상품은 복구할 수 없습니다.</p>
+    <div class="Small-Buttons">
+        <button type="button" class="Small-Button Ban" id="confirmDeleteProduct">삭제</button>
+        <button type="button" class="Small-Button Cancel Delete-Product-Close">취소</button>
+    </div>
+</div>
+<!-- 견적요청 모달: 상대가 EXPERT일 때만 삽입.
+     event.js는 마이페이지에서 auto-open을 가드하므로 같은 파일을 그대로 로드해도 안전하다.
+     (URL이 /mypage로 시작하면 자동 오픈을 건너뛰고, 트리거 클릭 시에만 모달을 연다.) -->
+<th:block th:if="${member.memberRole != null and member.memberRole.name() == 'EXPERT'}">
+    <div th:replace="~{estimation/estimation-regist :: estimationModal}"></div>
+    <script src="/js/estimation/estimation-regist/service.js"></script>
+    <script src="/js/estimation/estimation-regist/layout.js"></script>
+    <script src="/js/estimation/estimation-regist/event.js"></script>
+</th:block>
+
+    <!-- 모바일 nav + 더보기 아코디언 (공용 fragment) -->
+    <div th:replace="~{common/mobile-nav :: mobileNav('more')}"></div>
+    <div th:replace="~{common/mobile-nav :: mobileMoreSheet}"></div>
+</th:block>
+</body>
+</html>

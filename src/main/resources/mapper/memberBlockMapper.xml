@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.app.globalgates.mapper.MemberBlockMapper">
+    <select id="selectAllByMemberIdWithPaging">
+        select
+            b.id,
+            b.blocker_id,
+            b.blocked_id,
+            b.created_datetime,
+            m.member_name,
+            m.member_handle,
+            m.member_bio,
+            (
+                select f.file_name
+                from tbl_member_profile_file mpf
+                         join tbl_file f on mpf.id = f.id
+                where mpf.member_id = m.id
+                  and mpf.profile_image_type = 'profile'
+                order by f.id desc
+                limit 1
+            ) as profile_image_file_name
+        from tbl_block b
+                 join tbl_member m on b.blocked_id = m.id
+        where b.blocker_id = #{memberId}
+          and m.member_status = 'active'
+        order by b.created_datetime desc
+        limit #{criteria.count} offset #{criteria.offset}
+    </select>
+
+    <select id="selectTotalByMemberId">
+        select count(*)
+        from tbl_block b
+        join tbl_member m on b.blocked_id = m.id
+        where b.blocker_id = #{id}
+        and m.member_status = 'active'
+    </select>
+</mapper>

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.app.globalgates.mapper.NewsBookmarkMapper">
+
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+        insert into tbl_news_bookmark (member_id, news_id, folder_id)
+        values (#{memberId}, #{newsId}, #{folderId})
+    </insert>
+
+    <delete id="deleteByMemberIdAndNewsId">
+        delete
+        from tbl_news_bookmark
+        where member_id = #{memberId}
+          and news_id = #{newsId}
+    </delete>
+
+    <select id="selectByMemberIdAndNewsId">
+        select id, member_id, news_id, folder_id, created_datetime
+        from tbl_news_bookmark
+        where member_id = #{memberId}
+          and news_id = #{newsId}
+    </select>
+
+    <select id="selectCountByNewsId" resultType="int">
+        select count(*)
+        from tbl_news_bookmark
+        where news_id = #{newsId}
+    </select>
+
+    <select id="selectById">
+        select id, member_id, news_id, folder_id, created_datetime
+        from tbl_news_bookmark
+        where id = #{id}
+    </select>
+
+    <update id="updateFolderId">
+        update tbl_news_bookmark
+        set folder_id = #{folderId}
+        where id = #{id}
+    </update>
+
+    <update id="clearFolderId">
+        update tbl_news_bookmark
+        set folder_id = null
+        where folder_id = #{folderId}
+    </update>
+
+</mapper>

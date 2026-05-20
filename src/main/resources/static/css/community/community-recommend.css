@@ -1,0 +1,327 @@
+/* ===========================================================
+   커뮤니티 가입 직후 띄우는 AI 추천 모달
+   FastAPI(/api/community/recommend) → Spring 릴레이 → 이 모달 UI
+
+   디자인 원칙: globalgates 의 트위터 톤 (흰 배경, #eff3f4 border, 9999px chip,
+   #1d9bf0 primary) 과 일관 유지. 가입 직후라 약간의 축하/임팩트 + 다음 액션 유도.
+   =========================================================== */
+
+.recommend-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0, 0, 0, 0.45);
+    backdrop-filter: blur(4px);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.18s ease;
+}
+
+.recommend-overlay.active {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.recommend-dialog {
+    width: min(92vw, 520px);
+    max-height: 90vh;
+    display: flex;
+    flex-direction: column;
+    background: #ffffff;
+    border-radius: 20px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25);
+    transform: translateY(12px) scale(0.98);
+    transition: transform 0.22s cubic-bezier(0.2, 0.8, 0.2, 1);
+    overflow: hidden;
+}
+
+.recommend-overlay.active .recommend-dialog {
+    transform: translateY(0) scale(1);
+}
+
+/* ===== 헤더 ===== */
+.recommend-header {
+    padding: 20px 20px 14px;
+    border-bottom: 1px solid #eff3f4;
+    position: relative;
+}
+
+.recommend-header__badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 10px;
+    border-radius: 9999px;
+    background: rgba(29, 155, 240, 0.1);
+    color: #1d9bf0;
+    font-size: 12px;
+    font-weight: 700;
+    margin-bottom: 10px;
+}
+
+.recommend-header__title {
+    font-size: 20px;
+    font-weight: 800;
+    color: #0f1419;
+    line-height: 1.3;
+    margin-bottom: 4px;
+}
+
+.recommend-header__subtitle {
+    font-size: 14px;
+    color: #536471;
+    line-height: 1.4;
+}
+
+.recommend-header__highlight {
+    color: #1d9bf0;
+    font-weight: 700;
+}
+
+.recommend-header__close {
+    position: absolute;
+    top: 14px;
+    right: 14px;
+    width: 34px;
+    height: 34px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    transition: background 0.15s ease;
+}
+
+.recommend-header__close:hover {
+    background: rgba(15, 20, 25, 0.07);
+}
+
+.recommend-header__close svg {
+    width: 18px;
+    height: 18px;
+    fill: #0f1419;
+}
+
+/* ===== 본문 (카드 리스트) ===== */
+.recommend-body {
+    padding: 8px 12px;
+    overflow-y: auto;
+    flex: 1;
+}
+
+.recommend-body::-webkit-scrollbar {
+    width: 6px;
+}
+.recommend-body::-webkit-scrollbar-thumb {
+    background: #cfd9de;
+    border-radius: 3px;
+}
+
+.recommend-card {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px;
+    border-radius: 14px;
+    transition: background 0.15s ease;
+    cursor: pointer;
+}
+
+.recommend-card:hover {
+    background: #f7f9f9;
+}
+
+.recommend-card__cover {
+    flex-shrink: 0;
+    width: 52px;
+    height: 52px;
+    border-radius: 12px;
+    background:
+        radial-gradient(circle at 25% 30%, #ff7b88 0 8px, transparent 9px),
+        radial-gradient(circle at 70% 65%, #0e9aa7 0 12px, transparent 13px),
+        linear-gradient(135deg, #0e9aa7 0%, #12b5c4 100%);
+}
+
+.recommend-card__cover--blue {
+    background:
+        radial-gradient(circle at 30% 30%, #ffd700 0 8px, transparent 9px),
+        radial-gradient(circle at 70% 70%, #ffffff 0 6px, transparent 7px),
+        linear-gradient(135deg, #1d9bf0 0%, #0c7abf 100%);
+}
+
+.recommend-card__cover--green {
+    background:
+        radial-gradient(circle at 25% 25%, #ffeb99 0 7px, transparent 8px),
+        radial-gradient(circle at 75% 70%, #ffffff 0 5px, transparent 6px),
+        linear-gradient(135deg, #00ba7c 0%, #008f5c 100%);
+}
+
+.recommend-card__cover--purple {
+    background:
+        radial-gradient(circle at 30% 25%, #ffb3d9 0 7px, transparent 8px),
+        radial-gradient(circle at 75% 70%, #ffffff 0 5px, transparent 6px),
+        linear-gradient(135deg, #7856ff 0%, #5a3fd4 100%);
+}
+
+.recommend-card__cover--orange {
+    background:
+        radial-gradient(circle at 30% 30%, #ffe0b3 0 7px, transparent 8px),
+        radial-gradient(circle at 70% 70%, #ffffff 0 5px, transparent 6px),
+        linear-gradient(135deg, #ff7a59 0%, #d94e2e 100%);
+}
+
+.recommend-card__body {
+    flex: 1;
+    min-width: 0;
+}
+
+.recommend-card__name {
+    font-size: 15px;
+    font-weight: 700;
+    color: #0f1419;
+    line-height: 1.3;
+    margin-bottom: 4px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.recommend-card__meta {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: 4px;
+}
+
+.recommend-card__category {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 9999px;
+    background: rgba(29, 155, 240, 0.1);
+    color: #1d9bf0;
+    font-size: 11px;
+    font-weight: 600;
+}
+
+.recommend-card__tags {
+    font-size: 12px;
+    color: #536471;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 220px;
+}
+
+.recommend-card__action {
+    flex-shrink: 0;
+    padding: 7px 16px;
+    border-radius: 9999px;
+    background: #0f1419;
+    color: #ffffff;
+    font-size: 13px;
+    font-weight: 700;
+    transition: background 0.15s ease;
+}
+
+.recommend-card__action:hover {
+    background: #272c30;
+}
+
+.recommend-card__action.joined {
+    background: transparent;
+    border: 1px solid #cfd9de;
+    color: #0f1419;
+}
+
+.recommend-card__action.joined:hover {
+    background: rgba(244, 33, 46, 0.08);
+    border-color: rgba(244, 33, 46, 0.35);
+    color: #f4212e;
+}
+
+.recommend-card__action[disabled] {
+    opacity: 0.5;
+    cursor: default;
+}
+
+/* ===== 상태 ===== */
+.recommend-state {
+    padding: 40px 20px;
+    text-align: center;
+    color: #536471;
+    font-size: 14px;
+}
+
+.recommend-skeleton {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding: 8px 0;
+}
+
+.recommend-skeleton__row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px;
+}
+
+.recommend-skeleton__cover {
+    width: 52px;
+    height: 52px;
+    border-radius: 12px;
+    background: linear-gradient(90deg, #f0f2f3 25%, #e6e9eb 50%, #f0f2f3 75%);
+    background-size: 200% 100%;
+    animation: skeleton-shimmer 1.4s ease-in-out infinite;
+}
+
+.recommend-skeleton__lines {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.recommend-skeleton__line {
+    height: 12px;
+    border-radius: 6px;
+    background: linear-gradient(90deg, #f0f2f3 25%, #e6e9eb 50%, #f0f2f3 75%);
+    background-size: 200% 100%;
+    animation: skeleton-shimmer 1.4s ease-in-out infinite;
+}
+
+.recommend-skeleton__line--short {
+    width: 60%;
+}
+
+@keyframes skeleton-shimmer {
+    0% { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
+}
+
+/* ===== 푸터 ===== */
+.recommend-footer {
+    padding: 14px 20px;
+    border-top: 1px solid #eff3f4;
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+    background: #ffffff;
+}
+
+.recommend-footer__skip {
+    padding: 8px 18px;
+    border-radius: 9999px;
+    border: 1px solid #cfd9de;
+    background: #ffffff;
+    color: #0f1419;
+    font-size: 14px;
+    font-weight: 600;
+    transition: background 0.15s ease;
+}
+
+.recommend-footer__skip:hover {
+    background: #f7f9f9;
+}

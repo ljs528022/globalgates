@@ -1,0 +1,254 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.app.globalgates.mapper.chat.ChatRoomMapper">
+
+    <!-- 회원이 대화방 참여자인지 확인 (WebSocket 구독 권한 검증용) -->
+    <select id="selectIsMember" resultType="boolean">
+        select exists (
+            select 1
+            from tbl_conversation_member_rel
+            where conversation_id = #{conversationId}
+              and (sender_id = #{memberId} or invited_id = #{memberId})
+        )
+    </select>
+
+    <select id="selectAllByMemberId">
+        <![CDATA[
+        with ranked as (
+            select
+                v.conversation_id as id,
+                v.display_name as title,
+                v.partner_id as invited_id,
+                v.partner_name as invited_name,
+                v.partner_handle as invited_handle,
+                case
+                    when sub_msg.has_file and coalesce(sub_msg.content, '') = ''
+                        then case when sub_msg.content_type::text like 'image%' then '[사진]'
+                                  else '[파일]' end
+                    else sub_msg.content
+                end as last_message,
+                sub_msg.created_datetime as last_message_time,
+                coalesce(unread_msg.cnt, 0) as unread_count,
+                v.created_datetime,
+                v.updated_datetime,
+                (select f.file_name
+                 from tbl_member_profile_file mpf
+                 join tbl_file f on mpf.id = f.id
+                 where mpf.member_id = v.partner_id and mpf.profile_image_type = 'profile'
+                 limit 1) as partner_profile_file_name,
+                row_number() over (
+                    partition by least(v.member_id, v.partner_id),
+                                 greatest(v.member_id, v.partner_id)
+                    order by coalesce(sub_msg.created_datetime, v.created_datetime) desc,
+                             v.conversation_id desc
+                ) as rn
+            from v_my_chat v
+            left join lateral (
+                select msg.content, msg.created_datetime,
+                       (cf.id is not null) as has_file,
+                       f.content_type
+                from tbl_message msg
+                left join tbl_chat_file cf on cf.message_id = msg.id
+                left join tbl_file f on f.id = cf.id
+                left join tbl_message_deletion md
+                       on md.message_id = msg.id and md.member_id = #{memberId}
+                where msg.conversation_id = v.conversation_id
+                  and msg.is_deleted = false
+                  and md.message_id is null
+                  and msg.id > coalesce(
+                      (select deleted_after_message_id from tbl_conversation_setting
+                       where conversation_id = v.conversation_id and member_id = #{memberId}),
+                      0)
+                  and not (
+                      msg.sender_id != #{memberId}
+                      and exists (
+                          select 1 from tbl_conversation_setting cs_block
+                          where cs_block.conversation_id = v.conversation_id
+                            and cs_block.member_id = #{memberId}
+                            and cs_block.blocked_after_message_id is not null
+                            and msg.id > cs_block.blocked_after_message_id
+                            and (cs_block.block_released_message_id is null
+                                 or msg.id <= cs_block.block_released_message_id)
+                      )
+                  )
+                order by msg.created_datetime desc limit 1
+            ) sub_msg on true
+            left join lateral (
+                select count(*) as cnt
+                from tbl_message msg2
+                join tbl_conversation_setting cs2
+                    on cs2.conversation_id = v.conversation_id and cs2.member_id = #{memberId}
+                where msg2.conversation_id = v.conversation_id
+                  and msg2.is_deleted = false
+                  and msg2.sender_id != #{memberId}
+                  and msg2.id > coalesce(v.my_last_read, 0)
+                  and not (
+                      cs2.blocked_after_message_id is not null
+                      and msg2.id > cs2.blocked_after_message_id
+                      and (cs2.block_released_message_id is null or msg2.id <= cs2.block_released_message_id)
+                  )
+            ) unread_msg on true
+            where v.member_id = #{memberId}
+              and coalesce(v.is_deleted, false) = false
+        )
+        select r.id, r.title, r.invited_id, r.invited_name, r.invited_handle,
+               r.last_message, r.last_message_time, r.unread_count,
+               r.created_datetime, r.updated_datetime,
+               r.partner_profile_file_name
+        from ranked r
+        where rn = 1
+        order by coalesce(last_message_time, created_datetime) desc, id desc
+        ]]>
+    </select>
+
+    <select id="selectByMembers">
+        select c.id, c.title, rel.sender_id, rel.invited_id, c.created_datetime
+        from tbl_conversation c
+        join tbl_conversation_member_rel rel on c.id = rel.conversation_id
+        where (rel.sender_id = #{senderId} and rel.invited_id = #{invitedId})
+           or (rel.sender_id = #{invitedId} and rel.invited_id = #{senderId})
+        order by c.created_datetime desc, c.id desc
+        limit 1
+    </select>
+
+    <insert id="insertConversation">
+        <selectKey keyProperty="id" resultType="long" order="AFTER">
+            select currval('tbl_conversation_id_seq')
+        </selectKey>
+        insert into tbl_conversation (title) values (#{title})
+    </insert>
+
+    <insert id="insertConversationMemberRel">
+        insert into tbl_conversation_member_rel (conversation_id, sender_id, invited_id)
+        values (#{conversationId}, #{senderId}, #{invitedId})
+    </insert>
+
+    <insert id="insertSetting">
+        insert into tbl_conversation_setting (conversation_id, member_id)
+        values (#{conversationId}, #{memberId})
+        on conflict (conversation_id, member_id) do nothing
+    </insert>
+
+    <update id="restoreConversation">
+        update tbl_conversation_setting
+        set is_deleted = false, updated_datetime = now()
+        where conversation_id = #{conversationId} and member_id = #{memberId} and is_deleted = true
+    </update>
+
+    <select id="selectDeletedMemberIds" resultType="long">
+        select member_id
+        from tbl_conversation_setting
+        where conversation_id = #{conversationId} and is_deleted = true
+    </select>
+
+    <update id="restoreAllMembers">
+        update tbl_conversation_setting
+        set is_deleted = false, updated_datetime = now()
+        where conversation_id = #{conversationId} and is_deleted = true
+    </update>
+
+    <select id="selectPartnerByConversation">
+        select v.partner_id as invited_id,
+               v.partner_name as invited_name,
+               v.partner_handle as invited_handle,
+               v.alias,
+               v.conversation_id as id,
+               v.display_name as title,
+               (select f.file_name
+                from tbl_member_profile_file mpf
+                join tbl_file f on mpf.id = f.id
+                where mpf.member_id = v.partner_id and mpf.profile_image_type = 'profile'
+                limit 1) as partner_profile_file_name
+        from v_my_chat v
+        where v.conversation_id = #{conversationId}
+          and v.member_id = #{memberId}
+        limit 1
+    </select>
+
+    <select id="selectLastMessageId" resultType="java.lang.Long">
+        select max(id)
+        from tbl_message
+        where conversation_id = #{conversationId} and is_deleted = false
+    </select>
+
+    <insert id="upsertLastReadMessageId">
+        insert into tbl_conversation_setting (
+            conversation_id, member_id, last_read_message_id,
+            created_datetime, updated_datetime
+        )
+        values (#{conversationId}, #{memberId}, #{lastReadMessageId}, now(), now())
+        on conflict (conversation_id, member_id) do update
+        set last_read_message_id = greatest(
+                coalesce(tbl_conversation_setting.last_read_message_id, 0),
+                excluded.last_read_message_id
+            ),
+            updated_datetime = now()
+    </insert>
+
+    <update id="updateAlias">
+        update tbl_conversation_setting
+        set alias = #{alias}, updated_datetime = now()
+        where conversation_id = #{conversationId} and member_id = #{memberId}
+    </update>
+
+    <update id="updateScreenBlocked">
+        update tbl_conversation_setting
+        set is_screen_blocked = #{blocked}, updated_datetime = now()
+        where conversation_id = #{conversationId} and member_id = #{memberId}
+    </update>
+
+    <select id="selectScreenBlocked" resultType="boolean">
+        select coalesce(is_screen_blocked, false)
+        from tbl_conversation_setting
+        where conversation_id = #{conversationId} and member_id = #{memberId}
+    </select>
+
+    <update id="softDeleteConversation">
+        update tbl_conversation_setting
+        set is_deleted = true,
+            is_muted = false,
+            alias = null,
+            is_pinned = false,
+            deleted_after_message_id = (
+                select max(id) from tbl_message where conversation_id = #{conversationId}
+            ),
+            updated_datetime = now()
+        where conversation_id = #{conversationId} and member_id = #{memberId}
+    </update>
+
+    <update id="updateBlockedAfterMessageId">
+        update tbl_conversation_setting
+        set blocked_after_message_id = #{messageId}, updated_datetime = now()
+        where conversation_id = #{conversationId} and member_id = #{memberId}
+    </update>
+
+    <update id="updateBlockReleasedMessageId">
+        update tbl_conversation_setting
+        set block_released_message_id = #{messageId}, updated_datetime = now()
+        where conversation_id = #{conversationId} and member_id = #{memberId}
+    </update>
+
+    <!--
+      사라진 메시지 ON: disappear_activated_at = now() (윈도우 시작점)
+      사라진 메시지 OFF: disappear_activated_at = null (윈도우 종료)
+      windowed-mode: 활성화 시점부터 #{setting}만큼만 유지, 만료 시 일괄 삭제 + 자동 OFF
+    -->
+    <update id="updateDisappearMessage">
+        update tbl_conversation_setting
+        set disappear_message = #{setting},
+            disappear_activated_at = case
+                when #{setting} in ('none', '없음') then null
+                else now()
+            end,
+            updated_datetime = now()
+        where conversation_id = #{conversationId} and member_id = #{memberId}
+    </update>
+
+    <select id="selectDisappearMessage" resultType="map">
+        select coalesce(disappear_message, 'none') as setting,
+               disappear_activated_at as activated_at
+        from tbl_conversation_setting
+        where conversation_id = #{conversationId} and member_id = #{memberId}
+    </select>
+
+</mapper>

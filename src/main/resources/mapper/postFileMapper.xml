@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.app.globalgates.mapper.PostFileMapper">
+
+    <!-- 게시글 첨부파일 등록 -->
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+        insert into tbl_post_file (post_id, file_id)
+        values (#{postId}, #{fileId})
+    </insert>
+
+    <!-- 게시글 첨부파일 삭제 -->
+    <delete id="delete">
+        delete from tbl_post_file
+        where id = #{id}
+    </delete>
+
+    <!-- 게시글의 첨부파일 전체 삭제 -->
+    <delete id="deleteByPostId">
+        delete from tbl_post_file
+        where post_id = #{id}
+    </delete>
+
+    <!-- 게시글 첨부파일 조회 -->
+    <select id="selectAllByPostId">
+        select pf.id,
+               pf.post_id,
+               pf.file_id,
+               f.original_name,
+               f.file_name,
+               f.file_path,
+               f.file_size,
+               f.content_type,
+               f.created_datetime
+        from tbl_post_file pf
+                 join tbl_file f on pf.file_id = f.id
+        where pf.post_id = #{id}
+        order by pf.id
+    </select>
+
+    <!-- 여러 게시글의 첨부파일 일괄 조회 (N+1 방지) -->
+    <select id="selectAllByPostIds" resultType="postFileDTO">
+        select pf.id,
+               pf.post_id,
+               pf.file_id,
+               f.original_name,
+               f.file_name,
+               f.file_path,
+               f.file_size,
+               f.content_type,
+               f.created_datetime
+        from tbl_post_file pf
+                 join tbl_file f on pf.file_id = f.id
+        where pf.post_id in
+        <foreach item="postId" collection="postIds" open="(" separator="," close=")">
+            #{postId}
+        </foreach>
+        order by pf.post_id, pf.id
+    </select>
+
+</mapper>

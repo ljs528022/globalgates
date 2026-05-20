@@ -1,0 +1,49 @@
+# 기본: 텍스트 파일 자동 감지, 저장소·작업트리 모두 LF로 통일
+* text=auto eol=lf
+
+# Windows 전용 스크립트는 CRLF 필수
+*.bat  text eol=crlf
+*.cmd  text eol=crlf
+*.ps1  text eol=crlf
+
+# Unix 스크립트는 LF 필수
+*.sh    text eol=lf
+gradlew text eol=lf
+
+# 소스/리소스 명시
+*.java       text eol=lf
+*.gradle     text eol=lf
+*.gradle.kts text eol=lf
+*.xml        text eol=lf
+*.html       text eol=lf
+*.css        text eol=lf
+*.js         text eol=lf
+*.json       text eol=lf
+*.sql        text eol=lf
+*.yaml       text eol=lf
+*.yml        text eol=lf
+*.properties text eol=lf
+*.md         text eol=lf
+
+# 바이너리 (변환 금지)
+*.jar   binary
+*.war   binary
+*.class binary
+*.png   binary
+*.PNG   binary
+*.jpg   binary
+*.jpeg  binary
+*.gif   binary
+*.ico   binary
+*.svg   binary
+*.psd   binary
+*.mp4   binary
+*.pdf   binary
+*.zip   binary
+*.gz    binary
+*.pem   binary
+*.woff  binary
+*.woff2 binary
+*.ttf   binary
+*.eot   binary
+*.otf   binary

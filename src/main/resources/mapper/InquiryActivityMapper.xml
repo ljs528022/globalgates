@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.app.globalgates.mapper.InquiryActivityMapper">
+
+    <select id="selectAll">
+        select v.*,
+               case when exists (
+                   select 1
+                   from tbl_post_like pl
+                   where pl.post_id = v.id
+                     and pl.member_id = #{memberId}
+               ) then true else false end as is_liked,
+               case when exists (
+                   select 1
+                   from tbl_bookmark b
+                   where b.post_id = v.id
+                     and b.member_id = #{memberId}
+               ) then true else false end as is_bookmarked
+        from view_post_feed v
+                 join tbl_follow f on f.following_id = v.member_id
+        where f.follower_id = #{memberId}
+          <if test="startDate != null and startDate != ''">
+              and cast(v.created_datetime as date) &gt;= cast(#{startDate} as date)
+          </if>
+          <if test="endDate != null and endDate != ''">
+              and cast(v.created_datetime as date) &lt;= cast(#{endDate} as date)
+          </if>
+          and v.member_id not in (
+              select bl.blocked_id
+              from tbl_block bl
+              where bl.blocker_id = #{memberId}
+          )
+          and v.member_id not in (
+              select r.target_id
+              from tbl_report r
+              where r.reporter_id = #{memberId}
+                and r.target_type = 'member'
+          )
+          and v.id not in (
+              select r.target_id
+              from tbl_report r
+              where r.reporter_id = #{memberId}
+                and r.target_type = 'post'
+          )
+        order by v.created_datetime desc
+        limit #{criteria.count}
+        offset #{criteria.offset}
+    </select>
+
+    <select id="selectTotal" resultType="int">
+        select count(*)
+        from view_post_feed v
+                 join tbl_follow f on f.following_id = v.member_id
+        where f.follower_id = #{memberId}
+          <if test="startDate != null and startDate != ''">
+              and cast(v.created_datetime as date) &gt;= cast(#{startDate} as date)
+          </if>
+          <if test="endDate != null and endDate != ''">
+              and cast(v.created_datetime as date) &lt;= cast(#{endDate} as date)
+          </if>
+          and v.member_id not in (
+              select bl.blocked_id
+              from tbl_block bl
+              where bl.blocker_id = #{memberId}
+          )
+          and v.member_id not in (
+              select r.target_id
+              from tbl_report r
+              where r.reporter_id = #{memberId}
+                and r.target_type = 'member'
+          )
+          and v.id not in (
+              select r.target_id
+              from tbl_report r
+              where r.reporter_id = #{memberId}
+                and r.target_type = 'post'
+          )
+    </select>
+
+</mapper>

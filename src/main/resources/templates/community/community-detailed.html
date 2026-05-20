@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{common/layout}">
+<head>
+    <link rel="icon" type="image/png" href="/images/logo/logo.png">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>커뮤니티</title>
+    <link rel="stylesheet" href="/css/common/mobile-nav.css" />
+    <link rel="stylesheet" href="/css/community/community-detailed.css" />
+    <link rel="stylesheet" href="/css/community/community-recommend.css" />
+    <script src="/js/common/mobile-nav.js" defer></script>
+    <script src="/js/community/service.js"></script>
+    <script src="/js/community/community-detailed-service.js"></script>
+    <script src="/js/community/community-detailed-layout.js"></script>
+    <script src="/js/community/community-recommend.js"></script>
+    <script src="/js/community/community-detailed-event.js"></script>
+</head>
+<body>
+
+<th:block layout:fragment="content">
+
+  <!-- 메인 콘텐츠. community.html 의 .timelinePanel 과 동일하게 .Page-Layout flex 의 직접 자식.
+       이전엔 .app-container wrapper 안에 감싸져 있었는데, wrapper 가 flex 컨테이너 안에서 width 가 명시되지 않아
+       내부의 .main-content {width:100%} 가 600px 까지 늘어나지 못하고 좁게 렌더링됐다. -->
+  <main class="main-content communityDetailPage" th:data-community-id="${communityId}" th:data-community-name="${communityName}" th:data-member-id="${memberId}" th:data-profile-image="${profileImageUrl}">
+
+    <!-- 검색 오버레이 -->
+    <div id="searchOverlay" class="search-overlay">
+      <div class="search-input-wrap">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="#536471"><path d="M10.25 3.75c-3.59 0-6.5 2.91-6.5 6.5s2.91 6.5 6.5 6.5c1.795 0 3.419-.726 4.596-1.904 1.178-1.177 1.904-2.801 1.904-4.596 0-3.59-2.91-6.5-6.5-6.5zm-8.5 6.5c0-4.694 3.806-8.5 8.5-8.5s8.5 3.806 8.5 8.5c0 1.986-.682 3.815-1.814 5.262l4.526 4.526-1.414 1.414-4.526-4.526C13.815 19.568 11.986 20.25 10.25 20.25c-4.694 0-8.5-3.806-8.5-8.5z"/></svg>
+        <input type="text" placeholder="이 커뮤니티 검색하기" />
+        <button onclick="toggleSearch()" style="color:#536471;font-size:14px;">닫기</button>
+      </div>
+    </div>
+
+    <!-- 상단 헤더 -->
+    <header class="community-header">
+      <div class="header-top">
+        <button class="back-btn" onclick="history.back()" title="돌아가기">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
+            <path d="M7.414 13l5.043 5.04-1.414 1.42L3.586 12l7.457-7.46 1.414 1.42L7.414 11H21v2H7.414z"/>
+          </svg>
+        </button>
+        <span class="header-title" id="headerTitle">커뮤니티</span>
+      </div>
+    </header>
+
+    <!-- 상세 헤더 (JS가 동적 렌더링) -->
+    <section class="communityDetailHeader">
+        <!-- CommunityDetailLayout.renderHeader() -->
+    </section>
+    <!-- 탭 네비게이션 (원본과 동일) -->
+    <nav class="tab-nav">
+        <button class="tab-btn active" data-tab="popular">인기</button>
+        <button class="tab-btn" data-tab="latest">최신</button>
+        <button class="tab-btn" data-tab="media">미디어</button>
+        <button class="tab-btn" data-tab="about">소개</button>
+    </nav>
+
+    <!-- 인기 탭 -->
+    <div id="tab-popular" class="tab-content active">
+        <section class="communityDetailFeed" data-feed="popular">
+        </section>
+    </div>
+
+    <!-- 최신 탭 -->
+    <div id="tab-latest" class="tab-content hidden">
+        <section class="communityDetailFeed" data-feed="latest">
+        </section>
+    </div>
+
+    <!-- 미디어 탭 -->
+    <div id="tab-media" class="tab-content hidden">
+        <section class="communityDetailMedia">
+        </section>
+    </div>
+
+    <!-- 소개 탭 -->
+    <div id="tab-about" class="tab-content hidden">
+        <section class="communityDetailAbout">
+            <div class="aboutSection" id="communityAboutContent">
+            </div>
+        </section>
+    </div>
+
+    <!-- 이미지 확대 오버레이 -->
+    <div class="Post-Media-Preview-Overlay off" id="postMediaPreviewOverlay">
+        <div class="Post-Media-Preview-Dialog">
+            <img class="Post-Media-Preview-Image" id="postMediaPreviewImage" src="" alt="">
+            <button class="Post-Media-Preview-Close" id="postMediaPreviewClose" aria-label="닫기">
+                <svg viewBox="0 0 24 24"><path d="M10.59 12L4.54 5.96l1.42-1.42L12 10.59l6.04-6.05 1.42 1.42L13.41 12l6.05 6.04-1.42 1.42L12 13.41l-6.04 6.05-1.42-1.42L10.59 12z"></path></svg>
+            </button>
+        </div>
+    </div>
+
+  </main>
+
+<!-- 오버레이 (헤더 드롭다운용) -->
+<div id="overlay" class="overlay hidden" onclick="closeAllDropdowns()"></div>
+
+<!-- 동적 드롭다운 마운트 지점 -->
+<div id="layers" aria-hidden="true"></div>
+
+<!-- FAB: 새 게시물 작성 -->
+<button type="button" class="communityFab" aria-label="게시물 작성" data-compose>
+  <svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true">
+    <path d="M19.828 4.172a2.86 2.86 0 0 0-4.042 0L4.172 15.786 3 21l5.214-1.172L19.828 8.214a2.86 2.86 0 0 0 0-4.042zm-13.2 14.4-2.4.54.54-2.4 9.6-9.6 1.86 1.86-9.6 9.6zm11.04-11.04-1.86-1.86.84-.84a.86.86 0 0 1 1.218 0l.642.642a.86.86 0 0 1 0 1.218l-.84.84z"></path>
+  </svg>
+</button>
+
+<!-- 모바일 nav + 더보기 아코디언 (공용 fragment) -->
+<div th:replace="~{common/mobile-nav :: mobileNav('more')}"></div>
+<div th:replace="~{common/mobile-nav :: mobileMoreSheet}"></div>
+</th:block>
+
+<th:block layout:fragment="modals">
+
+</th:block>
+
+</body>
+</html>

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.app.globalgates.mapper.BookmarkFolderMapper">
+
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+        insert into tbl_bookmark_folder (member_id, folder_name)
+        values (#{memberId}, #{folderName})
+    </insert>
+
+    <update id="update">
+        update tbl_bookmark_folder
+        set folder_name      = #{folderName},
+            updated_datetime = now()
+        where id = #{id}
+    </update>
+
+    <delete id="delete">
+        delete
+        from tbl_bookmark_folder
+        where id = #{id}
+    </delete>
+
+
+    <select id="selectById">
+        select id, member_id, folder_name, created_datetime, updated_datetime
+        from tbl_bookmark_folder
+        where id = #{id}
+    </select>
+
+
+    <select id="selectAllByMemberId">
+        select bf.id,
+               bf.member_id,
+               bf.folder_name,
+               bf.created_datetime,
+               bf.updated_datetime,
+               (
+                   (select count(*) from tbl_bookmark b where b.folder_id = bf.id)
+                   +
+                   (select count(*) from tbl_news_bookmark nb where nb.folder_id = bf.id)
+               ) as bookmarkCount
+        from tbl_bookmark_folder bf
+        where bf.member_id = #{memberId}
+        order by bf.created_datetime desc
+    </select>
+</mapper>

@@ -1,0 +1,827 @@
+@import url("../main/main.css");
+
+html,
+body {
+    margin: 0;
+    min-height: 100%;
+    background: #ffffff;
+}
+
+body.modal-open {
+    overflow: hidden;
+}
+
+#createEstimationButton[hidden] {
+    display: none;
+}
+
+#composerModalOverlay[hidden],
+#composerSection[hidden] {
+    display: none;
+}
+
+#composerModalOverlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(15, 20, 25, 0.52);
+    z-index: 9998;
+}
+
+#composerSection {
+    position: fixed;
+    inset: 50% auto auto 50%;
+    transform: translate(-50%, -50%);
+    width: min(680px, calc(100vw - 32px));
+    max-height: calc(100vh - 32px);
+    display: flex;
+    flex-direction: column;
+    background: #ffffff;
+    border-radius: 24px;
+    box-shadow: rgba(15, 20, 25, 0.28) 0 12px 48px;
+    z-index: 9999;
+    overflow: hidden;
+}
+
+.composerRequestLabel {
+    cursor: default;
+    pointer-events: none;
+}
+
+#postComposerForm {
+    display: block;
+}
+
+#postComposerForm > #composerAvatar {
+    display: none;
+}
+
+#postComposerForm .composerBody {
+    width: 100%;
+}
+
+#postComposerForm .composerAudience {
+    margin-bottom: 16px;
+}
+
+#postComposerForm .audienceButton {
+    display: none;
+}
+
+#postComposerForm .composerAudienceRow {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0;
+    width: 100%;
+}
+
+#postComposerForm .composerAudienceTagDock {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+    margin-bottom: 12px;
+}
+
+#postComposerForm .composerTagTools {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+}
+
+#postComposerForm .Composer-Tag-Label {
+    display: inline-flex;
+    align-items: center;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    color: #1d9bf0;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+#postComposerForm .Composer-Tag-Label:hover {
+    text-decoration: underline;
+}
+
+#postComposerForm .Composer-Tag-Editor {
+    width: clamp(180px, 44%, 248px);
+    max-width: 100%;
+    min-height: 30px;
+    padding: 0 10px;
+    border: 1px solid transparent;
+    border-radius: 16px;
+    background: #f7f9f9;
+    box-shadow: inset 0 0 0 1px rgba(15, 20, 25, 0.04);
+    transition: border-color 0.2s, box-shadow 0.2s, background-color 0.2s;
+    display: flex;
+    align-items: center;
+}
+
+#postComposerForm .Composer-Tag-Editor[hidden] {
+    display: none;
+}
+
+#postComposerForm .Composer-Tag-Editor:focus-within {
+    border-color: rgba(29, 155, 240, 0.45);
+    background: #ffffff;
+    box-shadow: 0 0 0 4px rgba(29, 155, 240, 0.12),
+    inset 0 0 0 1px rgba(29, 155, 240, 0.16);
+}
+
+#postComposerForm .Composer-Tag-Field {
+    min-width: 50px;
+    width: 100%;
+    min-height: 25px;
+    padding: 0;
+    border: 0;
+    outline: 0;
+    background: transparent;
+    color: #0f1419;
+    font-size: 14px;
+    font-weight: 500;
+    font-family: inherit;
+}
+
+#postComposerForm .Composer-Tag-Field::placeholder {
+    color: #536471;
+}
+
+#postComposerForm .composerTagInput[hidden] {
+    display: none;
+}
+
+#postComposerForm .tag-input {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    width: 100%;
+}
+
+#postComposerForm .tagDiv {
+    display: inline-flex;
+    align-items: center;
+    padding: 4px 10px;
+    border-radius: 999px;
+    background: #e8f5fe;
+    color: #0f1419;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+#postComposerForm .composerAvatar--inline {
+    display: inline-flex;
+    width: 40px;
+    height: 40px;
+    margin-right: 12px;
+}
+
+#postComposerForm .composerProfileLink {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 56px minmax(0, 1fr);
+    align-items: center;
+    justify-content: center;
+    column-gap: 24px;
+    width: 100%;
+    margin-right: 0;
+}
+
+#postComposerForm .composerProfileLinkPerson {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    justify-self: center;
+    gap: 8px;
+}
+
+#postComposerForm #composerLinkedProfile {
+    visibility: visible;
+}
+
+
+#postComposerForm .composerProfileLinkAvatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 9999px;
+    object-fit: cover;
+    flex-shrink: 0;
+    background: #eff3f4;
+}
+
+#postComposerForm .composerProfileLinkEmail {
+    color: #536471;
+    font-size: 13px;
+    line-height: 16px;
+    white-space: nowrap;
+}
+
+#postComposerForm .composerProfileLinkIcon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 56px;
+    height: 56px;
+    margin: 0;
+    border-radius: 0;
+    background: transparent;
+    color: #1d9bf0;
+    flex-shrink: 0;
+}
+
+#postComposerForm .composerProfileLinkIconButton {
+    border: none;
+    cursor: pointer;
+}
+
+#postComposerForm .composerProfileLinkIconButton:hover {
+    opacity: 0.88;
+}
+
+.tweet-modal__draft {
+    min-height: 32px;
+    border: 0;
+    background: transparent;
+    color: black;
+    font-size: 18px;
+    font-weight: 800;
+    border-radius: 9999px;
+    cursor: pointer;
+    font-family: inherit;
+}
+
+#postComposerForm .composerProfileLinkIcon svg {
+    fill: currentColor;
+}
+
+.composerModalHeader {
+    display: flex;
+    align-items: center;
+    justify-content: left;
+    padding: 8px 12px 4px;
+    border-bottom: 1px solid #eff3f4;
+    background: #ffffff;
+    flex-shrink: 0;
+}
+
+.composerModalGhost {
+    margin-left: 10px;
+}
+
+.Form-Input-Content {
+    margin-bottom: 16px;
+
+}
+
+.Input-Content-Label {
+    min-width: 0px;
+    margin-top: 16px;
+    font-size: 13px;
+    font-weight: 500;
+    line-height: 16px;
+    color: rgb(15, 20, 25);
+}
+
+.Input-Content-Input {
+    display: flex;
+    flex: 1 1 0%;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
+.Content-Input-Wrapper {
+    display: flex;
+    border: 1px solid rgb(207, 217, 222);
+    margin: 8px auto;
+    background-color: #fff;
+    border-radius: 8px;
+    height: 40px;
+    align-items: center;
+    width: 92%;
+}
+
+.Content-Input {
+    appearance: none;
+    width: 100%;
+    border: none;
+    outline: none;
+    font-size: 15px;
+    line-height: 16px;
+    text-align: left;
+    box-sizing: border-box;
+    padding: 0px;
+    padding-left: 8px;
+    padding-right: 16px;
+    background-color: transparent;
+}
+
+.Content-Textarea {
+    border: 1px solid rgb(207, 217, 222);
+    outline: none;
+    border-radius: 8px;
+    margin: 8px auto;
+    width: 92%;
+    height: 82px;
+    font-size: 15px;
+    line-height: 18px;
+    padding: 12px 10px;
+    text-align: left;
+    box-sizing: border-box;
+    resize: none;
+    background-color: transparent;
+}
+
+.From-Input-Footer {
+    flex-direction: row;
+    padding-top: 48px;
+    padding-bottom: 8px;
+    background-color: rgb(255, 255, 255);
+    position: sticky;
+    bottom: 0px;
+    left: 0px;
+}
+
+.Input-Footer-Button {
+    text-align: center;
+    padding: 8px 16px;
+    font-size: 15px;
+    font-weight: 700;
+    line-height: 20px;
+    border-radius: 9999px;
+    background-color: rgb(207, 217, 222);
+    color: #0f1419;
+    border: none;
+    outline: none;
+}
+
+.Input-Footer-Button:hover {
+    filter: brightness(.9);
+}
+
+#postComposerForm .submitButton {
+    transition: background-color 0.2s, color 0.2s, opacity 0.2s;
+}
+
+#postComposerForm .submitButton:disabled {
+    background-color: rgb(207, 217, 222);
+    color: #536471;
+    cursor: not-allowed;
+    opacity: 1;
+}
+
+#postComposerForm .submitButton:not(:disabled) {
+    background: linear-gradient(135deg, #0f1419 0%, #1d9bf0 100%);
+    color: #ffffff;
+    box-shadow: 0 10px 24px rgba(29, 155, 240, 0.24);
+}
+
+#postComposerForm .submitButton {
+    min-width: 156px;
+    height: 44px;
+    padding: 0 30px;
+    border-radius: 9999px;
+    font-size: 15px;
+    font-weight: 800;
+    letter-spacing: -0.01em;
+}
+
+#postComposerForm .composerFooter {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#postComposerForm .composerActions {
+    margin-left: 0;
+}
+
+.composerMetaActions {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.selectedProductPreview[hidden],
+.productSelectModal[hidden],
+.share-sheet[hidden],
+.tweet-modal__location-view[hidden],
+#composerLocationView[hidden] {
+    display: none;
+}
+
+#composerLocationView {
+    position: fixed;
+    inset: 0;
+    z-index: 10000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px 16px;
+    background: rgba(15, 20, 25, 0.52);
+}
+
+#estimationShareChatSheet {
+    z-index: 10001;
+}
+
+#composerLocation {
+    display: inline-flex;
+    align-items: center;
+    margin-left: 12px;
+}
+
+.estimationLocationModal {
+    width: min(640px, calc(100vw - 32px));
+    height: min(720px, calc(100vh - 48px));
+    max-height: calc(100vh - 48px);
+    background: #ffffff;
+    border-radius: 24px;
+    overflow: hidden;
+    box-shadow: rgba(15, 20, 25, 0.28) 0 12px 48px;
+}
+
+.estimationLocationSearch {
+    gap: 8px;
+}
+
+.estimationLocationSearchButton {
+    border: none;
+    border-radius: 9999px;
+    background: #0f1419;
+    color: #ffffff;
+    font-size: 14px;
+    font-weight: 700;
+    padding: 10px 16px;
+    cursor: pointer;
+    flex-shrink: 0;
+}
+
+.estimationLocationGuide {
+    padding: 0 20px 12px;
+    color: #536471;
+    font-size: 13px;
+    line-height: 18px;
+}
+
+.estimationLocationMap {
+    height: 320px;
+    margin: 0 20px 20px;
+    border-radius: 16px;
+    border: 1px solid #d7dbdc;
+    overflow: hidden;
+    background: linear-gradient(180deg, #f7f9f9 0%, #eef3f4 100%);
+}
+
+.selectedProductPreview {
+    margin-bottom: 12px;
+}
+
+.selectedProductPreview__card {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px;
+    border: 1px solid #e4ebf0;
+    border-radius: 16px;
+    background: #fff;
+}
+
+.selectedProductPreview__image {
+    width: 56px;
+    height: 56px;
+    border-radius: 12px;
+    object-fit: cover;
+    flex-shrink: 0;
+    background: #eff3f4;
+}
+
+.selectedProductPreview__info {
+    flex: 1;
+    min-width: 0;
+}
+
+.selectedProductPreview__name {
+    display: block;
+    font-size: 14px;
+    font-weight: 700;
+    line-height: 20px;
+    color: #0f1419;
+}
+
+.selectedProductPreview__meta {
+    display: block;
+    margin-top: 2px;
+    color: #536471;
+    font-size: 13px;
+    line-height: 18px;
+}
+
+.selectedProductPreview__remove {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border: none;
+    border-radius: 9999px;
+    background: transparent;
+    color: #536471;
+}
+
+.selectedProductPreview__remove:hover {
+    background: rgba(15, 20, 25, 0.08);
+    color: #0f1419;
+}
+
+.productSelectModal {
+    position: fixed;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+}
+
+.productSelectModal__backdrop {
+    position: absolute;
+    inset: 0;
+    background: rgba(15, 20, 25, 0.52);
+}
+
+.productSelectModal__dialog {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    width: min(560px, calc(100vw - 32px));
+    max-height: calc(100vh - 40px);
+    border-radius: 24px;
+    background: #fff;
+    overflow: hidden;
+    box-shadow: rgba(15, 20, 25, 0.2) 0 10px 40px;
+}
+
+.productSelectModal__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 18px 20px;
+    border-bottom: 1px solid #eff3f4;
+}
+
+.productSelectModal__back,
+.productSelectModal__confirm {
+    border: none;
+    background: transparent;
+    font: inherit;
+}
+
+.productSelectModal__back {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border-radius: 9999px;
+    color: #0f1419;
+}
+
+.productSelectModal__back:hover {
+    background: rgba(15, 20, 25, 0.08);
+}
+
+.productSelectModal__title {
+    flex: 1;
+    margin: 0;
+    font-size: 20px;
+    font-weight: 800;
+    line-height: 24px;
+    color: #0f1419;
+}
+
+.productSelectModal__confirm {
+    min-width: 64px;
+    padding: 8px 14px;
+    border-radius: 9999px;
+    background: #0f1419;
+    color: #fff;
+    font-size: 14px;
+    font-weight: 700;
+}
+
+.productSelectModal__confirm:disabled {
+    background: rgb(207, 217, 222);
+    color: #536471;
+    cursor: not-allowed;
+}
+
+.productSelectModal__content {
+    overflow-y: auto;
+}
+
+.productSelectModal__owner-search {
+    padding: 16px 20px 12px;
+    border-bottom: 1px solid #eff3f4;
+    background: #fff;
+}
+
+.productSelectModal__owner-search-label {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 13px;
+    font-weight: 700;
+    color: #536471;
+}
+
+.productSelectModal__owner-search-input {
+    width: 100%;
+    min-height: 42px;
+    padding: 0 14px;
+    border: 1px solid #cfd9de;
+    border-radius: 9999px;
+    outline: none;
+    font: inherit;
+    color: #0f1419;
+    background: #f7f9f9;
+}
+
+.productSelectModal__owner-search-input:focus {
+    border-color: #1d9bf0;
+    background: #fff;
+    box-shadow: 0 0 0 1px #1d9bf0;
+}
+
+.productSelectModal__owner-list {
+    display: flex;
+    flex-direction: column;
+    max-height: 178px;
+    overflow-y: auto;
+    border-bottom: 1px solid #eff3f4;
+}
+
+.productSelectModal__owner-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+    padding: 12px 20px;
+    border: none;
+    background: #fff;
+    text-align: left;
+}
+
+.productSelectModal__owner-item:hover,
+.productSelectModal__owner-item.is-selected {
+    background: rgba(29, 155, 240, 0.08);
+}
+
+.productSelectModal__owner-avatar {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    flex-shrink: 0;
+    overflow: hidden;
+    border-radius: 9999px;
+    background: #eff3f4;
+}
+
+.productSelectModal__owner-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.productSelectModal__owner-body {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+}
+
+.productSelectModal__owner-name {
+    font-size: 15px;
+    font-weight: 700;
+    line-height: 20px;
+    color: #0f1419;
+}
+
+.productSelectModal__owner-handle {
+    overflow: hidden;
+    font-size: 13px;
+    line-height: 18px;
+    color: #536471;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.productSelectModal__owner-selected {
+    padding: 10px 20px;
+    border-bottom: 1px solid #eff3f4;
+    background: #f7f9f9;
+    font-size: 13px;
+    font-weight: 700;
+    color: #0f1419;
+}
+
+.productSelectModal__list {
+    display: flex;
+    flex-direction: column;
+}
+
+.productSelectModal__item {
+    display: grid;
+    grid-template-columns: auto auto 1fr;
+    align-items: center;
+    gap: 12px;
+    padding: 16px 20px;
+    border: none;
+    border-bottom: 1px solid #eff3f4;
+    background: #fff;
+    text-align: left;
+}
+
+.productSelectModal__item:hover {
+    background: rgba(15, 20, 25, 0.03);
+}
+
+.productSelectModal__item.is-selected {
+    background: rgba(29, 155, 240, 0.08);
+}
+
+.productSelectModal__checkbox {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 22px;
+    height: 22px;
+    border: 2px solid #cfd9de;
+    border-radius: 9999px;
+    color: #fff;
+    flex-shrink: 0;
+}
+
+.productSelectModal__item.is-selected .productSelectModal__checkbox {
+    border-color: #1d9bf0;
+    background: #1d9bf0;
+}
+
+.productSelectModal__checkbox svg {
+    width: 12px;
+    height: 12px;
+    fill: currentColor;
+    opacity: 0;
+}
+
+.productSelectModal__item.is-selected .productSelectModal__checkbox svg {
+    opacity: 1;
+}
+
+.productSelectModal__thumb {
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    object-fit: cover;
+    background: #eff3f4;
+}
+
+.productSelectModal__item-body {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    min-width: 0;
+}
+
+.productSelectModal__item-title {
+    font-size: 15px;
+    font-weight: 700;
+    line-height: 20px;
+    color: #0f1419;
+}
+
+.productSelectModal__item-tags,
+.productSelectModal__item-meta {
+    font-size: 13px;
+    line-height: 18px;
+    color: #536471;
+}
+
+.productSelectModal__empty {
+    padding: 32px 20px;
+    text-align: center;
+}
+
+.productSelectModal__empty-title {
+    font-size: 16px;
+    font-weight: 700;
+    color: #0f1419;
+}
+
+.productSelectModal__empty-body {
+    margin-top: 8px;
+    font-size: 14px;
+    line-height: 20px;
+    color: #536471;
+}

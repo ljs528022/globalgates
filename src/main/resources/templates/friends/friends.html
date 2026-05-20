@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="ko" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{common/layout}">
+<head>
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Friends / X</title>
+    <link rel="stylesheet" href="/css/common/mobile-nav.css" th:href="@{/css/common/mobile-nav.css}"/>
+    <link rel="stylesheet" href="/css/friends/friends.css"/>
+    <script src="/js/common/mobile-nav.js" th:src="@{/js/common/mobile-nav.js}" defer></script>
+    <script src="/js/main/service.js"></script>
+    <script src="/js/friends/service.js"></script>
+    <script src="/js/friends/layout.js"></script>
+    <script src="/js/friends/event.js"></script>
+    <script src="/js/utils/exchange.js"></script>
+</head>
+<body>
+<div class="app-layout">
+    <th:block layout:fragment="content">
+    <!-- Main Content -->
+    <main class="main-content"
+          th:data-page-member-id="${pageMember != null ? pageMember.id : ''}"
+          th:data-is-owner="${isOwner != null ? isOwner : true}">
+        <!-- Header -->
+        <div class="main-header">
+            <button class="header-back" id="headerBack">
+                <svg viewBox="0 0 24 24" class="header-back-icon">
+                    <path
+                            d="M7.414 13l5.043 5.04-1.414 1.42L3.586 12l7.457-7.46 1.414 1.42L7.414 11H21v2H7.414z"
+                    />
+                </svg>
+            </button>
+            <h1 class="header-title" th:text="${pageMember != null and pageMember.memberHandle != null ? pageMember.memberHandle : '친구'}">친구</h1>
+            <div class="header-spacer"></div>
+        </div>
+
+        <!-- Pill Tabs (추천 커넥션은 본인 페이지에서만) -->
+        <div class="friends-tabs">
+            <button th:if="${isOwner}" class="friends-tab active" data-tab="recommend">추천 커넥션</button>
+            <button class="friends-tab" th:classappend="${isOwner} ? '' : 'active'" data-tab="followers">
+                커넥터 <span class="friends-tab-count" th:text="${followersCount != null ? followersCount : 0}">0</span>
+            </button>
+            <button class="friends-tab" data-tab="followings">
+                커넥팅 <span class="friends-tab-count" th:text="${followingsCount != null ? followingsCount : 0}">0</span>
+            </button>
+        </div>
+
+        <!-- Category Banner (본인 페이지의 추천 탭일 때만 표시) -->
+        <div th:if="${isOwner}" class="category-banner" id="categoryBanner">
+            <p class="category-banner-title">카테고리 태그란</p>
+            <div class="category-scroll-wrap">
+                <button
+                        class="category-scroll-arrow category-scroll-left"
+                        id="scrollLeft"
+                        style="display: none"
+                >
+                    <svg viewBox="0 0 24 24" width="20" height="20">
+                        <path
+                                d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"
+                                fill="currentColor"
+                        />
+                    </svg>
+                </button>
+                <!-- 카테고리 칩 (서버에서 동적 로드) -->
+                <div class="category-scroll" id="categoryScroll"></div>
+                <button
+                        class="category-scroll-arrow category-scroll-right"
+                        id="scrollRight"
+                        style="display: none"
+                >
+                    <svg viewBox="0 0 24 24" width="20" height="20">
+                        <path
+                                d="M8.59 16.59L10 18l6-6-6-6-1.41 1.41L13.17 12z"
+                                fill="currentColor"
+                        />
+                    </svg>
+                </button>
+            </div>
+        </div>
+
+        <!-- 친구 추천 리스트 (서버에서 동적 로드) -->
+        <div id="friendsList"></div>
+
+        <div class="bottom-spacer"></div>
+    </main>
+
+    <!-- 모바일 nav + 더보기 아코디언 (공용 fragment) -->
+    <div th:replace="~{common/mobile-nav :: mobileNav('more')}"></div>
+    <div th:replace="~{common/mobile-nav :: mobileMoreSheet}"></div>
+
+    <!-- 연결 해제 확인 모달 (layout fragment 안에 있어야 렌더됨) -->
+    <div class="modal-overlay" id="disconnectModal">
+        <div
+                class="modal-dialog"
+                role="alertdialog"
+                aria-labelledby="modalTitle"
+        >
+            <h1 class="modal-title" id="modalTitle">
+                연결을 끊으시겠습니까?
+            </h1>
+            <p class="modal-desc">
+                이 사용자의 게시물은 더 이상 팔로잉 타임라인에 표시되지
+                않습니다. 이 사용자의 프로필은 게시물이 비공개로 설정되지
+                않는 한 계속 볼 수 있습니다.
+            </p>
+            <div class="modal-actions">
+                <button class="modal-btn-confirm" id="modalConfirm">
+                    연결 끊기
+                </button>
+                <button class="modal-btn-cancel" id="modalCancel">
+                    취소
+                </button>
+            </div>
+        </div>
+    </div>
+    </th:block>
+</div>
+
+</body>
+</html>

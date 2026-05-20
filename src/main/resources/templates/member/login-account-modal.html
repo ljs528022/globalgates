@@ -1,0 +1,39 @@
+﻿<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <link rel="icon" type="image/png" href="/images/logo/logo.png">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>계정 찾기 모달</title>
+    <link rel="stylesheet" href="/css/member/login-account-modal.css">
+</head>
+<body>
+    <div class="account-overlay" aria-hidden="false">
+        <section class="account-modal" role="dialog" aria-modal="true" aria-labelledby="accountTitle">
+            <button type="button" class="account-close" aria-label="닫기">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M10.59 12L4.54 5.96l1.42-1.42L12 10.59l6.04-6.05 1.42 1.42L13.41 12l6.05 6.04-1.42 1.42L12 13.41l-6.04 6.05-1.42-1.42L10.59 12z"></path>
+                </svg>
+            </button>
+
+            <div class="account-logo" aria-hidden="true">
+                <img src="/images/logo/logo.png" alt="globalgates">
+            </div>
+
+            <div class="account-inner">
+                <h1 id="accountTitle" class="account-title">내 globalgates 계정 찾기</h1>
+                <p class="account-desc">비밀번호를 변경하려면 계정에 연결된 이메일 또는 전화번호를 입력해 주세요.</p>
+
+                <label class="account-input-wrap" for="accountIdentity">
+                    <span class="account-label">이메일 또는 전화번호</span>
+                    <input id="accountIdentity" type="text" value="dhkdch6356@gmail.com" autocomplete="username">
+                </label>
+
+                <button type="button" class="account-next" id="accountNextBtn">다음</button>
+            </div>
+        </section>
+    </div>
+
+    <script src="/js/member/login-account-modal.js"></script>
+</body>
+</html>

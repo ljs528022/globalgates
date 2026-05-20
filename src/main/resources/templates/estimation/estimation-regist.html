@@ -1,0 +1,960 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <link rel="icon" type="image/png" href="/images/logo/logo.png">
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>견적 요청</title>
+    <link rel="stylesheet" href="/css/estimation/estimation-regist.css">
+    <script src="/js/common/profile-link.js" defer></script>
+</head>
+<body th:attr="data-google-maps-api-key=${googleMapsApiKey}">
+<div th:fragment="estimationModal" th:attr="data-google-maps-api-key=${googleMapsApiKey}">
+<button type="button" id="createEstimationButton" hidden aria-hidden="true">
+    요청하기
+</button>
+<div
+        class="composerModalOverlay"
+        id="composerModalOverlay"
+        hidden=""
+></div>
+<section
+        class="composerSection"
+        id="composerSection"
+        aria-label="게시물 작성"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="composerModalTitle"
+        hidden=""
+>
+    <!-- 작성 모달 헤더: 닫기, 제목, 임시저장처럼 작성 흐름 전체에 영향을 주는 전역 액션을 둔다. -->
+    <div
+            class="composerModalHeader tweet-modal__header"
+            id="composerModalHeader"
+    >
+        <button
+                class="composerModalClose tweet-modal__close"
+                id="composerModalClose"
+                type="button"
+                aria-label="닫기"
+                data-testid="app-bar-close"
+        >
+            <svg
+                    viewBox="0 0 24 24"
+                    width="20"
+                    height="20"
+                    aria-hidden="true"
+            >
+                <g>
+                    <path
+                            d="M10.59 12L4.54 5.96l1.42-1.42L12 10.59l6.04-6.05 1.42 1.42L13.41 12l6.05 6.04-1.42 1.42L12 13.41l-6.04 6.05-1.42-1.42L10.59 12z"
+                    ></path>
+                </g>
+            </svg>
+        </button>
+        <h2
+                class="composerModalTitle tweet-modal__title"
+                id="composerModalTitle"
+        >
+            게시하기
+        </h2>
+        <span class="composerModalGhost tweet-modal__draft composerRequestLabel">
+                    견적요청
+                </span>
+    </div>
+    <!-- 기본 작성 뷰: 실제 게시글 입력, 첨부, 태그, 위치, 제출이 모두 이 화면 안에서 이뤄진다. -->
+    <div class="tweet-modal__compose-view" id="composerComposeView">
+        <form class="composerForm" id="postComposerForm">
+            <div class="composerAvatar" id="composerAvatar">
+                <img th:src="${loginMemberProfileImageUrl}"
+                     alt=""
+                     style="width:100%;height:100%;border-radius:50%;object-fit:cover;" />
+            </div>
+            <div class="composerBody tweet-modal__input-wrap">
+                <!-- 게시판/커뮤니티 선택 영역: 게시글이 어느 보드에 발행될지 정하고 hidden input과 동기화한다. -->
+                <div class="composerAudience">
+                    <div class="composerAudienceRow">
+                        <div class="composerProfileLink" aria-hidden="true">
+                            <div class="composerProfileLinkPerson">
+                                <img
+                                        th:src="${loginMemberProfileImageUrl}"
+                                        alt=""
+                                        class="composerProfileLinkAvatar"
+                                />
+                                <span class="composerProfileLinkEmail"
+                                      th:text="${loginMember != null and loginMember.memberHandle != null
+                                                 ? '@' + loginMember.memberHandle
+                                                 : ''}"
+                                >@handle</span>
+                            </div>
+                            <button
+                                    type="button"
+                                    class="composerProfileLinkIcon composerProfileLinkIconButton"
+                                    id="composerUserLinkButton"
+                                    aria-label="사용자 찾기"
+                            >
+                                <svg
+                                        viewBox="0 0 15 15"
+                                        width="60"
+                                        height="60"
+                                        aria-hidden="true"
+                                >
+                                    <g>
+                                        <path
+                                                d="M6.354 5.5H4a3 3 0 0 0 0 6h3a3 3 0 0 0 2.83-4H9q-.13 0-.25.031A2 2 0 0 1 7 10.5H4a2 2 0 1 1 0-4h1.535c.218-.376.495-.714.82-1z"
+                                        ></path>
+                                        <path
+                                                d="M9 5.5a3 3 0 0 0-2.83 4h1.098A2 2 0 0 1 9 6.5h3a2 2 0 1 1 0 4h-1.535a4 4 0 0 1-.82 1H12a3 3 0 1 0 0-6z"
+                                        ></path>
+                                    </g>
+                                </svg>
+                            </button>
+                            <div
+                                    class="composerProfileLinkPerson"
+                                    id="composerLinkedProfile"
+
+                            >
+                                <img
+                                        src="/images/main/lown1.jpg"
+                                        alt=""
+                                        class="composerProfileLinkAvatar"
+                                        id="composerLinkedProfileAvatar"
+                                />
+                                <span class="composerProfileLinkEmail"
+                                      id="composerLinkedProfileEmail"
+                                >unknown</span
+                                >
+                            </div>
+                        </div>
+                        <button
+                                class="audienceButton"
+                                id="estimationAudienceButton"
+                                type="button"
+                                aria-haspopup="dialog"
+                                aria-expanded="false"
+                        >
+                            일반
+                        </button>
+                    </div>
+                    <input
+                            type="hidden"
+                            id="boardType"
+                            name="boardType"
+                            value="general"
+                    />
+                    <input
+                            type="hidden"
+                            id="communityId"
+                            name="communityId"
+                            value=""
+                    />
+                    <div class="boardMenu" id="estimationBoardMenu" hidden="">
+                        <div class="boardMenuHeader">
+                            <h3 class="boardMenuTitle" id="boardMenuTitle">
+                                게시판 선택
+                            </h3>
+                        </div>
+                        <div
+                                class="boardMenuOptions"
+                                id="boardMenuOptions"
+                                role="listbox"
+                                aria-labelledby="boardMenuTitle"
+                        >
+                            <button
+                                    class="boardMenuOption isSelected"
+                                    id="boardOptionGeneral"
+                                    type="button"
+                                    data-board-value="general"
+                                    data-board-label="일반"
+                                    role="option"
+                                    aria-selected="true"
+                            >
+                                        <span class="boardMenuOptionInfo">
+                                            <span
+                                                    class="boardMenuOptionIcon boardMenuOptionIcon--general"
+                                                    aria-hidden="true"
+                                            >
+                                                <svg
+                                                        viewBox="0 0 24 24"
+                                                        class="boardMenuOptionSvg"
+                                                >
+                                                    <g>
+                                                        <path
+                                                                d="M12 2.25c-5.376 0-9.75 4.374-9.75 9.75s4.374 9.75 9.75 9.75 9.75-4.374 9.75-9.75-4.374-9.75-9.75-9.75zm6.88 8.75h-3.126a15.848 15.848 0 00-1.038-4.018A7.786 7.786 0 0118.88 11zm-6.13-6.59c.747.855 1.676 2.718 2.184 5.59H12.75V4.41zm-1.5 0V10H9.066c.508-2.872 1.437-4.735 2.184-5.59zM5.12 13h3.126c.134 1.468.487 2.85 1.038 4.018A7.786 7.786 0 015.12 13zm3.126-2H5.12a7.786 7.786 0 014.144-4.018A15.85 15.85 0 008.246 11zm1.52 2h2.484v5.59c-.747-.855-1.676-2.718-2.184-5.59zm2.484-2H9.766c.508-2.872 1.437-4.735 2.184-5.59V11zm1.5 7.59V13h2.184c-.508 2.872-1.437 4.735-2.184 5.59zm2.484-7.59H13.75V4.41c.747.855 1.676 2.718 2.184 5.59zM14.716 17.018c.551-1.168.904-2.55 1.038-4.018h3.126a7.786 7.786 0 01-4.164 4.018z"
+                                                        ></path>
+                                                    </g>
+                                                </svg>
+                                            </span>
+                                            <span class="boardMenuOptionLabel"
+                                            >일반</span
+                                            >
+                                        </span>
+                                <span
+                                        class="boardMenuOptionCheck"
+                                        aria-hidden="true"
+                                >✓</span
+                                >
+                            </button>
+                            <button
+                                    class="boardMenuOption"
+                                    id="boardOptionProduct"
+                                    type="button"
+                                    data-board-value="product"
+                                    data-board-label="상품"
+                                    role="option"
+                                    aria-selected="false"
+                            >
+                                        <span class="boardMenuOptionInfo">
+                                            <span
+                                                    class="boardMenuOptionIcon boardMenuOptionIcon--product"
+                                                    aria-hidden="true"
+                                            >
+                                                <svg
+                                                        viewBox="0 0 24 24"
+                                                        class="boardMenuOptionSvg"
+                                                >
+                                                    <g>
+                                                        <path
+                                                                d="M3.5 7.75l8.5-5 8.5 5v8.5l-8.5 5-8.5-5v-8.5zm8.5-3.25L6.03 8 12 11.51 17.97 8 12 4.5zm-6.5 4.79v6.12l5.5 3.24v-6.12L5.5 9.29zm7 9.36l5.5-3.24V9.29l-5.5 3.23v6.13z"
+                                                        ></path>
+                                                    </g>
+                                                </svg>
+                                            </span>
+                                            <span class="boardMenuOptionLabel"
+                                            >상품</span
+                                            >
+                                        </span>
+                                <span
+                                        class="boardMenuOptionCheck"
+                                        aria-hidden="true"
+                                >✓</span
+                                >
+                            </button>
+                        </div>
+                        <div class="boardMenuSection">
+                            <h4 class="boardMenuSectionTitle">
+                                내 커뮤니티
+                            </h4>
+                            <div
+                                    class="communityMenuList"
+                                    id="communityMenuList"
+                            >
+                                <button
+                                        class="communityMenuItem"
+                                        id="communityOptionMarket"
+                                        type="button"
+                                        data-community-id="market-talk"
+                                        data-community-label="무역 토크"
+                                >
+                                    <img
+                                            src="/images/main/ad.png"
+                                            alt="무역 토크"
+                                            class="communityMenuAvatar"
+                                    />
+                                    <span class="communityMenuText">
+                                                <span class="communityMenuName"
+                                                >무역 토크</span
+                                                >
+                                                <span class="communityMenuMeta"
+                                                >1.2만 멤버</span
+                                                >
+                                            </span>
+                                    <span
+                                            class="communityMenuCheck"
+                                            aria-hidden="true"
+                                    >✓</span
+                                    >
+                                </button>
+                                <button
+                                        class="communityMenuItem"
+                                        id="communityOptionProduct"
+                                        type="button"
+                                        data-community-id="product-lab"
+                                        data-community-label="상품 연구소"
+                                >
+                                    <img
+                                            src="/images/main/ad.png"
+                                            alt="상품 연구소"
+                                            class="communityMenuAvatar"
+                                    />
+                                    <span class="communityMenuText">
+                                                <span class="communityMenuName"
+                                                >상품 연구소</span
+                                                >
+                                                <span class="communityMenuMeta"
+                                                >8.7천 멤버</span
+                                                >
+                                            </span>
+                                    <span
+                                            class="communityMenuCheck"
+                                            aria-hidden="true"
+                                    >✓</span
+                                    >
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div
+                        class="selectedProductPreview"
+                        id="selectedProductPreview"
+                        hidden
+                >
+                    <div class="selectedProductPreview__card">
+                        <img
+                                class="selectedProductPreview__image"
+                                id="selectedProductImage"
+                                src="/images/main/global-gates-logo.png"
+                                alt=""
+                        />
+                        <div class="selectedProductPreview__info">
+                            <strong class="selectedProductPreview__name" id="selectedProductName"></strong>
+                            <span class="selectedProductPreview__meta" id="selectedProductMeta"></span>
+                        </div>
+                        <button
+                                type="button"
+                                class="selectedProductPreview__remove"
+                                id="selectedProductRemove"
+                                aria-label="선택 상품 제거"
+                        >
+                            <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true">
+                                <g>
+                                    <path d="M10.59 12L4.54 5.96l1.42-1.42L12 10.59l6.04-6.05 1.42 1.42L13.41 12l6.05 6.04-1.42 1.42L12 13.41l-6.04 6.05-1.42-1.42L10.59 12z"></path>
+                                </g>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+                <div
+                        class="composerAudienceTagDock"
+                        id="composerAudienceTagDock"
+                >
+                    <div
+                            class="tag-input"
+                            id="composerTagInput"
+                            hidden=""
+                    ></div>
+                </div>
+
+                <!-- 본문 입력 영역: contenteditable 기반이라 서식, 이모지, 커서 복원 로직이 JS에서 함께 붙는다. -->
+                <div class="composerField" id="composerField">
+                    <span class="hiddenText">게시물 본문</span>
+                    <!-- 상품 입력 부분 - 상품 이름 -->
+                    <div class="Form-Input-Content name">
+                        <div class="Input-Content-Label">
+                            <span>요청 사유</span>
+                        </div>
+                        <div class="Input-Content-Input">
+                            <div class="Content-Input-Wrapper">
+                                <input name="postName" type="text" placeholder="요청 사유" class="Content-Input"
+                                       autocomplete="off" autocorrect="off">
+                            </div>
+                        </div>
+                    </div>
+                    <!-- 상품 입력 부분 - 상품 가격 -->
+                    <div class="Form-Input-Content price">
+                        <div class="Input-Content-Label">
+                            <span>요청 내용</span>
+                        </div>
+                        <div class="Input-Content-Input">
+                            <div class="Content-Input-Wrapper">
+                                <input name="postPrice" type="text" placeholder="요청 내용" class="Content-Input"
+                                       autocomplete="off" autocorrect="off">
+                            </div>
+                        </div>
+                    </div>
+                    <!-- 상품 입력 부분 - 상품 설명 -->
+                    <div class="Form-Input-Content stock">
+                        <div class="Input-Content-Label">
+                            <span>요청 조건</span>
+                        </div>
+                        <div class="Input-Content-Input">
+                            <textarea name="postContent" type="text" placeholder="요청 조건" class="Content-Textarea"
+                                      autocomplete="off" autocorrect="off"></textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 첨부 미리보기 영역: 이미지/동영상/일반 파일을 올리면 동일 위치에서 즉시 결과를 확인한다. -->
+                <div
+                        class="composerAttachmentPreview tweet-modal__attachment attachments"
+                        id="composerAttachmentPreview"
+                        data-attachment-preview=""
+                        hidden=""
+                >
+                    <div
+                            class="composerAttachmentList tweet-modal__attachment-media media-grid-wrapper"
+                            id="composerAttachmentList"
+                            data-attachment-media=""
+                    ></div>
+                    <div
+                            class="tweet-modal__attachment-meta media-actions-bar"
+                    >
+                        <button
+                                type="button"
+                                class="tweet-modal__attachment-meta-btn media-action-link"
+                                data-user-tag-trigger=""
+                                hidden=""
+                                disabled=""
+                                aria-label="사용자 태그하기"
+                        >
+                            <svg
+                                    viewBox="0 0 24 24"
+                                    width="18"
+                                    height="18"
+                                    aria-hidden="true"
+                            >
+                                <g>
+                                    <path
+                                            d="M5.651 19h12.698c-.337-1.8-1.023-3.21-1.945-4.19C15.318 13.65 13.838 13 12 13s-3.317.65-4.404 1.81c-.922.98-1.608 2.39-1.945 4.19zm.486-5.56C7.627 11.85 9.648 11 12 11s4.373.85 5.863 2.44c1.477 1.58 2.366 3.8 2.632 6.46l.11 1.1H3.395l.11-1.1c.266-2.66 1.155-4.88 2.632-6.46zM12 4c-1.105 0-2 .9-2 2s.895 2 2 2 2-.9 2-2-.895-2-2-2zM8 6c0-2.21 1.791-4 4-4s4 1.79 4 4-1.791 4-4 4-4-1.79-4-4z"
+                                    ></path>
+                                </g>
+                            </svg>
+                            <span data-user-tag-label=""
+                            >사용자 태그하기</span
+                            >
+                        </button>
+                        <button
+                                type="button"
+                                class="tweet-modal__attachment-meta-btn media-action-link"
+                                id="composerMediaAltTrigger"
+                                data-media-alt-trigger=""
+                        >
+                            <svg
+                                    viewBox="0 0 24 24"
+                                    width="18"
+                                    height="18"
+                                    aria-hidden="true"
+                            >
+                                <g>
+                                    <path
+                                            d="M3 4.5C3 3.12 4.12 2 5.5 2h13C19.88 2 21 3.12 21 4.5v15c0 1.38-1.12 2.5-2.5 2.5h-13C4.12 22 3 20.88 3 19.5v-15zM5.5 4c-.28 0-.5.22-.5.5v15c0 .28.22.5.5.5h13c.28 0 .5-.22.5-.5v-15c0-.28-.22-.5-.5-.5h-13zM16 10H8V8h8v2zm-8 2h8v2H8v-2z"
+                                    ></path>
+                                </g>
+                            </svg>
+                            <span
+                                    id="composerMediaAltLabel"
+                                    data-media-alt-label=""
+                            >설명 추가</span
+                            >
+                        </button>
+                    </div>
+                </div>
+
+                <!-- 메타 정보 영역: 위치, 태그 추가, 카테고리 선택처럼 본문 바깥의 부가 입력을 정리한다. -->
+                <div class="composerMeta" id="composerMeta">
+                    <div class="composerMetaRow" id="composerMetaRow">
+                        <div class="replyAudience" id="replyAudience">
+                            <div class="composerMetaActions">
+                                <button
+                                        type="button"
+                                        class="composerTagLabel"
+                                        id="productSelectButton"
+                                >
+                                    상품 추가
+                                </button>
+                                <button type="button" class="Composer-Tag-Label" id="composerTagToggle">태그 추가</button>
+                                <div class="Composer-Tag-Editor" id="composerTagEditor" hidden>
+                                    <input type="text" id="productTag" class="Composer-Tag-Field"
+                                           placeholder="태그 입력 후 Enter"/>
+                                </div>
+                            </div>
+                        </div>
+                        <button
+                                type="button"
+                                class="tweet-modal__location-display"
+                                id="composerLocation"
+                                aria-label="위치 태그하기"
+                        >
+                            <div
+                                    dir="ltr"
+                                    class="tweet-modal__location-display-inner"
+                            >
+                                <svg
+                                        viewBox="0 0 24 24"
+                                        width="16"
+                                        height="16"
+                                        aria-hidden="true"
+                                        class="tweet-modal__location-display-icon"
+                                >
+                                    <g>
+                                        <path
+                                                d="M12 2c-4.687 0-8.5 3.813-8.5 8.5 0 5.967 7.621 11.116 7.945 11.332l.555.37.555-.37c.324-.216 7.945-5.365 7.945-11.332C20.5 5.813 16.687 2 12 2zm0 11.5c-1.65 0-3-1.34-3-3s1.35-3 3-3c1.66 0 3 1.34 3 3s-1.34 3-3 3z"
+                                        ></path>
+                                    </g>
+                                </svg>
+                                <div
+                                        class="tweet-modal__location-display-text-wrap"
+                                >
+                                            <span
+                                                    class="tweet-modal__location-display-text-outer"
+                                            >
+                                                <span
+                                                        class="tweet-modal__location-display-text-inner"
+                                                        id="composerLocationName"
+                                                >위치 추가</span>
+                                            </span>
+                                </div>
+                            </div>
+                        </button>
+                    </div>
+                    <input
+                            type="hidden"
+                            id="postTagsValue"
+                            name="tags"
+                            value=""
+                    />
+                    <input
+                            type="hidden"
+                            id="postLocationValue"
+                            name="location"
+                            value=""
+                    />
+
+                    <div class="category-banner composerCategoryBanner">
+                        <div class="category-scroll-wrap">
+                            <button
+                                    class="category-scroll-arrow category-scroll-left"
+                                    id="scrollLeft"
+                                    style="display: none"
+                                    type="button"
+                            >
+                                <svg
+                                        viewBox="0 0 24 24"
+                                        width="20"
+                                        height="20"
+                                >
+                                    <path
+                                            d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"
+                                            fill="currentColor"
+                                    ></path>
+                                </svg>
+                            </button>
+                            <div
+                                    class="category-scroll"
+                                    id="categoryScroll"
+                            >
+                                <button
+                                        class="cat-chip active"
+                                        data-cat="전체"
+                                        type="button"
+                                >
+                                    전체
+                                </button>
+                                <button
+                                        class="cat-chip has-subs"
+                                        data-cat="수출"
+                                        data-subs="미주,유럽,동남아,중국,일본,중동"
+                                        type="button"
+                                >
+                                    수출 ›
+                                </button>
+                                <button
+                                        class="cat-chip has-subs"
+                                        data-cat="수입"
+                                        data-subs="원자재,완제품,식품,전자부품"
+                                        type="button"
+                                >
+                                    수입 ›
+                                </button>
+                                <button
+                                        class="cat-chip has-subs"
+                                        data-cat="물류"
+                                        data-subs="해운,항공,육상,창고"
+                                        type="button"
+                                >
+                                    물류 ›
+                                </button>
+                                <button
+                                        class="cat-chip has-subs"
+                                        data-cat="관세"
+                                        data-subs="FTA,HS코드,통관,환급"
+                                        type="button"
+                                >
+                                    관세 ›
+                                </button>
+                                <button
+                                        class="cat-chip has-subs"
+                                        data-cat="금융"
+                                        data-subs="무역금융,환율,보험,LC"
+                                        type="button"
+                                >
+                                    금융 ›
+                                </button>
+                                <button
+                                        class="cat-chip has-subs"
+                                        data-cat="IT"
+                                        data-subs="플랫폼,자동화,블록체인"
+                                        type="button"
+                                >
+                                    IT ›
+                                </button>
+                                <button
+                                        class="cat-chip has-subs"
+                                        data-cat="식품"
+                                        data-subs="농산물,수산물,가공식품,건강식품"
+                                        type="button"
+                                >
+                                    식품 ›
+                                </button>
+                                <button
+                                        class="cat-chip"
+                                        data-cat="화장품"
+                                        type="button"
+                                >
+                                    화장품
+                                </button>
+                                <button
+                                        class="cat-chip"
+                                        data-cat="자동차"
+                                        type="button"
+                                >
+                                    자동차
+                                </button>
+                                <button
+                                        class="cat-chip"
+                                        data-cat="섬유/의류"
+                                        type="button"
+                                >
+                                    섬유/의류
+                                </button>
+                                <button
+                                        class="cat-chip"
+                                        data-cat="기계/장비"
+                                        type="button"
+                                >
+                                    기계/장비
+                                </button>
+                                <button
+                                        class="cat-chip"
+                                        data-cat="에너지"
+                                        type="button"
+                                >
+                                    에너지
+                                </button>
+                            </div>
+                            <button
+                                    class="category-scroll-arrow category-scroll-right"
+                                    id="scrollRight"
+                                    style="display: flex"
+                                    type="button"
+                            >
+                                <svg
+                                        viewBox="0 0 24 24"
+                                        width="20"
+                                        height="20"
+                                >
+                                    <path
+                                            d="M8.59 16.59L10 18l6-6-6-6-1.41 1.41L13.17 12z"
+                                            fill="currentColor"
+                                    ></path>
+                                </svg>
+                            </button>
+                        </div>
+                        <div
+                                class="tweet-modal__emoji-picker"
+                                id="composerEmojiPicker"
+                                role="dialog"
+                                aria-label="이모티콘 선택기"
+                                hidden=""
+                        >
+                            <div class="tweet-modal__emoji-search">
+                                <svg
+                                        viewBox="0 0 24 24"
+                                        width="22"
+                                        height="22"
+                                        aria-hidden="true"
+                                        class="tweet-modal__emoji-search-icon"
+                                >
+                                    <g>
+                                        <path
+                                                d="M10.5 3.75c-3.728 0-6.75 3.022-6.75 6.75s3.022 6.75 6.75 6.75c1.55 0 2.977-.522 4.114-1.4l4.893 4.893 1.06-1.06-4.892-4.893a6.714 6.714 0 001.4-4.114c0-3.728-3.022-6.75-6.75-6.75zm-5.25 6.75c0-2.9 2.35-5.25 5.25-5.25s5.25 2.35 5.25 5.25-2.35 5.25-5.25 5.25-5.25-2.35-5.25-5.25z"
+                                        ></path>
+                                    </g>
+                                </svg>
+                                <input
+                                        type="search"
+                                        class="tweet-modal__emoji-search-input"
+                                        data-testid="emojiSearchInput"
+                                        placeholder="이모티콘 검색하기"
+                                        aria-label="이모티콘 검색하기"
+                                />
+                            </div>
+                            <div
+                                    class="tweet-modal__emoji-tabs"
+                                    role="tablist"
+                                    aria-label="이모지 카테고리"
+                            >
+                                <button type="button" class="tweet-modal__emoji-tab tweet-modal__emoji-tab--active"
+                                        data-emoji-category="recent" role="tab" aria-selected="true" aria-label="최근">
+                                    <svg viewBox="0 0 24 24" aria-hidden="true" class="tweet-modal__emoji-tab-icon">
+                                        <g>
+                                            <path d="M12 1.75A10.25 10.25 0 112.75 12 10.26 10.26 0 0112 1.75zm0 1.5A8.75 8.75 0 1020.75 12 8.76 8.76 0 0012 3.25zm.75 3.5v5.19l3.03 1.75-.75 1.3-3.78-2.18V6.75h1.5z"></path>
+                                        </g>
+                                    </svg>
+                                </button>
+                                <button type="button" class="tweet-modal__emoji-tab" data-emoji-category="smileys"
+                                        role="tab" aria-selected="false" aria-label="스마일리 및 사람">
+                                    <svg viewBox="0 0 24 24" aria-hidden="true" class="tweet-modal__emoji-tab-icon">
+                                        <g>
+                                            <path d="M12 22.75C6.072 22.75 1.25 17.928 1.25 12S6.072 1.25 12 1.25 22.75 6.072 22.75 12 17.928 22.75 12 22.75zm0-20c-5.109 0-9.25 4.141-9.25 9.25s4.141 9.25 9.25 9.25 9.25-4.141 9.25-9.25S17.109 2.75 12 2.75zM9 11.75c-.69 0-1.25-.56-1.25-1.25S8.31 9.25 9 9.25s1.25.56 1.25 1.25S9.69 11.75 9 11.75zm6 0c-.69 0-1.25-.56-1.25-1.25S14.31 9.25 15 9.25s1.25.56 1.25 1.25S15.69 11.75 15 11.75zm-8.071 3.971c.307-.298.771-.397 1.188-.253.953.386 2.403.982 3.883.982s2.93-.596 3.883-.982c.417-.144.88-.044 1.188.253a.846.846 0 01-.149 1.34c-1.254.715-3.059 1.139-4.922 1.139s-3.668-.424-4.922-1.139a.847.847 0 01-.149-1.39z"></path>
+                                        </g>
+                                    </svg>
+                                </button>
+                                <button type="button" class="tweet-modal__emoji-tab" data-emoji-category="animals"
+                                        role="tab" aria-selected="false" aria-label="동물 및 자연">
+                                    <svg viewBox="0 0 24 24" aria-hidden="true" class="tweet-modal__emoji-tab-icon">
+                                        <g>
+                                            <path d="M12 3.5c3.77 0 6.75 2.86 6.75 6.41 0 3.17-1.88 4.94-4.15 6.28-.74.44-1.54.9-1.6 1.86-.02.38-.33.68-.71.68h-.6a.71.71 0 01-.71-.67c-.07-.95-.86-1.42-1.6-1.85C7.13 14.85 5.25 13.08 5.25 9.91 5.25 6.36 8.23 3.5 12 3.5zm-4.79-.97c.61 0 1.1.49 1.1 1.1 0 .32-.14.63-.39.84-.4.34-.78.78-1.08 1.3-.18.3-.49.48-.84.48-.61 0-1.1-.49-1.1-1.1 0-.14.03-.29.09-.42.47-1.04 1.17-1.93 2.02-2.63.19-.15.43-.24.7-.24zm9.58 0c.27 0 .51.09.7.24.85.7 1.55 1.6 2.02 2.63.06.13.09.28.09.42 0 .61-.49 1.1-1.1 1.1-.35 0-.66-.18-.84-.48-.3-.52-.68-.96-1.08-1.3a1.1 1.1 0 01-.39-.84c0-.61.49-1.1 1.1-1.1z"></path>
+                                        </g>
+                                    </svg>
+                                </button>
+                                <button type="button" class="tweet-modal__emoji-tab" data-emoji-category="food"
+                                        role="tab" aria-selected="false" aria-label="음식 및 음료">
+                                    <svg viewBox="0 0 24 24" aria-hidden="true" class="tweet-modal__emoji-tab-icon">
+                                        <g>
+                                            <path d="M5 10.5c0-3.59 3.36-6.5 7.5-6.5s7.5 2.91 7.5 6.5v.58a5.42 5.42 0 01-2.08 4.26L16.5 21H8.5l-1.42-5.66A5.42 5.42 0 015 11.08v-.58zm2 0v.58c0 1.08.5 2.08 1.36 2.76l.3.24.95 3.92h5.78l.95-3.92.3-.24a3.42 3.42 0 001.36-2.76v-.58c0-2.48-2.47-4.5-5.5-4.5S7 8.02 7 10.5z"></path>
+                                        </g>
+                                    </svg>
+                                </button>
+                                <button type="button" class="tweet-modal__emoji-tab" data-emoji-category="activities"
+                                        role="tab" aria-selected="false" aria-label="활동">
+                                    <svg viewBox="0 0 24 24" aria-hidden="true" class="tweet-modal__emoji-tab-icon">
+                                        <g>
+                                            <path d="M12 2.25c5.385 0 9.75 4.365 9.75 9.75S17.385 21.75 12 21.75 2.25 17.385 2.25 12 6.615 2.25 12 2.25zm0 1.5A8.25 8.25 0 103.75 12 8.26 8.26 0 0012 3.75zm-4.1 4.5c.27 0 .53.12.71.33l1.94 2.55 3.12-2.29c.36-.27.87-.22 1.18.12l2.83 3.12a.88.88 0 01-.07 1.24.88.88 0 01-1.24-.07l-2.3-2.54-3.16 2.33a.88.88 0 01-1.23-.16L7.2 9.64a.88.88 0 01.7-1.39z"></path>
+                                        </g>
+                                    </svg>
+                                </button>
+                                <button type="button" class="tweet-modal__emoji-tab" data-emoji-category="travel"
+                                        role="tab" aria-selected="false" aria-label="여행 및 장소">
+                                    <svg viewBox="0 0 24 24" aria-hidden="true" class="tweet-modal__emoji-tab-icon">
+                                        <g>
+                                            <path d="M12 2.25c-4.142 0-7.5 3.245-7.5 7.248 0 5.207 6.46 11.611 6.735 11.881a1.08 1.08 0 001.53 0c.275-.27 6.735-6.674 6.735-11.881 0-4.003-3.358-7.248-7.5-7.248zm0 17.493c-1.758-1.878-6-6.838-6-10.245 0-3.172 2.686-5.748 6-5.748s6 2.576 6 5.748c0 3.407-4.242 8.367-6 10.245zm0-13.243a3 3 0 100 6 3 3 0 000-6z"></path>
+                                        </g>
+                                    </svg>
+                                </button>
+                                <button type="button" class="tweet-modal__emoji-tab" data-emoji-category="objects"
+                                        role="tab" aria-selected="false" aria-label="사물">
+                                    <svg viewBox="0 0 24 24" aria-hidden="true" class="tweet-modal__emoji-tab-icon">
+                                        <g>
+                                            <path d="M12 2.5c2.07 0 3.75 1.68 3.75 3.75 0 1.45-.83 2.71-2.04 3.33l-.21.11V11h.5A2.5 2.5 0 0116.5 13.5v1.38c0 1.27-.7 2.43-1.82 3.03l-.93.5V21.5h-3.5v-3.09l-.93-.5A3.44 3.44 0 017.5 14.88V13.5A2.5 2.5 0 0110 11h.5V9.69l-.21-.11A3.75 3.75 0 018.25 6.25 3.75 3.75 0 0112 2.5zm0 1.5a2.25 2.25 0 100 4.5 2.25 2.25 0 000-4.5zm-2 8.5a1 1 0 00-1 1v1.38c0 .72.4 1.39 1.04 1.73l1.71.92v1.47h.5v-1.47l1.71-.92A1.97 1.97 0 0015 14.88V13.5a1 1 0 00-1-1h-4z"></path>
+                                        </g>
+                                    </svg>
+                                </button>
+                                <button type="button" class="tweet-modal__emoji-tab" data-emoji-category="symbols"
+                                        role="tab" aria-selected="false" aria-label="기호">
+                                    <svg viewBox="0 0 24 24" aria-hidden="true" class="tweet-modal__emoji-tab-icon">
+                                        <g>
+                                            <path d="M5 4h14v4.5h-2V6H7v2.5H5V4zm2 6h4v4H7v-4zm6 0h4v4h-4v-4zM5 16h6v4H5v-4zm8 0h6v4h-6v-4z"></path>
+                                        </g>
+                                    </svg>
+                                </button>
+                                <button type="button" class="tweet-modal__emoji-tab" data-emoji-category="flags"
+                                        role="tab" aria-selected="false" aria-label="깃발">
+                                    <svg viewBox="0 0 24 24" aria-hidden="true" class="tweet-modal__emoji-tab-icon">
+                                        <g>
+                                            <path d="M6 2.75A.75.75 0 016.75 2h.5a.75.75 0 01.75.75V3h9.38c.97 0 1.45 1.17.76 1.85L16.1 6.9l2.05 2.05c.69.68.21 1.85-.76 1.85H8v10.45a.75.75 0 01-.75.75h-.5a.75.75 0 01-.75-.75V2.75z"></path>
+                                        </g>
+                                    </svg>
+                                </button>
+                            </div>
+                            <div
+                                    class="tweet-modal__emoji-content"
+                                    data-testid="emojiPickerContent"
+                            ></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 하단 작성 도구/제출 영역: 이모지, 미디어, 위치, 서식 버튼과 글자 수, 제출 버튼을 묶는다. -->
+                <div class="composerFooter">
+                    <div class="composerActions" id="composerActions">
+                        <button
+                                class="submitButton"
+                                id="postSubmitButton"
+                                type="submit"
+                                disabled=""
+                        >
+                            요청하기
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</section>
+<div class="tweet-modal__location-view" id="composerLocationView" hidden>
+    <div
+            class="tweet-modal__location-modal estimationLocationModal"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="composerLocationTitle"
+    >
+        <div class="tweet-modal__location-header">
+            <button
+                    type="button"
+                    class="tweet-modal__location-close"
+                    id="composerLocationClose"
+                    aria-label="닫기"
+            >
+                <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">
+                    <g>
+                        <path d="M7.414 13l5.043 5.04-1.414 1.42L3.586 12l7.457-7.46 1.414 1.42L7.414 11H21v2H7.414z"></path>
+                    </g>
+                </svg>
+            </button>
+            <h2 id="composerLocationTitle" class="tweet-modal__location-title">위치 선택</h2>
+            <div class="tweet-modal__location-actions">
+                <button
+                        type="button"
+                        class="tweet-modal__location-action tweet-modal__location-action--ghost"
+                        id="composerLocationDelete"
+                        hidden
+                >
+                    삭제
+                </button>
+                <button
+                        type="button"
+                        class="tweet-modal__location-action tweet-modal__location-action--solid"
+                        id="composerLocationComplete"
+                        disabled
+                >
+                    완료
+                </button>
+            </div>
+        </div>
+        <div class="tweet-modal__location-search estimationLocationSearch">
+            <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"
+                 class="tweet-modal__location-search-icon">
+                <g>
+                    <path d="M10.5 3.75c-3.728 0-6.75 3.022-6.75 6.75s3.022 6.75 6.75 6.75c1.55 0 2.977-.522 4.114-1.4l4.893 4.893 1.06-1.06-4.892-4.893a6.714 6.714 0 001.4-4.114c0-3.728-3.022-6.75-6.75-6.75zm-5.25 6.75c0-2.9 2.35-5.25 5.25-5.25s5.25 2.35 5.25 5.25-2.35 5.25-5.25 5.25-5.25-2.35-5.25-5.25z"></path>
+                </g>
+            </svg>
+            <input
+                    type="search"
+                    class="tweet-modal__location-search-input"
+                    id="composerLocationSearch"
+                    placeholder="주소 검색"
+                    aria-label="주소 검색"
+            />
+            <button type="button" class="estimationLocationSearchButton" id="composerLocationSearchButton">검색</button>
+        </div>
+        <div class="estimationLocationGuide" id="composerLocationGuide">
+            지도를 클릭하거나 주소를 검색해서 위치를 선택하세요.
+        </div>
+        <div class="estimationLocationMap" id="composerLocationMap" aria-label="위치 지도"></div>
+    </div>
+</div>
+<div class="productSelectModal" id="productSelectModal" hidden>
+    <div class="productSelectModal__backdrop" id="productSelectBackdrop"></div>
+    <section
+            class="productSelectModal__dialog"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="productSelectTitle"
+    >
+        <header class="productSelectModal__header">
+            <button
+                    type="button"
+                    class="productSelectModal__back"
+                    id="productSelectClose"
+                    aria-label="닫기"
+            >
+                <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">
+                    <g>
+                        <path d="M7.414 13l5.043 5.04-1.414 1.42L3.586 12l7.457-7.46 1.414 1.42L7.414 11H21v2H7.414z"></path>
+                    </g>
+                </svg>
+            </button>
+            <h2 class="productSelectModal__title" id="productSelectTitle">상품 선택하기</h2>
+            <button
+                    type="button"
+                    class="productSelectModal__confirm"
+                    id="productSelectConfirm"
+                    disabled
+            >
+                완료
+            </button>
+        </header>
+        <div class="productSelectModal__content">
+            <div class="productSelectModal__owner-search">
+                <label class="productSelectModal__owner-search-label" for="productOwnerSearch">
+                    상품 주인 검색
+                </label>
+                <input
+                        type="search"
+                        class="productSelectModal__owner-search-input"
+                        id="productOwnerSearch"
+                        placeholder="상품을 가진 상대방을 검색하세요"
+                        autocomplete="off"
+                />
+            </div>
+            <div class="productSelectModal__owner-list" id="productOwnerList"></div>
+            <div class="productSelectModal__owner-selected" id="productOwnerSelected" hidden></div>
+            <div class="productSelectModal__list" id="productSelectList"></div>
+            <div class="productSelectModal__empty" id="productSelectEmpty" hidden>
+                <p class="productSelectModal__empty-title">등록된 상품이 없습니다</p>
+                <p class="productSelectModal__empty-body">상품을 먼저 등록한 뒤 다시 선택해 주세요.</p>
+            </div>
+        </div>
+    </section>
+</div>
+<div class="share-sheet" id="estimationShareChatSheet" hidden>
+    <div
+            class="share-sheet__backdrop"
+            data-estimation-share-close="true"
+    ></div>
+    <div
+            class="share-sheet__card"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="estimationShareChatTitle"
+    >
+        <div class="share-sheet__header">
+            <button
+                    type="button"
+                    class="share-sheet__icon-btn"
+                    data-estimation-share-close="true"
+                    aria-label="돌아가기"
+            >
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <g>
+                        <path
+                                d="M7.414 13l5.043 5.04-1.414 1.42L3.586 12l7.457-7.46 1.414 1.42L7.414 11H21v2H7.414z"
+                        ></path>
+                    </g>
+                </svg>
+            </button>
+            <h2
+                    id="estimationShareChatTitle"
+                    class="share-sheet__title"
+            >
+                사용자 찾기
+            </h2>
+            <span class="share-sheet__header-spacer"></span>
+        </div>
+        <div class="share-sheet__search">
+            <input
+                    type="text"
+                    class="share-sheet__search-input"
+                    id="estimationShareChatSearch"
+                    placeholder="검색"
+                    aria-label="검색"
+            />
+        </div>
+        <div
+                class="share-sheet__list"
+                id="estimationShareChatUserList"
+        ></div>
+        <p class="share-sheet__empty" id="estimationShareChatEmpty" hidden>검색된 전문가가 없습니다.</p>
+    </div>
+</div>
+</div>
+</body>
+<!-- 견적 API 호출 -->
+<script src="/js/estimation/estimation-regist/service.js"></script>
+<!-- HTML 렌더 헬퍼 (상품/전문가 카드) -->
+<script src="/js/estimation/estimation-regist/layout.js"></script>
+<!-- 모달 인터랙션 + 폼 제출 (독립 페이지에서 auto-open 포함) -->
+<script src="/js/estimation/estimation-regist/event.js"></script>
+</html>

@@ -1,0 +1,67 @@
+HELP.md
+.gradle
+build/
+!gradle/wrapper/gradle-wrapper.jar
+!**/src/main/**/build/
+!**/src/test/**/build/
+.claude
+
+### STS ###
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
+bin/
+!**/src/main/**/bin/
+!**/src/test/**/bin/
+
+### IntelliJ IDEA ###
+.idea
+*.iws
+*.iml
+*.ipr
+out/
+!**/src/main/**/out/
+!**/src/test/**/out/
+!src/main/resources/application.yaml
+!src/main/resources/application-oauth.yaml
+
+### NetBeans ###
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+
+### VS Code ###
+.vscode/
+
+### OS ###
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+Thumbs.db
+desktop.ini
+
+### Logs ###
+*.log
+logs/
+
+### IntelliJ extras ###
+.idea/httpRequests/
+.idea/shelf/
+
+### 환경변수 ###
+.env
+.env.*
+
+### Agent skill files (개인 Claude Code 설정 — 팀에 영향 없게) ###
+CLAUDE.md
+AGENTS.md
+docs/agents/
+.gstack/
+.docs/
