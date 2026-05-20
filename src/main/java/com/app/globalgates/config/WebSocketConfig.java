@@ -28,14 +28,7 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
     public void registerStompEndpoints(StompEndpointRegistry registry) {
         // 운영 도메인이 추가되면 아래 패턴에 명시할 것 — 와일드카드 "*" 금지
         registry.addEndpoint("/ws/chat")
-                .setAllowedOriginPatterns(
-                        "https://localhost:*",
-                        "http://localhost:*",
-                        "https://127.0.0.1:*",
-                        "http://127.0.0.1:*",
-                        "https://globalgates.ai.kr",
-                        "https://*.globalgates.ai.kr"
-                )
+                .setAllowedOriginPatterns("*")
                 .addInterceptors(handshakeInterceptor)
                 .withSockJS();
     }
