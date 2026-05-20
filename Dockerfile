@@ -27,21 +27,21 @@ ENV PSQL_PASSWORD=${PSQL_PASSWORD}
 ARG REDIS_PORT
 ENV REDIS_PORT=${REDIS_PORT}
 
-ARG RABBITMQ_PORT
-ENV RABBITMQ_PORT=${RABBITMQ_PORT}
+ARG REDIS_PORT
+ENV REDIS_PORT=${REDIS_PORT}
 
-ARG RABBITMQ_USERNAME
-ENV RABBITMQ_USERNAME=${RABBITMQ_USERNAME}
+# ───────────────────────────────── Mail
+ARG MAIL_API_URL
+ENV MAIL_API_URL=${MAIL_API_URL}
 
-ARG RABBITMQ_PASSWORD
-ENV RABBITMQ_PASSWORD=${RABBITMQ_PASSWORD}
+ARG MAIL_API_PORT
+ENV MAIL_API_PORT=${MAIL_API_PORT}
 
-# ───────────────────────────────── Mail (Gmail SMTP)
-ARG MAIL_USERNAME
-ENV MAIL_USERNAME=${MAIL_USERNAME}
+ARG MAIL_API_USERNAME
+ENV MAIL_API_USERNAME=${MAIL_API_USERNAME}
 
-ARG MAIL_PASSWORD
-ENV MAIL_PASSWORD=${MAIL_PASSWORD}
+ARG MAIL_API_PASSWORD
+ENV MAIL_API_PASSWORD=${MAIL_API_PASSWORD}
 
 # ───────────────────────────────── JWT
 ARG JWT_SECRET
@@ -60,37 +60,26 @@ ENV AWS_BUCKET_NAME=${AWS_BUCKET_NAME}
 ARG AWS_REGION
 ENV AWS_REGION=${AWS_REGION}
 
-# ───────────────────────────────── SMS (Solapi)
-ARG SOLAPI_KEY
-ENV SOLAPI_KEY=${SOLAPI_KEY}
+# ───────────────────────────────── SMS
+ARG MESSAGE_API_KEY
+ENV MESSAGE_API_KEY=${MESSAGE_API_KEY}
 
-ARG SOLAPI_SECRET
-ENV SOLAPI_SECRET=${SOLAPI_SECRET}
+ARG MESSAGE_API_SECRET
+ENV MESSAGE_API_SECRET=${MESSAGE_API_SECRET}
 
 # ───────────────────────────────── 결제 (Bootpay)
 ARG BOOTPAY_ID
 ENV BOOTPAY_ID=${BOOTPAY_ID}
 
-ARG BOOTPAY_PRIVATEKEY
-ENV BOOTPAY_PRIVATEKEY=${BOOTPAY_PRIVATEKEY}
+ARG BOOTPAY_KEY
+ENV BOOTPAY_KEY=${BOOTPAY_KEY}
 
-ARG BOOTPAY_APIURL
-ENV BOOTPAY_APIURL=${BOOTPAY_APIURL}
+ARG BOOTPAY_URL
+ENV BOOTPAY_URL=${BOOTPAY_URL}
 
-# ───────────────────────────────── 내부 AI 서비스
-ARG AI_CONTENTS_BASE_URL
-ENV AI_CONTENTS_BASE_URL=${AI_CONTENTS_BASE_URL}
-
-ARG INTERNAL_AI_TOKEN
-ENV INTERNAL_AI_TOKEN=${INTERNAL_AI_TOKEN}
-
-# FastAPI (욕설 검사 + 광고 회귀 ML 같은 인스턴스에서 동일 포트 공유)
-ARG FASTAPI_PORT
-ENV FASTAPI_PORT=${FASTAPI_PORT}
-
-# LiveKit
-ARG LIVEKIT_PORT
-ENV LIVEKIT_PORT=${LIVEKIT_PORT}
+# ───────────────────────────────── LiveKit
+ARG LIVEKIT_URL
+ENV LIVEKIT_URL=${LIVEKIT_URL}
 
 # ───────────────────────────────── OAuth (Kakao)
 ARG KAKAO_CLIENT_ID
@@ -120,12 +109,9 @@ ENV FACEBOOK_CLIENT_ID=${FACEBOOK_CLIENT_ID}
 ARG FACEBOOK_CLIENT_SECRET
 ENV FACEBOOK_CLIENT_SECRET=${FACEBOOK_CLIENT_SECRET}
 
-# ───────────────────────────────── Frontend 지도 SDK 키
-ARG GOOGLE_MAPS_API_KEY
-ENV GOOGLE_MAPS_API_KEY=${GOOGLE_MAPS_API_KEY}
-
-ARG KAKAO_MAPS_JS_KEY
-ENV KAKAO_MAPS_JS_KEY=${KAKAO_MAPS_JS_KEY}
+# ───────────────────────────────── 지도
+ARG GOOGLE_MAP_KEY
+ENV GOOGLE_MAP_KEY=${GOOGLE_MAP_KEY}
 
 # 작업 디렉토리 설정
 WORKDIR /app
